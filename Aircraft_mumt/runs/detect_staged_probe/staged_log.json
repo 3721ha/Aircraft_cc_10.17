@@ -1,0 +1,529 @@
+{
+ "stages": {
+  "a": [
+   {
+    "iter": 0,
+    "stage": "discrete",
+    "stable_window": 10,
+    "k": 2,
+    "mean_return": -8429.325,
+    "success": 0.0,
+    "mean_steps": 679,
+    "vio_per_step": 5.3726,
+    "track_action_rate": 0.053,
+    "pointer_rate": 0.0086,
+    "valid_request_rate": 0.0086,
+    "intervention_rate": 0.2982,
+    "mean_correction": 1.247577,
+    "max_stable_progress": 10,
+    "active_parameters": [
+     "role_head.weight",
+     "role_head.bias",
+     "gear_head.weight",
+     "gear_head.bias",
+     "pointer_head.weight",
+     "pointer_head.bias",
+     "critic.0.weight",
+     "critic.0.bias",
+     "critic.2.weight",
+     "critic.2.bias",
+     "critic.4.weight",
+     "critic.4.bias"
+    ],
+    "parameter_delta_l2": {
+     "trunk": 0.0,
+     "continuous": 0.0,
+     "discrete": 0.0035904301330447197,
+     "critic": 0.01997741125524044
+    },
+    "policy_loss": -0.344791,
+    "value_loss": 2.461139,
+    "approx_kl": 0.0,
+    "cf_nonzero_frac": 0.000736,
+    "eval": {
+     "success": 0.0,
+     "mean_return": -16375.368,
+     "max_stable_progress": 8,
+     "rows": [
+      {
+       "seed": 300,
+       "k": 2,
+       "terminal": "failure",
+       "return": -15493.434,
+       "steps": 633,
+       "violations": 4952,
+       "max_stable_progress": 6
+      },
+      {
+       "seed": 301,
+       "k": 2,
+       "terminal": "failure",
+       "return": -14942.146,
+       "steps": 696,
+       "violations": 4837,
+       "max_stable_progress": 0
+      },
+      {
+       "seed": 302,
+       "k": 2,
+       "terminal": "failure",
+       "return": -18690.525,
+       "steps": 727,
+       "violations": 5972,
+       "max_stable_progress": 8
+      }
+     ]
+    }
+   },
+   {
+    "iter": 1,
+    "stage": "discrete",
+    "stable_window": 10,
+    "k": 2,
+    "mean_return": -13564.497,
+    "success": 0.5,
+    "mean_steps": 646,
+    "vio_per_step": 6.1694,
+    "track_action_rate": 0.0474,
+    "pointer_rate": 0.0168,
+    "valid_request_rate": 0.0168,
+    "intervention_rate": 0.4875,
+    "mean_correction": 1.458652,
+    "max_stable_progress": 10,
+    "active_parameters": [
+     "role_head.weight",
+     "role_head.bias",
+     "gear_head.weight",
+     "gear_head.bias",
+     "pointer_head.weight",
+     "pointer_head.bias",
+     "critic.0.weight",
+     "critic.0.bias",
+     "critic.2.weight",
+     "critic.2.bias",
+     "critic.4.weight",
+     "critic.4.bias"
+    ],
+    "parameter_delta_l2": {
+     "trunk": 0.0,
+     "continuous": 0.0,
+     "discrete": 0.0026357511524111032,
+     "critic": 0.01834484189748764
+    },
+    "policy_loss": -0.71148,
+    "value_loss": 3.153957,
+    "approx_kl": 0.0,
+    "cf_nonzero_frac": 0.001289
+   },
+   {
+    "iter": 2,
+    "stage": "discrete",
+    "stable_window": 11,
+    "k": 2,
+    "mean_return": -11467.102,
+    "success": 0.0,
+    "mean_steps": 672,
+    "vio_per_step": 6.4684,
+    "track_action_rate": 0.0501,
+    "pointer_rate": 0.0067,
+    "valid_request_rate": 0.0067,
+    "intervention_rate": 0.2984,
+    "mean_correction": 1.333499,
+    "max_stable_progress": 8,
+    "active_parameters": [
+     "role_head.weight",
+     "role_head.bias",
+     "gear_head.weight",
+     "gear_head.bias",
+     "pointer_head.weight",
+     "pointer_head.bias",
+     "critic.0.weight",
+     "critic.0.bias",
+     "critic.2.weight",
+     "critic.2.bias",
+     "critic.4.weight",
+     "critic.4.bias"
+    ],
+    "parameter_delta_l2": {
+     "trunk": 0.0,
+     "continuous": 0.0,
+     "discrete": 0.0023270645178854465,
+     "critic": 0.01706436090171337
+    },
+    "policy_loss": -0.526499,
+    "value_loss": 2.490689,
+    "approx_kl": 0.0,
+    "cf_nonzero_frac": 0.001487
+   },
+   {
+    "iter": 3,
+    "stage": "discrete",
+    "stable_window": 11,
+    "k": 2,
+    "mean_return": -8512.691,
+    "success": 0.5,
+    "mean_steps": 520,
+    "vio_per_step": 4.2296,
+    "track_action_rate": 0.0227,
+    "pointer_rate": 0.0173,
+    "valid_request_rate": 0.0173,
+    "intervention_rate": 0.4294,
+    "mean_correction": 1.291605,
+    "max_stable_progress": 11,
+    "active_parameters": [
+     "role_head.weight",
+     "role_head.bias",
+     "gear_head.weight",
+     "gear_head.bias",
+     "pointer_head.weight",
+     "pointer_head.bias",
+     "critic.0.weight",
+     "critic.0.bias",
+     "critic.2.weight",
+     "critic.2.bias",
+     "critic.4.weight",
+     "critic.4.bias"
+    ],
+    "parameter_delta_l2": {
+     "trunk": 0.0,
+     "continuous": 0.0,
+     "discrete": 0.0021127525251358747,
+     "critic": 0.01592699997127056
+    },
+    "policy_loss": -0.702534,
+    "value_loss": 2.090901,
+    "approx_kl": 0.0,
+    "cf_nonzero_frac": 0.001281
+   },
+   {
+    "iter": 4,
+    "stage": "discrete",
+    "stable_window": 12,
+    "k": 2,
+    "mean_return": -13096.194,
+    "success": 0.0,
+    "mean_steps": 711,
+    "vio_per_step": 6.0352,
+    "track_action_rate": 0.0621,
+    "pointer_rate": 0.0068,
+    "valid_request_rate": 0.0068,
+    "intervention_rate": 0.3172,
+    "mean_correction": 1.49334,
+    "max_stable_progress": 4,
+    "active_parameters": [
+     "role_head.weight",
+     "role_head.bias",
+     "gear_head.weight",
+     "gear_head.bias",
+     "pointer_head.weight",
+     "pointer_head.bias",
+     "critic.0.weight",
+     "critic.0.bias",
+     "critic.2.weight",
+     "critic.2.bias",
+     "critic.4.weight",
+     "critic.4.bias"
+    ],
+    "parameter_delta_l2": {
+     "trunk": 0.0,
+     "continuous": 0.0,
+     "discrete": 0.002127148909494281,
+     "critic": 0.015617101453244686
+    },
+    "policy_loss": -0.472226,
+    "value_loss": 2.706124,
+    "approx_kl": 0.0,
+    "cf_nonzero_frac": 0.000703,
+    "eval": {
+     "success": 0.0,
+     "mean_return": -16375.368,
+     "max_stable_progress": 8,
+     "rows": [
+      {
+       "seed": 300,
+       "k": 2,
+       "terminal": "failure",
+       "return": -15493.434,
+       "steps": 633,
+       "violations": 4952,
+       "max_stable_progress": 6
+      },
+      {
+       "seed": 301,
+       "k": 2,
+       "terminal": "failure",
+       "return": -14942.146,
+       "steps": 696,
+       "violations": 4837,
+       "max_stable_progress": 0
+      },
+      {
+       "seed": 302,
+       "k": 2,
+       "terminal": "failure",
+       "return": -18690.525,
+       "steps": 727,
+       "violations": 5972,
+       "max_stable_progress": 8
+      }
+     ]
+    }
+   }
+  ],
+  "b": [
+   {
+    "iter": 0,
+    "stage": "continuous",
+    "stable_window": 10,
+    "k": 2,
+    "mean_return": -9658.647,
+    "success": 0.0,
+    "mean_steps": 674,
+    "vio_per_step": 5.5878,
+    "track_action_rate": 0.064,
+    "pointer_rate": 0.0128,
+    "valid_request_rate": 0.0128,
+    "intervention_rate": 0.2644,
+    "mean_correction": 1.30117,
+    "max_stable_progress": 10,
+    "active_parameters": [
+     "log_std",
+     "cont_head.weight",
+     "cont_head.bias",
+     "critic.0.weight",
+     "critic.0.bias",
+     "critic.2.weight",
+     "critic.2.bias",
+     "critic.4.weight",
+     "critic.4.bias"
+    ],
+    "parameter_delta_l2": {
+     "trunk": 0.0,
+     "continuous": 0.0019691765774041414,
+     "discrete": 0.0,
+     "critic": 0.019513752311468124
+    },
+    "policy_loss": -0.357598,
+    "value_loss": 2.04939,
+    "approx_kl": 0.000274,
+    "cf_nonzero_frac": 0.001235,
+    "eval": {
+     "success": 0.0,
+     "mean_return": -16813.346,
+     "max_stable_progress": 10,
+     "rows": [
+      {
+       "seed": 300,
+       "k": 2,
+       "terminal": "failure",
+       "return": -15078.146,
+       "steps": 633,
+       "violations": 4535,
+       "max_stable_progress": 7
+      },
+      {
+       "seed": 301,
+       "k": 2,
+       "terminal": "failure",
+       "return": -16031.287,
+       "steps": 696,
+       "violations": 5021,
+       "max_stable_progress": 0
+      },
+      {
+       "seed": 302,
+       "k": 2,
+       "terminal": "failure",
+       "return": -19330.606,
+       "steps": 727,
+       "violations": 5955,
+       "max_stable_progress": 10
+      }
+     ]
+    }
+   },
+   {
+    "iter": 1,
+    "stage": "continuous",
+    "stable_window": 10,
+    "k": 2,
+    "mean_return": -12905.137,
+    "success": 0.0,
+    "mean_steps": 644,
+    "vio_per_step": 6.4468,
+    "track_action_rate": 0.0083,
+    "pointer_rate": 0.0,
+    "valid_request_rate": 0.0,
+    "intervention_rate": 0.4333,
+    "mean_correction": 1.440558,
+    "max_stable_progress": 0,
+    "active_parameters": [
+     "log_std",
+     "cont_head.weight",
+     "cont_head.bias",
+     "critic.0.weight",
+     "critic.0.bias",
+     "critic.2.weight",
+     "critic.2.bias",
+     "critic.4.weight",
+     "critic.4.bias"
+    ],
+    "parameter_delta_l2": {
+     "trunk": 0.0,
+     "continuous": 0.0013587252469733357,
+     "discrete": 0.0,
+     "critic": 0.01754743605852127
+    },
+    "policy_loss": -0.58389,
+    "value_loss": 3.074651,
+    "approx_kl": 0.000165,
+    "cf_nonzero_frac": 0.0
+   },
+   {
+    "iter": 2,
+    "stage": "continuous",
+    "stable_window": 11,
+    "k": 2,
+    "mean_return": -13920.321,
+    "success": 0.0,
+    "mean_steps": 684,
+    "vio_per_step": 5.4923,
+    "track_action_rate": 0.0112,
+    "pointer_rate": 0.0044,
+    "valid_request_rate": 0.0044,
+    "intervention_rate": 0.495,
+    "mean_correction": 1.50212,
+    "max_stable_progress": 11,
+    "active_parameters": [
+     "log_std",
+     "cont_head.weight",
+     "cont_head.bias",
+     "critic.0.weight",
+     "critic.0.bias",
+     "critic.2.weight",
+     "critic.2.bias",
+     "critic.4.weight",
+     "critic.4.bias"
+    ],
+    "parameter_delta_l2": {
+     "trunk": 0.0,
+     "continuous": 0.0011936560040339828,
+     "discrete": 0.0,
+     "critic": 0.01637367717921734
+    },
+    "policy_loss": -0.62219,
+    "value_loss": 3.879904,
+    "approx_kl": 0.000135,
+    "cf_nonzero_frac": 0.0
+   },
+   {
+    "iter": 3,
+    "stage": "continuous",
+    "stable_window": 11,
+    "k": 2,
+    "mean_return": -13081.218,
+    "success": 0.0,
+    "mean_steps": 681,
+    "vio_per_step": 6.7423,
+    "track_action_rate": 0.0673,
+    "pointer_rate": 0.0039,
+    "valid_request_rate": 0.0039,
+    "intervention_rate": 0.3453,
+    "mean_correction": 1.315676,
+    "max_stable_progress": 5,
+    "active_parameters": [
+     "log_std",
+     "cont_head.weight",
+     "cont_head.bias",
+     "critic.0.weight",
+     "critic.0.bias",
+     "critic.2.weight",
+     "critic.2.bias",
+     "critic.4.weight",
+     "critic.4.bias"
+    ],
+    "parameter_delta_l2": {
+     "trunk": 0.0,
+     "continuous": 0.0011569078778848052,
+     "discrete": 0.0,
+     "critic": 0.016065379604697227
+    },
+    "policy_loss": -0.542904,
+    "value_loss": 2.723645,
+    "approx_kl": 0.000126,
+    "cf_nonzero_frac": 0.000734
+   },
+   {
+    "iter": 4,
+    "stage": "continuous",
+    "stable_window": 12,
+    "k": 2,
+    "mean_return": -15612.146,
+    "success": 0.0,
+    "mean_steps": 679,
+    "vio_per_step": 5.2415,
+    "track_action_rate": 0.0444,
+    "pointer_rate": 0.0,
+    "valid_request_rate": 0.0,
+    "intervention_rate": 0.5493,
+    "mean_correction": 1.443443,
+    "max_stable_progress": 0,
+    "active_parameters": [
+     "log_std",
+     "cont_head.weight",
+     "cont_head.bias",
+     "critic.0.weight",
+     "critic.0.bias",
+     "critic.2.weight",
+     "critic.2.bias",
+     "critic.4.weight",
+     "critic.4.bias"
+    ],
+    "parameter_delta_l2": {
+     "trunk": 0.0,
+     "continuous": 0.0012274615000933409,
+     "discrete": 0.0,
+     "critic": 0.01614396646618843
+    },
+    "policy_loss": -0.838035,
+    "value_loss": 3.59695,
+    "approx_kl": 0.000136,
+    "cf_nonzero_frac": 0.0,
+    "eval": {
+     "success": 0.0,
+     "mean_return": -19440.927,
+     "max_stable_progress": 0,
+     "rows": [
+      {
+       "seed": 300,
+       "k": 2,
+       "terminal": "failure",
+       "return": -17030.665,
+       "steps": 633,
+       "violations": 3686,
+       "max_stable_progress": 0
+      },
+      {
+       "seed": 301,
+       "k": 2,
+       "terminal": "failure",
+       "return": -20630.98,
+       "steps": 696,
+       "violations": 4680,
+       "max_stable_progress": 0
+      },
+      {
+       "seed": 302,
+       "k": 2,
+       "terminal": "failure",
+       "return": -20661.135,
+       "steps": 727,
+       "violations": 4439,
+       "max_stable_progress": 0
+      }
+     ]
+    }
+   }
+  ]
+ }
+}

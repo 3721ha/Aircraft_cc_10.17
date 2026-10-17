@@ -1,0 +1,51 @@
+{
+ "iters": [],
+ "bc": {
+  "stats": {
+   "samples": 17424,
+   "epoch": 60,
+   "loss": 4.110513687133789,
+   "cont": 3.9157817363739014,
+   "role": 0.07315344363451004,
+   "gear": 0.05746131390333176,
+   "pointer": 0.06411673873662949
+  },
+  "eval": [
+   {
+    "seed": 200,
+    "terminal": "failure",
+    "return": -8595.2,
+    "steps": 752,
+    "violations": 4258
+   },
+   {
+    "seed": 201,
+    "terminal": "failure",
+    "return": -6476.0,
+    "steps": 647,
+    "violations": 3433
+   },
+   {
+    "seed": 202,
+    "terminal": "failure",
+    "return": -6305.3,
+    "steps": 648,
+    "violations": 3214
+   },
+   {
+    "seed": 203,
+    "terminal": "failure",
+    "return": -6668.3,
+    "steps": 643,
+    "violations": 3610
+   },
+   {
+    "seed": 204,
+    "terminal": "failure",
+    "return": -7944.7,
+    "steps": 681,
+    "violations": 4179
+   }
+  ]
+ }
+}

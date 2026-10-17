@@ -1,0 +1,159 @@
+{
+ "dagger": {
+  "rounds": [
+   {
+    "round": 0,
+    "new_demos": 2262,
+    "agg_demos": 2262,
+    "bc": {
+     "samples": 2262,
+     "epoch": 40,
+     "loss": 3.2430076599121094,
+     "cont": 2.851893663406372,
+     "role": 0.05370231717824936,
+     "gear": 0.02001832239329815,
+     "pointer": 0.31739339232444763
+    },
+    "eval": [
+     {
+      "k": 2,
+      "seed": 300,
+      "terminal": "failure",
+      "return": -7993.7
+     },
+     {
+      "k": 2,
+      "seed": 301,
+      "terminal": "failure",
+      "return": -4475.5
+     },
+     {
+      "k": 2,
+      "seed": 302,
+      "terminal": "failure",
+      "return": -4430.3
+     }
+    ],
+    "accepted": true,
+    "incumbent_return": -5633.2,
+    "eval_success": "0/3",
+    "eval_mean_return": -5633.2
+   },
+   {
+    "round": 1,
+    "new_demos": 3543,
+    "agg_demos": 5805,
+    "bc": {
+     "samples": 5805,
+     "epoch": 40,
+     "loss": 5.3726582527160645,
+     "cont": 5.214630126953125,
+     "role": 0.04518968611955643,
+     "gear": 0.027717802673578262,
+     "pointer": 0.08512060344219208
+    },
+    "eval": [
+     {
+      "k": 2,
+      "seed": 300,
+      "terminal": "failure",
+      "return": -6074.8
+     },
+     {
+      "k": 2,
+      "seed": 301,
+      "terminal": "failure",
+      "return": -6080.9
+     },
+     {
+      "k": 2,
+      "seed": 302,
+      "terminal": "failure",
+      "return": -6562.5
+     }
+    ],
+    "accepted": false,
+    "incumbent_return": -5633.2,
+    "eval_success": "0/3",
+    "eval_mean_return": -6239.4
+   },
+   {
+    "round": 2,
+    "new_demos": 8055,
+    "agg_demos": 8055,
+    "bc": {
+     "samples": 8055,
+     "epoch": 40,
+     "loss": 41677220.0,
+     "cont": 26.17350959777832,
+     "role": 0.20618586242198944,
+     "gear": 0.03266323357820511,
+     "pointer": 41677192.0
+    },
+    "eval": [
+     {
+      "k": 2,
+      "seed": 300,
+      "terminal": "failure",
+      "return": -11560.1
+     },
+     {
+      "k": 2,
+      "seed": 301,
+      "terminal": "failure",
+      "return": -14646.0
+     },
+     {
+      "k": 2,
+      "seed": 302,
+      "terminal": "failure",
+      "return": -15691.1
+     }
+    ],
+    "accepted": false,
+    "incumbent_return": -5631.5,
+    "eval_success": "0/3",
+    "eval_mean_return": -13965.7
+   },
+   {
+    "round": 3,
+    "new_demos": 8874,
+    "agg_demos": 16929,
+    "bc": {
+     "samples": 16929,
+     "epoch": 40,
+     "loss": 82568832.0,
+     "cont": 24.55581283569336,
+     "role": 0.34423205256462097,
+     "gear": 0.03129906207323074,
+     "pointer": 82568808.0
+    },
+    "eval": [
+     {
+      "k": 2,
+      "seed": 300,
+      "terminal": "failure",
+      "return": -14745.7
+     },
+     {
+      "k": 2,
+      "seed": 301,
+      "terminal": "failure",
+      "return": -16383.2
+     },
+     {
+      "k": 2,
+      "seed": 302,
+      "terminal": "failure",
+      "return": -17627.6
+     }
+    ],
+    "accepted": false,
+    "incumbent_return": -5631.5,
+    "eval_success": "0/3",
+    "eval_mean_return": -16252.2
+   }
+  ],
+  "demos_total": 22734
+ }
+}
