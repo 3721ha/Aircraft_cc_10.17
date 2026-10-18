@@ -239,7 +239,8 @@ class DetectActionCodec:
 
     def to_action(self, cont, role_idx: int, gear_idx: int, pointer_idx: int,
                   arbitration_bid: float = 0.0,
-                  arbitration_bids=None) -> DetectAction:
+                  arbitration_bids=None,
+                  rl_direct_arbitration: bool = False) -> DetectAction:
         u = [max(-1.0, min(1.0, float(c))) for c in cont[:3]]
         role = DetectRole.SEARCH if int(role_idx) == 0 else DetectRole.TRACK
         gear = POLICY_GEAR_ORDER[int(gear_idx) % self.N_GEAR]
@@ -252,7 +253,8 @@ class DetectActionCodec:
                     f"arbitration_bids must contain {self.N_BID_SLOTS} values")
             bids = tuple(max(-1.0, min(1.0, float(value)))
                          for value in arbitration_bids)
-        return DetectAction(u[0], u[1], u[2], role, gear, pointer, bid, bids)
+        return DetectAction(u[0], u[1], u[2], role, gear, pointer, bid, bids,
+                            bool(rl_direct_arbitration))
 
     def heads(self, action: DetectAction) -> Dict[str, int]:
         role_idx = 0 if action.role == DetectRole.SEARCH else 1

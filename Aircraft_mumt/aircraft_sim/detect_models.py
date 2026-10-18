@@ -38,6 +38,7 @@ class DetectAction:
     pointer: int = 0
     arbitration_bid: float = 0.0
     arbitration_bids: Optional[Tuple[float, ...]] = None
+    rl_direct_arbitration: bool = False
 
     def clipped(self) -> "DetectAction":
         c = lambda v: max(-1.0, min(1.0, float(v)))
@@ -49,4 +50,5 @@ class DetectAction:
             bids = tuple(c(v) for v in bids)
         return DetectAction(c(self.u_psi), c(self.u_v), c(self.u_xi),
                             self.role, self.gear, int(self.pointer),
-                            c(self.arbitration_bid), bids)
+                            c(self.arbitration_bid), bids,
+                            bool(self.rl_direct_arbitration))

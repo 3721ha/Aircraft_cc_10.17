@@ -367,6 +367,7 @@ class DetectMAPPOConfig:
     # Targeted arbitration fine-tuning can isolate sparse bid credit from the
     # shared flight/task heads. The deployed actor still emits the full action.
     bid_only_ppo: bool = False
+    direct_rl_arbitration: bool = False
     # Disabled pending a reliable post-action C04 counterfactual.  The current
     # pre-step local estimate cannot account exactly for the applied axis trim,
     # denied gear switches, and target motion before arbitration.
@@ -566,7 +567,8 @@ class DetectMAPPOPolicy:
                                               int(role_idx[r]), int(gear_idx[r]),
                                               int(pointer_idx[r]),
                                               float(legacy_bid[r]),
-                                              tuple(float(v) for v in bid_slots[r]))
+                                              tuple(float(v) for v in bid_slots[r]),
+                                              self.config.direct_rl_arbitration)
             logps[i] = {
                 "combined": float(logp[r]),
                 "cont":     float(cont_logp_v[r]),
@@ -1985,8 +1987,37 @@ class DetectMAPPOPolicy:
     def load(self, path: str) -> None:
         checkpoint = torch.load(path, map_location="cpu")
         allowed_legacy_missing = {"conflict_residual.weight"}
+        legacy_observation_dim = self.encoder.dimension - 18
+
+        def expand_legacy_input(state, expected, key, chunked=False):
+            old = state.get(key)
+            target = expected[key]
+            if (old is None or old.ndim != 2 or target.ndim != 2
+                    or old.shape[0] != target.shape[0]):
+                return state
+            if chunked:
+                if old.shape[1] != legacy_observation_dim * self.env.cfg.N_WINGMEN:
+                    return state
+                expanded = torch.zeros_like(target)
+                for agent in range(self.env.cfg.N_WINGMEN):
+                    source_start = agent * legacy_observation_dim
+                    target_start = agent * self.encoder.dimension
+                    expanded[:, target_start:target_start + legacy_observation_dim] = \
+                        old[:, source_start:source_start + legacy_observation_dim]
+            else:
+                if old.shape[1] != legacy_observation_dim:
+                    return state
+                expanded = torch.zeros_like(target)
+                expanded[:, :legacy_observation_dim] = old
+            compatible = dict(state)
+            compatible[key] = expanded
+            return compatible
 
         def compatible_state(state, expected, component):
+            state = expand_legacy_input(
+                state, expected, "actor.0.weight")
+            state = expand_legacy_input(
+                state, expected, "critic.0.weight", chunked=True)
             missing = set(expected) - set(state)
             unexpected = set(state) - set(expected)
             mismatched = {

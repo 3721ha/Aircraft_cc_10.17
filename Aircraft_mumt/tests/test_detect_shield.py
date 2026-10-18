@@ -201,7 +201,7 @@ def test_geometry_fallback_keeps_discrete_policy_heads(monkeypatch):
     env.manned.x, env.manned.y = 15.0, 60.0
     nominal = {
         0: DetectAction(0.2, -0.3, 0.4, role="TRACK", gear=15.0, pointer=1,
-                        arbitration_bid=0.6),
+                        arbitration_bid=0.6, rl_direct_arbitration=True),
         1: DetectAction(-0.1, 0.2, -0.2, role="SEARCH", gear=60.0, pointer=0,
                         arbitration_bid=-0.3),
         2: DetectAction(0.0, 0.0, 0.0, role="TRACK", gear=7.5, pointer=2,
@@ -224,5 +224,6 @@ def test_geometry_fallback_keeps_discrete_policy_heads(monkeypatch):
         assert safe[i].gear == nominal[i].gear
         assert safe[i].pointer == nominal[i].pointer
         assert safe[i].arbitration_bid == nominal[i].arbitration_bid
+        assert safe[i].rl_direct_arbitration == nominal[i].rl_direct_arbitration
         assert -1.0 <= safe[i].u_psi <= 1.0
         assert -1.0 <= safe[i].u_v <= 1.0

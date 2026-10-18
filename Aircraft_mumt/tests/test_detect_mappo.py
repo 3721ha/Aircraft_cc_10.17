@@ -158,6 +158,49 @@ def test_load_accepts_only_legacy_zero_initialized_conflict_adapter():
             policy.load(str(checkpoint))
 
 
+def test_load_expands_legacy_151_dim_actor_and_team_critic():
+    env, _, policy = _make(seed=32)
+    current_dim = policy.encoder.dimension
+    legacy_dim = current_dim - 18
+    agents = env.cfg.N_WINGMEN
+    model = {key: value.detach().clone()
+             for key, value in policy.model.state_dict().items()}
+    anchor = {key: value.detach().clone()
+              for key, value in policy.xi_anchor_model.state_dict().items()}
+    expected_actor = model["actor.0.weight"][:, :legacy_dim].clone()
+    expected_critic = []
+    critic = model["critic.0.weight"]
+    for agent in range(agents):
+        start = agent * current_dim
+        expected_critic.append(critic[:, start:start + legacy_dim].clone())
+    model["actor.0.weight"] = model["actor.0.weight"][:, :legacy_dim]
+    anchor["actor.0.weight"] = anchor["actor.0.weight"][:, :legacy_dim]
+    model["critic.0.weight"] = torch.cat([
+        critic[:, agent * current_dim:agent * current_dim + legacy_dim]
+        for agent in range(agents)], dim=1)
+    anchor_critic = anchor["critic.0.weight"]
+    anchor["critic.0.weight"] = torch.cat([
+        anchor_critic[:, agent * current_dim:
+                      agent * current_dim + legacy_dim]
+        for agent in range(agents)], dim=1)
+    with tempfile.TemporaryDirectory(dir=Path(__file__).parent) as temp_dir:
+        checkpoint = Path(temp_dir) / "legacy_151.pt"
+        torch.save({"model": model, "xi_anchor_model": anchor}, checkpoint)
+        policy.load(str(checkpoint))
+
+    loaded = policy.model.state_dict()
+    assert torch.equal(loaded["actor.0.weight"][:, :legacy_dim], expected_actor)
+    assert torch.count_nonzero(
+        loaded["actor.0.weight"][:, legacy_dim:]) == 0
+    for agent, expected in enumerate(expected_critic):
+        start = agent * current_dim
+        assert torch.equal(
+            loaded["critic.0.weight"][:, start:start + legacy_dim], expected)
+        assert torch.count_nonzero(loaded["critic.0.weight"][:,
+                                             start + legacy_dim:
+                                             (agent + 1) * current_dim]) == 0
+
+
 def test_collect_rollout_structure():
     env, shield, pol = _make()
     data = pol.collect(k_red=2, seed=11)
@@ -238,6 +281,13 @@ def test_bid_head_is_bounded_and_updates_from_conflict_credit():
     assert not torch.equal(before, pol.model.bid_head.weight.detach())
     assert not torch.equal(conflict_before,
                            pol.model.conflict_residual.weight.detach())
+
+
+def test_direct_arbitration_mode_is_carried_by_rl_actions():
+    env, _shield, policy = _make(seed=35)
+    policy.config.direct_rl_arbitration = True
+    actions, _ = policy.act_batch(env.observe(), deterministic=True)
+    assert all(action.rl_direct_arbitration for action in actions.values())
 
 
 def test_bid_only_ppo_keeps_non_bid_policy_fixed():

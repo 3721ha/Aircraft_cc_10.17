@@ -405,12 +405,16 @@ def _configure_policy(pol):
             1.0, max(0.0, float(exposure_text)))
     if os.environ.get("MUMT_BID_ONLY_PPO"):
         pol.config.bid_only_ppo = os.environ["MUMT_BID_ONLY_PPO"] != "0"
+    if os.environ.get("MUMT_RL_DIRECT_ARBITRATION"):
+        pol.config.direct_rl_arbitration = (
+            os.environ["MUMT_RL_DIRECT_ARBITRATION"] != "0")
     _apply_bid_std_override(pol)
     print(f"[PPO] lr={pol.config.learning_rate:g} epochs={pol.config.epochs} "
           f"shield_aware={pol.config.shield_aware_continuous} "
           f"cf_request_credit={pol.config.cf_request_credit:g} "
           f"conflict_exposure={pol.config.conflict_exposure_prob:g} "
-          f"bid_only={pol.config.bid_only_ppo}", flush=True)
+          f"bid_only={pol.config.bid_only_ppo} "
+          f"direct_rl_arbitration={pol.config.direct_rl_arbitration}", flush=True)
 
 
 def _apply_bid_std_override(pol):
@@ -714,6 +718,7 @@ def main():
                 "learning_rate": pol.config.learning_rate,
                 "epochs": pol.config.epochs,
                 "bid_only_ppo": pol.config.bid_only_ppo,
+                "direct_rl_arbitration": pol.config.direct_rl_arbitration,
                 "conflict_exposure_prob": (
                     pol.config.conflict_exposure_prob),
             },

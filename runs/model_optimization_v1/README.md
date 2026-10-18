@@ -85,3 +85,45 @@ Keep a candidate only when RL success rate is at least HEUR, mean return is
 better, violations per step are no higher, and the conflict probe demonstrates
 task-useful winner changes. Forced-probe results are diagnostic and are not a
 substitute for natural paired evaluation.
+
+## Direct-RL Arbitration Prototype
+
+The next method prototype adds an explicit direct-arbitration action flag.
+C04 still defines the feasible candidate set; on events where every eligible
+candidate comes from an RL action with this flag, the learned slot score picks
+the final owner. The fixed quality score and incumbent hysteresis are logged
+for comparison but do not override the RL choice. HEUR actions do not carry
+the flag and continue to use the legacy path. The runner, shield and
+checkpoint migration for older 151-dimensional inputs are covered by tests.
+
+Run bundle:
+`runs/model_optimization_v1/direct_rl_k2_w8a10_smoke_v2/`
+
+Training was a 3-iteration smoke run, 4 episodes per iteration, initialized
+from the retained K=2 task-policy candidate. It used W8/A10, C04=80 km,
+conflict exposure 1.0, direct RL arbitration, learning rate 3e-5 and 2 PPO
+epochs. Across the 3 iterations, the log records 60 arbitration events, 59
+informative counterfactual bid events and 32 counterfactual winner changes.
+
+| Evaluation | RL | HEUR | Readout |
+| --- | ---: | ---: | --- |
+| Paired validation, W8/A10, seeds 210-211 | 2/2, return -733.3, violations/step 1.4525 | 2/2, -1368.2, 3.1146 | Small validation set; passes the local paired checks |
+| Natural paired, W8/A10, seeds 220-229 | 10/10, return -2000.3, violations/step 2.7599 | 8/10, -3067.5, 4.8236 | RL selected a different winner from fixed scoring in 9 of its 15 arbitration events |
+| Natural paired, strict W15/A5, seeds 200-209 | 3/10, return -5620.2, violations/step 4.6955 | 4/10, -5121.1, 6.0283 | Fails success and return comparison; reduces violations |
+| Forced conflict probe, W8/A10, seeds 300-309 | 16 multi-candidate events, 0 winner changes vs fixed-score baseline | n/a | Still no consistent change on the forced probe set |
+
+This is a promising method prototype, not a deployment candidate. Natural
+evaluation shows that the learned arbiter can select different winners while
+the strict task result remains below HEUR. Extend training and repeat both the
+strict paired evaluation and fixed-seed conflict probe before deciding whether
+the method improves the actual conflict-resolution objective. Full logs,
+selected checkpoints and provenance sidecars stay in the run bundle.
+
+## Artifact Cleanup Status
+
+Substantive long runs, distinct checkpoints, paired evaluations and probes are
+retained. Exact duplicate outputs and short-smoke model files were identified
+for cleanup, but the local execution policy rejected filesystem deletion
+commands. No cleanup deletions were applied. The remaining smoke logs are
+useful implementation records; their checkpoint files are still present until
+the blocked cleanup can be performed.

@@ -80,6 +80,7 @@ class BlueWingman:
     pointer_target: Optional[int] = None
     arbitration_bid: float = 0.0
     arbitration_bids: Optional[Tuple[float, ...]] = None
+    rl_direct_arbitration: bool = False
     bid_slot_targets: Tuple[Optional[int], ...] = field(
         default_factory=lambda: (None,) * DETECT_BID_SLOTS)
 
@@ -206,6 +207,7 @@ class DetectEnv:
             a = a.clipped()
             w.arbitration_bid = a.arbitration_bid
             w.arbitration_bids = a.arbitration_bids
+            w.rl_direct_arbitration = a.rl_direct_arbitration
             w.bid_slot_targets = tuple(
                 track.target_id if track is not None else None
                 for track in w.tracks.slots)
@@ -455,14 +457,22 @@ class DetectEnv:
             adjusted_scores = {
                 i: scores[i] + cfg.ARB_BID_WEIGHT * bids[i] for i in pool
             }
-            # The learned bid adjusts quality; the incumbent remains selected
-            # unless a challenger clears the adjusted-score hysteresis margin.
-            best = max(pool, key=lambda i: (
-                adjusted_scores[i], i == owner, -i))
-            if (owner in pool and best != owner
-                    and adjusted_scores[best]
-                    <= adjusted_scores[owner] + cfg.ARB_HYSTERESIS):
-                best = owner
+            direct_rl_event = all(
+                self.wingmen[i].rl_direct_arbitration for i in pool)
+            if direct_rl_event:
+                # In direct mode, C04 defines the feasible action set and the
+                # learned RL score is the complete arbiter.  Fixed quality
+                # scores and incumbent preference remain diagnostics only.
+                best = max(pool, key=lambda i: (bids[i], -i))
+            else:
+                # Legacy arbitration: learned bids adjust fixed quality and
+                # the incumbent is protected by the configured hysteresis.
+                best = max(pool, key=lambda i: (
+                    adjusted_scores[i], i == owner, -i))
+                if (owner in pool and best != owner
+                        and adjusted_scores[best]
+                        <= adjusted_scores[owner] + cfg.ARB_HYSTERESIS):
+                    best = owner
             if len(pool) > 1:
                 conflicts.append({
                     "tid": tid,
@@ -476,6 +486,9 @@ class DetectEnv:
                     "bid_slots": {i: bid_slots[i] for i in sorted(pool)},
                     "bid_weight": cfg.ARB_BID_WEIGHT,
                     "hysteresis": cfg.ARB_HYSTERESIS,
+                    "arbitration_mode": (
+                        "rl_direct" if direct_rl_event
+                        else "fixed_score_plus_bid"),
                 })
             if owner is None:
                 if best in requested.get(tid, []):

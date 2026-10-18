@@ -262,7 +262,8 @@ class DetectQPShield:
             corr = DetectAction(u_psi, u_v, nom.u_xi, nom.role,
                                 nom.gear, nom.pointer,
                                 nom.arbitration_bid,
-                                nom.arbitration_bids).clipped()
+                                nom.arbitration_bids,
+                                nom.rl_direct_arbitration).clipped()
             safe[i] = corr
             magnitude = math.hypot(corr.u_psi - nom.u_psi,
                                    corr.u_v - nom.u_v)
@@ -487,7 +488,8 @@ class DetectQPShield:
                 corr = DetectAction(float(controls[row, 0]), float(controls[row, 1]),
                                     nom.u_xi, nom.role, nom.gear, nom.pointer,
                                     nom.arbitration_bid,
-                                    nom.arbitration_bids).clipped()
+                                    nom.arbitration_bids,
+                                    nom.rl_direct_arbitration).clipped()
                 safe[i] = corr
                 mag = math.hypot(corr.u_psi - nom.u_psi, corr.u_v - nom.u_v)
                 if mag > 1e-6:

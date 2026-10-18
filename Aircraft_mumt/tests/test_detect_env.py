@@ -213,7 +213,7 @@ def test_c04_geometry_diagnostics_separate_range_and_sector_rejection():
 
 def _arbitrate_test_case(owner_score, challenger_score, owner_bid=0.0,
                          challenger_bid=0.0, owner_gate=True,
-                         stale_breach=False):
+                         stale_breach=False, direct_rl=False):
     env = DetectEnv()
     env.reset({"seed": 29, "k_red": 2})
     tid = env.reds.agents[0].uid
@@ -222,6 +222,8 @@ def _arbitrate_test_case(owner_score, challenger_score, owner_bid=0.0,
     env.wingmen[1].requests = [tid]
     env.wingmen[0].arbitration_bid = owner_bid
     env.wingmen[1].arbitration_bid = challenger_bid
+    env.wingmen[0].rl_direct_arbitration = direct_rl
+    env.wingmen[1].rl_direct_arbitration = direct_rl
     env._gate_ok = lambda i, tx, ty: owner_gate if i == 0 else True
     scores = {0: owner_score, 1: challenger_score}
     env._score = lambda i, target, tx, ty: scores[i]
@@ -229,6 +231,24 @@ def _arbitrate_test_case(owner_score, challenger_score, owner_bid=0.0,
         env.c04_breach[(0, tid)] = env.t
     handoffs, conflicts = env._arbitrate()
     return env, tid, handoffs, conflicts
+
+
+def test_direct_rl_arbitration_uses_policy_choice_after_c04_gate():
+    env, tid, handoffs, conflicts = _arbitrate_test_case(
+        owner_score=1000.0, challenger_score=-1000.0,
+        owner_bid=-1.0, challenger_bid=1.0, direct_rl=True)
+    assert env.responsibility[tid] == 1
+    assert handoffs[0]["to"] == 1
+    assert conflicts[0]["arbitration_mode"] == "rl_direct"
+
+    # A candidate rejected by C04 cannot win even with a larger RL score.
+    env, tid, handoffs, conflicts = _arbitrate_test_case(
+        owner_score=0.0, challenger_score=0.0,
+        owner_bid=-1.0, challenger_bid=1.0, owner_gate=False,
+        stale_breach=True, direct_rl=True)
+    assert env.responsibility[tid] == 1
+    assert handoffs[0]["to"] == 1
+    assert conflicts == []
 
 
 def test_rl_bid_adjusts_close_conflict_but_not_large_quality_gap():

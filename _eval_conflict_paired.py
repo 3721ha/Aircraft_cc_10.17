@@ -121,12 +121,14 @@ def _preflight_output_path(output_path: Path | None) -> None:
 
 
 def run(controller, checkpoint: str | None, k_red: int, seed: int,
-        cfg: DetectSimConfig, conflict_probe: bool = False) -> dict:
+        cfg: DetectSimConfig, conflict_probe: bool = False,
+        direct_rl_arbitration: bool = False) -> dict:
     env = DetectEnv(cfg)
     shield = DetectQPShield(env.cfg)
     policy = None
     if checkpoint:
         policy = DetectMAPPOPolicy(env, shield, seed=0)
+        policy.config.direct_rl_arbitration = direct_rl_arbitration
         policy.load(checkpoint)
         policy._conflict_rng = random.Random(int(seed) + 0xC0F11C7)
         policy._conflict_probe_rng = random.Random(int(seed) ^ 0x5A17)
@@ -231,7 +233,9 @@ def run(controller, checkpoint: str | None, k_red: int, seed: int,
             hysteresis = float(event.get("hysteresis", 0.0))
             if scores and adjusted:
                 raw_winner = _winner(scores, owner, hysteresis)
-                adjusted_winner = _winner(adjusted, owner, hysteresis)
+                direct_event = event.get("arbitration_mode") == "rl_direct"
+                adjusted_winner = (int(event["winner"]) if direct_event else
+                                   _winner(adjusted, owner, hysteresis))
                 changed = int(raw_winner != adjusted_winner)
                 bid_changed_winner += changed
                 if probe_event:
@@ -249,6 +253,7 @@ def run(controller, checkpoint: str | None, k_red: int, seed: int,
                         "adjusted_scores": {str(i): float(adjusted.get(
                             i, adjusted.get(str(i), 0.0)))
                                             for i in candidates},
+                        "arbitration_mode": event.get("arbitration_mode"),
                         "previous_owner": owner,
                         "hysteresis": hysteresis,
                     })
@@ -266,6 +271,7 @@ def run(controller, checkpoint: str | None, k_red: int, seed: int,
         "violations": violations,
         "conflicts": conflicts,
         "bid_changed_winner": bid_changed_winner,
+        "rl_direct_arbitration": direct_rl_arbitration,
         "conflict_probe": {
             "enabled": bool(conflict_probe),
             "exposure_steps": probe_exposure_steps,
@@ -303,6 +309,9 @@ def main() -> None:
     ap.add_argument(
         "--conflict-probe", action="store_true",
         help="force paired legal local-track requests for a separate diagnostic")
+    ap.add_argument(
+        "--direct-rl-arbitration", action="store_true",
+        help="let the RL policy directly select among C04-feasible candidates")
     ap.add_argument(
         "--verify-heur-repro", action="store_true",
         help="run HEUR twice per seed and require exact metric agreement")
@@ -347,13 +356,15 @@ def main() -> None:
         task_config=cfg,
         algorithm_config={
             "checkpoint_saved_config": checkpoint_config,
-            "evaluation_policy_config": asdict(DetectMAPPOConfig()),
+            "evaluation_policy_config": asdict(DetectMAPPOConfig(
+                direct_rl_arbitration=args.direct_rl_arbitration)),
         } if args.checkpoint else None,
         runtime_parameters={
             "k": args.k,
             "seeds": seeds,
             "mode": mode,
             "conflict_probe": args.conflict_probe,
+            "direct_rl_arbitration": args.direct_rl_arbitration,
             "effective_overrides": {
                 "conflict_exposure_prob": 1.0 if args.conflict_probe else None,
             },
@@ -400,11 +411,14 @@ def main() -> None:
     elif args.conflict_probe:
         for seed in seeds:
             rows.append(run(None, str(evaluation_checkpoint_path), args.k, seed, cfg,
-                            conflict_probe=True))
+                            conflict_probe=True,
+                            direct_rl_arbitration=args.direct_rl_arbitration))
     else:
         for seed in seeds:
             rows.append({"heur": run(heur, None, args.k, seed, cfg),
-                         "rl": run(None, str(evaluation_checkpoint_path), args.k, seed, cfg)})
+                         "rl": run(None, str(evaluation_checkpoint_path), args.k,
+                                   seed, cfg,
+                                   direct_rl_arbitration=args.direct_rl_arbitration)})
     if checkpoint_path:
         before_hash = run_record["inputs"][0]["sha256"]
         after_hash = artifact_record(
@@ -431,6 +445,7 @@ def main() -> None:
                "age_std_track": cfg.AGE_STD_TRACK,
                "arb_bid_weight": cfg.ARB_BID_WEIGHT,
                "arb_hysteresis": cfg.ARB_HYSTERESIS,
+               "direct_rl_arbitration": args.direct_rl_arbitration,
                "task_config": run_record["task_config"],
                "task_config_sha256": run_record["task_config_sha256"],
                "provenance": {"run_id": run_record["run_id"],
