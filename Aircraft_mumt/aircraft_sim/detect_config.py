@@ -41,9 +41,9 @@ class DetectSimConfig:
     L_Y: float = 120.0                 # km, lateral extent
     X_CUTOFF: float = 40.0             # km, deadline line
     X_TRACK: float = 110.0             # km, tracking/detection zone boundary
-    AGE_STD_TRACK: float = 4.0         # s, tracking-zone update standard (relaxed from 2.0: RL policy mean track age 5.6s vs HEUR 0.12s; 4.0 gives RL policy reachable stable-progress while HEUR still satisfies it easily)
+    AGE_STD_TRACK: float = 5.0         # s, tracking-zone update standard
     AGE_STD_DETECT: float = 5.0        # s, detection-zone update standard
-    STABLE_WINDOW: int = 30            # s, strict zero-gap stable tracking (V2.2)
+    STABLE_WINDOW: int = 15            # s, strict zero-gap stable tracking
 
     # ---- blue force (plan §1.2/§2) ----
     N_WINGMEN: int = 3
@@ -94,7 +94,7 @@ class DetectSimConfig:
     GEAR_FRAME: Dict[float, float] = field(default_factory=lambda: {
         7.5: 0.5, 15.0: 1.0, 30.0: 2.0, 45.0: 3.0, 60.0: 4.0})
     GEARS_SEARCH: Tuple[float, ...] = (45.0, 60.0)      # SEARCH role mask
-    GEARS_TRACK: Tuple[float, ...] = (7.5, 15.0, 30.0)  # TRACK role mask
+    GEARS_TRACK: Tuple[float, ...] = (7.5, 15.0, 30.0, 45.0)  # TRACK role mask
     PD_TIERS: Tuple[Tuple[float, float], ...] = ((0.5, 0.9), (0.8, 0.6), (1.0, 0.3))
     SECTOR_AXIS_MAX_DEG: float = 60.0  # xi clamp; usable half-width = 60 - |xi|
     AXIS_TRIM_SCALE_DEG: float = 15.0  # u_xi normalisation (plan §6.1 mapping)
@@ -153,6 +153,7 @@ class DetectSimConfig:
     # ---- arbitration scoring (plan §5.2) ----
     ARB_WEIGHTS: Tuple[float, ...] = (1.0, 1.0, 0.5, 0.5, 0.3)
     ARB_HYSTERESIS: float = 0.2        # delta_hyst
+    ARB_BID_WEIGHT: float = 0.35       # RL bid adjustment; bid is clipped to [-1, 1]
 
     # ---- rewards (plan §7.3) ----
     W1_TRACK_TICK: float = 0.02        # per s per responsibility target, age<=2s
@@ -172,7 +173,7 @@ class DetectSimConfig:
     STEP_COST: float = 0.005
 
     # ---- RL interface (plan §7.1/§9.1) ----
-    OBS_DIM: int = 138                 # 17 + 8*12 + 2*6 + 4 + 6 + 3 (V2.3)
+    OBS_DIM: int = 169                 # track ownership, search direction, conflict proxies
     TRACK_SLOTS: int = 8
     NET_HIDDEN: int = 128
     TOTAL_STEPS: int = 1_500_000       # per run

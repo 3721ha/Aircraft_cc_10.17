@@ -58,9 +58,12 @@ def test_s02_head_on_triggers_continuous_qp():
         w.v = 0.24
         w.tracks.slots = [None] * len(w.tracks.slots)
     env.manned.x, env.manned.y = 15.0, 60.0
-    nom = {0: DetectAction(0.0, 0.0, 0.0), 1: DetectAction(0.0, 0.0, 0.0),
-           2: DetectAction(0.0, 0.0, 0.0)}
+    nom = {0: DetectAction(0.0, 0.0, 0.0, arbitration_bid=0.7),
+           1: DetectAction(0.0, 0.0, 0.0, arbitration_bid=-0.4),
+           2: DetectAction(0.0, 0.0, 0.0, arbitration_bid=0.2)}
     safe, inter = shield.filter(env, nom)
+    assert {i: action.arbitration_bid for i, action in safe.items()} == {
+        i: action.arbitration_bid for i, action in nom.items()}
     kinds = {it.kind for it in inter}
     assert kinds == {"continuous_qp"}
     assert {it.uid for it in inter} <= {0, 1}
@@ -73,6 +76,18 @@ def test_s02_head_on_triggers_continuous_qp():
             p.append(shield._predict((x, y, psi, v), a.u_psi, a.u_v, 3))
         return math.hypot(p[0][0] - p[1][0], p[0][1] - p[1][1])
     assert min_sep(safe) > min_sep(nom)
+
+
+def test_shield_preserves_and_clips_per_slot_bids():
+    env = _env()
+    shield = DetectQPShield(env.cfg)
+    bids = (1.4, -1.3, 0.75, -0.5, 0.0, 0.0, 0.0, 0.0)
+    nominal = {i: DetectAction(arbitration_bid=0.2,
+                               arbitration_bids=bids)
+               for i in range(env.cfg.N_WINGMEN)}
+    safe, _ = shield.filter(env, nominal)
+    expected = (1.0, -1.0, 0.75, -0.5, 0.0, 0.0, 0.0, 0.0)
+    assert all(action.arbitration_bids == expected for action in safe.values())
 
 
 def test_s04_d_eff_breakaway_when_track_coarse():
@@ -185,9 +200,12 @@ def test_geometry_fallback_keeps_discrete_policy_heads(monkeypatch):
                                last_hit_t=env.t, first_hit_t=env.t - 5)
     env.manned.x, env.manned.y = 15.0, 60.0
     nominal = {
-        0: DetectAction(0.2, -0.3, 0.4, role="TRACK", gear=15.0, pointer=1),
-        1: DetectAction(-0.1, 0.2, -0.2, role="SEARCH", gear=60.0, pointer=0),
-        2: DetectAction(0.0, 0.0, 0.0, role="TRACK", gear=7.5, pointer=2),
+        0: DetectAction(0.2, -0.3, 0.4, role="TRACK", gear=15.0, pointer=1,
+                        arbitration_bid=0.6),
+        1: DetectAction(-0.1, 0.2, -0.2, role="SEARCH", gear=60.0, pointer=0,
+                        arbitration_bid=-0.3),
+        2: DetectAction(0.0, 0.0, 0.0, role="TRACK", gear=7.5, pointer=2,
+                        arbitration_bid=0.1),
     }
 
     def failed_minimize(*args, **kwargs):
@@ -205,5 +223,6 @@ def test_geometry_fallback_keeps_discrete_policy_heads(monkeypatch):
         assert safe[i].role == nominal[i].role
         assert safe[i].gear == nominal[i].gear
         assert safe[i].pointer == nominal[i].pointer
+        assert safe[i].arbitration_bid == nominal[i].arbitration_bid
         assert -1.0 <= safe[i].u_psi <= 1.0
         assert -1.0 <= safe[i].u_v <= 1.0

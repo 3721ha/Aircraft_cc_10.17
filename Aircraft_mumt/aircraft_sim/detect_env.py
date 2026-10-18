@@ -41,7 +41,7 @@ import numpy as np
 
 from .detect_config import (A_MACH_KMS, DetectSimConfig, ZONE_DETECTION,
                             ZONE_TRACKING, ma_to_kms)
-from .detect_models import DetectAction, DetectRole
+from .detect_models import DETECT_BID_SLOTS, DetectAction, DetectRole
 from .detect_rules import DetectRuleMonitor
 from .models import StepResult
 from .radar import RadarState, wrap_pi
@@ -79,6 +79,9 @@ class BlueWingman:
     requests: List[int] = field(default_factory=list)
     pointer_target: Optional[int] = None
     arbitration_bid: float = 0.0
+    arbitration_bids: Optional[Tuple[float, ...]] = None
+    bid_slot_targets: Tuple[Optional[int], ...] = field(
+        default_factory=lambda: (None,) * DETECT_BID_SLOTS)
 
     def pos(self) -> Tuple[float, float]:
         return self.x, self.y
@@ -132,7 +135,7 @@ class DetectEnv:
     def reset(self, scenario: Optional[dict] = None) -> Dict[int, dict]:
         scenario = scenario or {}
         cfg = self.cfg
-        if any(k in scenario for k in ("k_red", "mar", "mor", "handoff_min_interval", "uplink_loss_p", "stable_window")):
+        if any(k in scenario for k in ("k_red", "mar", "mor", "handoff_min_interval", "uplink_loss_p")):
             overrides = {}
             if "k_red" in scenario:
                 overrides["K_RED"] = int(scenario["k_red"])
@@ -147,9 +150,6 @@ class DetectEnv:
             if "w8_scale" in scenario:
                 # gate-6 penalty curriculum (TRAINING ONLY; eval never passes it)
                 overrides["W8_SCALE"] = float(scenario["w8_scale"])
-            if "stable_window" in scenario:
-                # STABLE_WINDOW curriculum (TRAINING ONLY; eval never passes it)
-                overrides["STABLE_WINDOW"] = int(scenario["stable_window"])
             cfg = replace(cfg, **overrides)
             self.cfg, self.monitor = cfg, DetectRuleMonitor(cfg)
         self.rng = random.Random(scenario.get("seed", cfg.seed))
@@ -177,11 +177,19 @@ class DetectEnv:
         self.last_handoff_t: Dict[int, float] = {}
         self.c04_breach: Dict[Tuple[int, int], float] = {}
         self.stable_progress: Dict[int, int] = {}
+        # Highest stable-window milestone already paid for each target.
+        # Levels 1 and 2 correspond to the first and second thirds of the
+        # stable window; level 0 means no milestone has fired yet.  Keep the
+        # level across temporary progress resets so an aircraft cannot farm a
+        # milestone by repeatedly entering/leaving the tracking zone.  The
+        # entry is removed when the target is judged (see _update_verdicts).
+        self.milestone_reached: Dict[int, int] = {}
         self.judged: Dict[int, bool] = {a.uid: False for a in self.reds.agents}
         self.m03_stall: Dict[Tuple[int, int], float] = {}
         self.metrics = {"apparent_mor": 0, "hidden_mor": 0,
                         "apparent_mar": 0, "hidden_mar": 0,
                         "handoffs": 0, "judged": 0}
+        self.last_request_outcomes: List[dict] = []
         self.terminal: Optional[str] = None
         return self.observe()
 
@@ -197,6 +205,10 @@ class DetectEnv:
             raw[i] = a
             a = a.clipped()
             w.arbitration_bid = a.arbitration_bid
+            w.arbitration_bids = a.arbitration_bids
+            w.bid_slot_targets = tuple(
+                track.target_id if track is not None else None
+                for track in w.tracks.slots)
             w.role_changed = a.role != w.role
             if w.role_changed:
                 w.role_age_prev = w.role_age
@@ -294,16 +306,57 @@ class DetectEnv:
     # ------------------------------------------------------------------
     # responsibility arbitration (machine-speed channel, delay = 0; §5.2)
     # ------------------------------------------------------------------
-    def _gate_ok(self, i: int, tx: float, ty: float) -> bool:
-        """C04 capability gate: in range and inside usable sector half-width."""
+    def _gate_diagnostics(self, i: int, tx: float, ty: float) -> dict:
+        """Return the C04 geometry margins for diagnostics and gate checks."""
         w = self.wingmen[i]
         d = math.hypot(tx - w.x, ty - w.y)
-        if d > self.cfg.C04_RANGE:
-            return False
         bearing = math.atan2(ty - w.y, tx - w.x)
         off = math.degrees(abs(wrap_pi(bearing - (w.psi + math.radians(w.radar.axis_deg)))))
         usable = min(w.radar.gear, self.cfg.SECTOR_AXIS_MAX_DEG - abs(w.radar.axis_deg))
-        return off <= usable
+        range_margin = self.cfg.C04_RANGE - d
+        sector_margin = usable - off
+        if range_margin < 0.0 and sector_margin < 0.0:
+            failure_mode = "range_and_sector"
+        elif range_margin < 0.0:
+            failure_mode = "range"
+        elif sector_margin < 0.0:
+            failure_mode = "sector"
+        else:
+            failure_mode = "pass"
+        return {
+            "distance_km": d,
+            "bearing_offset_deg": off,
+            "usable_half_width_deg": usable,
+            "range_margin_km": range_margin,
+            "sector_margin_deg": sector_margin,
+            "failure_mode": failure_mode,
+        }
+
+    def _gate_ok(self, i: int, tx: float, ty: float) -> bool:
+        """C04 capability gate: in range and inside usable sector half-width."""
+        geometry = self._gate_diagnostics(i, tx, ty)
+        return (geometry["range_margin_km"] >= 0.0
+                and geometry["sector_margin_deg"] >= 0.0)
+
+    def _request_pre_gate_diagnostics(
+        self, actions: Dict[int, DetectAction],
+    ) -> Dict[Tuple[int, int], dict]:
+        """Estimate request geometry from each requester's local track pre-step."""
+        diagnostics = {}
+        for i, w in enumerate(self.wingmen):
+            action = actions.get(i, DetectAction()).clipped()
+            if (action.role != DetectRole.TRACK or action.pointer <= 0
+                    or w.link_degraded):
+                continue
+            slot = action.pointer - 1
+            if not 0 <= slot < len(w.tracks.slots):
+                continue
+            track = w.tracks.slots[slot]
+            if track is None:
+                continue
+            tx, ty = track.extrapolate(self.t)
+            diagnostics[(i, track.target_id)] = self._gate_diagnostics(i, tx, ty)
+        return diagnostics
 
     def _score(self, i: int, tid: int, tx: float, ty: float) -> float:
         """S_i(j) = wq*Q + wg*G - wl*L - wm*M + h*1[owner]  (plan §5.2)."""
@@ -329,6 +382,7 @@ class DetectEnv:
         cfg = self.cfg
         events: List[dict] = []
         conflicts: List[dict] = []
+        request_outcomes: List[dict] = []
         red_pos = {a.uid: (a.x, a.y) for a in self.reds.agents}
 
         # release judged targets
@@ -349,28 +403,79 @@ class DetectEnv:
 
         for tid in sorted(candidates_tids):
             if tid not in red_pos:
+                for requester in requested.get(tid, []):
+                    request_outcomes.append({
+                        "target_id": tid, "requester": requester,
+                        "c04_gate_ok": False, "candidate": False,
+                        "winner": None, "new_assignment": False,
+                        "reason": "target_missing",
+                    })
                 continue
             tx, ty = red_pos[tid]
             owner = self.responsibility.get(tid)
             pool = set(requested.get(tid, []))
             if owner is not None:
                 pool.add(owner)
-            pool = {i for i in pool if self._gate_ok(i, tx, ty)}
+            gate_ok = {i: self._gate_ok(i, tx, ty) for i in pool}
+            gate_geometry = {
+                i: self._gate_diagnostics(i, tx, ty) for i in pool
+            }
+            pool = {i for i in pool if gate_ok[i]}
             if not pool:
+                for requester in requested.get(tid, []):
+                    request_outcomes.append({
+                        "target_id": tid, "requester": requester,
+                        "c04_gate_ok": bool(gate_ok.get(requester, False)),
+                        "c04_geometry": gate_geometry.get(requester),
+                        "candidate": False, "winner": None,
+                        "new_assignment": False,
+                        "reason": "c04_rejected",
+                    })
                 continue
+            scores = {i: self._score(i, tid, tx, ty) for i in pool}
+            bid_slots = {}
+            bids = {}
+            for i in pool:
+                w = self.wingmen[i]
+                if w.arbitration_bids is None:
+                    # Legacy policies expose one bid for every contested target.
+                    bids[i] = w.arbitration_bid
+                    slot = next((slot for slot, mapped_tid in
+                                 enumerate(w.bid_slot_targets)
+                                 if mapped_tid == tid), None)
+                else:
+                    slot = next((slot for slot, mapped_tid in
+                                 enumerate(w.bid_slot_targets)
+                                 if mapped_tid == tid), None)
+                    # A vector bid is meaningful only for a track that was
+                    # present when the action was chosen.
+                    bids[i] = (w.arbitration_bids[slot]
+                               if slot is not None else 0.0)
+                bid_slots[i] = slot
+            adjusted_scores = {
+                i: scores[i] + cfg.ARB_BID_WEIGHT * bids[i] for i in pool
+            }
+            # The learned bid adjusts quality; the incumbent remains selected
+            # unless a challenger clears the adjusted-score hysteresis margin.
             best = max(pool, key=lambda i: (
-                self.wingmen[i].arbitration_bid,
-                i == owner,
-                -i,
-            ))
+                adjusted_scores[i], i == owner, -i))
+            if (owner in pool and best != owner
+                    and adjusted_scores[best]
+                    <= adjusted_scores[owner] + cfg.ARB_HYSTERESIS):
+                best = owner
             if len(pool) > 1:
                 conflicts.append({
                     "tid": tid,
                     "candidates": sorted(pool),
                     "winner": best,
                     "previous_owner": owner,
-                    "bids": {i: self.wingmen[i].arbitration_bid
-                             for i in sorted(pool)},
+                    "scores": {i: scores[i] for i in sorted(pool)},
+                    "adjusted_scores": {
+                        i: adjusted_scores[i] for i in sorted(pool)},
+                    "bids": {i: bids[i] for i in sorted(pool)},
+                    "bid_slots": {i: bid_slots[i] for i in sorted(pool)},
+                    "bid_weight": cfg.ARB_BID_WEIGHT,
+                    "hysteresis": cfg.ARB_HYSTERESIS,
                 })
             if owner is None:
                 if best in requested.get(tid, []):
@@ -378,7 +483,10 @@ class DetectEnv:
                     self.wingmen[best].owned.add(tid)
                     self.last_handoff_t[tid] = self.t
             elif best != owner:
-                exempt = (owner, tid) in self.c04_breach     # V2.4 C04 exemption
+                # A stale breach marker cannot exempt a handoff after the
+                # incumbent has returned to C04-compliant coverage.
+                exempt = ((owner, tid) in self.c04_breach
+                          and not gate_ok.get(owner, True))
                 self.wingmen[owner].owned.discard(tid)
                 self.wingmen[best].owned.add(tid)
                 self.responsibility[tid] = best
@@ -387,7 +495,29 @@ class DetectEnv:
                 self.last_handoff_t[tid] = self.t
                 self.metrics["handoffs"] += 1
                 events.append({"tid": tid, "from": owner, "to": best, "exempt": exempt})
-        # C04 breach timers (all owned pairs)
+            owner_after = self.responsibility.get(tid)
+            for requester in requested.get(tid, []):
+                request_outcomes.append({
+                    "target_id": tid, "requester": requester,
+                    "c04_gate_ok": bool(gate_ok.get(requester, False)),
+                    "c04_geometry": gate_geometry.get(requester),
+                    "candidate": requester in pool, "winner": best,
+                    "new_assignment": owner is None and owner_after == requester,
+                    "reason": ("selected" if best == requester else
+                               "lost_arbitration" if requester in pool else
+                               "c04_rejected"),
+                })
+        # Keep breach timers through arbitration so they can justify an exempt
+        # C04 handoff, then discard timers for former owners and released targets.
+        active_pairs = {
+            (owner, tid) for tid, owner in self.responsibility.items()
+            if not self.judged.get(tid, False)
+        }
+        for pair in list(self.c04_breach):
+            if pair not in active_pairs:
+                self.c04_breach.pop(pair, None)
+
+        # C04 breach timers for currently owned pairs
         for tid, owner in self.responsibility.items():
             if tid not in red_pos:
                 continue
@@ -400,14 +530,23 @@ class DetectEnv:
         # C05 flag: any responsibility change attempted while degraded
         for i, w in enumerate(self.wingmen):
             w.handoff_attempted = bool(w.requests) and w.link_degraded
+        self.last_request_outcomes = request_outcomes
         return events, conflicts
 
     # ------------------------------------------------------------------
     # verdicts & link
     # ------------------------------------------------------------------
-    def _update_verdicts(self) -> List[int]:
+    def _update_verdicts(self) -> Tuple[List[int], List[Tuple[int, int]]]:
+        """Advance stable-window verdicts and emit one-shot milestones.
+
+        ``newly_judged`` contains targets that completed the full window.
+        ``milestone_hits`` contains ``(target_id, level)`` pairs for the
+        first and second thirds crossed this step.  The latter gives PPO a
+        denser W3 signal while preserving the original full-window verdict.
+        """
         cfg = self.cfg
         newly_judged: List[int] = []
+        milestone_hits: List[Tuple[int, int]] = []
         red_by_uid = {a.uid: a for a in self.reds.agents}
         for tid, owner in self.responsibility.items():
             a = red_by_uid.get(tid)
@@ -418,6 +557,21 @@ class DetectEnv:
             ok = in_zone and tr is not None and tr.age(self.t) < cfg.AGE_STD_TRACK
             prev = self.stable_progress.get(tid, 0)
             self.stable_progress[tid] = prev + 1 if ok else 0   # D3: zone exit resets
+            # Pay the first two thirds once per target.  ``max(1, ...)``
+            # keeps curriculum/debug windows shorter than three steps well
+            # defined while leaving the normal 15 s window at 5/10 steps.
+            first_milestone = max(1, cfg.STABLE_WINDOW // 3)
+            second_milestone = max(first_milestone + 1,
+                                   (cfg.STABLE_WINDOW * 2) // 3)
+            level = self.milestone_reached.get(tid, 0)
+            progress = self.stable_progress[tid]
+            if level < 1 and progress >= first_milestone:
+                self.milestone_reached[tid] = 1
+                milestone_hits.append((tid, 1))
+                level = 1
+            if level < 2 and progress >= second_milestone:
+                self.milestone_reached[tid] = 2
+                milestone_hits.append((tid, 2))
             key = (owner, tid)
             if self.stable_progress[tid] > prev:
                 self.m03_stall.pop(key, None)
@@ -427,11 +581,16 @@ class DetectEnv:
                 self.judged[tid] = True
                 self.metrics["judged"] += 1
                 newly_judged.append(tid)
+                # A judged target leaves the active stable-window ledger.
+                # The completion reward is represented by ``newly_judged``
+                # in _reward, so clearing here cannot lose that payment.
+                self.stable_progress[tid] = 0
+                self.milestone_reached.pop(tid, None)
         # stall timers for owned unjudged targets outside zone too
         for tid, owner in self.responsibility.items():
             if not self.judged[tid] and (owner, tid) not in self.m03_stall:
                 self.m03_stall[(owner, tid)] = 0.0
-        return newly_judged
+        return newly_judged, milestone_hits
 
     def _step_link(self) -> None:
         cfg = self.cfg
@@ -443,19 +602,36 @@ class DetectEnv:
     # ------------------------------------------------------------------
     # truth / reward / termination
     # ------------------------------------------------------------------
+    def _coverage_state(self, w: BlueWingman) -> float:
+        """Return the rule's worst age over cells that have become reachable."""
+        if not len(w.last_scan):
+            return 0.0
+        reachable = ~np.isnan(w.cell_reach_since)
+        if not reachable.any():
+            return 0.0
+
+        base = np.maximum(w.last_scan[reachable], w.cell_reach_since[reachable])
+        return float(self.t - base.min())
+
+    def _search_direction(self, w: BlueWingman) -> Tuple[float, float]:
+        """Encode the teacher's top-decile stale-cell target in local axes."""
+        cells = self._cell_centres[w.subzone]
+        stale = self.t - w.last_scan
+        k = max(1, len(cells) // 10)
+        idx = stale.argsort()[-k:]
+        centroid = cells[idx].mean(axis=0)
+        dx, dy = centroid - np.asarray(w.pos())
+        if math.hypot(float(dx), float(dy)) <= 1e-9:
+            return 0.0, 0.0
+        delta = (math.atan2(float(dy), float(dx)) - w.psi + math.pi) \
+            % (2.0 * math.pi) - math.pi
+        return math.cos(delta), math.sin(delta)
+
     def _truth(self, raw: Dict[int, DetectAction]) -> dict:
         cfg = self.cfg
         blue = []
         for w in self.wingmen:
-            # C02 (V2.7): worst coverage age over REACHABLE cells only;
-            # age counts from max(last_scan, first-reachable time)
-            if len(w.last_scan):
-                base = np.maximum(w.last_scan,
-                                  np.nan_to_num(w.cell_reach_since, nan=-1e9))
-                reach = ~np.isnan(w.cell_reach_since)
-                cov_age = float(self.t - base[reach].min()) if reach.any() else 0.0
-            else:
-                cov_age = 0.0
+            cov_age = self._coverage_state(w)
             area = sum(a for a, _ in w.e03_window)
             dist = sum(d for _, d in w.e03_window)
             blue.append(dict(
@@ -485,7 +661,8 @@ class DetectEnv:
                     c04_breach=self.c04_breach, m03_stall=self.m03_stall,
                     raw_actions=raw)
 
-    def _reward(self, report, newly_judged: List[int], handoffs: List[dict]) -> float:
+    def _reward(self, report, newly_judged: List[int], handoffs: List[dict],
+                milestone_hits: Optional[List[Tuple[int, int]]] = None) -> float:
         cfg = self.cfg
         r = 0.0
         red_by_uid = {a.uid: a for a in self.reds.agents}
@@ -505,7 +682,11 @@ class DetectEnv:
                 elif zone == ZONE_DETECTION and y0 <= a.y < y1 \
                         and tr.age(self.t) < cfg.AGE_STD_DETECT:
                     r += cfg.W2_DETECT_TICK
-        r += cfg.W3_STABLE * len(newly_judged)
+        # Three equal W3 payments: the first two at stable-window milestones,
+        # and the final third when the target is judged.  Keep the argument
+        # optional for compatibility with callers that only supply verdicts.
+        n_milestones = len(milestone_hits or [])
+        r += (cfg.W3_STABLE / 3.0) * (n_milestones + len(newly_judged))
         # w5/w6 approach cost, truth per pair, wingmen only (V2.6: the scripted
         # manned node is out of the approach-cost ledger -- uncontrollable by
         # the policy, its penalty would be pure reward noise)
@@ -553,6 +734,7 @@ class DetectEnv:
 
     # ------------------------------------------------------------------
     def step(self, actions: Dict[int, DetectAction]) -> StepResult:
+        pre_request_geometry = self._request_pre_gate_diagnostics(actions)
         self.t += self.cfg.dt
         self.step_count += 1
         raw = self._apply_controls(actions)
@@ -560,21 +742,26 @@ class DetectEnv:
         self.reds.step(self.t, self.cfg.dt)
         self._sense()
         handoffs, arbitration = self._arbitrate()
-        newly_judged = self._update_verdicts()
+        for outcome in self.last_request_outcomes:
+            key = (outcome["requester"], outcome["target_id"])
+            outcome["pre_step_geometry"] = pre_request_geometry.get(key)
+        newly_judged, milestone_hits = self._update_verdicts()
         self._step_link()
         self._check_terminal()
         truth = self._truth(raw)
         report = self.monitor.evaluate_truth(truth)
-        reward = self._reward(report, newly_judged, handoffs)
+        reward = self._reward(report, newly_judged, handoffs, milestone_hits)
         self._bookkeep()
         info = {"truth": truth, "actions": raw, "report": report,
                 "terminal": self.terminal, "handoffs": handoffs,
                 "arbitration": arbitration,
+                "request_outcomes": list(self.last_request_outcomes),
+                "milestone_hits": milestone_hits,
                 "metrics": dict(self.metrics)}
         return StepResult(self.observe(), reward, self.terminal is not None, info)
 
     # ------------------------------------------------------------------
-    # observation (structured; 138-dim vector lives in detect_encoder)
+    # observation (structured; encoded vector lives in detect_encoder)
     # ------------------------------------------------------------------
     def _observation_for(self, i: int) -> dict:
         cfg = self.cfg
@@ -608,10 +795,13 @@ class DetectEnv:
                 tr = o.tracks.track_of(tid)
                 if tr is not None:
                     mission["pointers"][tid] = tr.extrapolate(self.t)
+        coverage_age = self._coverage_state(w)
+        search_direction = self._search_direction(w)
         return {"self": w, "teammates": teammates,
                 "manned": {"dx": m.x - w.x, "dy": m.y - w.y, "v": m.v,
                            "link": 0.0 if w.link_degraded else 1.0},
-                "coverage_max_age": self.t - float(w.last_scan.min()),
+                "coverage_max_age": coverage_age,
+                "search_direction": search_direction,
                 "mission": mission,
                 "tracks": w.tracks.features(w.pos(), self.t)}
 

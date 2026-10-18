@@ -7,11 +7,15 @@ rad for headings.
 """
 from dataclasses import dataclass
 from enum import Enum
+from typing import Optional, Tuple
+
+
+DETECT_BID_SLOTS = 8
 
 
 class DetectRole(str, Enum):
     SEARCH = "SEARCH"    # 搜索巡逻: wide gears {45, 60}
-    TRACK = "TRACK"      # 责任精跟: narrow gears {7.5, 15, 30}
+    TRACK = "TRACK"      # 责任精跟: gears {7.5, 15, 30, 45}
 
 
 @dataclass
@@ -33,9 +37,16 @@ class DetectAction:
     gear: float = 60.0
     pointer: int = 0
     arbitration_bid: float = 0.0
+    arbitration_bids: Optional[Tuple[float, ...]] = None
 
     def clipped(self) -> "DetectAction":
         c = lambda v: max(-1.0, min(1.0, float(v)))
+        bids = self.arbitration_bids
+        if bids is not None:
+            if len(bids) != DETECT_BID_SLOTS:
+                raise ValueError(
+                    f"arbitration_bids must contain {DETECT_BID_SLOTS} values")
+            bids = tuple(c(v) for v in bids)
         return DetectAction(c(self.u_psi), c(self.u_v), c(self.u_xi),
                             self.role, self.gear, int(self.pointer),
-                            c(self.arbitration_bid))
+                            c(self.arbitration_bid), bids)

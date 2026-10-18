@@ -1,24 +1,25 @@
-"""Observation encoder (151-dim, plan V2.4 §7.1 + CR-MAPPO §B) + action codec (§7.2).
+"""Observation encoder (169-dim, plan V2.4 §7.1 + CR-MAPPO §B) + action codec (§7.2).
 
 Encoding discipline (V1.23, plan §7.1 preamble): circular quantities as
 sin/cos, geometry relative to own ship, zero absolute coordinates.
 
-Block layout (total 151 = 17 + 8*12 + 2*6 + 4 + 6 + 3 + 13):
+Block layout (total 169 = 17 + 8*14 + 2*6 + 4 + 6 + 3 + 2 + 13):
 
     [0:17)    own state: boundary d/40 + inward-normal sin/cos (3),
               sin psi / cos psi (2), V/(0.95 Ma) (1), gear one-hot (5),
               xi/60 (1), role one-hot (2), role_age/T_dwell (1),
               radar on (1), radiate duty window (1, constant 1.0 in V2.4)
-    [17:113)  own track cluster, 8 slots x 12 (track.TrackFile.features);
-              slots with age > AGE_DEGRADE are down-weighted x0.5 here
-    [113:125) teammates x2: dx/R, dy/R, sin psi, cos psi, V/(0.95 Ma),
+    [17:129)  own track cluster, 8 slots x 14: the 12 track features plus
+              own-responsibility and teammate-responsibility flags
+    [129:141) teammates x2: dx/R, dy/R, sin psi, cos psi, V/(0.95 Ma),
               has-pointer flag
-    [125:129) manned: dx/R, dy/R, V/(0.95 Ma), link state
-    [129:135) assignment table: owned/8, subzone one-hot (3),
+    [141:145) manned: dx/R, dy/R, V/(0.95 Ma), link state
+    [145:151) assignment table: owned/8, subzone one-hot (3),
               coverage margin (T_scan_req - t_since)/T_scan_req, table age/2
-    [135:138) area posture: detection-zone est/16, tracking-zone est/16,
+    [151:154) area posture: detection-zone est/16, tracking-zone est/16,
               judged/16
-    [138:151) conflict-regime features: 13 soft proxies for the 13 rule-conflict
+    [154:156) SEARCH target direction in local forward/left axes
+    [156:169) conflict-regime features: 13 soft proxies for the 13 rule-conflict
               pairs (DETECT_CONFLICT_PAIRS).  Each ∈ [0,1]; computed from local
               observations only (own track file, own state, teammate kinematics,
               mission table) — no truth data.  See _conflict_features().
@@ -29,15 +30,17 @@ from typing import Dict, List
 import numpy as np
 
 from .detect_config import A_MACH_KMS, DetectSimConfig
-from .detect_models import DetectAction, DetectRole
+from .detect_models import DETECT_BID_SLOTS, DetectAction, DetectRole
 
 GEAR_ORDER = (7.5, 15.0, 30.0, 45.0, 60.0)
+# Policy slots duplicate 45 degrees so each role has a contiguous legal range.
+POLICY_GEAR_ORDER = (7.5, 15.0, 30.0, 45.0, 45.0, 60.0)
 V_NORM = 0.95 * A_MACH_KMS
 AGE_DOWNWEIGHT = 0.5          # age > 8 s feature scaling (plan §7.1, V1.23)
 
 
 class DetectObservationEncoder:
-    dimension = 151
+    dimension = 169
 
     def __init__(self, cfg: DetectSimConfig):
         self.cfg = cfg
@@ -172,13 +175,19 @@ class DetectObservationEncoder:
                 1.0 if w.role == DetectRole.TRACK else 0.0]
         out += [min(1.0, w.role_age / cfg.T_DWELL), 1.0, 1.0]
 
-        # -- own track cluster (8 x 12) with age>8 s down-weight --
+        # -- own track cluster (8 x 14): track state + responsibility --
         feats = obs["tracks"]
-        for slot in feats:
+        responsibility = obs["mission"]["responsibility"]
+        for slot, track in zip(feats, w.tracks.slots):
             if slot[11] > 0 and slot[5] * cfg.AGE_DROP > cfg.AGE_DEGRADE:
-                out += [v * AGE_DOWNWEIGHT for v in slot]
+                adjusted = list(slot)
+                adjusted[:5] = [v * AGE_DOWNWEIGHT for v in adjusted[:5]]
+                out += adjusted
             else:
                 out += slot
+            owner = responsibility.get(track.target_id) if track is not None else None
+            out += [1.0 if owner == w.idx else 0.0,
+                    1.0 if owner is not None and owner != w.idx else 0.0]
 
         # -- teammates (2 x 6) --
         for k in sorted(obs["teammates"]):
@@ -204,6 +213,9 @@ class DetectObservationEncoder:
         out += [ms["n_detect_est"] / 16.0, ms["n_track_est"] / 16.0,
                 ms["n_judged"] / 16.0]
 
+        # -- SEARCH teacher target direction in local forward/left axes (2) --
+        out += obs["search_direction"]
+
         # -- conflict-regime features (13, CR-MAPPO §B) --
         out += self._conflict_features(obs)
 
@@ -213,7 +225,7 @@ class DetectObservationEncoder:
 
 
 class DetectActionCodec:
-    """Hybrid action codec: continuous 3 + discrete (role 2, gear 5, pointer 9).
+    """Hybrid action codec: continuous 3 + discrete (role 2, gear 6, pointer 9).
 
     P3 consumes this from the policy heads; the env applies interface masking
     (role-gear, link-degraded requests) regardless.
@@ -221,17 +233,32 @@ class DetectActionCodec:
 
     CONT_DIM = 3
     N_ROLE = 2
-    N_GEAR = 5
+    N_GEAR = 6
     N_POINTER = 9
+    N_BID_SLOTS = DETECT_BID_SLOTS
 
-    def to_action(self, cont, role_idx: int, gear_idx: int, pointer_idx: int) -> DetectAction:
+    def to_action(self, cont, role_idx: int, gear_idx: int, pointer_idx: int,
+                  arbitration_bid: float = 0.0,
+                  arbitration_bids=None) -> DetectAction:
         u = [max(-1.0, min(1.0, float(c))) for c in cont[:3]]
         role = DetectRole.SEARCH if int(role_idx) == 0 else DetectRole.TRACK
-        gear = GEAR_ORDER[int(gear_idx) % self.N_GEAR]
+        gear = POLICY_GEAR_ORDER[int(gear_idx) % self.N_GEAR]
         pointer = max(0, min(self.N_POINTER - 1, int(pointer_idx)))
-        return DetectAction(u[0], u[1], u[2], role, gear, pointer)
+        bid = max(-1.0, min(1.0, float(arbitration_bid)))
+        bids = None
+        if arbitration_bids is not None:
+            if len(arbitration_bids) != self.N_BID_SLOTS:
+                raise ValueError(
+                    f"arbitration_bids must contain {self.N_BID_SLOTS} values")
+            bids = tuple(max(-1.0, min(1.0, float(value)))
+                         for value in arbitration_bids)
+        return DetectAction(u[0], u[1], u[2], role, gear, pointer, bid, bids)
 
     def heads(self, action: DetectAction) -> Dict[str, int]:
-        return {"role": 0 if action.role == DetectRole.SEARCH else 1,
-                "gear": GEAR_ORDER.index(action.gear) if action.gear in GEAR_ORDER else 4,
+        role_idx = 0 if action.role == DetectRole.SEARCH else 1
+        legal = (4, 5) if role_idx == 0 else (0, 1, 2, 3)
+        gear_idx = min(legal, key=lambda idx: abs(
+            POLICY_GEAR_ORDER[idx] - action.gear))
+        return {"role": role_idx,
+                "gear": gear_idx,
                 "pointer": max(0, min(self.N_POINTER - 1, action.pointer))}

@@ -26,8 +26,10 @@ blends them into the per-head PPO loss via two scalar coefficients.  All
 shaping potentials are potential-based (Ng 1999) so they provably preserve
 the optimal policy: eval paths never inject them.
 """
-from dataclasses import dataclass
+from copy import deepcopy
+from dataclasses import dataclass, replace
 import math
+import random
 from typing import Dict, List, Sequence, Tuple
 
 import numpy as np
@@ -39,8 +41,13 @@ from .detect_config import DetectSimConfig, ZONE_TRACKING
 from .detect_encoder import DetectObservationEncoder, DetectActionCodec, GEAR_ORDER
 from .detect_models import DetectAction, DetectRole
 
-ACT_DIM = 6        # [u_psi, u_v, u_xi, role, gear, pointer]
+ACT_DIM = 7        # [u_psi, u_v, u_xi, role, gear, pointer, arbitration_bid]
 SQUASH_EPS = 1e-5
+N_CONFLICT_FEATURES = 13
+CONFLICT_RESIDUAL_DIM = 3 + 2 + 6 + 9 + 1
+TRACK_BLOCK_START = 17
+TRACK_FEATURES_PER_SLOT = 14
+TRACK_CANDIDATE_FEATURES = TRACK_FEATURES_PER_SLOT
 
 
 def _atanh_action(action: torch.Tensor) -> torch.Tensor:
@@ -89,28 +96,28 @@ def _gear_masked_logits(gear_logits: torch.Tensor, role_idx: torch.Tensor,
     the role's legal set) never puts -inf on the target logit."""
     mask = torch.full_like(gear_logits, -1e9)
     track = role_idx == 1
-    mask[~track, 3:] = 0.0      # single-expression indexing: in-place
-    mask[track, :3] = 0.0       # (mask[~track][:, 3:] writes to a copy!)
+    mask[~track, 4:] = 0.0      # single-expression indexing: in-place
+    mask[track, :4] = 0.0       # (mask[~track][:, 4:] writes to a copy!)
     if allow_idx is not None:
-        mask[torch.arange(gear_logits.shape[0]), allow_idx.long().clamp(0, 4)] = 0.0
+        mask[torch.arange(gear_logits.shape[0]), allow_idx.long().clamp(0, 5)] = 0.0
     return gear_logits + mask
 
 
 def _encoded_track_mask(obs: torch.Tensor) -> torch.Tensor:
     """Return local track-slot validity from the encoded observation."""
-    if obs.ndim != 2 or obs.shape[1] < 113:
+    if obs.ndim != 2 or obs.shape[1] < 129:
         return torch.ones((obs.shape[0], 8), dtype=torch.bool,
                           device=obs.device)
-    # Track block starts at 17; slot validity is feature 11 of each 12-vector.
-    return obs[:, 17 + 11:113:12] > 1e-6
+    # Track block starts at 17; slot validity is feature 11 of each 14-vector.
+    return obs[:, 17 + 11:129:14] > 1e-6
 
 
 def _encoded_request_mask(obs: torch.Tensor) -> torch.Tensor:
     """Return track slots eligible for a rule-valid responsibility request."""
-    if obs.ndim != 2 or obs.shape[1] < 113:
+    if obs.ndim != 2 or obs.shape[1] < 129:
         return torch.ones((obs.shape[0], 8), dtype=torch.bool,
                           device=obs.device)
-    slots = obs[:, 17:113].reshape(obs.shape[0], 8, 12)
+    slots = obs[:, 17:129].reshape(obs.shape[0], 8, 14)
     populated = slots[:, :, 11] > 1e-6
     # State one-hot order is detected, tentative, confirmed, coast.
     confirmed_or_tentative = (slots[:, :, 8] > 1e-6) | (slots[:, :, 9] > 1e-6)
@@ -162,8 +169,26 @@ def _legal_pointer_targets(obs: torch.Tensor,
     return torch.where(legal, idx, torch.zeros_like(idx))
 
 
+def _grouped_masked_mean(values: torch.Tensor, mask: torch.Tensor,
+                         groups: torch.Tensor) -> torch.Tensor:
+    """Average selected samples within events, then give each event equal weight."""
+    active = mask.to(dtype=torch.bool) & (groups >= 0)
+    if not active.any():
+        return values.sum() * 0.0
+    selected_groups = groups[active]
+    _, inverse = torch.unique(selected_groups, sorted=True,
+                              return_inverse=True)
+    selected_values = values[active]
+    n_groups = int(inverse.max().item()) + 1
+    totals = torch.zeros(n_groups, dtype=values.dtype, device=values.device)
+    counts = torch.zeros_like(totals)
+    totals.scatter_add_(0, inverse, selected_values)
+    counts.scatter_add_(0, inverse, torch.ones_like(selected_values))
+    return (totals / counts.clamp_min(1.0)).mean()
+
+
 class DetectActorCritic(nn.Module):
-    def __init__(self, observation_dim: int = 151, n_agents: int = 3,
+    def __init__(self, observation_dim: int = 169, n_agents: int = 3,
                  hidden: int = 128, initial_log_std: float = -1.2):
         super().__init__()
         self.n_agents = n_agents
@@ -172,34 +197,93 @@ class DetectActorCritic(nn.Module):
             nn.Linear(hidden, hidden), nn.Tanh())
         self.cont_head = nn.Linear(hidden, 3)
         self.role_head = nn.Linear(hidden, 2)
-        self.gear_head = nn.Linear(hidden, 5)
+        self.gear_head = nn.Linear(hidden, 6)
         self.pointer_head = nn.Linear(hidden, 9)
+        self.bid_head = nn.Linear(hidden, 1)
+        self.bid_candidate_head = nn.Sequential(
+            nn.Linear(hidden + TRACK_CANDIDATE_FEATURES, hidden // 2),
+            nn.Tanh(), nn.Linear(hidden // 2, 1))
+        # Keep legacy checkpoints' bid behavior exactly until PPO learns a
+        # candidate-specific correction from arbitration outcomes.
+        nn.init.zeros_(self.bid_candidate_head[-1].weight)
+        nn.init.zeros_(self.bid_candidate_head[-1].bias)
+        # Each local rule-pair proxy can adjust every action family.  Zero
+        # initialization preserves the BC/base policy until PPO finds useful
+        # conflict-conditioned residuals.
+        self.conflict_residual = nn.Linear(
+            N_CONFLICT_FEATURES, CONFLICT_RESIDUAL_DIM, bias=False)
+        nn.init.zeros_(self.conflict_residual.weight)
         self.log_std = nn.Parameter(torch.full((3,), initial_log_std))
+        self.bid_log_std = nn.Parameter(torch.tensor(-1.5))
         self.critic = nn.Sequential(
             nn.Linear(observation_dim * n_agents, hidden), nn.Tanh(),
             nn.Linear(hidden, hidden), nn.Tanh(), nn.Linear(hidden, 1))
 
+    def action_parameters(self, obs: torch.Tensor,
+                          pointer_idx: torch.Tensor | None = None):
+        """Return policy parameters, optionally conditioning bid on its target."""
+        h = self.actor(obs)
+        if obs.shape[-1] >= N_CONFLICT_FEATURES:
+            conflict_features = obs[..., -N_CONFLICT_FEATURES:]
+        else:
+            conflict_features = obs.new_zeros((*obs.shape[:-1],
+                                                N_CONFLICT_FEATURES))
+        residual = self.conflict_residual(conflict_features)
+        i = 0
+        cont_loc = self.cont_head(h) + residual[..., i:i + 3]
+        i += 3
+        role_logits = self.role_head(h) + residual[..., i:i + 2]
+        i += 2
+        gear_logits = self.gear_head(h) + residual[..., i:i + 6]
+        i += 6
+        pointer_logits = self.pointer_head(h) + residual[..., i:i + 9]
+        i += 9
+        # Each bid is conditioned on the track in the corresponding local
+        # slot.  Detaching the shared actor keeps sparse arbitration credit in
+        # the bid branch; the candidate head still learns from slot features.
+        bid_base = self.bid_head(h.detach()) + residual[..., i:i + 1]
+        slots = obs[..., TRACK_BLOCK_START:
+                    TRACK_BLOCK_START + 8 * TRACK_FEATURES_PER_SLOT]
+        slots = slots.reshape(*obs.shape[:-1], 8, TRACK_FEATURES_PER_SLOT)
+        expanded_h = h.detach().unsqueeze(-2).expand(
+            *h.shape[:-1], 8, h.shape[-1])
+        candidate_delta = self.bid_candidate_head(
+            torch.cat((expanded_h, slots), dim=-1)).squeeze(-1)
+        bid_slot_loc = bid_base + candidate_delta
+        if pointer_idx is None:
+            bid_loc = bid_slot_loc
+        else:
+            # Preserve the legacy scalar API for BC/checkpoint diagnostics.
+            # PPO collection and updates use the full eight-slot tensor.
+            pointer_idx = pointer_idx.long().clamp(0, 8)
+            slot_idx = (pointer_idx - 1).clamp(0, 7)
+            selected = bid_slot_loc.gather(
+                -1, slot_idx.unsqueeze(-1))
+            bid_loc = torch.where(
+                (pointer_idx > 0).unsqueeze(-1), selected, bid_base)
+        return cont_loc, role_logits, gear_logits, pointer_logits, bid_loc
+
     def actor_distribution(self, obs: torch.Tensor,
                            role_idx: torch.Tensor | None = None,
                            pointer_idx: torch.Tensor | None = None):
-        h = self.actor(obs)
-        cont = Normal(self.cont_head(h), self.log_std.exp())
-        role = Categorical(logits=self.role_head(h))
-        gear_logits = self.gear_head(h)
+        cont_loc, role_logits, gear_logits, pointer_logits, bid_loc = \
+            self.action_parameters(obs, pointer_idx)
+        cont = Normal(cont_loc, self.log_std.exp())
+        role = Categorical(logits=role_logits)
         if role_idx is not None:
-            # SEARCH(0) -> gears {45,60} = idx {3,4}; TRACK(1) -> idx {0,1,2}
+            # SEARCH(0) -> {45,60} = idx {4,5}; TRACK(1) -> {7.5,15,30,45} = idx {0..3}
             mask = torch.full_like(gear_logits, -1e9)
             track = role_idx == 1
-            mask[~track, 3:] = 0.0
-            mask[track, :3] = 0.0
+            mask[~track, 4:] = 0.0
+            mask[track, :4] = 0.0
             gear_logits = gear_logits + mask
         gear = Categorical(logits=gear_logits)
-        pointer_logits = self.pointer_head(h)
         if role_idx is not None:
             pointer_logits = _pointer_masked_logits(
                 pointer_logits, role_idx, _encoded_request_mask(obs), pointer_idx)
         pointer = Categorical(logits=pointer_logits)
-        return cont, role, gear, pointer
+        bid = Normal(bid_loc, self.bid_log_std.exp())
+        return cont, role, gear, pointer, bid
 
     def value(self, team_obs: torch.Tensor) -> torch.Tensor:
         return self.critic(team_obs).squeeze(-1)
@@ -226,6 +310,7 @@ class DetectMAPPOConfig:
     reward_scale: float = 0.1
     initial_log_std: float = -1.2
     target_kl: float = 0.01            # tightened from 0.02: prevents policy degradation at high-progress states
+    bid_target_kl: float = 0.01        # separate KL budget for sparse arbitration updates
     # -- gate-6 potential-based shaping (TRAINING ONLY; eval untouched) ------
     # F = gamma*Phi(s') - Phi(s), Phi = -kappa * sum over owned tracks of
     # min(age, cap)/cap.  Bridges the 30 s credit chain to w1/w3 (Ng 1999:
@@ -273,6 +358,29 @@ class DetectMAPPOConfig:
     # all responsibility requests.
     cf_global_mix: float = 0.25
     cf_role_coef: float = 0.5
+    # Bid credit compares the sampled bid with a neutral bid on every legal
+    # multi-candidate event.  The margin term keeps a smooth signal when both
+    # bids select the same winner; it is bounded before PPO normalisation.
+    cf_bid_coef: float = 1.0
+    cf_bid_margin_coef: float = 0.25
+    cf_bid_margin_temp: float = 0.25
+    # Targeted arbitration fine-tuning can isolate sparse bid credit from the
+    # shared flight/task heads. The deployed actor still emits the full action.
+    bid_only_ppo: bool = False
+    # Disabled pending a reliable post-action C04 counterfactual.  The current
+    # pre-step local estimate cannot account exactly for the applied axis trim,
+    # denied gear switches, and target motion before arbitration.
+    gear_gate_coef: float = 0.0
+    # Probability of a training-only shared-target request intervention when
+    # two agents independently hold a fresh, C04-feasible local track. The
+    # actor still supplies both roles/gears/bids; only the pointer is replaced
+    # and that pointer sample is excluded from PPO/entropy gradients.
+    conflict_exposure_prob: float = 0.0
+    # Protect the radar-axis trim from noisy global return gradients.  The
+    # reference policy is the loaded BC/checkpoint policy; zero direct PPO
+    # weight keeps u_xi anchored until an explicit experiment enables it.
+    xi_ppo_coef: float = 0.0
+    xi_anchor_coef: float = 1.0
 
 
 class DetectMAPPOPolicy:
@@ -282,39 +390,114 @@ class DetectMAPPOPolicy:
         self.env = env
         self.shield = shield
         self.config = config or DetectMAPPOConfig()
+        self._conflict_rng = random.Random(seed)
+        self._conflict_probe_rng = random.Random(seed ^ 0x5A17)
         self.encoder = DetectObservationEncoder(env.cfg)
         self.codec = DetectActionCodec()
         self.model = DetectActorCritic(
             self.encoder.dimension, env.cfg.N_WINGMEN,
             hidden=self.config.hidden_size,
             initial_log_std=self.config.initial_log_std)
+        self.xi_anchor_model = deepcopy(self.model).eval()
+        for parameter in self.xi_anchor_model.parameters():
+            parameter.requires_grad_(False)
         self.optimizer = torch.optim.Adam(self.model.parameters(),
                                           lr=self.config.learning_rate)
+
+    def _refresh_xi_anchor(self) -> None:
+        self.xi_anchor_model.load_state_dict(self.model.state_dict())
+        self.xi_anchor_model.eval()
+        for parameter in self.xi_anchor_model.parameters():
+            parameter.requires_grad_(False)
+
+    def _xi_anchor_kl(self, obs: torch.Tensor,
+                      current_loc: torch.Tensor | None = None) -> torch.Tensor:
+        """KL(reference u_xi || current u_xi) on a batch of local observations."""
+        if current_loc is None:
+            current_loc = self.model.action_parameters(obs)[0]
+        with torch.no_grad():
+            anchor_loc = self.xi_anchor_model.action_parameters(obs)[0][:, 2]
+            anchor_log_std = self.xi_anchor_model.log_std[2]
+        current_loc_xi = current_loc[:, 2]
+        current_log_std = self.model.log_std[2]
+        anchor_var = torch.exp(2.0 * anchor_log_std)
+        current_var = torch.exp(2.0 * current_log_std)
+        return (current_log_std - anchor_log_std
+                + (anchor_var + (anchor_loc - current_loc_xi).square())
+                / (2.0 * current_var) - 0.5).mean()
 
     # ------------------------------------------------------------------
     @staticmethod
     def encode_action(a: DetectAction) -> List[float]:
         heads = DetectActionCodec().heads(a)
         return [a.u_psi, a.u_v, a.u_xi,
-                float(heads["role"]), float(heads["gear"]), float(heads["pointer"])]
+                float(heads["role"]), float(heads["gear"]),
+                float(heads["pointer"]), float(a.arbitration_bid)]
 
     def _log_prob_entropy(self, obs: torch.Tensor, act: torch.Tensor):
         """Combined log-prob and entropy (used by BC and eval paths only)."""
         role_idx = act[:, 3].long().clamp(0, 1)
         pointer_idx = _legal_pointer_targets(
             obs, role_idx, act[:, 5].long().clamp(0, 8))
-        cont, role, gear, pointer = self.model.actor_distribution(
+        cont, role, gear, pointer, bid = self.model.actor_distribution(
             obs, role_idx, pointer_idx)
         cont_logp = _bounded_log_prob(cont, act[:, :3]).sum(-1)
+        bid_logp = _bounded_log_prob(bid, act[:, 6:7]).sum(-1)
         logp = (cont_logp
                 + role.log_prob(role_idx)
-                + gear.log_prob(act[:, 4].long().clamp(0, 4))
-                + pointer.log_prob(pointer_idx))
+                + gear.log_prob(act[:, 4].long().clamp(0, 5))
+                + pointer.log_prob(pointer_idx)
+                + bid_logp)
         # Exact entropy of a squashed Normal has no closed form; the base
         # entropy is a stable exploration proxy for the PPO/BC diagnostic.
         entropy = (cont.entropy().sum(-1) + role.entropy()
-                   + gear.entropy() + pointer.entropy())
+                   + gear.entropy() + pointer.entropy()
+                   + bid.entropy().sum(-1))
         return logp, entropy
+
+    def condition_exposed_bids(
+        self, encoded: Dict[int, np.ndarray],
+        actions: Dict[int, DetectAction], old_logp: Dict[int, dict],
+        exposure_mask: Sequence[bool],
+    ) -> Dict[int, DetectAction]:
+        """Resample training-exposed bids under their forced pointer labels."""
+        ids = [i for i, exposed in enumerate(exposure_mask)
+               if exposed and i in actions and i in encoded]
+        if not ids:
+            return actions
+        obs_t = torch.tensor(np.asarray([encoded[i] for i in ids]),
+                             dtype=torch.float32)
+        pointer_idx = torch.tensor([actions[i].pointer for i in ids],
+                                   dtype=torch.long)
+        with torch.no_grad():
+            slot_loc = self.model.action_parameters(obs_t)[-1]
+            slot_dist = Normal(slot_loc, self.model.bid_log_std.exp())
+            slot_bid = torch.tanh(slot_dist.sample())
+            slot_logp = _squashed_log_prob(slot_dist, slot_bid)
+            slot_idx = (pointer_idx - 1).clamp(0, 7)
+            legacy_loc = self.model.action_parameters(obs_t, pointer_idx)[-1]
+            legacy_dist = Normal(legacy_loc, self.model.bid_log_std.exp())
+            legacy_bid = torch.tanh(legacy_dist.sample()).squeeze(-1)
+            selected_slot_bid = slot_bid.gather(
+                1, slot_idx.unsqueeze(1)).squeeze(1)
+            selected_slot_logp = slot_logp.gather(
+                1, slot_idx.unsqueeze(1)).squeeze(1)
+            legacy_bid = torch.where(pointer_idx > 0,
+                                     selected_slot_bid, legacy_bid)
+            legacy_logp = torch.where(
+                pointer_idx > 0, selected_slot_logp,
+                _squashed_log_prob(
+                    legacy_dist, legacy_bid.unsqueeze(-1)).sum(-1))
+        for row, i in enumerate(ids):
+            old_bid_logp = old_logp[i]["bid"]
+            actions[i] = replace(
+                actions[i], arbitration_bid=float(legacy_bid[row]),
+                arbitration_bids=tuple(float(v) for v in slot_bid[row]))
+            old_logp[i]["bid"] = float(legacy_logp[row])
+            old_logp[i]["bid_slots"] = [
+                float(v) for v in slot_logp[row]]
+            old_logp[i]["combined"] += float(legacy_logp[row]) - old_bid_logp
+        return actions
 
     def act_with_log_prob(self, observation: dict, deterministic: bool = False):
         actions, logps = self.act_batch({0: observation}, deterministic)
@@ -327,44 +510,73 @@ class DetectMAPPOPolicy:
             np.asarray([self.encoder.encode(observations[i]) for i in ids]),
             dtype=torch.float32)
         with torch.no_grad():
-            h = self.model.actor(obs_t)
-            cont_loc = self.model.cont_head(h)
+            (cont_loc, role_logits, base_gear_logits,
+             pointer_logits, _) = self.model.action_parameters(obs_t)
             cont_dist = Normal(cont_loc, self.model.log_std.exp())
-            role_logits = self.model.role_head(h)
-            pointer_logits = self.model.pointer_head(h)
             if deterministic:
                 cont = torch.tanh(cont_loc)
                 role_idx = role_logits.argmax(-1)
-                gear_logits = _gear_masked_logits(self.model.gear_head(h), role_idx)
+                gear_logits = _gear_masked_logits(base_gear_logits, role_idx)
                 gear_idx = gear_logits.argmax(-1)
             else:
                 cont = torch.tanh(cont_dist.sample())
                 role_idx = Categorical(logits=role_logits).sample()
-                gear_logits = _gear_masked_logits(self.model.gear_head(h), role_idx)
+                gear_logits = _gear_masked_logits(base_gear_logits, role_idx)
                 gear_idx = Categorical(logits=gear_logits).sample()
             pointer_logits = _pointer_masked_logits(
                 pointer_logits, role_idx, _encoded_request_mask(obs_t))
             pointer_dist = Categorical(logits=pointer_logits)
             pointer_idx = (pointer_logits.argmax(-1) if deterministic
                            else pointer_dist.sample())
+            bid_loc = self.model.action_parameters(obs_t)[-1]
+            bid_dist = Normal(bid_loc, self.model.bid_log_std.exp())
+            bid_slots = (torch.tanh(bid_dist.loc) if deterministic
+                         else torch.tanh(bid_dist.sample()))
+            legacy_bid_loc = self.model.action_parameters(
+                obs_t, pointer_idx)[-1]
+            legacy_bid_dist = Normal(
+                legacy_bid_loc, self.model.bid_log_std.exp())
+            legacy_bid = (torch.tanh(legacy_bid_dist.loc).squeeze(-1)
+                          if deterministic else
+                          torch.tanh(legacy_bid_dist.sample()).squeeze(-1))
             # Per-head log-probs stored separately so update() can compute
             # per-head PPO ratios without cross-head contamination (RDAC-MAPPO).
             cont_logp_v  = _squashed_log_prob(cont_dist, cont).sum(-1)
+            cont_dim_logp = _squashed_log_prob(cont_dist, cont)
             role_logp_v  = Categorical(logits=role_logits).log_prob(role_idx)
             gear_logp_v  = Categorical(logits=gear_logits).log_prob(gear_idx)
             ptr_logp_v   = pointer_dist.log_prob(pointer_idx)
-            logp = cont_logp_v + role_logp_v + gear_logp_v + ptr_logp_v
+            bid_slot_logp = _squashed_log_prob(bid_dist, bid_slots)
+            selected_slot = (pointer_idx - 1).clamp(0, 7)
+            selected_bid = bid_slots.gather(
+                1, selected_slot.unsqueeze(1)).squeeze(1)
+            selected_bid_logp = bid_slot_logp.gather(
+                1, selected_slot.unsqueeze(1)).squeeze(1)
+            legacy_bid = torch.where(pointer_idx > 0, selected_bid,
+                                     legacy_bid)
+            bid_logp_v = torch.where(
+                pointer_idx > 0, selected_bid_logp,
+                _squashed_log_prob(
+                    legacy_bid_dist, legacy_bid.unsqueeze(-1)).sum(-1))
+            logp = (cont_logp_v + role_logp_v + gear_logp_v + ptr_logp_v
+                    + bid_logp_v)
         actions, logps = {}, {}
         for r, i in enumerate(ids):
             actions[i] = self.codec.to_action(cont[r].tolist(),
                                               int(role_idx[r]), int(gear_idx[r]),
-                                              int(pointer_idx[r]))
+                                              int(pointer_idx[r]),
+                                              float(legacy_bid[r]),
+                                              tuple(float(v) for v in bid_slots[r]))
             logps[i] = {
                 "combined": float(logp[r]),
                 "cont":     float(cont_logp_v[r]),
+                "uv":       float(cont_dim_logp[r, :2].sum()),
+                "xi":       float(cont_dim_logp[r, 2]),
                 "role":     float(role_logp_v[r]),
                 "gear":     float(gear_logp_v[r]),
                 "ptr":      float(ptr_logp_v[r]),
+                "bid":      float(bid_logp_v[r]),
+                "bid_slots": [float(v) for v in bid_slot_logp[r]],
             }
         return actions, logps
 
@@ -386,40 +598,103 @@ class DetectMAPPOPolicy:
             [[actions[i].u_psi, actions[i].u_v, actions[i].u_xi]
              for i in ids], dtype=torch.float32)
         with torch.no_grad():
-            h = self.model.actor(obs_t)
-            dist = Normal(self.model.cont_head(h), self.model.log_std.exp())
+            cont_loc = self.model.action_parameters(obs_t)[0]
+            dist = Normal(cont_loc, self.model.log_std.exp())
             logp = _squashed_log_prob(dist, act_t).sum(-1)
         return {i: float(logp[j]) for j, i in enumerate(ids)}
 
     # ------------------------------------------------------------------
     def collect(self, k_red: int | None = None, seed: int = 0,
                 deterministic: bool = False,
-                w8_scale: float | None = None,
-                stable_window: int | None = None) -> List[dict]:
+                w8_scale: float | None = None) -> List[dict]:
         cfg: DetectSimConfig = self.env.cfg
         scenario = {"seed": seed}
         if k_red is not None:
             scenario["k_red"] = int(k_red)
         if w8_scale is not None:            # gate-6 penalty curriculum (train only)
             scenario["w8_scale"] = w8_scale
-        if stable_window is not None:       # STABLE_WINDOW curriculum (train only)
-            scenario["stable_window"] = stable_window
+        # Keep exposure sampling reproducible without consuming the task RNG
+        # stream used for radar hits, red maneuvers, or link loss.
+        self._conflict_rng = random.Random(int(seed) + 0xC0F11C7)
         obs = self.env.reset(scenario)
         data: List[dict] = []
         while True:
             encoded = {i: self.encoder.encode(obs[i]) for i in obs}
-            nominal, old_logp = self.act_batch(obs, deterministic)
-            req_stats = self._request_stats(nominal)
-            safe, interventions = self.shield.filter(self.env, nominal)
+            sampled, old_logp = self.act_batch(obs, deterministic)
+            behavior, exposure_mask, exposure_pairs = \
+                self._expose_shared_target_conflict(sampled, deterministic)
+            behavior = self.condition_exposed_bids(
+                encoded, behavior, old_logp, exposure_mask)
+            req_stats = self._request_stats(behavior)
+            safe, interventions = self.shield.filter(self.env, behavior)
+            gear_gate_credit = self._gear_gate_credit(safe)
             safe_logp_cont = self._continuous_log_probs(encoded, safe)
             phi_before = self._track_potential()
             phi_role_before = self._role_potential()
             phi_stable_before = self._stable_potential()
             # RDAC-MAPPO: snapshot arbitration state before env.step mutates it
             cf_snap = self._cf_arb_snapshot()
+            arbitration_replay_env = (
+                deepcopy(self.env) if self._may_have_arbitration_conflict(safe)
+                else None)
             res = self.env.step(safe)
-            # RDAC-MAPPO: counterfactual pointer advantage (post-step, local only)
-            cf_deltas = self._cf_pointer_advantage(cf_snap, nominal)
+            request_outcomes = res.info.get("request_outcomes", [])
+            # Credit requests from the environment's actual gate and arbitration result.
+            cf_deltas = self._cf_pointer_advantage(
+                cf_snap, sampled, request_outcomes)
+            # The intervention selected these requests outside the pointer
+            # policy, so they must not create pointer-head credit either.
+            for i, exposed in enumerate(exposure_mask):
+                if exposed:
+                    cf_deltas[i] = 0.0
+            bid_rank = [0.0] * cfg.N_WINGMEN
+            bid_events = [0] * cfg.N_WINGMEN
+            bid_event_mask_slots = [
+                [False] * 8 for _ in range(cfg.N_WINGMEN)]
+            bid_event_ids_slots = [
+                [-1] * 8 for _ in range(cfg.N_WINGMEN)]
+            bid_cf_adv_slots = [
+                [0.0] * 8 for _ in range(cfg.N_WINGMEN)]
+            bid_cf_mask_slots = [
+                [False] * 8 for _ in range(cfg.N_WINGMEN)]
+            arbitration = res.info.get("arbitration", [])
+            exposed_conflicts = 0
+            bid_changed_winner = 0
+            for conflict_index, conflict in enumerate(arbitration):
+                candidates = [int(i) for i in conflict.get("candidates", [])]
+                if len(candidates) < 2:
+                    continue
+                if sum(bool(exposure_mask[i]) for i in candidates) >= 2:
+                    exposed_conflicts += 1
+                score = conflict.get("scores", {})
+                bids = conflict.get("bids", {})
+                owner = conflict.get("previous_owner")
+                hysteresis = float(conflict.get("hysteresis", 0.0))
+                no_bid = max(candidates, key=lambda i: (
+                    float(score.get(i, score.get(str(i), 0.0))), i == owner, -i))
+                owner_score = float(score.get(owner, score.get(str(owner), 0.0))) \
+                    if owner is not None else 0.0
+                if (owner in candidates and no_bid != owner
+                        and float(score.get(no_bid, score.get(str(no_bid), 0.0)))
+                        <= owner_score + hysteresis):
+                    no_bid = owner
+                if int(conflict["winner"]) != no_bid:
+                    bid_changed_winner += 1
+                winner = int(conflict["winner"])
+                loser_credit = -1.0 / max(1, len(candidates) - 1)
+                for i in candidates:
+                    if not 0 <= i < cfg.N_WINGMEN:
+                        continue
+                    bid_events[i] += 1
+                    bid_rank[i] += 1.0 if i == winner else loser_credit
+                    slot_map = conflict.get("bid_slots", {})
+                    slot = slot_map.get(i, slot_map.get(str(i)))
+                    if slot is not None and 0 <= int(slot) < 8:
+                        bid_event_mask_slots[i][int(slot)] = True
+                        bid_event_ids_slots[i][int(slot)] = conflict_index
+            for i, count in enumerate(bid_events):
+                if count:
+                    bid_rank[i] /= count
             team = np.concatenate([
                 encoded.get(i, np.zeros(self.encoder.dimension, dtype=np.float32))
                 for i in range(cfg.N_WINGMEN)]).astype(np.float32)
@@ -433,11 +708,25 @@ class DetectMAPPOPolicy:
             shaped = float(res.reward) * self.config.reward_scale \
                 + self.config.gamma * phi_after - phi_before \
                 + self.config.gamma * phi_stable_after - phi_stable_before
+            (cf_bid_events, cf_bid_changed,
+             cf_bid_directional_slots) = self._counterfactual_bid_credit(
+                arbitration_replay_env, safe, arbitration, shaped,
+                phi_before, phi_stable_before, bid_cf_adv_slots,
+                bid_cf_mask_slots)
+            bid_cf_adv = [
+                (float(np.mean([value for value, active in zip(values, mask)
+                                if active]))
+                 if any(mask) else 0.0)
+                for values, mask in zip(bid_cf_adv_slots, bid_cf_mask_slots)]
+            bid_cf_mask = [any(mask) for mask in bid_cf_mask_slots]
             # role shaping increment F_role = gamma*Phi_role(s') - Phi_role(s)
             f_role = self.config.gamma * phi_role_after - phi_role_before
             data.append({
                 "obs": encoded, "team": team,
-                "nominal": {i: self.encode_action(nominal[i]) for i in nominal},
+                # Store the action sent through the shield. On exposed rows,
+                # standard action-head losses are masked; the sampled RL bid
+                # remains active for the real arbitration event.
+                "nominal": {i: self.encode_action(behavior[i]) for i in behavior},
                 "safe": {i: self.encode_action(safe[i]) for i in safe},
                 # old_logp: per-head dict for RDAC per-head PPO ratios
                 "old_logp": old_logp,
@@ -455,17 +744,287 @@ class DetectMAPPOPolicy:
                 "n_track_actions": req_stats["n_track"],
                 "n_nonzero_pointer": req_stats["n_nonzero_pointer"],
                 "n_valid_requests": req_stats["n_valid_request"],
+                "n_requests": len(request_outcomes),
+                "n_c04_pass_requests": sum(
+                    bool(outcome["c04_gate_ok"])
+                    for outcome in request_outcomes),
+                "n_c04_rejected_requests": sum(
+                    outcome.get("reason") == "c04_rejected"
+                    for outcome in request_outcomes),
+                "n_request_winners": sum(
+                    outcome.get("reason") == "selected"
+                    for outcome in request_outcomes),
+                "n_new_assignments": sum(
+                    bool(outcome["new_assignment"])
+                    for outcome in request_outcomes),
+                "n_multi_candidate_events": len(arbitration),
+                "n_handoffs": len(res.info.get("handoffs", [])),
                 "owned_count": len(self.env.responsibility),
+                "stable_progress_total": sum(
+                    int(progress) for progress in self.env.stable_progress.values()),
+                "stable_targets_in_progress": sum(
+                    int(progress > 0)
+                    for progress in self.env.stable_progress.values()),
                 "max_stable_progress": max(self.env.stable_progress.values(), default=0),
                 "violations": len(res.info["report"].violations),
                 "terminal": res.info["terminal"],
                 "cf_deltas": cf_deltas,   # RDAC: per-agent CF pointer advantage
+                "gear_gate_credit": gear_gate_credit,
+                "bid_rank": bid_rank,
+                "bid_mask": [count > 0 for count in bid_events],
+                "bid_event_mask_slots": bid_event_mask_slots,
+                "bid_event_ids_slots": bid_event_ids_slots,
+                "bid_actions": {
+                    i: tuple(float(v) for v in
+                             (behavior[i].arbitration_bids or (0.0,) * 8))
+                    for i in behavior},
+                "bid_cf_adv": bid_cf_adv,
+                "bid_cf_mask": bid_cf_mask,
+                "bid_cf_adv_slots": bid_cf_adv_slots,
+                "bid_cf_mask_slots": bid_cf_mask_slots,
+                "n_cf_bid_events": cf_bid_events,
+                "n_cf_bid_changed_winner": cf_bid_changed,
+                "n_cf_bid_directional_slots": cf_bid_directional_slots,
+                "n_cf_bid_active_slots": sum(
+                    any(mask) for mask in bid_cf_mask_slots),
+                "n_bid_events": len(arbitration),
+                "action_exposure_mask": exposure_mask,
+                "n_forced_overlap_pairs": exposure_pairs,
+                "n_pointer_exposed": sum(exposure_mask),
+                "n_exposed_multi_candidate_events": exposed_conflicts,
+                "n_bid_changed_winner": bid_changed_winner,
                 "f_role": f_role,         # RDAC: role shaping increment (team-level)
             })
             obs = res.observations
             if res.done:
                 break
         return data
+
+    def _expose_shared_target_conflict(
+        self, sampled: Dict[int, DetectAction], deterministic: bool = False,
+        probe_rng: random.Random | None = None,
+    ) -> Tuple[Dict[int, DetectAction], List[bool], int]:
+        """Training-only request overlap using independently held local tracks.
+
+        This does not alter env state, geometry, rules, or arbitration. For a
+        sampled shared target, it temporarily sets two agents to a legal TRACK
+        request. Their role/gear/pointer samples are excluded from PPO; the
+        independently sampled RL bids remain live in the actual environment
+        arbitration.
+        """
+        cfg = self.env.cfg
+        rng = probe_rng or self._conflict_rng
+        probability = float(self.config.conflict_exposure_prob)
+        probability = min(1.0, max(0.0, probability))
+        actions = dict(sampled)
+        exposed = [False] * cfg.N_WINGMEN
+        if (probability <= 0.0 or deterministic
+                or rng.random() >= probability):
+            return actions, exposed, 0
+
+        # Candidates are derived solely from each agent's own track file.
+        # An incumbent may participate in a challenger event; targets owned
+        # by the third, uninvolved agent are excluded.
+        # Use the gear that can actually be active after this request. Exposed
+        # samples hold the current axis (u_xi=0), preserving the measured gate
+        # geometry through the control update.
+        local = {}
+        for i, wingman in enumerate(self.env.wingmen):
+            if i not in actions or wingman.link_degraded:
+                continue
+            tracks = {}
+            for slot_idx, track in enumerate(wingman.tracks.slots):
+                if (track is None or track.state == "detected"
+                        or track.age(self.env.t) > cfg.AGE_DEGRADE
+                        or self.env.judged.get(track.target_id, False)):
+                    continue
+                tx, ty = track.extrapolate(self.env.t)
+                geometry = self.env._gate_diagnostics(i, tx, ty)
+                switch_available = (wingman.radar.last_switch_step < 0
+                                    or wingman.radar.switch_ready())
+                effective_gear = (
+                    max(cfg.GEARS_TRACK) if switch_available
+                    else wingman.radar.gear)
+                usable_half_width = min(
+                    effective_gear,
+                    cfg.SECTOR_AXIS_MAX_DEG - abs(wingman.radar.axis_deg))
+                sector_margin = (usable_half_width
+                                 - geometry["bearing_offset_deg"])
+                if (geometry["range_margin_km"] >= 2.0
+                        and sector_margin >= 0.0
+                        and track.age(self.env.t) <= cfg.AGE_DEGRADE
+                        and track.state != "detected"
+                        and not self.env.judged.get(track.target_id, False)):
+                    tracks[track.target_id] = slot_idx + 1
+            local[i] = tracks
+
+        pairs = []
+        ids = sorted(local)
+        for left_pos, left in enumerate(ids):
+            for right in ids[left_pos + 1:]:
+                shared = sorted(set(local[left]).intersection(local[right]))
+                for tid in shared:
+                    owner = self.env.responsibility.get(tid)
+                    if owner is not None and owner not in (left, right):
+                        continue
+                    pairs.append((left, right, tid))
+        if not pairs:
+            return actions, exposed, 0
+
+        left, right, tid = pairs[rng.randrange(len(pairs))]
+        for i in (left, right):
+            actions[i] = replace(
+                actions[i], u_xi=0.0, role=DetectRole.TRACK,
+                gear=max(cfg.GEARS_TRACK), pointer=local[i][tid])
+        exposed[left] = exposed[right] = True
+        return actions, exposed, 1
+
+    def _may_have_arbitration_conflict(
+        self, actions: Dict[int, DetectAction],
+    ) -> bool:
+        """Cheap local precheck before copying env for counterfactual replay."""
+        cfg = self.env.cfg
+        requesters_by_target: Dict[int, set] = {}
+        for i, action in actions.items():
+            if action.role != DetectRole.TRACK or action.pointer <= 0:
+                continue
+            wingman = self.env.wingmen[i]
+            if wingman.link_degraded:
+                continue
+            slot_idx = action.pointer - 1
+            if not 0 <= slot_idx < len(wingman.tracks.slots):
+                continue
+            track = wingman.tracks.slots[slot_idx]
+            if (track is None or track.state == "detected"
+                    or track.age(self.env.t) > cfg.AGE_DEGRADE
+                    or self.env.judged.get(track.target_id, False)):
+                continue
+            requesters_by_target.setdefault(track.target_id, set()).add(i)
+        for tid, requesters in requesters_by_target.items():
+            owner = self.env.responsibility.get(tid)
+            if owner is not None and owner not in requesters:
+                return True
+            if len(requesters | ({owner} if owner is not None else set())) > 1:
+                return True
+        return False
+
+    def _counterfactual_bid_credit(
+        self, env_before, actions: Dict[int, DetectAction],
+        arbitration: Sequence[dict], actual_shaped_reward: float,
+        phi_before: float, phi_stable_before: float,
+        advantages: List[List[float]], masks: List[List[bool]],
+    ) -> Tuple[int, int, int]:
+        """Credit each contested slot against a real zero-bid baseline.
+
+        The environment keeps the hard winner and hysteresis semantics.  For
+        every candidate in an observed multi-candidate event, one replay sets
+        only that candidate's mapped slot to zero and compares its shaped
+        utility with the sampled action.  The replay utility is independent of
+        the candidate's sampled bid, so this is a valid action-dependent
+        baseline for the slot-wise PPO score function.  It also avoids using a
+        HEUR winner label or changing the deployed arbitration rule.
+        """
+        if env_before is None or not arbitration:
+            return 0, 0, 0
+        active_event_keys = set()
+        changed_slots = set()
+        directional_slots = set()
+
+        def replay_utility(branch_actions, target_id):
+            branch = deepcopy(env_before)
+            step = branch.step(branch_actions)
+            matching = next((item for item in
+                             step.info.get("arbitration", [])
+                             if item.get("tid") == target_id), None)
+            if matching is None:
+                return None, None
+            phi_after = 0.0 if step.done else self._potential_in_env(
+                branch, "track")
+            stable_after = 0.0 if step.done else self._potential_in_env(
+                branch, "stable")
+            utility = (
+                float(step.reward) * self.config.reward_scale
+                + self.config.gamma * phi_after - phi_before
+                + self.config.gamma * stable_after - phi_stable_before)
+            return utility, matching
+
+        for event in arbitration:
+            candidates = [int(i) for i in event.get("candidates", [])
+                          if int(i) in actions]
+            if len(candidates) < 2:
+                continue
+            slot_map = event.get("bid_slots", {})
+            for agent_idx in candidates:
+                slot_value = slot_map.get(
+                    agent_idx, slot_map.get(str(agent_idx)))
+                action = actions[agent_idx]
+                if (slot_value is None or action.arbitration_bids is None):
+                    continue
+                slot_idx = int(slot_value)
+                if not 0 <= slot_idx < len(action.arbitration_bids):
+                    continue
+                sampled_bid = float(action.arbitration_bids[slot_idx])
+                # The neutral branch is a one-slot intervention.  All other
+                # candidates, slots, roles, pointers, and flight controls are
+                # held at the action actually sent to the environment.
+                neutral_bids = list(action.arbitration_bids)
+                neutral_bids[slot_idx] = 0.0
+                branch_actions = dict(actions)
+                branch_actions[agent_idx] = replace(
+                    action, arbitration_bid=0.0,
+                    arbitration_bids=tuple(neutral_bids))
+                neutral_utility, matching = replay_utility(
+                    branch_actions, event.get("tid"))
+                if matching is None:
+                    continue
+                active_event_keys.add(event.get("tid"))
+                exact_advantage = actual_shaped_reward - neutral_utility
+                bid_advantage = exact_advantage
+                if int(matching["winner"]) != int(event["winner"]):
+                    changed_slots.add((agent_idx, slot_idx))
+
+                # Hard arbitration is flat until a bid crosses its score
+                # margin. Endpoint replays provide a causal direction through
+                # that flat region without changing deployed arbitration.
+                if abs(exact_advantage) <= 1e-8:
+                    probe_utilities = []
+                    for probe_bid in (-1.0, 1.0):
+                        probe_bids = list(action.arbitration_bids)
+                        probe_bids[slot_idx] = probe_bid
+                        probe_actions = dict(actions)
+                        probe_actions[agent_idx] = replace(
+                            action, arbitration_bid=probe_bid,
+                            arbitration_bids=tuple(probe_bids))
+                        utility, _ = replay_utility(
+                            probe_actions, event.get("tid"))
+                        probe_utilities.append(utility)
+                    if all(value is not None for value in probe_utilities):
+                        slope = 0.5 * (probe_utilities[1]
+                                       - probe_utilities[0])
+                        directional_advantage = float(np.clip(
+                            self.config.cf_bid_margin_coef * slope
+                            * sampled_bid, -1.0, 1.0))
+                        if abs(directional_advantage) > 1e-8:
+                            bid_advantage += directional_advantage
+                            directional_slots.add((agent_idx, slot_idx))
+                if abs(bid_advantage) > 1e-8:
+                    advantages[agent_idx][slot_idx] += bid_advantage
+                    masks[agent_idx][slot_idx] = True
+        return (len(active_event_keys), len(changed_slots),
+                len(directional_slots))
+
+    def _potential_in_env(self, env, kind: str) -> float:
+        """Evaluate existing training potentials against a replayed env."""
+        previous = self.env
+        try:
+            self.env = env
+            if kind == "track":
+                return self._track_potential()
+            if kind == "stable":
+                return self._stable_potential()
+            raise ValueError(kind)
+        finally:
+            self.env = previous
 
     def _request_stats(self, actions: Dict[int, DetectAction]) -> dict:
         """Measure action support/credit before the environment applies it."""
@@ -490,6 +1049,40 @@ class DetectMAPPOPolicy:
             n_valid += int(valid)
         return {"n_track": n_track, "n_nonzero_pointer": n_nonzero,
                 "n_valid_request": n_valid}
+
+    def _gear_gate_credit(self, actions: Dict[int, DetectAction]) -> List[float]:
+        """Return local counterfactual credit for a narrow TRACK gear.
+
+        The signal is active only when the same track request is outside the
+        selected sector but inside the widest legal TRACK sector.  A sampled
+        narrow gear is then a negative action outcome, so PPO shifts its mass
+        toward the available wide TRACK gear without consulting HEUR or truth.
+        """
+        cfg = self.env.cfg
+        widest = max(cfg.GEARS_TRACK)
+        credit = [0.0] * cfg.N_WINGMEN
+        for i, action in actions.items():
+            if action.role != DetectRole.TRACK or action.pointer <= 0:
+                continue
+            wingman = self.env.wingmen[i]
+            slot_idx = action.pointer - 1
+            if slot_idx >= len(wingman.tracks.slots):
+                continue
+            track = wingman.tracks.slots[slot_idx]
+            if track is None or wingman.link_degraded:
+                continue
+            tx, ty = track.extrapolate(self.env.t)
+            geometry = self.env._gate_diagnostics(i, tx, ty)
+            if geometry["range_margin_km"] < 0.0:
+                continue
+            axis_room = cfg.SECTOR_AXIS_MAX_DEG - abs(wingman.radar.axis_deg)
+            widest_usable = min(widest, axis_room)
+            selected_usable = min(float(action.gear), axis_room)
+            widest_passes = geometry["bearing_offset_deg"] <= widest_usable
+            selected_passes = geometry["bearing_offset_deg"] <= selected_usable
+            if widest_passes and not selected_passes:
+                credit[i] = -1.0
+        return credit
 
     # ------------------------------------------------------------------
     def _cf_arb_snapshot(self) -> dict:
@@ -599,16 +1192,17 @@ class DetectMAPPOPolicy:
         return deltas
 
     def _cf_pointer_advantage(
-        self, snap_before: dict, actual_actions: dict) -> List[float]:
+        self, snap_before: dict, actual_actions: dict,
+        request_outcomes: List[dict] | None = None) -> List[float]:
         """Assign pointer credit only to requests that can take effect.
 
         A non-zero pointer is merely an intention.  The environment may reject
         it because the role is SEARCH, the slot is empty, the link is degraded,
-        or arbitration gives the target to another wingman.  This counterfactual
-        signal uses the pre-step local track file and the post-step assignment
-        table, so only an effective new assignment receives positive credit.
-        Legal TRACK actions that leave a feasible request unused receive a small
-        negative signal; invalid pointer values are neutral.
+        or arbitration gives the target to another wingman. Actual C04 and
+        arbitration outcomes determine request credit; the pre-step local track
+        file is used only to identify a missed unowned opportunity. C04
+        rejections and missing targets are neutral, legal arbitration losers
+        receive participation credit, and invalid pointer values are neutral.
         """
         cfg = self.env.cfg
         n = cfg.N_WINGMEN
@@ -617,6 +1211,10 @@ class DetectMAPPOPolicy:
         tracks_by_agent = snap_before.get("tracks", [[] for _ in range(n)])
         wing_states = snap_before.get("wing_states", [])
         pre_t = float(snap_before["t"])
+        outcomes_by_request = {
+            (int(outcome["requester"]), int(outcome["target_id"])): outcome
+            for outcome in (request_outcomes or [])
+        }
 
         def local_gate(i: int, ex: float, ey: float) -> bool:
             if i >= len(wing_states):
@@ -675,13 +1273,18 @@ class DetectMAPPOPolicy:
             if selected is not None:
                 tid, opp = selected
                 pre_owner = snap_before["responsibility"].get(tid)
-                if pre_owner != i and post_resp.get(tid) == i:
-                    deltas[i] = opp
-                else:
-                    # The request was legal but lost arbitration.  Preserve a
-                    # small positive participation credit; only the winner
-                    # receives the full ownership credit above.
+                outcome = outcomes_by_request.get((i, tid))
+                if outcome is None or outcome.get("reason") in (
+                        "target_missing", "c04_rejected"):
+                    continue
+                if not outcome.get("c04_gate_ok", False):
+                    continue
+                if outcome.get("reason") == "lost_arbitration":
                     deltas[i] = opp * self.config.cf_request_credit
+                elif (outcome.get("reason") == "selected"
+                      and outcome.get("winner") == i
+                      and pre_owner != i and post_resp.get(tid) == i):
+                    deltas[i] = opp
             elif (a.role == DetectRole.TRACK and a.pointer == 0
                   and not snap_before["link_degraded"][i]
                   and best_opp > 0.0):
@@ -832,13 +1435,16 @@ class DetectMAPPOPolicy:
             return {"loss": 0.0}
         cfg = self.config
         n = self.env.cfg.N_WINGMEN
-        obs, team, acts, safes, old_logp = [], [], [], [], []
+        obs, team, acts, safes, bid_actions, old_logp = [], [], [], [], [], []
         rewards, values, dones = [], [], []
         for item in rollout:
             for i in range(n):
                 obs.append(item["obs"][i])
                 acts.append(item["nominal"][i])
                 safes.append(item["safe"][i])
+                item_bid_actions = item.get("bid_actions", {})
+                bid_actions.append(item_bid_actions.get(
+                    i, (float(item["nominal"][i][6]),) * 8))
                 old_logp.append(item["old_logp"][i])  # dict with per-head logps
             team.append(item["team"])
             rewards.append(item["reward"])
@@ -848,11 +1454,22 @@ class DetectMAPPOPolicy:
         team_t = torch.tensor(np.asarray(team), dtype=torch.float32)
         act_t = torch.tensor(acts, dtype=torch.float32)
         safe_t = torch.tensor(safes, dtype=torch.float32)
+        bid_actions_t = torch.tensor(bid_actions, dtype=torch.float32)
+        if bid_actions_t.shape != (len(acts), 8):
+            raise ValueError(
+                f"bid_actions must have shape {(len(acts), 8)}, "
+                f"got {tuple(bid_actions_t.shape)}")
         # Per-head old log-probs for per-head PPO ratios (RDAC-MAPPO)
-        old_logp_cont  = torch.tensor([item["old_logp"][i]["cont"]     for item in rollout for i in range(n)], dtype=torch.float32)
+        old_logp_uv    = torch.tensor([item["old_logp"][i]["uv"]      for item in rollout for i in range(n)], dtype=torch.float32)
+        old_logp_xi    = torch.tensor([item["old_logp"][i]["xi"]      for item in rollout for i in range(n)], dtype=torch.float32)
         old_logp_role  = torch.tensor([item["old_logp"][i]["role"]     for item in rollout for i in range(n)], dtype=torch.float32)
         old_logp_gear  = torch.tensor([item["old_logp"][i]["gear"]     for item in rollout for i in range(n)], dtype=torch.float32)
         old_logp_ptr   = torch.tensor([item["old_logp"][i]["ptr"]      for item in rollout for i in range(n)], dtype=torch.float32)
+        old_logp_bid   = torch.tensor([item["old_logp"][i]["bid"]      for item in rollout for i in range(n)], dtype=torch.float32)
+        old_logp_bid_slots = torch.tensor([
+            item["old_logp"][i].get(
+                "bid_slots", [item["old_logp"][i]["bid"]] * 8)
+            for item in rollout for i in range(n)], dtype=torch.float32)
         old_logp_comb  = torch.tensor([item["old_logp"][i]["combined"] for item in rollout for i in range(n)], dtype=torch.float32)
 
         # GAE over episode-boundary-aware concatenated rollout
@@ -884,6 +1501,19 @@ class DetectMAPPOPolicy:
             f_role_norm = f_role_flat
         adv_role_t = adv_t + cfg.role_adv_coef * f_role_norm
 
+        # Channel 2b: local counterfactual TRACK gear credit.  The credit is
+        # sparse by design: it only fires when a wider legal beam would have
+        # cleared the C04 sector gate for the selected request.
+        gear_credit_flat = torch.tensor(
+            [item["gear_gate_credit"][i]
+             for item in rollout for i in range(n)], dtype=torch.float32)
+        gear_active = gear_credit_flat.abs() > 1e-8
+        # Keep the signed action outcome instead of centering it: all active
+        # examples are intentionally "narrow beam was wrong" outcomes.
+        gear_signal = torch.where(
+            gear_active, gear_credit_flat, torch.zeros_like(gear_credit_flat))
+        adv_gear_t = adv_role_t + cfg.gear_gate_coef * gear_signal
+
         # --- Channel 3: pointer advantage (pointer head) ------------------
         # Contrastive CF delta: +opp if seized opportunity, -opp if missed.
         cf_delta_flat = torch.tensor(
@@ -901,6 +1531,92 @@ class DetectMAPPOPolicy:
         adv_ptr_t = cfg.cf_global_mix * adv_t + cfg.cf_adv_coef * cf_signal
         adv_role_t = adv_role_t + cfg.cf_role_coef * cf_signal
 
+        # Channel 4: causal bid credit from one-step opposite-bid replays.
+        bid_rank_t = torch.tensor(
+            [item["bid_rank"][i] for item in rollout for i in range(n)],
+            dtype=torch.float32)
+        bid_mask_t = torch.tensor(
+            [item["bid_mask"][i] for item in rollout for i in range(n)],
+            dtype=torch.bool)
+        # A counterfactual return difference is already an action advantage.
+        # It must not be multiplied by the shared team GAE, which can reverse
+        # the causal task-utility direction. Legacy rank-only rollouts are
+        # intentionally inactive here rather than teaching a tautological
+        # winner label.
+        cf_bid_rows, cf_bid_mask_rows = [], []
+        bid_candidate_rows = []
+        bid_event_group_rows = []
+        next_bid_event_group = 0
+        for item in rollout:
+            explicit_adv = item.get("bid_cf_adv_slots")
+            explicit_mask = item.get("bid_cf_mask_slots")
+            candidate_mask = item.get("bid_event_mask_slots")
+            event_ids = item.get("bid_event_ids_slots")
+            if explicit_adv is not None and explicit_mask is not None:
+                step_adv = [list(row) for row in explicit_adv]
+                step_mask = [list(row) for row in explicit_mask]
+            else:
+                # A scalar legacy counterfactual cannot be assigned to a local
+                # target without the environment event's bid_slots mapping.
+                step_adv = [[0.0] * 8 for _ in range(n)]
+                step_mask = [[False] * 8 for _ in range(n)]
+            if candidate_mask is None:
+                candidate_mask = [[False] * 8 for _ in range(n)]
+            if event_ids is None:
+                event_ids = [[-1] * 8 for _ in range(n)]
+                for agent in range(n):
+                    for slot in range(8):
+                        if (candidate_mask[agent][slot]
+                                or step_mask[agent][slot]):
+                            event_ids[agent][slot] = next_bid_event_group
+                            next_bid_event_group += 1
+            else:
+                step_event_ids = [
+                    int(event_id)
+                    for row in event_ids for event_id in row
+                    if int(event_id) >= 0]
+                offset = next_bid_event_group
+                event_ids = [[
+                    offset + int(event_id) if int(event_id) >= 0 else -1
+                    for event_id in row] for row in event_ids]
+                if step_event_ids:
+                    next_bid_event_group += max(step_event_ids) + 1
+            bid_candidate_rows.extend(
+                [list(row) for row in candidate_mask])
+            bid_event_group_rows.extend(
+                [list(row) for row in event_ids])
+            cf_bid_rows.extend(step_adv)
+            cf_bid_mask_rows.extend(step_mask)
+        cf_bid_t = torch.tensor(cf_bid_rows, dtype=torch.float32)
+        bid_active_t = torch.tensor(cf_bid_mask_rows, dtype=torch.bool)
+        bid_candidate_t = torch.tensor(bid_candidate_rows, dtype=torch.bool)
+        bid_event_group_t = torch.tensor(
+            bid_event_group_rows, dtype=torch.long)
+        missing_event_ids = torch.nonzero(
+            bid_active_t & (bid_event_group_t < 0), as_tuple=False)
+        if missing_event_ids.numel():
+            bid_event_group_t = bid_event_group_t.clone()
+            first_missing_group = int(bid_event_group_t.max().item()) + 1
+            for offset, (row, slot) in enumerate(missing_event_ids.tolist()):
+                bid_event_group_t[row, slot] = first_missing_group + offset
+        action_exposure_t = torch.tensor(
+            [item.get("action_exposure_mask",
+                      item.get("pointer_exposure_mask", [False] * n))[i]
+             for item in rollout for i in range(n)], dtype=torch.bool)
+        active_cf = cf_bid_t[bid_active_t]
+        if active_cf.numel():
+            # Scale sparse utility deltas to PPO's unit-reward range without
+            # mean-centering: the sign is the causal preference. RMS keeps a
+            # single pivotal event informative instead of producing NaN/zero.
+            cf_scale = _grouped_masked_mean(
+                cf_bid_t.square(), bid_active_t,
+                bid_event_group_t).sqrt().clamp_min(1e-6)
+            cf_bid_norm = cf_bid_t / cf_scale
+        else:
+            cf_bid_norm = cf_bid_t
+        adv_bid_t = torch.where(
+            bid_active_t, cf_bid_norm, torch.zeros_like(cf_bid_norm))
+
         # The shield owns only the continuous flight controls.  Keep the
         # intervention target head-local: copying safe role/gear/pointer labels
         # would inject artificial discrete supervision even though those heads
@@ -909,35 +1625,62 @@ class DetectMAPPOPolicy:
         intervention_mask = cont_delta.sum(-1) > 1e-8
         stats = {}
         approx_kl = torch.zeros(())
+        bid_approx_kl = torch.zeros(())
+        bid_grad_norm = torch.zeros(())
+        self.model.conflict_residual.weight.requires_grad_(True)
+        bid_residual_row = CONFLICT_RESIDUAL_DIM - 1
+        bid_parameter_before = [p.detach().clone() for p in (
+            list(self.model.bid_head.parameters())
+            + list(self.model.bid_candidate_head.parameters())
+            + [self.model.bid_log_std,
+               self.model.conflict_residual.weight[
+                   bid_residual_row:bid_residual_row + 1]])]
         for _ in range(cfg.epochs):
             # --- per-head forward pass ------------------------------------
             role_idx = act_t[:, 3].long().clamp(0, 1)
-            h = self.model.actor(obs_t)
-            cont_dist = Normal(self.model.cont_head(h), self.model.log_std.exp())
-            role_dist = Categorical(logits=self.model.role_head(h))
-            gear_logits = _gear_masked_logits(self.model.gear_head(h), role_idx)
+            (cont_loc, role_logits, base_gear_logits,
+             base_pointer_logits, bid_loc) = self.model.action_parameters(
+                 obs_t, act_t[:, 5].long().clamp(0, 8))
+            bid_slot_loc = self.model.action_parameters(obs_t)[-1]
+            cont_dist = Normal(cont_loc, self.model.log_std.exp())
+            role_dist = Categorical(logits=role_logits)
+            gear_logits = _gear_masked_logits(base_gear_logits, role_idx)
             gear_dist = Categorical(logits=gear_logits)
             pointer_target = _legal_pointer_targets(
                 obs_t, role_idx, act_t[:, 5].long().clamp(0, 8))
             ptr_logits = _pointer_masked_logits(
-                self.model.pointer_head(h), role_idx,
+                base_pointer_logits, role_idx,
                 _encoded_request_mask(obs_t), pointer_target)
             ptr_dist = Categorical(logits=ptr_logits)
+            bid_slot_dist = Normal(
+                bid_slot_loc, self.model.bid_log_std.exp())
 
             # Nominal actions have the actual behavior likelihood.  A safe
             # action is retained for imitation only; using its density in a
             # PPO ratio would ignore the shield's many-to-one projection.
             cont_nominal_logp = _squashed_log_prob(
                 cont_dist, act_t[:, :3]).sum(-1)
-            cont_logp = cont_nominal_logp
+            cont_dim_logp = _squashed_log_prob(cont_dist, act_t[:, :3])
+            cont_uv_logp = cont_dim_logp[:, :2].sum(-1)
+            cont_xi_logp = cont_dim_logp[:, 2]
             role_logp = role_dist.log_prob(role_idx)
-            gear_logp = gear_dist.log_prob(act_t[:, 4].long().clamp(0, 4))
+            gear_logp = gear_dist.log_prob(act_t[:, 4].long().clamp(0, 5))
             ptr_logp  = ptr_dist.log_prob(pointer_target)
-            entropy = (cont_dist.entropy().sum(-1) + role_dist.entropy()
-                       + gear_dist.entropy() + ptr_dist.entropy())
+            bid_slot_logp = _squashed_log_prob(
+                bid_slot_dist, bid_actions_t)
+            cont_entropy = cont_dist.entropy()
+            regular_entropy = (
+                cont_entropy[:, :2].sum(-1)
+                + cfg.xi_ppo_coef * cont_entropy[:, 2]
+                + role_dist.entropy() + gear_dist.entropy()
+                + ptr_dist.entropy())
+            bid_entropy = bid_slot_dist.entropy().expand_as(
+                bid_active_t.float())
+            bid_entropy_mean = _grouped_masked_mean(
+                bid_entropy, bid_active_t, bid_event_group_t)
 
             def _ppo_head_loss(logp_head, old_logp_head, adv_head,
-                               sample_weight=None):
+                               sample_weight=None, sample_groups=None):
                 log_ratio = (logp_head - old_logp_head).clamp(-10.0, 10.0)
                 ratio = log_ratio.exp()
                 clipped = torch.clamp(ratio, 1 - cfg.clip_ratio, 1 + cfg.clip_ratio)
@@ -945,41 +1688,82 @@ class DetectMAPPOPolicy:
                                         clipped * adv_head)
                 if sample_weight is None:
                     return per_sample.mean()
+                if sample_groups is not None:
+                    return _grouped_masked_mean(
+                        per_sample, sample_weight > 0, sample_groups)
                 return (per_sample * sample_weight).sum() \
                     / sample_weight.sum().clamp_min(1.0)
 
-            # Approximate KL uses the combined old logp as reference
+            # Keep the task-policy KL separate from the sparse slot-wise bid
+            # KL. The combined behavior logp includes the selected scalar bid.
             combined_logp = (cont_nominal_logp + role_logp + gear_logp
                              + ptr_logp)
-            log_ratio_full = (combined_logp - old_logp_comb).clamp(-10.0, 10.0)
+            old_logp_task = old_logp_comb - old_logp_bid
+            log_ratio_full = (combined_logp - old_logp_task).clamp(-10.0, 10.0)
             ratio_full = log_ratio_full.exp()
-            approx_kl = ((ratio_full - 1.0) - log_ratio_full).mean()
+            kl_rows = ~action_exposure_t
+            approx_kl = (((ratio_full - 1.0) - log_ratio_full)[kl_rows].mean()
+                         if kl_rows.any() else torch.zeros(()))
+            bid_log_ratio = (
+                bid_slot_logp - old_logp_bid_slots).clamp(-10.0, 10.0)
+            bid_ratio = bid_log_ratio.exp()
+            bid_approx_kl = (
+                ((bid_ratio - 1.0) - bid_log_ratio)[bid_active_t].mean()
+                if bid_active_t.any() else torch.zeros(()))
 
             # Per-head PPO losses with per-head old logps (RDAC-MAPPO)
-            old_cont = old_logp_cont
-            cont_weight = None
+            cont_weight = (~action_exposure_t).float()
             if cfg.mask_intervened_continuous:
-                cont_weight = (~intervention_mask).float()
-            loss_cont = _ppo_head_loss(cont_logp, old_cont, adv_t,
-                                       cont_weight)
-            loss_role = _ppo_head_loss(role_logp, old_logp_role, adv_role_t)
-            loss_gear = _ppo_head_loss(gear_logp, old_logp_gear, adv_role_t)
-            loss_ptr  = _ppo_head_loss(ptr_logp,  old_logp_ptr,  adv_ptr_t)
-            policy_loss = loss_cont + loss_role + loss_gear + loss_ptr
+                cont_weight = cont_weight * (~intervention_mask).float()
+            loss_cont_uv = _ppo_head_loss(cont_uv_logp, old_logp_uv, adv_t,
+                                          cont_weight)
+            loss_cont_xi = _ppo_head_loss(cont_xi_logp, old_logp_xi, adv_t,
+                                          cont_weight)
+            xi_anchor_loss = self._xi_anchor_kl(obs_t, cont_loc)
+            loss_role = _ppo_head_loss(
+                role_logp, old_logp_role, adv_role_t,
+                (~action_exposure_t).float())
+            loss_gear = _ppo_head_loss(
+                gear_logp, old_logp_gear, adv_gear_t,
+                (~action_exposure_t).float())
+            loss_ptr  = _ppo_head_loss(
+                ptr_logp, old_logp_ptr, adv_ptr_t,
+                (~action_exposure_t).float())
+            loss_bid  = cfg.cf_bid_coef * _ppo_head_loss(
+                bid_slot_logp, old_logp_bid_slots, adv_bid_t,
+                bid_active_t.float(), bid_event_group_t)
+            policy_loss = (loss_cont_uv + cfg.xi_ppo_coef * loss_cont_xi
+                           + cfg.xi_anchor_coef * xi_anchor_loss
+                           + loss_role + loss_gear + loss_ptr + loss_bid)
+            if cfg.bid_only_ppo:
+                policy_loss = loss_bid
+                entropy_bonus = bid_entropy_mean
+            else:
+                task_entropy = (
+                    regular_entropy * (~action_exposure_t).float()).mean()
+                entropy_bonus = task_entropy + bid_entropy_mean
 
             # Value loss (relative scale — see pilot calibration note)
-            value_loss_raw = ((self.model.value(team_t) - returns) ** 2).mean()
-            value_loss = value_loss_raw / (returns.var().detach() + 1e-4)
+            # Bid-only updates use causal counterfactual utilities directly;
+            # the critic contributes no actor signal and must not dilute the
+            # sparse arbitration gradient through the shared global clip.
+            if cfg.bid_only_ppo:
+                value_loss = torch.zeros((), device=returns.device)
+            else:
+                value_loss_raw = ((self.model.value(team_t) - returns) ** 2).mean()
+                value_loss = value_loss_raw / (
+                    returns.var(unbiased=False).detach() + 1e-4)
 
             # Intervention imitation loss: continuous heads only, weighted by
             # the size of the actual safety correction.  A tiny numerical
             # projection should not count as strongly as a large breakaway.
-            if intervention_mask.any():
-                m_obs = obs_t[intervention_mask]
-                m_safe = safe_t[intervention_mask]
-                m_delta = cont_delta[intervention_mask]
-                h_m = self.model.actor(m_obs)
-                pred_uv = torch.tanh(self.model.cont_head(h_m)[:, :2])
+            imitation_mask = intervention_mask & ~action_exposure_t
+            if imitation_mask.any():
+                m_obs = obs_t[imitation_mask]
+                m_safe = safe_t[imitation_mask]
+                m_delta = cont_delta[imitation_mask]
+                pred_uv = torch.tanh(
+                    self.model.action_parameters(m_obs)[0][:, :2])
                 target_uv = m_safe[:, :2].clamp(-1, 1)
                 per_dim = (pred_uv - target_uv) ** 2
                 # Weight by correction magnitude, detached so the policy
@@ -989,40 +1773,106 @@ class DetectMAPPOPolicy:
                     / weights.sum().clamp_min(1e-6)
             else:
                 intervention_loss = torch.zeros(())
+            if cfg.bid_only_ppo:
+                intervention_loss = torch.zeros(())
 
             loss = (policy_loss + cfg.value_coef * value_loss
-                    - cfg.entropy_coef * entropy.mean()
+                    - cfg.entropy_coef * entropy_bonus
                     + cfg.intervention_coef * intervention_loss)
             self.optimizer.zero_grad()
             loss.backward()
+            bid_grad_terms = [
+                parameter.grad.detach().square().sum()
+                for parameter in (list(self.model.bid_head.parameters())
+                                  + list(self.model.bid_candidate_head.parameters())
+                                  + [self.model.bid_log_std])
+                if parameter.grad is not None]
+            residual_grad = self.model.conflict_residual.weight.grad
+            if residual_grad is not None:
+                bid_grad_terms.append(
+                    residual_grad[bid_residual_row].detach().square().sum())
+            bid_grad_norm = torch.sqrt(
+                torch.stack(bid_grad_terms).sum()
+                if bid_grad_terms else torch.zeros(()))
             nn.utils.clip_grad_norm_(self.model.parameters(), 0.5)
             self.optimizer.step()
             with torch.no_grad():
                 self.model.log_std.clamp_(-2.5, 0.0)
-            if float(approx_kl.detach()) > cfg.target_kl:
+                self.model.bid_log_std.clamp_(-2.5, 0.0)
+            if (float(approx_kl.detach()) > cfg.target_kl
+                    or float(bid_approx_kl.detach()) > cfg.bid_target_kl):
                 break
+        bid_parameter_delta = torch.sqrt(sum(
+            (before - after.detach()).square().sum()
+            for before, after in zip(
+                bid_parameter_before,
+                list(self.model.bid_head.parameters())
+                + list(self.model.bid_candidate_head.parameters())
+                + [self.model.bid_log_std,
+                   self.model.conflict_residual.weight[
+                       bid_residual_row:bid_residual_row + 1]])))
+        with torch.no_grad():
+            post_bid_loc = self.model.action_parameters(obs_t)[-1]
+            post_bid_dist = Normal(
+                post_bid_loc, self.model.bid_log_std.exp())
+            post_bid_logp = _squashed_log_prob(
+                post_bid_dist, bid_actions_t)
+            post_bid_log_ratio = (
+                post_bid_logp - old_logp_bid_slots).clamp(-10.0, 10.0)
+            post_bid_ratio = post_bid_log_ratio.exp()
+            post_bid_kl = (
+                ((post_bid_ratio - 1.0) - post_bid_log_ratio)[bid_active_t].mean()
+                if bid_active_t.any() else torch.zeros(()))
+        active_bid_actions = bid_actions_t[bid_active_t]
         stats.update({
             "loss": float(loss.detach()),
             "policy_loss": float(policy_loss.detach()),
+            "xi_ppo_loss": float(loss_cont_xi.detach()),
+            "xi_anchor_loss": float(xi_anchor_loss.detach()),
             "value_loss": float(value_loss.detach()),
             "intervention_loss": float(intervention_loss.detach()),
             "intervention_fraction": float(intervention_mask.float().mean()),
             "continuous_intervention_fraction": float(intervention_mask.float().mean()),
             "masked_continuous_fraction": float(intervention_mask.float().mean()),
             "approx_kl": float(approx_kl.detach()),
+            "bid_approx_kl": float(bid_approx_kl.detach()),
+            "bid_post_update_kl": float(post_bid_kl.detach()),
+            "bid_active_slot_count": int(bid_active_t.sum()),
+            "bid_active_slot_count_by_index": [
+                int(v) for v in bid_active_t.sum(0).tolist()],
+            "cf_bid_informative_fraction": float(
+                (bid_active_t & bid_candidate_t).sum().float()
+                / bid_candidate_t.sum()) if bid_candidate_t.any() else 0.0,
+            "bid_gradient_norm": float(bid_grad_norm.detach()),
+            "bid_parameter_delta_l2": float(bid_parameter_delta.detach()),
             "mean_return_scaled": float(returns.mean()),
             "rollout_steps": len(rollout),
             # RDAC diagnostics
             "f_role_mean": float(f_role_flat.mean()),
             "cf_delta_mean": float(cf_delta_flat.mean()),
             "cf_nonzero_frac": float((cf_delta_flat != 0).float().mean()),
+            "gear_gate_active_frac": float(gear_active.float().mean()),
+            "gear_gate_credit_mean": float(gear_credit_flat.mean()),
+            "bid_event_frac": float(bid_mask_t.float().mean()),
+            "cf_bid_event_frac": float(bid_active_t.float().mean()),
+            "cf_bid_adv_mean": float(cf_bid_t[bid_active_t].mean())
+            if bid_active_t.any() else 0.0,
+            "bid_action_mean": float(active_bid_actions.mean())
+            if active_bid_actions.numel() else 0.0,
+            "bid_action_std": float(active_bid_actions.std())
+            if active_bid_actions.numel() > 1 else 0.0,
+            "pointer_exposure_agent_frac": float(
+                action_exposure_t.float().mean()),
+            "pointer_exposure_steps": int(
+                action_exposure_t.reshape(-1, n).any(-1).sum()),
         })
         return stats
 
     # ------------------------------------------------------------------
     def behavior_clone(self, demos: Sequence[Tuple[np.ndarray, DetectAction]],
                        epochs: int = 60, batch_size: int = 4096,
-                       focus_weight: float = 5.0) -> dict:
+                       focus_weight: float = 5.0,
+                       continuous_objective: str = "likelihood") -> dict:
         """BC warm start on HEUR demonstrations (plan §9.4, 50-100 epochs).
 
         ``focus_weight`` up-weights TRACK+pointer steps, which are ~24% of
@@ -1032,7 +1882,15 @@ class DetectMAPPOPolicy:
         if not demos:
             return {"samples": 0, "epoch": 0, "loss": 0.0,
                     "cont": 0.0, "role": 0.0, "gear": 0.0,
-                    "pointer": 0.0}
+                    "pointer": 0.0, "bid": 0.0}
+        if continuous_objective not in ("likelihood", "latent_regression"):
+            raise ValueError(
+                "continuous_objective must be 'likelihood' or 'latent_regression'")
+        # The demonstrations teach flight/task execution.  Conflict arbitration
+        # remains an RL capability and is trained only by PPO rollouts.
+        self.model.conflict_residual.weight.requires_grad_(False)
+        for parameter in self.model.bid_candidate_head.parameters():
+            parameter.requires_grad_(False)
         obs = torch.tensor(np.asarray([d[0] for d in demos]), dtype=torch.float32)
         act = torch.tensor([self.encode_action(d[1]) for d in demos],
                            dtype=torch.float32)
@@ -1050,22 +1908,41 @@ class DetectMAPPOPolicy:
                 b = perm[s:s + batch_size]
                 ob, ac, sw = obs[b], act[b], samp_w[b]
                 role_idx = ac[:, 3].long().clamp(0, 1)
-                h = self.model.actor(ob)
+                (cont_loc, role_logits, base_gear_logits,
+                 base_pointer_logits, bid_loc) = self.model.action_parameters(
+                     ob, ac[:, 5].long().clamp(0, 8))
                 # Match the bounded policy likelihood used by PPO/eval.  A
                 # raw MSE on tanh(loc) gives a different objective near the
                 # action limits and can make the BC likelihood worse after a
                 # few epochs.
-                cont_dist = Normal(self.model.cont_head(h),
-                                   self.model.log_std.exp())
-                cont_nll = -_bounded_log_prob(
-                    cont_dist, ac[:, :3]).sum(-1)
-                cont_loss = (cont_nll * sw).mean()
+                bid_dist = Normal(bid_loc, self.model.bid_log_std.exp())
+                if continuous_objective == "latent_regression":
+                    # Deterministic evaluation emits tanh(loc). Regress its
+                    # inverse transform so saturated expert controls retain
+                    # a useful gradient toward the same bounded action.
+                    target = ac[:, :3].clamp(-0.98, 0.98)
+                    latent_target = _atanh_action(target)
+                    cont_error = nn.functional.smooth_l1_loss(
+                        cont_loc, latent_target, reduction="none").sum(-1)
+                    cont_loss = (cont_error * sw).mean()
+                else:
+                    cont_dist = Normal(cont_loc, self.model.log_std.exp())
+                    cont_nll = -_bounded_log_prob(
+                        cont_dist, ac[:, :3]).sum(-1)
+                    cont_loss = (cont_nll * sw).mean()
+                # HEUR emits the neutral default bid (0).  BC establishes
+                # that neutral prior; conflict-specific bid preferences are
+                # learned later from PPO arbitration credit, never copied
+                # from the teacher's tie-breaking behavior.
+                bid_nll = -_bounded_log_prob(
+                    bid_dist, ac[:, 6:7]).sum(-1)
+                bid_loss = (bid_nll * sw).mean()
                 ce = nn.functional.cross_entropy
-                role_loss = (ce(self.model.role_head(h), role_idx,
+                role_loss = (ce(role_logits, role_idx,
                                 reduction="none") * sw).mean()
-                gear_loss = (ce(_gear_masked_logits(self.model.gear_head(h), role_idx,
+                gear_loss = (ce(_gear_masked_logits(base_gear_logits, role_idx,
                                                     allow_idx=ac[:, 4]),
-                                ac[:, 4].long().clamp(0, 4),
+                                ac[:, 4].long().clamp(0, 5),
                                 reduction="none") * sw).mean()
                 # Pointer is conditional on the demonstrated role and on
                 # populated local slots.  Training it as an unconditional
@@ -1074,12 +1951,13 @@ class DetectMAPPOPolicy:
                 pointer_target = _legal_pointer_targets(
                     ob, role_idx, ac[:, 5].long().clamp(0, 8))
                 pointer_logits = _pointer_masked_logits(
-                    self.model.pointer_head(h), role_idx,
+                    base_pointer_logits, role_idx,
                     _encoded_request_mask(ob), pointer_target)
                 pointer_loss = (ce(pointer_logits,
                                    pointer_target,
                                    reduction="none") * sw).mean()
-                loss = cont_loss + role_loss + gear_loss + pointer_loss
+                loss = (cont_loss + role_loss + gear_loss + pointer_loss
+                        + bid_loss)
                 opt.zero_grad()
                 loss.backward()
                 opt.step()
@@ -1087,17 +1965,66 @@ class DetectMAPPOPolicy:
                     "cont": float(cont_loss.detach()),
                     "role": float(role_loss.detach()),
                     "gear": float(gear_loss.detach()),
-                    "pointer": float(pointer_loss.detach())}
+                    "pointer": float(pointer_loss.detach()),
+                    "bid": float(bid_loss.detach())}
         # freeze the std closer to the demonstrated (deterministic) behaviour
         # (pilot calibration: cap -0.7 -> -1.4; std 0.5 swamped tracking loops)
         with torch.no_grad():
             self.model.log_std.clamp_(-2.5, -1.4)
+        for parameter in self.model.bid_candidate_head.parameters():
+            parameter.requires_grad_(True)
+        self._refresh_xi_anchor()
         return {"samples": n, **last}
 
     # ------------------------------------------------------------------
     def save(self, path: str) -> None:
         torch.save({"model": self.model.state_dict(),
+                    "xi_anchor_model": self.xi_anchor_model.state_dict(),
                     "config": self.config.__dict__}, path)
 
     def load(self, path: str) -> None:
-        self.model.load_state_dict(torch.load(path, map_location="cpu")["model"])
+        checkpoint = torch.load(path, map_location="cpu")
+        allowed_legacy_missing = {"conflict_residual.weight"}
+
+        def compatible_state(state, expected, component):
+            missing = set(expected) - set(state)
+            unexpected = set(state) - set(expected)
+            mismatched = {
+                key: (tuple(state[key].shape), tuple(expected[key].shape))
+                for key in set(state) & set(expected)
+                if state[key].shape != expected[key].shape
+            }
+            allowed_missing = allowed_legacy_missing | {
+                key for key in expected
+                if key.startswith("bid_candidate_head.")}
+            unsupported_missing = missing - allowed_missing
+            if unsupported_missing or unexpected or mismatched:
+                raise RuntimeError(
+                    f"incompatible DetectMAPPO {component} checkpoint: "
+                    f"missing={sorted(unsupported_missing)}, "
+                    f"unexpected={sorted(unexpected)}, "
+                    f"shape_mismatches={mismatched}"
+                )
+
+            compatible = dict(state)
+            for key in missing:
+                # The residual is a zero-effect legacy addition. The candidate
+                # head must retain its fresh initialization so PPO can learn it.
+                compatible[key] = (torch.zeros_like(expected[key])
+                                   if key in allowed_legacy_missing
+                                   else expected[key])
+            return compatible
+
+        compatible = compatible_state(
+            checkpoint["model"], self.model.state_dict(), "policy")
+        self.model.load_state_dict(compatible, strict=True)
+        anchor_state = checkpoint.get("xi_anchor_model")
+        if anchor_state is None:
+            self._refresh_xi_anchor()
+        else:
+            anchor_compatible = compatible_state(
+                anchor_state, self.xi_anchor_model.state_dict(), "xi-anchor")
+            self.xi_anchor_model.load_state_dict(anchor_compatible, strict=True)
+            self.xi_anchor_model.eval()
+            for parameter in self.xi_anchor_model.parameters():
+                parameter.requires_grad_(False)

@@ -17,22 +17,34 @@ CLI: _p3_dagger.py [round0] [n_rounds]     # one invocation = n_rounds rounds
 Outputs: runs/detect_pilot/dagger_r{N}.pt, dagger_latest.pt, pilot_log.json["dagger"]
 """
 import json
+import os
+import shutil
 import sys
 import time
+from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).parent
 sys.path.insert(0, str(ROOT / "Aircraft_mumt"))
 
-from aircraft_sim.detect_baselines import HeurPolicy              # noqa: E402
-from aircraft_sim.detect_env import DetectEnv                     # noqa: E402
-from aircraft_sim.detect_mappo import DetectMAPPOPolicy           # noqa: E402
-from aircraft_sim.detect_shield import DetectQPShield             # noqa: E402
+from _experiment_provenance import (add_output, artifact_record,
+                                    capture_run_provenance,
+                                    capture_source_snapshot,
+                                    register_active_run,
+                                    track_run_lifecycle,
+                                    write_json_atomic)
 
 OUT = Path(__import__("os").environ.get(
     "MUMT_DAGGER_OUT",
     str(ROOT / "Aircraft_mumt" / "runs" / "detect_dagger")))
 OUT.mkdir(parents=True, exist_ok=True)
+SOURCE_SNAPSHOT = capture_source_snapshot(
+    ROOT, OUT, [ROOT / "_p3_dagger.py"])
+
+from aircraft_sim.detect_baselines import HeurPolicy              # noqa: E402
+from aircraft_sim.detect_env import DetectEnv                     # noqa: E402
+from aircraft_sim.detect_mappo import DetectMAPPOPolicy           # noqa: E402
+from aircraft_sim.detect_shield import DetectQPShield             # noqa: E402
 
 ROUND0 = int(sys.argv[2]) if len(sys.argv) > 2 else 0
 N_ROUNDS = int(sys.argv[3]) if len(sys.argv) > 3 else 1
@@ -116,6 +128,80 @@ def _load_log():
     return json.loads(f.read_text(encoding="utf-8")) if f.exists() else {}
 
 
+def _persist_run_record(log, run_record):
+    manifest_path = OUT / "provenance" / f"{run_record['run_id']}.json"
+    run_record["manifest_path"] = str(manifest_path.resolve())
+    records = log.setdefault("run_provenance", [])
+    for index, record in enumerate(records):
+        if record.get("run_id") == run_record["run_id"]:
+            records[index] = run_record
+            break
+    else:
+        records.append(run_record)
+    write_json_atomic(OUT / "pilot_log.json", log)
+    write_json_atomic(manifest_path, {
+        "run_provenance": run_record,
+        "associated_log": artifact_record(OUT / "pilot_log.json", "pilot_log"),
+    })
+
+
+def _load_archived_checkpoint(pol, path, run_record, role):
+    source = Path(path).resolve()
+    before = artifact_record(source, role)
+    if not before["exists"]:
+        raise FileNotFoundError(source)
+    archive_path = (OUT / "provenance" / f"{run_record['run_id']}_input_"
+                    f"{role}_{source.name}")
+    archive_path.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(source, archive_path)
+    archived = artifact_record(archive_path, f"{role}_archive")
+    if before["sha256"] != archived["sha256"]:
+        raise RuntimeError(f"checkpoint changed while archiving: {source}")
+    pol.load(str(archive_path))
+    after = artifact_record(source, role)
+    if before["sha256"] != after["sha256"]:
+        raise RuntimeError(f"checkpoint changed while loading: {source}")
+    before["archived_snapshot"] = archived
+    inputs = run_record.setdefault("inputs", [])
+    existing = next((item for item in inputs
+                     if item.get("role") == role
+                     and item.get("path") == before["path"]), None)
+    if existing is None:
+        inputs.append(before)
+    else:
+        existing.update(before)
+
+
+def _archive_checkpoint(run_record, path, role, archive_name):
+    source = Path(path).resolve()
+    before = artifact_record(source, role)
+    if not before["exists"]:
+        raise FileNotFoundError(source)
+    archive_path = OUT / "provenance" / f"{run_record['run_id']}_{archive_name}"
+    archive_path.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(source, archive_path)
+    archived = artifact_record(archive_path, f"{role}_archive")
+    if before["sha256"] != archived["sha256"]:
+        raise RuntimeError(f"checkpoint changed while archiving: {source}")
+    archived["source_path"] = str(source)
+    run_record.setdefault("checkpoint_archives", []).append(archived)
+    return archived
+
+
+def _selected_checkpoint():
+    if PHASE == "expert":
+        final = OUT / "pilot_final.pt"
+        return final if final.exists() else OUT / "pilot_bc.pt"
+    if ROUND0 == 0:
+        latest = OUT / "dagger_latest.pt"
+        if latest.exists():
+            return latest
+        final = OUT / "pilot_final.pt"
+        return final if final.exists() else OUT / "pilot_bc.pt"
+    return OUT / "dagger_latest.pt"
+
+
+@track_run_lifecycle
 def main():
     t0 = time.time()
     env = DetectEnv()
@@ -123,11 +209,49 @@ def main():
     pol = DetectMAPPOPolicy(env, shield, seed=0)
 
     latest = OUT / "dagger_latest.pt"
+    initial_checkpoint = _selected_checkpoint()
+    if PHASE == "round":
+        pol.config.bc_learning_rate = 1e-4
+    run_record = capture_run_provenance(
+        repo_root=ROOT,
+        output_dir=OUT,
+        entry_scripts=[ROOT / "_p3_dagger.py"],
+        phase=f"dagger_{PHASE}",
+        task_config=env.cfg,
+        algorithm_config=pol.config,
+        runtime_parameters={
+            "environment": {key: value for key, value in os.environ.items()
+                            if key.startswith("MUMT_")},
+            "phase": PHASE,
+            "round_start": ROUND0,
+            "round_count": N_ROUNDS,
+            "episodes_per_round": EPISODES_PER_ROUND,
+            "bc_epochs_per_round": BC_EPOCHS_PER_ROUND,
+            "reject_tolerance": REJECT_TOL,
+            "k": DAGGER_K,
+            "seed_start": DAGGER_SEED_START,
+            "eval_protocol": EVAL_PROTOCOL,
+            "expert_episode_k_schedule": [2, 2, 2, 2, 4, 4, 4, 4],
+            "expert_seed_start": 100,
+            "expert_bc_epochs": 60,
+            "initial_checkpoint_role": (
+                "expert_incumbent" if PHASE == "expert" else "dagger_initial"),
+        },
+        inputs=[artifact_record(
+            initial_checkpoint,
+            "expert_incumbent" if PHASE == "expert" else "dagger_initial")],
+        source_snapshot=SOURCE_SNAPSHOT,
+    )
+    register_active_run(
+        run_record, lambda record: _persist_run_record(_load_log(), record))
+    run_record["status"] = "running"
+    _persist_run_record(_load_log(), run_record)
 
     # ---------------- Phase "expert": shield-in-loop HEUR BC ----------------
     if PHASE == "expert":
-        start = OUT / "pilot_final.pt"
-        pol.load(str(start if start.exists() else OUT / "pilot_bc.pt"))
+        _load_archived_checkpoint(
+            pol, initial_checkpoint, run_record, "expert_incumbent")
+        _persist_run_record(_load_log(), run_record)
         inc_ev = evaluate(pol, shield)
         incumbent_ret = sum(e["return"] for e in inc_ev) / len(inc_ev)
         print(f"[expert] incumbent (pilot_final) eval ret {incumbent_ret:+.0f}",
@@ -148,16 +272,31 @@ def main():
         if accepted:
             pol.save(str(OUT / "expert_shielded.pt"))
             pol.save(str(latest))
+            expert_archive = _archive_checkpoint(
+                run_record, OUT / "expert_shielded.pt", "expert_bc_checkpoint",
+                "expert_shielded.pt")
+            latest_archive = _archive_checkpoint(
+                run_record, latest, "dagger_latest_checkpoint",
+                "dagger_latest.pt")
+            add_output(run_record, OUT / "expert_shielded.pt",
+                       "expert_bc_checkpoint")
+            add_output(run_record, latest, "dagger_latest_checkpoint")
         else:
             pol.model.load_state_dict(incumbent_state)
+            expert_archive = None
+            latest_archive = None
         log = _load_log()
         log["expert_bc"] = {"demos": len(demos), "bc": stats, "eval": ev,
                             "accepted": accepted,
+                            "run_id": run_record["run_id"],
+                            "checkpoint": expert_archive,
+                            "latest_checkpoint": latest_archive,
                             "incumbent_return": round(incumbent_ret, 1),
                             "eval_success": f"{succ}/{len(ev)}",
                             "eval_mean_return": round(cand_ret, 1)}
-        (OUT / "pilot_log.json").write_text(
-            json.dumps(log, ensure_ascii=False, indent=1))
+        run_record["status"] = "completed"
+        run_record["completed_at_utc"] = datetime.now(timezone.utc).isoformat()
+        _persist_run_record(log, run_record)
         print(f"[expert] bc_loss {stats['loss']:.3f} | eval succ {succ}/8 "
               f"ret {cand_ret:+.0f} -> {'ACCEPT' if accepted else 'REJECT'}",
               flush=True)
@@ -168,13 +307,9 @@ def main():
         return
 
     # ---------------- Phase "round": DAgger refinement rounds ----------------
-    if ROUND0 == 0:
-        src = latest if latest.exists() else (
-            OUT / "pilot_final.pt" if (OUT / "pilot_final.pt").exists()
-            else OUT / "pilot_bc.pt")
-        pol.load(str(src))
-    else:
-        pol.load(str(latest))
+    _load_archived_checkpoint(pol, initial_checkpoint, run_record,
+                              "dagger_initial")
+    _persist_run_record(_load_log(), run_record)
 
     log = _load_log()
     dag = log.setdefault("dagger", {"rounds": [], "demos_total": 0})
@@ -204,7 +339,6 @@ def main():
         agg += demos
         # gentle refinement: full-lr BC (1e-3 x 40ep) destroys the incumbent
         # (r0: -5457 -> -9745 REJECTED); fine-tune at 1e-4 instead
-        pol.config.bc_learning_rate = 1e-4
         stats = pol.behavior_clone(agg, epochs=BC_EPOCHS_PER_ROUND)
         ev = evaluate(pol, shield)
         cand_ret = sum(e["return"] for e in ev) / len(ev)
@@ -213,18 +347,32 @@ def main():
             incumbent_ret = max(incumbent_ret, cand_ret)
             pol.save(str(OUT / f"dagger_r{r}.pt"))
             pol.save(str(latest))
+            round_archive = _archive_checkpoint(
+                run_record, OUT / f"dagger_r{r}.pt",
+                f"dagger_round_{r}_checkpoint", f"dagger_r{r}.pt")
+            latest_archive = _archive_checkpoint(
+                run_record, latest, "dagger_latest_checkpoint",
+                f"dagger_latest_r{r}.pt")
+            add_output(run_record, OUT / f"dagger_r{r}.pt",
+                       f"dagger_round_{r}_checkpoint")
+            add_output(run_record, latest, "dagger_latest_checkpoint")
         else:
             pol.model.load_state_dict(incumbent_state)   # reject, revert
+            round_archive = None
+            latest_archive = None
         succ = sum(1 for e in ev if e["terminal"] == "success")
         entry = {"round": r, "new_demos": len(demos), "agg_demos": len(agg),
                  "bc": stats, "eval": ev, "accepted": accepted,
+                 "run_id": run_record["run_id"],
+                 "checkpoint": round_archive,
+                 "latest_checkpoint": latest_archive,
                  "incumbent_return": round(incumbent_ret, 1),
                  "eval_success": f"{succ}/{len(ev)}",
                  "eval_mean_return": round(cand_ret, 1)}
         dag["rounds"].append(entry)
         dag["demos_total"] += len(demos)
-        (OUT / "pilot_log.json").write_text(
-            json.dumps(log, ensure_ascii=False, indent=1))
+        run_record["completed_rounds"] = r - ROUND0 + 1
+        _persist_run_record(log, run_record)
         print(f"[dagger r{r}] demos +{len(demos)} (agg {len(agg)}) "
               f"bc_loss {stats['loss']:.3f} | eval succ {succ}/{len(ev)} "
               f"ret {cand_ret:+.0f} -> {'ACCEPT' if accepted else 'REJECT'}",
@@ -233,6 +381,9 @@ def main():
             print(f"    K={e['k']} seed={e['seed']} {e['terminal']:8s} "
                   f"ret {e['return']:+.0f}", flush=True)
 
+    run_record["status"] = "completed"
+    run_record["completed_at_utc"] = datetime.now(timezone.utc).isoformat()
+    _persist_run_record(_load_log(), run_record)
     print(f"wall {round((time.time() - t0) / 60, 1)} min -> {OUT}")
 
 

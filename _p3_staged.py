@@ -32,6 +32,7 @@ from __future__ import annotations
 
 import json
 import os
+import shutil
 import sys
 import time
 from pathlib import Path
@@ -40,15 +41,28 @@ from typing import Dict, Iterable, List, Mapping, Sequence
 ROOT = Path(__file__).parent
 sys.path.insert(0, str(ROOT / "Aircraft_mumt"))
 
-from aircraft_sim.detect_env import DetectEnv  # noqa: E402
-from aircraft_sim.detect_mappo import DetectMAPPOPolicy  # noqa: E402
-from aircraft_sim.detect_shield import DetectQPShield  # noqa: E402
+from _experiment_provenance import (  # noqa: E402
+    add_output,
+    artifact_record,
+    capture_run_provenance,
+    capture_source_snapshot,
+    canonical_sha256,
+    register_active_run,
+    track_run_lifecycle,
+    write_json_atomic,
+)
 
 
 OUT = Path(os.environ.get(
     "MUMT_STAGED_OUT",
     str(ROOT / "Aircraft_mumt" / "runs" / "detect_staged")))
 OUT.mkdir(parents=True, exist_ok=True)
+SOURCE_SNAPSHOT = capture_source_snapshot(
+    ROOT, OUT, [ROOT / "_p3_staged.py"])
+
+from aircraft_sim.detect_env import DetectEnv  # noqa: E402
+from aircraft_sim.detect_mappo import DetectMAPPOPolicy  # noqa: E402
+from aircraft_sim.detect_shield import DetectQPShield  # noqa: E402
 
 STAGE_ALIASES = {
     "a": "a", "discrete": "a", "disc": "a",
@@ -219,8 +233,83 @@ def _load_log() -> dict:
 
 
 def _write_log(log: dict) -> None:
-    (OUT / "staged_log.json").write_text(
-        json.dumps(log, ensure_ascii=False, indent=1), encoding="utf-8")
+    write_json_atomic(OUT / "staged_log.json", log)
+
+
+def _persist_run_record(log: dict, run_record: dict) -> None:
+    manifest_path = OUT / "provenance" / f"{run_record['run_id']}.json"
+    run_record["manifest_path"] = str(manifest_path.resolve())
+    records = log.setdefault("run_provenance", [])
+    for index, record in enumerate(records):
+        if record.get("run_id") == run_record["run_id"]:
+            records[index] = run_record
+            break
+    else:
+        records.append(run_record)
+    _write_log(log)
+    write_json_atomic(manifest_path, {
+        "run_provenance": run_record,
+        "associated_log": artifact_record(OUT / "staged_log.json", "staged_log"),
+    })
+
+
+def _load_policy_checkpoint(pol, path: Path, run_record: dict, role: str) -> None:
+    import torch
+
+    source = Path(path).resolve()
+    before = artifact_record(source, role)
+    if not before["exists"]:
+        raise FileNotFoundError(source)
+    snapshot_path = (OUT / "provenance" /
+                     f"{run_record['run_id']}_input_{role}_{source.name}")
+    snapshot_path.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(source, snapshot_path)
+    snapshot = artifact_record(snapshot_path, f"{role}_snapshot")
+    if before["sha256"] != snapshot["sha256"]:
+        raise RuntimeError(f"checkpoint changed while archiving: {source}")
+    checkpoint = torch.load(snapshot_path, map_location="cpu", weights_only=False)
+    pol.load(str(snapshot_path))
+    after = artifact_record(source, role)
+    if before["sha256"] != after["sha256"]:
+        raise RuntimeError(f"checkpoint changed while loading: {source}")
+    saved_config = checkpoint.get("config") if isinstance(checkpoint, dict) else None
+    before["checkpoint_saved_config"] = saved_config
+    before["checkpoint_config_sha256"] = (
+        canonical_sha256(saved_config) if saved_config is not None else None)
+    before["archived_snapshot"] = snapshot
+    run_record.setdefault("inputs", []).append(before)
+
+
+def _archive_checkpoint(run_record: dict, path: Path, role: str,
+                        archive_name: str) -> dict:
+    source = Path(path).resolve()
+    source_record = artifact_record(source, role)
+    if not source_record["exists"]:
+        raise FileNotFoundError(source)
+    archive_path = OUT / "provenance" / f"{run_record['run_id']}_{archive_name}"
+    archive_path.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(source, archive_path)
+    archived = artifact_record(archive_path, f"{role}_archive")
+    if source_record["sha256"] != archived["sha256"]:
+        raise RuntimeError(f"checkpoint changed while archiving: {source}")
+    archived["source_path"] = str(source)
+    run_record.setdefault("checkpoint_archives", []).append(archived)
+    return archived
+
+
+def _save_checkpoint(pol, path: Path) -> None:
+    path = Path(path)
+    temporary = path.with_name(path.stem + ".tmp" + path.suffix)
+    pol.save(str(temporary))
+    temporary.replace(path)
+
+
+def _evaluation_rank(evaluation: dict) -> tuple[float, float, float]:
+    rows = evaluation["rows"]
+    violations = sum(row["violations"] for row in rows)
+    steps = sum(row["steps"] for row in rows)
+    return (float(evaluation["success"]), float(evaluation["mean_return"]),
+            -violations / max(1, steps))
 
 
 def _train(stage: str, iter0: int, n_iters: int) -> None:
@@ -232,6 +321,7 @@ def _train(stage: str, iter0: int, n_iters: int) -> None:
     pol = DetectMAPPOPolicy(train_env, shield, seed=0)
 
     stage_ckpt = OUT / f"stage_{stage}.pt"
+    best_ckpt = OUT / f"stage_{stage}_best.pt"
     final_ckpt = OUT / f"stage_{stage}_final.pt"
     if iter0 > 0:
         source = stage_ckpt
@@ -240,10 +330,7 @@ def _train(stage: str, iter0: int, n_iters: int) -> None:
                 f"Cannot resume stage {stage} at iter {iter0}: {source}")
     else:
         source = _stage_source(stage)
-    pol.load(str(source))
-    print(f"[stage {stage}] loaded {source}", flush=True)
     active_names = _set_stage(pol, stage)
-    pol.env = train_env
 
     episodes = _env_int("MUMT_STAGED_EPISODES_PER_ITER", 4)
     k_red = _env_int("MUMT_STAGED_K", 2)
@@ -255,11 +342,59 @@ def _train(stage: str, iter0: int, n_iters: int) -> None:
     eval_seeds = [int(x) for x in os.environ.get(
         "MUMT_STAGED_EVAL_SEEDS", "300,301,302").split(",") if x.strip()]
 
+    run_record = capture_run_provenance(
+        repo_root=ROOT,
+        output_dir=OUT,
+        entry_scripts=[ROOT / "_p3_staged.py"],
+        phase=f"staged_{stage}",
+        task_config=train_env.cfg,
+        algorithm_config=pol.config,
+        runtime_parameters={
+            "environment": {key: value for key, value in os.environ.items()
+                            if key.startswith("MUMT_")},
+            "stage": stage,
+            "iteration_start": iter0,
+            "iterations": n_iters,
+            "episodes_per_iter": episodes,
+            "k_red": k_red,
+            "eval_every": eval_every,
+            "seed_base": seed_base,
+            "stable_window_curriculum": {
+                "start": sw_start,
+                "final": sw_final,
+                "span": sw_span,
+            },
+            "evaluation_seeds": eval_seeds,
+            "source_checkpoint": str(source.resolve()),
+            "active_parameters": active_names,
+            "effective_learning_rate": pol.optimizer.param_groups[0]["lr"],
+        },
+        inputs=[],
+        source_snapshot=SOURCE_SNAPSHOT,
+    )
+    run_record["training_state_semantics"] = {
+        "mode": "weights_only_warm_start",
+        "optimizer_state_restored": False,
+        "rng_state_restored": False,
+        "note": "Checkpoint loading restores model weights only; optimizer and RNG are initialized for this invocation.",
+    }
     log = _load_log()
+    register_active_run(
+        run_record, lambda record: _persist_run_record(_load_log(), record))
+    _persist_run_record(log, run_record)
+    _load_policy_checkpoint(
+        pol, source, run_record,
+        "stage_resume_checkpoint" if iter0 > 0 else "stage_initial_checkpoint")
+    _persist_run_record(log, run_record)
+    print(f"[stage {stage}] loaded {source}", flush=True)
+    pol.env = train_env
+
     stage_log = log.setdefault("stages", {}).setdefault(stage, [])
+    best_rank = None
     for iteration in range(iter0, iter0 + n_iters):
         fraction = min(1.0, max(0.0, iteration / float(sw_span)))
-        stable_window = int(round(sw_start + (sw_final - sw_start) * fraction))
+        stable_window = int(round(
+            sw_start + (sw_final - sw_start) * fraction))
         rollout = []
         episode_returns: List[float] = []
         episode_terminal: List[str] = []
@@ -285,6 +420,7 @@ def _train(stage: str, iter0: int, n_iters: int) -> None:
                        for magnitude in item.get("correction_magnitudes", [])]
         entry = {
             "iter": iteration,
+            "run_id": run_record["run_id"],
             "stage": STAGE_LABEL[stage],
             "stable_window": stable_window,
             "k": k_red,
@@ -333,8 +469,31 @@ def _train(stage: str, iter0: int, n_iters: int) -> None:
             }
             pol.env = train_env
         stage_log.append(entry)
-        pol.save(str(stage_ckpt))
-        _write_log(log)
+        _save_checkpoint(pol, stage_ckpt)
+        stage_archive = _archive_checkpoint(
+            run_record, stage_ckpt, "stage_iteration_checkpoint",
+            f"stage_{stage}_iter_{iteration:06d}.pt")
+        entry["checkpoint"] = artifact_record(
+            stage_ckpt, "stage_iteration_checkpoint")
+        entry["checkpoint"]["run_id"] = run_record["run_id"]
+        entry["checkpoint"]["archive"] = stage_archive
+        add_output(run_record, stage_ckpt, "stage_latest_checkpoint")
+
+        if "eval" in entry:
+            rank = _evaluation_rank(entry["eval"])
+            entry["eval"]["rank"] = list(rank)
+            if best_rank is None or rank > best_rank:
+                _save_checkpoint(pol, best_ckpt)
+                best_archive = _archive_checkpoint(
+                    run_record, best_ckpt, "stage_best_checkpoint",
+                    f"stage_{stage}_best_iter_{iteration:06d}.pt")
+                entry["eval"]["best_checkpoint"] = artifact_record(
+                    best_ckpt, "stage_best_checkpoint")
+                entry["eval"]["best_checkpoint"]["run_id"] = run_record["run_id"]
+                entry["eval"]["best_checkpoint"]["archive"] = best_archive
+                add_output(run_record, best_ckpt, "stage_best_checkpoint")
+                best_rank = rank
+        _persist_run_record(log, run_record)
         print(
             f"[{stage} {iteration:03d}] train_ret={entry['mean_return']:8.1f} "
             f"succ={entry['success']:.0%} valid_ptr={entry['valid_request_rate']:.3f} "
@@ -342,7 +501,13 @@ def _train(stage: str, iter0: int, n_iters: int) -> None:
             f"progress={entry['max_stable_progress']:02d} "
             f"deltas={deltas}", flush=True)
 
-    pol.save(str(final_ckpt))
+    _save_checkpoint(pol, final_ckpt)
+    final_archive = _archive_checkpoint(
+        run_record, final_ckpt, "stage_final_checkpoint",
+        f"stage_{stage}_final.pt")
+    add_output(run_record, final_ckpt, "stage_final_checkpoint")
+    run_record["final_checkpoint"] = final_archive
+    _persist_run_record(log, run_record)
     print(f"[stage {stage}] saved {final_ckpt}; wall "
           f"{(time.time() - t0) / 60:.1f} min", flush=True)
 
@@ -359,14 +524,49 @@ def _eval_only() -> None:
         checkpoint = OUT / f"stage_{stage}_final.pt"
     if not checkpoint.exists():
         raise FileNotFoundError(f"missing evaluation checkpoint: {checkpoint}")
-    pol.load(str(checkpoint))
-    rows = _evaluate(pol, shield, [int(x) for x in os.environ.get(
-        "MUMT_STAGED_EVAL_SEEDS", "300,301,302").split(",") if x.strip()],
-                     _env_int("MUMT_STAGED_K", 2))
-    print(json.dumps({"checkpoint": str(checkpoint), "rows": rows},
-                     ensure_ascii=False, indent=1))
+    seeds = [int(x) for x in os.environ.get(
+        "MUMT_STAGED_EVAL_SEEDS", "300,301,302").split(",") if x.strip()]
+    k_red = _env_int("MUMT_STAGED_K", 2)
+    run_record = capture_run_provenance(
+        repo_root=ROOT,
+        output_dir=OUT,
+        entry_scripts=[ROOT / "_p3_staged.py"],
+        phase="staged_eval",
+        task_config=env.cfg,
+        algorithm_config=pol.config,
+        runtime_parameters={
+            "environment": {key: value for key, value in os.environ.items()
+                            if key.startswith("MUMT_")},
+            "stage": stage,
+            "k_red": k_red,
+            "evaluation_seeds": seeds,
+            "source_checkpoint": str(checkpoint.resolve()),
+        },
+        inputs=[],
+        source_snapshot=SOURCE_SNAPSHOT,
+    )
+    log = _load_log()
+    register_active_run(
+        run_record, lambda record: _persist_run_record(_load_log(), record))
+    _persist_run_record(log, run_record)
+    _load_policy_checkpoint(pol, checkpoint, run_record,
+                            "evaluation_checkpoint")
+    rows = _evaluate(pol, shield, seeds, k_red)
+    result = {
+        "run_id": run_record["run_id"],
+        "checkpoint": artifact_record(checkpoint, "evaluation_checkpoint"),
+        "rows": rows,
+    }
+    report_path = OUT / "provenance" / f"{run_record['run_id']}_evaluation.json"
+    write_json_atomic(report_path, result)
+    add_output(run_record, report_path, "staged_evaluation_report")
+    result["report"] = artifact_record(report_path, "staged_evaluation_report")
+    log.setdefault("evaluations", []).append(result)
+    _persist_run_record(log, run_record)
+    print(json.dumps(result, ensure_ascii=False, indent=1))
 
 
+@track_run_lifecycle
 def main() -> None:
     if len(sys.argv) < 2:
         raise SystemExit("usage: _p3_staged.py a|b|c|eval [iter0] [n_iters]")

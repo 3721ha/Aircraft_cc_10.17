@@ -77,7 +77,7 @@ def test_c03_rate_limit_counts_window():
 
 def test_m02_owned_stale_track():
     cfg = DetectSimConfig()
-    blue = [_blue(tracks={7: {"age": 3.0, "state": "confirmed", "sigma": 1.0}}, owned=[7]),
+    blue = [_blue(tracks={7: {"age": 6.0, "state": "confirmed", "sigma": 1.0}}, owned=[7]),
             _blue(y=110.0), _blue(y=10.0), _blue(x=10.0)]
     red = [{"uid": 7, "x": 90.0, "y": 60.0, "judged": False}]  # tracking zone
     rep = DetectRuleMonitor(cfg).evaluate_truth(
@@ -135,7 +135,7 @@ def test_penalty_layer_sums():
     cfg = DetectSimConfig()
     red = [{"uid": 7, "x": 90.0, "y": 60.0, "judged": False}]
     blue = [_blue(x=50.0, y=60.0, psi=0.0,
-                  tracks={7: {"age": 3.0, "state": "confirmed", "sigma": 1.0}}, owned=[7]),
+                  tracks={7: {"age": 6.0, "state": "confirmed", "sigma": 1.0}}, owned=[7]),
             _blue(x=51.0, y=60.0), _blue(x=50.0, y=110.0), _blue(x=10.0, y=60.0)]
     rep = DetectRuleMonitor(cfg).evaluate_truth(
         _truth(cfg, blue=blue, red=red, responsibility={7: 0}))

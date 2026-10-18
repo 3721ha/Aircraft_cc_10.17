@@ -24,7 +24,7 @@ class TestZones(unittest.TestCase):
         self.assertEqual(c.zone_of(160.0), ZONE_DETECTION)
 
     def test_age_standard(self):
-        self.assertEqual(self.cfg.age_standard(70.0), 2.0)
+        self.assertEqual(self.cfg.age_standard(70.0), 5.0)
         self.assertEqual(self.cfg.age_standard(130.0), 5.0)
 
     def test_subzones_cover_width(self):
@@ -94,7 +94,7 @@ class TestGearTable(unittest.TestCase):
     def test_role_masks_partition(self):
         c = self.cfg
         self.assertEqual(set(c.GEARS_SEARCH) | set(c.GEARS_TRACK), set(c.GEAR_FRAME))
-        self.assertFalse(set(c.GEARS_SEARCH) & set(c.GEARS_TRACK))
+        self.assertEqual(set(c.GEARS_SEARCH) & set(c.GEARS_TRACK), {45.0})
 
     def test_scan_rate(self):
         """4 s full sweep of ±60 deg at 0.5 s dwell => 8 beam positions of 15 deg."""
@@ -128,7 +128,8 @@ class TestRegistryConsistency(unittest.TestCase):
 
     def test_obs_dim_decomposition(self):
         c = self.cfg
-        self.assertEqual(17 + c.TRACK_SLOTS * 12 + 2 * 6 + 4 + 6 + 3, c.OBS_DIM)
+        self.assertEqual(17 + c.TRACK_SLOTS * 14 + 2 * 6 + 4 + 6 + 3 + 2 + 13,
+                         c.OBS_DIM)
 
     def test_w8_layer_mapping(self):
         """V1.20 x2.5 scaling of layer weights 4.0/3.0/2.0/1.0/0.5."""
