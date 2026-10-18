@@ -6,6 +6,40 @@ The strongest task-policy starting point remains
 `Aircraft_mumt/runs/joint_w8_a10_lr3e5_diag_loadfix/curr_k2_best.pt`.
 Its earlier validation used K=2, W8/A10 and seeds 200-209 (RL 10/10,
 HEUR 9/10). It is a relaxed-configuration starting point, not a final model.
+The paired validation returns were -1034.9 (RL) and -1704.3 (HEUR), with
+1.9627 and 3.6659 violations per step, respectively. Under strict W15/A5,
+seeds 220-229, RL reached 3/10 versus HEUR 1/10, but its mean return was
+-5634.5 versus -6949.2. Keep both outcomes in view; the strict result is not
+evidence that the deployment goal has been met.
+
+The source snapshot for this older candidate predates the provenance system.
+Its checkpoint, training log, relaxed validation and strict paired evaluation
+are retained together in `Aircraft_mumt/runs/joint_w8_a10_lr3e5_diag_loadfix/`,
+but the exact training source/configuration cannot be reconstructed from that
+run alone. New optimization runs must include the generated provenance bundle.
+
+## Retained Comparison Runs
+
+These runs contain substantive training, paired evaluation or conflict-probe
+evidence and are retained as historical comparisons, including negative
+results:
+
+- `Aircraft_mumt/runs/fullppo_w8a10_k3/`: K=3 full-PPO training, four paired
+  task-configuration evaluations and forced conflict probes.
+- `Aircraft_mumt/runs/detect_bid_cf_long_12_7/` and
+  `Aircraft_mumt/runs/detect_bid_cf_long_12_7_loadfix/`: separate K=2 runs
+  with strict paired evaluations; the latter also evaluates best/final
+  checkpoints and several bid-weight probes.
+- `Aircraft_mumt/runs/bid_directional_k4_w5/`: K=4 comparison with paired
+  evaluation and deterministic conflict probe.
+- `Aircraft_mumt/runs/conflict_exposure_smoke_v6/`: despite its name, this
+  contains a 10-seed paired BC/current-policy comparison and is not disposable
+  smoke output.
+
+Only exact duplicate run outputs and model checkpoints produced solely by
+short smoke tests are eligible for cleanup. Their useful logs remain as local
+development records. Real paired evaluations and their corresponding
+checkpoints are never removed based on directory names or low scores.
 
 ## Event-Normalized Bid Ablation
 

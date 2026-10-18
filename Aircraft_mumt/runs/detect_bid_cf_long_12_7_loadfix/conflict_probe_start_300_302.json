@@ -1,0 +1,181 @@
+{
+  "checkpoint": "Aircraft_mumt/runs/xi_anchor_smoke_12_7/curr_k2.pt",
+  "k": 2,
+  "mode": "forced_local_track_conflict_probe",
+  "stable_window": 12,
+  "age_std_track": 5.0,
+  "probe_runs": [
+    {
+      "controller": "RL",
+      "seed": 300,
+      "k": 2,
+      "terminal": "success",
+      "stable_window": 12,
+      "return": -830.02,
+      "violations": 640,
+      "conflicts": 3,
+      "bid_changed_winner": 0,
+      "conflict_probe": {
+        "enabled": true,
+        "exposure_steps": 4,
+        "injected_request_pairs": 4,
+        "exposed_agents": 8,
+        "multi_candidate_events": 3,
+        "bid_changed_winner": 0,
+        "bid_winner_change_rate": 0.0
+      },
+      "mean_abs_bid_on_conflicts": 0.0282,
+      "request_outcomes": {
+        "selected": 33,
+        "c04_rejected": 41,
+        "lost_arbitration": 3
+      },
+      "incumbent_overrides": 0,
+      "shield_interventions": 212,
+      "mean_correction": 0.233,
+      "violations_by_family": {
+        "M01": 58,
+        "E01": 8,
+        "E02": 1,
+        "M05": 48,
+        "S05": 283,
+        "M03": 63,
+        "C04": 41,
+        "I03": 4,
+        "M02": 54,
+        "S04": 80
+      },
+      "active_steps_by_conflict_pair": {
+        "S04-M02": 24,
+        "S05-M02": 68,
+        "C01-M02": 131,
+        "C03-M02": 199,
+        "C02-M01": 0,
+        "M01-M02": 246,
+        "S02-M02": 0,
+        "S03-M02": 839,
+        "I02-M02": 3,
+        "I03-M02": 64,
+        "M04-S04": 222,
+        "C01-C03": 3,
+        "M05-E03": 0
+      },
+      "mean_rl_preference_when_active": {}
+    },
+    {
+      "controller": "RL",
+      "seed": 301,
+      "k": 2,
+      "terminal": "success",
+      "stable_window": 12,
+      "return": -3716.338,
+      "violations": 3316,
+      "conflicts": 0,
+      "bid_changed_winner": 0,
+      "conflict_probe": {
+        "enabled": true,
+        "exposure_steps": 0,
+        "injected_request_pairs": 0,
+        "exposed_agents": 0,
+        "multi_candidate_events": 0,
+        "bid_changed_winner": 0,
+        "bid_winner_change_rate": 0.0
+      },
+      "mean_abs_bid_on_conflicts": 0.0,
+      "request_outcomes": {
+        "selected": 59,
+        "c04_rejected": 98
+      },
+      "incumbent_overrides": 0,
+      "shield_interventions": 658,
+      "mean_correction": 0.3937,
+      "violations_by_family": {
+        "M01": 60,
+        "E01": 43,
+        "I03": 10,
+        "C04": 129,
+        "M03": 110,
+        "S05": 991,
+        "S04": 945,
+        "M02": 155,
+        "M05": 139,
+        "E03": 382,
+        "C02": 352
+      },
+      "active_steps_by_conflict_pair": {
+        "S04-M02": 0,
+        "S05-M02": 139,
+        "C01-M02": 283,
+        "C03-M02": 540,
+        "C02-M01": 190,
+        "M01-M02": 683,
+        "S02-M02": 0,
+        "S03-M02": 1171,
+        "I02-M02": 3,
+        "I03-M02": 119,
+        "M04-S04": 1194,
+        "C01-C03": 0,
+        "M05-E03": 74
+      },
+      "mean_rl_preference_when_active": {}
+    },
+    {
+      "controller": "RL",
+      "seed": 302,
+      "k": 2,
+      "terminal": "success",
+      "stable_window": 12,
+      "return": -3929.655,
+      "violations": 2590,
+      "conflicts": 0,
+      "bid_changed_winner": 0,
+      "conflict_probe": {
+        "enabled": true,
+        "exposure_steps": 0,
+        "injected_request_pairs": 0,
+        "exposed_agents": 0,
+        "multi_candidate_events": 0,
+        "bid_changed_winner": 0,
+        "bid_winner_change_rate": 0.0
+      },
+      "mean_abs_bid_on_conflicts": 0.0,
+      "request_outcomes": {
+        "selected": 20,
+        "c04_rejected": 55
+      },
+      "incumbent_overrides": 0,
+      "shield_interventions": 436,
+      "mean_correction": 0.3717,
+      "violations_by_family": {
+        "M01": 49,
+        "S05": 653,
+        "I03": 4,
+        "M03": 322,
+        "M05": 1,
+        "M02": 316,
+        "C04": 332,
+        "E01": 28,
+        "S04": 711,
+        "E02": 2,
+        "E03": 115,
+        "C02": 57
+      },
+      "active_steps_by_conflict_pair": {
+        "S04-M02": 42,
+        "S05-M02": 43,
+        "C01-M02": 384,
+        "C03-M02": 263,
+        "C02-M01": 47,
+        "M01-M02": 466,
+        "S02-M02": 0,
+        "S03-M02": 1046,
+        "I02-M02": 4,
+        "I03-M02": 74,
+        "M04-S04": 1047,
+        "C01-C03": 6,
+        "M05-E03": 0
+      },
+      "mean_rl_preference_when_active": {}
+    }
+  ]
+}
