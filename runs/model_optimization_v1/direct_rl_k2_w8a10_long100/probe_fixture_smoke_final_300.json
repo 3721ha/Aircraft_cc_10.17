@@ -1,0 +1,3186 @@
+{
+ "checkpoint": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\direct_rl_k2_w8a10_long100\\curr_k2_best.pt",
+ "k": 2,
+ "mode": "forced_local_track_conflict_probe",
+ "stable_window": 8,
+ "age_std_track": 10.0,
+ "arb_bid_weight": 0.35,
+ "arb_hysteresis": 0.2,
+ "direct_rl_arbitration": true,
+ "task_config": {
+  "dt": 1.0,
+  "horizon": 900,
+  "L_X": 160.0,
+  "L_Y": 120.0,
+  "X_CUTOFF": 40.0,
+  "X_TRACK": 110.0,
+  "AGE_STD_TRACK": 10.0,
+  "AGE_STD_DETECT": 5.0,
+  "STABLE_WINDOW": 8,
+  "N_WINGMEN": 3,
+  "BLUE_V_MIN_MA": 0.4,
+  "BLUE_V_MAX_MA": 0.95,
+  "OMEGA_CRUISE_DEG": 3.0,
+  "OMEGA_MANEUVER_DEG": 6.0,
+  "ACCEL_MAX_MA_S": 0.1,
+  "K_PSI": 1.0,
+  "K_V_MS": 30.0,
+  "MANNED_V_MIN_MA": 0.5,
+  "MANNED_V_MAX_MA": 0.9,
+  "MANNED_OMEGA_DEG": 3.0,
+  "K_RED": 4,
+  "RED_CRUISE_MA": 0.75,
+  "RED_MANEUVER_MA_RANGE": [
+   0.6,
+   0.9
+  ],
+  "RED_OMEGA_DEG": 8.0,
+  "RED_DUTY_MIN": 0.7,
+  "RED_DUTY_MAX": 0.8,
+  "RED_STAGGER_KM": 8.0,
+  "RED_X0": 158.0,
+  "RED_MANEUVER_RESAMPLE": [
+   20,
+   40
+  ],
+  "RED_TURN_POISSON_MEAN": 30.0,
+  "RED_SNAKE_HALF_ANGLE_DEG": 30.0,
+  "RED_SNAKE_PERIOD": 20.0,
+  "RED_EDGE_SUPPRESS_KM": 5.0,
+  "RED_REGAIN_T": [
+   12.0,
+   20.0
+  ],
+  "RED_REGAIN_SPREAD_DEG": 30.0,
+  "RED_SEP_WARN_KM": 18.0,
+  "RED_SEP_HARD_KM": 2.0,
+  "RED_SEP_BIAS_DEG": 45.0,
+  "RED_PAIR_SUBLANE_KM": 4.0,
+  "R_MAX": 80.0,
+  "FOV_HALF_DEG": 7.5,
+  "BEAM_DWELL": 0.5,
+  "GEAR_FRAME": {
+   "7.5": 0.5,
+   "15.0": 1.0,
+   "30.0": 2.0,
+   "45.0": 3.0,
+   "60.0": 4.0
+  },
+  "GEARS_SEARCH": [
+   45.0,
+   60.0
+  ],
+  "GEARS_TRACK": [
+   7.5,
+   15.0,
+   30.0,
+   45.0
+  ],
+  "PD_TIERS": [
+   [
+    0.5,
+    0.9
+   ],
+   [
+    0.8,
+    0.6
+   ],
+   [
+    1.0,
+    0.3
+   ]
+  ],
+  "SECTOR_AXIS_MAX_DEG": 60.0,
+  "AXIS_TRIM_SCALE_DEG": 15.0,
+  "TRACK_INIT_HITS": 2,
+  "TRACK_INIT_WINDOW": 6.5,
+  "TRACK_CONFIRM_TIME": 5.0,
+  "TRACK_CONFIRM_GAP_MAX": 1.6,
+  "AGE_DEGRADE": 8.0,
+  "AGE_DROP": 13.0,
+  "COV_SHRINK": 0.8,
+  "COV_Q_KM2_S": 0.25,
+  "SIGMA_REF": 4.0,
+  "MAR": 40.0,
+  "MOR": 60.0,
+  "MAR_MOR_VARIANTS": [
+   [
+    40.0,
+    60.0
+   ],
+   [
+    30.0,
+    50.0
+   ],
+   [
+    20.0,
+    40.0
+   ]
+  ],
+  "K_SIGMA": 3.0,
+  "MOR_GRADIENT_SPAN": 20.0,
+  "D_SAFE": 2.0,
+  "D_SAFE_LOOKAHEAD": 3.0,
+  "BOUNDARY_PREDICT": 5.0,
+  "LINK_RATE_HZ": 1.0,
+  "LINK_DELAY_S": 1.0,
+  "T_SCAN_REQ": 120.0,
+  "HANDOFF_MIN_INTERVAL": 30.0,
+  "HANDOFF_INTERVAL_SWEEP": [
+   10.0,
+   20.0,
+   30.0
+  ],
+  "C04_RANGE": 80.0,
+  "C04_RESPONSE": 5.0,
+  "T_DWELL": 5.0,
+  "APPROVAL_DELAY_INIT": 0.0,
+  "LINK_DROP_RATE": 0.3,
+  "LINK_DROP_WINDOW": 10.0,
+  "UPLINK_LOSS_P": 0.05,
+  "E03_AREA_PER_KM": 5.0,
+  "N_SUBZONES": 3,
+  "TRACK_SWEET_DIST": 62.0,
+  "TRACK_K_D": 0.0025,
+  "CAP_X": 15.0,
+  "CAP_Y": 60.0,
+  "CAP_LEG_Y": 10.0,
+  "CAP_LEG_X": 5.0,
+  "ARB_WEIGHTS": [
+   1.0,
+   1.0,
+   0.5,
+   0.5,
+   0.3
+  ],
+  "ARB_HYSTERESIS": 0.2,
+  "ARB_BID_WEIGHT": 0.35,
+  "W1_TRACK_TICK": 0.02,
+  "W2_DETECT_TICK": 0.005,
+  "W3_STABLE": 10.0,
+  "W4_SUCCESS": 50.0,
+  "W5_MOR_GRAD": 0.02,
+  "W6_MAR": 0.1,
+  "W7_HANDOFF": 0.5,
+  "W8_LAYER": [
+   10.0,
+   7.5,
+   10.0,
+   5.0,
+   2.5,
+   1.25
+  ],
+  "W8_SCALE": 1.0,
+  "M05_GRACE": 5.0,
+  "W9_FAILURE": 50.0,
+  "STEP_COST": 0.005,
+  "OBS_DIM": 169,
+  "TRACK_SLOTS": 8,
+  "NET_HIDDEN": 128,
+  "TOTAL_STEPS": 1500000,
+  "N_ENVS": 16,
+  "N_SEEDS": 10,
+  "BC_EPOCHS": [
+   50,
+   100
+  ],
+  "CONVERGE_WINDOW": 100,
+  "seed": 7
+ },
+ "task_config_sha256": "87e5fcd38254e5c1c06f98b7f8a379a9d101cfe7f70dcd78c3c2b2157516e248",
+ "provenance": {
+  "run_id": "20261019T042201.274325Z_43140_0411ac44",
+  "sidecar": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\direct_rl_k2_w8a10_long100\\probe_fixture_smoke_final_300.json.provenance.json"
+ },
+ "probe_runs": [
+  {
+   "controller": "RL",
+   "seed": 300,
+   "k": 2,
+   "terminal": "success",
+   "stable_window": 8,
+   "return": -2311.258,
+   "steps": 512,
+   "violations": 1529,
+   "conflicts": 117,
+   "bid_changed_winner": 30,
+   "rl_direct_arbitration": true,
+   "conflict_probe": {
+    "enabled": true,
+    "exposure_steps": 128,
+    "injected_request_pairs": 128,
+    "fixture_injected_steps": 140,
+    "fixture_injected_pairs": 140,
+    "exposed_agents": 256,
+    "multi_candidate_events": 117,
+    "bid_changed_winner": 30,
+    "bid_winner_change_rate": 0.25641
+   },
+   "mean_abs_bid_on_conflicts": 0.05392,
+   "conflict_probe_events": [
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.44905556752362097,
+      "1": 0.5246566771648411
+     },
+     "bids": {
+      "0": -0.04719126224517822,
+      "1": -0.043250828981399536
+     },
+     "adjusted_scores": {
+      "0": 0.4325386257378086,
+      "1": 0.5095188870213513
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.4442213084709785,
+      "1": 0.5370212388742267
+     },
+     "bids": {
+      "0": -0.07257238030433655,
+      "1": -0.07116398215293884
+     },
+     "adjusted_scores": {
+      "0": 0.4188209753644607,
+      "1": 0.5121138451206981
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.43909570879878373,
+      "1": 0.5491416458814146
+     },
+     "bids": {
+      "0": -0.07013643532991409,
+      "1": -0.06623361259698868
+     },
+     "adjusted_scores": {
+      "0": 0.4145479564333138,
+      "1": 0.5259598814724685
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.4337088642362485,
+      "1": 0.5610477024931781
+     },
+     "bids": {
+      "0": -0.06783780455589294,
+      "1": -0.062320951372385025
+     },
+     "adjusted_scores": {
+      "0": 0.40996563264168595,
+      "1": 0.5392353695128433
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.428154520923694,
+      "1": 0.686995193043671
+     },
+     "bids": {
+      "0": -0.06560492515563965,
+      "1": -0.059179846197366714
+     },
+     "adjusted_scores": {
+      "0": 0.4051927971192201,
+      "1": 0.6662822468745926
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.4226689131015334,
+      "1": 0.583615082563357
+     },
+     "bids": {
+      "0": -0.06330706179141998,
+      "1": -0.056020110845565796
+     },
+     "adjusted_scores": {
+      "0": 0.4005114414745364,
+      "1": 0.564008043767409
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.41847429935228103,
+      "1": 0.5940968844400196
+     },
+     "bids": {
+      "0": -0.06083311885595322,
+      "1": -0.05279558151960373
+     },
+     "adjusted_scores": {
+      "0": 0.39718270775269743,
+      "1": 0.5756184309081583
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.41546133098212895,
+      "1": 0.7184038960479227
+     },
+     "bids": {
+      "0": -0.06072789058089256,
+      "1": -0.05293789505958557
+     },
+     "adjusted_scores": {
+      "0": 0.39420656927881653,
+      "1": 0.6998756327770677
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.4136985056460071,
+      "1": 0.6111906408725409
+     },
+     "bids": {
+      "0": -0.06051291897892952,
+      "1": -0.0529848150908947
+     },
+     "adjusted_scores": {
+      "0": 0.39251898400338175,
+      "1": 0.5926459555907277
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.412904852414424,
+      "1": 0.6116453561292623
+     },
+     "bids": {
+      "0": -0.060238372534513474,
+      "1": -0.05291455239057541
+     },
+     "adjusted_scores": {
+      "0": 0.39182142202734427,
+      "1": 0.593125262792561
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.4128150094361347,
+      "1": 0.6129347633147941
+     },
+     "bids": {
+      "0": -0.05991759151220322,
+      "1": -0.05278400331735611
+     },
+     "adjusted_scores": {
+      "0": 0.3918438524068636,
+      "1": 0.5944603621537194
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.4133994977197054,
+      "1": 0.614980180724558
+     },
+     "bids": {
+      "0": -0.05960893630981445,
+      "1": -0.052603501826524734
+     },
+     "adjusted_scores": {
+      "0": 0.39253637001127034,
+      "1": 0.5965689550852743
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.414049056684752,
+      "1": 0.6173467837323753
+     },
+     "bids": {
+      "0": -0.05934756249189377,
+      "1": -0.05239465832710266
+     },
+     "adjusted_scores": {
+      "0": 0.3932774098125892,
+      "1": 0.5990086533178893
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.4146989187917266,
+      "1": 0.6199329248222241
+     },
+     "bids": {
+      "0": -0.05907690152525902,
+      "1": -0.052182845771312714
+     },
+     "adjusted_scores": {
+      "0": 0.39402200325788594,
+      "1": 0.6016689288022646
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.41599544330978006,
+      "1": 0.6230773603971177
+     },
+     "bids": {
+      "0": -0.058851249516010284,
+      "1": -0.05197718366980553
+     },
+     "adjusted_scores": {
+      "0": 0.39539750597917644,
+      "1": 0.6048853461126857
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.417820165646313,
+      "1": 0.6266201270663201
+     },
+     "bids": {
+      "0": -0.05866952985525131,
+      "1": -0.05178112909197807
+     },
+     "adjusted_scores": {
+      "0": 0.39728583019697505,
+      "1": 0.6084967318841278
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.4194596200834677,
+      "1": 0.7637792082021985
+     },
+     "bids": {
+      "0": -0.0584719181060791,
+      "1": -0.05158994346857071
+     },
+     "adjusted_scores": {
+      "0": 0.39899444874634005,
+      "1": 0.7457227279881987
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.42088173156231024,
+      "1": 0.6335959573556338
+     },
+     "bids": {
+      "0": -0.05826294422149658,
+      "1": -0.05140531063079834
+     },
+     "adjusted_scores": {
+      "0": 0.40048970108478643,
+      "1": 0.6156040986348543
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.42270830533947756,
+      "1": 0.6373250529983765
+     },
+     "bids": {
+      "0": -0.058150894939899445,
+      "1": -0.05123315006494522
+     },
+     "adjusted_scores": {
+      "0": 0.40235549211051275,
+      "1": 0.6193934504756456
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.42497640592028596,
+      "1": 0.774964754014317
+     },
+     "bids": {
+      "0": -0.057994261384010315,
+      "1": -0.051058653742074966
+     },
+     "adjusted_scores": {
+      "0": 0.40467841443588237,
+      "1": 0.7570942252045907
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.4276094823906738,
+      "1": 0.6455965591859683
+     },
+     "bids": {
+      "0": -0.057870615273714066,
+      "1": -0.050895024091005325
+     },
+     "adjusted_scores": {
+      "0": 0.4073547670448739,
+      "1": 0.6277833007541164
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.43029414393560356,
+      "1": 0.6499191166883737
+     },
+     "bids": {
+      "0": -0.05793379619717598,
+      "1": -0.05074114724993706
+     },
+     "adjusted_scores": {
+      "0": 0.41001731526659196,
+      "1": 0.6321597151508956
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.43335033088727903,
+      "1": 0.7879561526695287
+     },
+     "bids": {
+      "0": -0.05775086209177971,
+      "1": -0.05057184398174286
+     },
+     "adjusted_scores": {
+      "0": 0.4131375291551561,
+      "1": 0.7702560072759187
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.43678996271658443,
+      "1": 0.6587780288027665
+     },
+     "bids": {
+      "0": -0.0575295127928257,
+      "1": -0.050415586680173874
+     },
+     "adjusted_scores": {
+      "0": 0.41665463323909546,
+      "1": 0.6411325734647056
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.4403872499663695,
+      "1": 0.6631237252198634
+     },
+     "bids": {
+      "0": -0.05742781236767769,
+      "1": -0.050259411334991455
+     },
+     "adjusted_scores": {
+      "0": 0.42028751563768235,
+      "1": 0.6455329312526163
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.44414720594458634,
+      "1": 0.8010031007286167
+     },
+     "bids": {
+      "0": -0.05726949870586395,
+      "1": -0.050081558525562286
+     },
+     "adjusted_scores": {
+      "0": 0.42410288139753394,
+      "1": 0.7834745552446699
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.44797453546709876,
+      "1": 0.6714896022164015
+     },
+     "bids": {
+      "0": -0.0571475476026535,
+      "1": -0.049922309815883636
+     },
+     "adjusted_scores": {
+      "0": 0.42797289380617004,
+      "1": 0.6540167937808422
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.4517829720932652,
+      "1": 0.6753230089549874
+     },
+     "bids": {
+      "0": -0.05705643817782402,
+      "1": -0.04977735877037048
+     },
+     "adjusted_scores": {
+      "0": 0.4318132187310268,
+      "1": 0.6579009333853577
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.45557680355744445,
+      "1": 0.678917936650787
+     },
+     "bids": {
+      "0": -0.056899894028902054,
+      "1": -0.049604278057813644
+     },
+     "adjusted_scores": {
+      "0": 0.4356618406473287,
+      "1": 0.6615564393305523
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.45926591466444255,
+      "1": 0.6822557832825489
+     },
+     "bids": {
+      "0": -0.056773461401462555,
+      "1": -0.04941225424408913
+     },
+     "adjusted_scores": {
+      "0": 0.43939520317393066,
+      "1": 0.6649614942971177
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.46276714590604734,
+      "1": 0.6851880503404879
+     },
+     "bids": {
+      "0": -0.05668036639690399,
+      "1": -0.049275320023298264
+     },
+     "adjusted_scores": {
+      "0": 0.44292901766713094,
+      "1": 0.6679416883323335
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.46609018261607177,
+      "1": 0.8021387634516107
+     },
+     "bids": {
+      "0": -0.05651494115591049,
+      "1": -0.04910319671034813
+     },
+     "adjusted_scores": {
+      "0": 0.4463099532115031,
+      "1": 0.7849526446029889
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.48130814625990587,
+      "1": 0.6998082891124977
+     },
+     "bids": {
+      "0": -0.06878849118947983,
+      "1": -0.06668629497289658
+     },
+     "adjusted_scores": {
+      "0": 0.4572321743435879,
+      "1": 0.6764680858719839
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.49242513057983084,
+      "1": 0.7094743928151631
+     },
+     "bids": {
+      "0": -0.051932115107774734,
+      "1": -0.043051742017269135
+     },
+     "adjusted_scores": {
+      "0": 0.4742488902921097,
+      "1": 0.6944062831091189
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 0,
+     "scores": {
+      "0": 0.5257722137487457,
+      "1": 0.6985678683781215
+     },
+     "bids": {
+      "0": -0.07365681976079941,
+      "1": -0.07413027435541153
+     },
+     "adjusted_scores": {
+      "0": 0.4999923268324659,
+      "1": 0.6726222723537274
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 0,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.45601217952849676,
+      "1": 0.4494244237142511
+     },
+     "bids": {
+      "0": -0.05325043946504593,
+      "1": -0.04705120995640755
+     },
+     "adjusted_scores": {
+      "0": 0.4373745257157307,
+      "1": 0.4329565002295085
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.5423277606813295,
+      "1": 0.6974251966729781
+     },
+     "bids": {
+      "0": -0.04889899492263794,
+      "1": -0.042484793812036514
+     },
+     "adjusted_scores": {
+      "0": 0.5252131124584062,
+      "1": 0.6825555188387653
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.47217698610047015,
+      "1": 0.583875678838562
+     },
+     "bids": {
+      "0": -0.044891148805618286,
+      "1": -0.0382368229329586
+     },
+     "adjusted_scores": {
+      "0": 0.4564650840185038,
+      "1": 0.5704927908120264
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 0,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.6022861262073996,
+      "1": 0.46223331351726904
+     },
+     "bids": {
+      "0": -0.06662637740373611,
+      "1": -0.06390217691659927
+     },
+     "adjusted_scores": {
+      "0": 0.578966894116092,
+      "1": 0.4398675515964593
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.5433332758802795,
+      "1": 0.7200067198063073
+     },
+     "bids": {
+      "0": -0.06420472264289856,
+      "1": -0.059146948158741
+     },
+     "adjusted_scores": {
+      "0": 0.520861622955265,
+      "1": 0.6993052879507479
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.5412454600634093,
+      "1": 0.7296699093951453
+     },
+     "bids": {
+      "0": -0.06163029745221138,
+      "1": -0.054593052715063095
+     },
+     "adjusted_scores": {
+      "0": 0.5196748559551354,
+      "1": 0.7105623409448732
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.46300989389959757,
+      "1": 0.492702486612495
+     },
+     "bids": {
+      "0": -0.06138569861650467,
+      "1": -0.05368127301335335
+     },
+     "adjusted_scores": {
+      "0": 0.44152489938382095,
+      "1": 0.4739140410578213
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.6738714438328368,
+      "1": 0.7458590590138685
+     },
+     "bids": {
+      "0": -0.061114877462387085,
+      "1": -0.053453993052244186
+     },
+     "adjusted_scores": {
+      "0": 0.6524812367210013,
+      "1": 0.7271501614455831
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.464227377588881,
+      "1": 0.5080657847710004
+     },
+     "bids": {
+      "0": -0.060859546065330505,
+      "1": -0.05342966318130493
+     },
+     "adjusted_scores": {
+      "0": 0.4429265364660153,
+      "1": 0.4893654026575437
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.46594427688960144,
+      "1": 0.5144994197180044
+     },
+     "bids": {
+      "0": -0.06056186556816101,
+      "1": -0.05334112048149109
+     },
+     "adjusted_scores": {
+      "0": 0.4447476239407451,
+      "1": 0.4958300275494825
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 0,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.5826767133225673,
+      "1": 0.5199925095208394
+     },
+     "bids": {
+      "0": -0.06028486788272858,
+      "1": -0.05320175737142563
+     },
+     "adjusted_scores": {
+      "0": 0.5615770095636123,
+      "1": 0.5013718944408404
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.547052374497906,
+      "1": 0.7648458802819327
+     },
+     "bids": {
+      "0": -0.060047730803489685,
+      "1": -0.05304248258471489
+     },
+     "adjusted_scores": {
+      "0": 0.5260356687166846,
+      "1": 0.7462810113772824
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.5498524905323832,
+      "1": 0.8824278664684252
+     },
+     "bids": {
+      "0": -0.059805020689964294,
+      "1": -0.0528794601559639
+     },
+     "adjusted_scores": {
+      "0": 0.5289207332908956,
+      "1": 0.8639200554138379
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.47760106216916465,
+      "1": 0.5319354393858908
+     },
+     "bids": {
+      "0": -0.05956247076392174,
+      "1": -0.05272243544459343
+     },
+     "adjusted_scores": {
+      "0": 0.456754197401792,
+      "1": 0.5134825869802832
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.48118508617790695,
+      "1": 0.5353921691987437
+     },
+     "bids": {
+      "0": -0.05941767245531082,
+      "1": -0.052567366510629654
+     },
+     "adjusted_scores": {
+      "0": 0.46038890081854816,
+      "1": 0.5169935909200233
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.5597239943224671,
+      "1": 0.8928327158279957
+     },
+     "bids": {
+      "0": -0.05923817679286003,
+      "1": -0.052411846816539764
+     },
+     "adjusted_scores": {
+      "0": 0.5389906324449661,
+      "1": 0.8744885694422068
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.5633920974658424,
+      "1": 0.781594814548999
+     },
+     "bids": {
+      "0": -0.05902059003710747,
+      "1": -0.05226459726691246
+     },
+     "adjusted_scores": {
+      "0": 0.5427348909528548,
+      "1": 0.7633022055055797
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.4928822994046013,
+      "1": 0.5461822279751215
+     },
+     "bids": {
+      "0": -0.0589158833026886,
+      "1": -0.052123457193374634
+     },
+     "adjusted_scores": {
+      "0": 0.4722617402486603,
+      "1": 0.5279390179574404
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.5708075410469189,
+      "1": 0.7865002765706619
+     },
+     "bids": {
+      "0": -0.058764487504959106,
+      "1": -0.05196559801697731
+     },
+     "adjusted_scores": {
+      "0": 0.5502399704201832,
+      "1": 0.7683123172647198
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.5744453980850144,
+      "1": 0.7881355961656084
+     },
+     "bids": {
+      "0": -0.05864517390727997,
+      "1": -0.051786791533231735
+     },
+     "adjusted_scores": {
+      "0": 0.5539195872174664,
+      "1": 0.7700102191289773
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.5779393775433527,
+      "1": 0.7901919320577129
+     },
+     "bids": {
+      "0": -0.05871813744306564,
+      "1": -0.05166122317314148
+     },
+     "adjusted_scores": {
+      "0": 0.5573880294382797,
+      "1": 0.7721105039471133
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.581591019155974,
+      "1": 0.7925926033852259
+     },
+     "bids": {
+      "0": -0.05853520706295967,
+      "1": -0.05151359736919403
+     },
+     "adjusted_scores": {
+      "0": 0.5611036966839381,
+      "1": 0.774562844306008
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.7188981683685364,
+      "1": 0.7953594090500067
+     },
+     "bids": {
+      "0": -0.05838495120406151,
+      "1": -0.05136989802122116
+     },
+     "adjusted_scores": {
+      "0": 0.6984634354471149,
+      "1": 0.7773799447425793
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.5157688036583551,
+      "1": 0.5593487055136812
+     },
+     "bids": {
+      "0": -0.05826988443732262,
+      "1": -0.05123747140169144
+     },
+     "adjusted_scores": {
+      "0": 0.4953743441052922,
+      "1": 0.5414155905230892
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.5198082878986955,
+      "1": 0.6762342891112539
+     },
+     "bids": {
+      "0": -0.058097098022699356,
+      "1": -0.05107834190130234
+     },
+     "adjusted_scores": {
+      "0": 0.49947430359075073,
+      "1": 0.6583568694457981
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.5239195883888406,
+      "1": 0.5645422748901238
+     },
+     "bids": {
+      "0": -0.05795789510011673,
+      "1": -0.05084718018770218
+     },
+     "adjusted_scores": {
+      "0": 0.5036343251037997,
+      "1": 0.546745761824428
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.5279712452056412,
+      "1": 0.5669310505908834
+     },
+     "bids": {
+      "0": -0.057846616953611374,
+      "1": -0.050723735243082047
+     },
+     "adjusted_scores": {
+      "0": 0.5077249292718772,
+      "1": 0.5491777432558047
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.5319618321950296,
+      "1": 0.6832954782882867
+     },
+     "bids": {
+      "0": -0.057666756212711334,
+      "1": -0.05056238919496536
+     },
+     "adjusted_scores": {
+      "0": 0.5117784675205806,
+      "1": 0.6655986420700488
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.6076328091102721,
+      "1": 0.8085767889388842
+     },
+     "bids": {
+      "0": -0.05752294138073921,
+      "1": -0.05029253661632538
+     },
+     "adjusted_scores": {
+      "0": 0.5874997796270134,
+      "1": 0.7909744011231703
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.6113270839183745,
+      "1": 0.8076131831008079
+     },
+     "bids": {
+      "0": -0.057427626103162766,
+      "1": -0.05053606629371643
+     },
+     "adjusted_scores": {
+      "0": 0.5912274147822676,
+      "1": 0.7899255598980072
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.5435247131863955,
+      "1": 0.5698129880680547
+     },
+     "bids": {
+      "0": -0.057245396077632904,
+      "1": -0.05059419572353363
+     },
+     "adjusted_scores": {
+      "0": 0.523488824559224,
+      "1": 0.552105019564818
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 0,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.6617946758912301,
+      "1": 0.5724399997143022
+     },
+     "bids": {
+      "0": -0.05723520368337631,
+      "1": -0.05049985274672508
+     },
+     "adjusted_scores": {
+      "0": 0.6417623546020483,
+      "1": 0.5547650512529484
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.6224976534764302,
+      "1": 0.8118200707213687
+     },
+     "bids": {
+      "0": -0.057266488671302795,
+      "1": -0.04648086801171303
+     },
+     "adjusted_scores": {
+      "0": 0.6024543824414742,
+      "1": 0.7955517669172691
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.5552071495016832,
+      "1": 0.5749080741463583
+     },
+     "bids": {
+      "0": -0.05723972246050835,
+      "1": -0.04661278426647186
+     },
+     "adjusted_scores": {
+      "0": 0.5351732466405053,
+      "1": 0.5585935996530931
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 0,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.6734996833349113,
+      "1": 0.5776687746884376
+     },
+     "bids": {
+      "0": -0.05722908303141594,
+      "1": -0.04651618003845215
+     },
+     "adjusted_scores": {
+      "0": 0.6534695042739157,
+      "1": 0.5613881116749794
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.563164508404726,
+      "1": 0.5805179764343718
+     },
+     "bids": {
+      "0": -0.05725935474038124,
+      "1": -0.046450208872556686
+     },
+     "adjusted_scores": {
+      "0": 0.5431237342455926,
+      "1": 0.5642604033289769
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.6377801490776311,
+      "1": 0.8231550068382656
+     },
+     "bids": {
+      "0": -0.05721317231655121,
+      "1": -0.04638369753956795
+     },
+     "adjusted_scores": {
+      "0": 0.6177555387668382,
+      "1": 0.8069207126994168
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.5716042538695336,
+      "1": 0.5837858779569219
+     },
+     "bids": {
+      "0": -0.05723418667912483,
+      "1": -0.046584296971559525
+     },
+     "adjusted_scores": {
+      "0": 0.5515722885318399,
+      "1": 0.5674813740168762
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.6449359095805096,
+      "1": 0.8282792738677208
+     },
+     "bids": {
+      "0": -0.05725764110684395,
+      "1": -0.04649088904261589
+     },
+     "adjusted_scores": {
+      "0": 0.6248957351931143,
+      "1": 0.8120074627028052
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.6487695739687724,
+      "1": 0.8268273682058535
+     },
+     "bids": {
+      "0": -0.05723339691758156,
+      "1": -0.04753323271870613
+     },
+     "adjusted_scores": {
+      "0": 0.6287378850476188,
+      "1": 0.8101907367543063
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.652707211057273,
+      "1": 0.825407085878739
+     },
+     "bids": {
+      "0": -0.057258669286966324,
+      "1": -0.04771415516734123
+     },
+     "adjusted_scores": {
+      "0": 0.6326666768068349,
+      "1": 0.8087071315701696
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.5886096661327102,
+      "1": 0.7214019980317514
+     },
+     "bids": {
+      "0": -0.05731942877173424,
+      "1": -0.04777096211910248
+     },
+     "adjusted_scores": {
+      "0": 0.5685478660626032,
+      "1": 0.7046821612900656
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.6605660584578911,
+      "1": 0.8281300361159436
+     },
+     "bids": {
+      "0": -0.05725821852684021,
+      "1": -0.04763561859726906
+     },
+     "adjusted_scores": {
+      "0": 0.640525681973497,
+      "1": 0.8114575696068994
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.7980707221248237,
+      "1": 0.8253146874175228
+     },
+     "bids": {
+      "0": -0.057240378111600876,
+      "1": -0.04774674400687218
+     },
+     "adjusted_scores": {
+      "0": 0.7780365897857634,
+      "1": 0.8086033270151175
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.6013026228330912,
+      "1": 0.7236240203305968
+     },
+     "bids": {
+      "0": -0.05730587616562843,
+      "1": -0.047714490443468094
+     },
+     "adjusted_scores": {
+      "0": 0.5812455661751212,
+      "1": 0.706923948675383
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 0,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.6054985186123287,
+      "1": 0.5954348694353886
+     },
+     "bids": {
+      "0": -0.05725419521331787,
+      "1": -0.047649823129177094
+     },
+     "adjusted_scores": {
+      "0": 0.5854595502876675,
+      "1": 0.5787574313401767
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 0,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.6097630562738927,
+      "1": 0.6000282838964861
+     },
+     "bids": {
+      "0": -0.05715741962194443,
+      "1": -0.0475299246609211
+     },
+     "adjusted_scores": {
+      "0": 0.5897579594062121,
+      "1": 0.5833928102651638
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.6792767419010937,
+      "1": 0.9666087491053759
+     },
+     "bids": {
+      "0": -0.057196084409952164,
+      "1": -0.04749405011534691
+     },
+     "adjusted_scores": {
+      "0": 0.6592581123576104,
+      "1": 0.9499858315650045
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.6832425913620715,
+      "1": 0.8292673074105219
+     },
+     "bids": {
+      "0": -0.05719383805990219,
+      "1": -0.047623321413993835
+     },
+     "adjusted_scores": {
+      "0": 0.6632247480411058,
+      "1": 0.812599144915624
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 0,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.7370092471166423,
+      "1": 0.5995687197194219
+     },
+     "bids": {
+      "0": -0.057092778384685516,
+      "1": -0.047603268176317215
+     },
+     "adjusted_scores": {
+      "0": 0.7170267746820024,
+      "1": 0.5829075758577109
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.6914468113147509,
+      "1": 0.8322978246116582
+     },
+     "bids": {
+      "0": -0.0571262389421463,
+      "1": -0.04756150394678116
+     },
+     "adjusted_scores": {
+      "0": 0.6714526276849997,
+      "1": 0.8156512982302848
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.6867487582388043,
+      "1": 0.8294674337680834
+     },
+     "bids": {
+      "0": -0.057124774903059006,
+      "1": -0.04751262813806534
+     },
+     "adjusted_scores": {
+      "0": 0.6667550870227337,
+      "1": 0.8128380139197605
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 0,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.8154343580288117,
+      "1": 0.8265790028140658
+     },
+     "bids": {
+      "0": -0.055514462292194366,
+      "1": -0.04733241721987724
+     },
+     "adjusted_scores": {
+      "0": 0.7960042962265437,
+      "1": 0.8100126567871088
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 0,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.6230631327575564,
+      "1": 0.5939911355914725
+     },
+     "bids": {
+      "0": -0.05211985483765602,
+      "1": -0.04665398597717285
+     },
+     "adjusted_scores": {
+      "0": 0.6048211835643769,
+      "1": 0.577662240499462
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.627891888952227,
+      "1": 0.7145378137672922
+     },
+     "bids": {
+      "0": -0.051425449550151825,
+      "1": -0.04659562557935715
+     },
+     "adjusted_scores": {
+      "0": 0.6098929816096739,
+      "1": 0.6982293448145171
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 0,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.6363926285225704,
+      "1": 0.609683080136715
+     },
+     "bids": {
+      "0": -0.0524105541408062,
+      "1": -0.04686320945620537
+     },
+     "adjusted_scores": {
+      "0": 0.6180489345732882,
+      "1": 0.5932809568270432
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 0,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.7584427412227188,
+      "1": 0.6185983434145095
+     },
+     "bids": {
+      "0": -0.05331945791840553,
+      "1": -0.04702043533325195
+     },
+     "adjusted_scores": {
+      "0": 0.7397809309512768,
+      "1": 0.6021411910478713
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 0,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.6508788784715407,
+      "1": 0.6266805489766134
+     },
+     "bids": {
+      "0": -0.05435929819941521,
+      "1": -0.047154974192380905
+     },
+     "adjusted_scores": {
+      "0": 0.6318531241017453,
+      "1": 0.6101763080092801
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 0,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.6537097182622514,
+      "1": 0.6315796731991419
+     },
+     "bids": {
+      "0": -0.053199559450149536,
+      "1": -0.047038767486810684
+     },
+     "adjusted_scores": {
+      "0": 0.6350898724546991,
+      "1": 0.6151161045787581
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.6607373990178342,
+      "1": 0.7727877559179135
+     },
+     "bids": {
+      "0": -0.05396725982427597,
+      "1": -0.04706619679927826
+     },
+     "adjusted_scores": {
+      "0": 0.6418488580793377,
+      "1": 0.7563145870381661
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 0,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.667139747812747,
+      "1": 0.6458982591813068
+     },
+     "bids": {
+      "0": -0.05460425838828087,
+      "1": -0.04698754474520683
+     },
+     "adjusted_scores": {
+      "0": 0.6480282573768487,
+      "1": 0.6294526185204844
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 0,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.672887138516898,
+      "1": 0.651883531506063
+     },
+     "bids": {
+      "0": -0.055246710777282715,
+      "1": -0.04688243195414543
+     },
+     "adjusted_scores": {
+      "0": 0.653550789744849,
+      "1": 0.6354746803221122
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.6781040030368221,
+      "1": 0.7909466686385905
+     },
+     "bids": {
+      "0": -0.055708467960357666,
+      "1": -0.046805184334516525
+     },
+     "adjusted_scores": {
+      "0": 0.6586060392506968,
+      "1": 0.7745648541215098
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 0,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.6829576845318913,
+      "1": 0.6623294816205841
+     },
+     "bids": {
+      "0": -0.05596207082271576,
+      "1": -0.04668008163571358
+     },
+     "adjusted_scores": {
+      "0": 0.6633709597439408,
+      "1": 0.6459914530480844
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 0,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.6875089394604645,
+      "1": 0.6669874837353206
+     },
+     "bids": {
+      "0": -0.05616547539830208,
+      "1": -0.04658098891377449
+     },
+     "adjusted_scores": {
+      "0": 0.6678510230710588,
+      "1": 0.6506841376154995
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 0,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.6888042236176501,
+      "1": 0.6689925264330832
+     },
+     "bids": {
+      "0": -0.05474768951535225,
+      "1": -0.04685210809111595
+     },
+     "adjusted_scores": {
+      "0": 0.6696425322872769,
+      "1": 0.6525942886011926
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 0,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.8088023038172497,
+      "1": 0.6748529683293761
+     },
+     "bids": {
+      "0": -0.05521799251437187,
+      "1": -0.04673740640282631
+     },
+     "adjusted_scores": {
+      "0": 0.7894760064372196,
+      "1": 0.658494876088387
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 0,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.6965475534470633,
+      "1": 0.6773446566875306
+     },
+     "bids": {
+      "0": -0.053972166031599045,
+      "1": -0.0468076691031456
+     },
+     "adjusted_scores": {
+      "0": 0.6776572953360036,
+      "1": 0.6609619725014296
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 0,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.7028765519507711,
+      "1": 0.6837141342508903
+     },
+     "bids": {
+      "0": -0.054575949907302856,
+      "1": -0.04673030599951744
+     },
+     "adjusted_scores": {
+      "0": 0.6837749694832151,
+      "1": 0.6673585271510593
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 0,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.7086608270658765,
+      "1": 0.6894095058195499
+     },
+     "bids": {
+      "0": -0.05505476891994476,
+      "1": -0.04664277285337448
+     },
+     "adjusted_scores": {
+      "0": 0.6893916579438959,
+      "1": 0.6730845353208688
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 0,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.7139803349646853,
+      "1": 0.6945341147330456
+     },
+     "bids": {
+      "0": -0.05542566627264023,
+      "1": -0.04651768133044243
+     },
+     "adjusted_scores": {
+      "0": 0.6945813517692612,
+      "1": 0.6782529262673908
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 0,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.7188234113406647,
+      "1": 0.699239602720846
+     },
+     "bids": {
+      "0": -0.05583476275205612,
+      "1": -0.04641389846801758
+     },
+     "adjusted_scores": {
+      "0": 0.6992812443774451,
+      "1": 0.6829947382570398
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 0,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.7233158900827729,
+      "1": 0.7036853911629141
+     },
+     "bids": {
+      "0": -0.056114405393600464,
+      "1": -0.046368278563022614
+     },
+     "adjusted_scores": {
+      "0": 0.7036758481950127,
+      "1": 0.6874564936658561
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 0,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.727604449516708,
+      "1": 0.7078732864697241
+     },
+     "bids": {
+      "0": -0.05623245984315872,
+      "1": -0.04627992585301399
+     },
+     "adjusted_scores": {
+      "0": 0.7079230885716025,
+      "1": 0.6916753124211692
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 0,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.8371139513263987,
+      "1": 0.7118953846526771
+     },
+     "bids": {
+      "0": -0.05616825819015503,
+      "1": -0.04622781649231911
+     },
+     "adjusted_scores": {
+      "0": 0.8174550609598444,
+      "1": 0.6957156488803654
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 0,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.7177931281564943,
+      "1": 0.7158398573466392
+     },
+     "bids": {
+      "0": -0.054547976702451706,
+      "1": -0.04618053138256073
+     },
+     "adjusted_scores": {
+      "0": 0.6987013363106362,
+      "1": 0.699676671362743
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.7127704634484314,
+      "1": 0.7196764747515915
+     },
+     "bids": {
+      "0": -0.05274118483066559,
+      "1": -0.04610048979520798
+     },
+     "adjusted_scores": {
+      "0": 0.6943110487576984,
+      "1": 0.7035413033232687
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 0,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.841273224282594,
+      "1": 0.7234441603922535
+     },
+     "bids": {
+      "0": -0.050931669771671295,
+      "1": -0.04603496193885803
+     },
+     "adjusted_scores": {
+      "0": 0.8234471398625091,
+      "1": 0.7073319237136532
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.7024736312650988,
+      "1": 0.7272127388689741
+     },
+     "bids": {
+      "0": -0.04903938248753548,
+      "1": -0.04601731151342392
+     },
+     "adjusted_scores": {
+      "0": 0.6853098473944613,
+      "1": 0.7111066798392757
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.6971931726573231,
+      "1": 0.7309172266266369
+     },
+     "bids": {
+      "0": -0.04738977551460266,
+      "1": -0.04595038294792175
+     },
+     "adjusted_scores": {
+      "0": 0.6806067512272121,
+      "1": 0.7148345925948644
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.6966584254143655,
+      "1": 0.7330131972068301
+     },
+     "bids": {
+      "0": -0.06861665844917297,
+      "1": -0.060504790395498276
+     },
+     "adjusted_scores": {
+      "0": 0.672642594957155,
+      "1": 0.7118365205684057
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    },
+    {
+     "seed": 300,
+     "target_id": 1,
+     "candidates": [
+      0,
+      1
+     ],
+     "raw_winner": 1,
+     "adjusted_winner": 1,
+     "scores": {
+      "0": 0.691385279626132,
+      "1": 0.7293232224362108
+     },
+     "bids": {
+      "0": -0.05017748102545738,
+      "1": -0.03294103592634201
+     },
+     "adjusted_scores": {
+      "0": 0.673823161267222,
+      "1": 0.7177938598619912
+     },
+     "arbitration_mode": "rl_direct",
+     "previous_owner": null,
+     "hysteresis": 0.2
+    }
+   ],
+   "request_outcomes": {
+    "lost_arbitration": 117,
+    "selected": 130,
+    "c04_rejected": 38
+   },
+   "incumbent_overrides": 0,
+   "shield_interventions": 448,
+   "mean_correction": 0.587,
+   "violations_by_family": {
+    "M03": 129,
+    "E01": 30,
+    "E02": 8,
+    "S05": 516,
+    "S04": 441,
+    "M05": 170,
+    "I03": 3,
+    "C04": 26,
+    "M02": 33,
+    "S03": 93,
+    "E03": 80
+   },
+   "active_steps_by_conflict_pair": {
+    "S04-M02": 0,
+    "S05-M02": 19,
+    "C01-M02": 56,
+    "C03-M02": 318,
+    "C02-M01": 0,
+    "M01-M02": 125,
+    "S02-M02": 0,
+    "S03-M02": 1070,
+    "I02-M02": 3,
+    "I03-M02": 25,
+    "M04-S04": 387,
+    "C01-C03": 0,
+    "M05-E03": 0
+   },
+   "mean_rl_preference_when_active": {}
+  }
+ ]
+}

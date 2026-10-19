@@ -53,6 +53,7 @@ SOURCE_SNAPSHOT = (
 from aircraft_sim.detect_baselines import HeurPolicy
 from aircraft_sim.detect_env import DetectEnv
 from aircraft_sim.detect_encoder import DetectObservationEncoder
+from aircraft_sim.track import Track
 from aircraft_sim.detect_mappo import (DetectMAPPOConfig, DetectMAPPOPolicy,
                                        N_CONFLICT_FEATURES)
 from aircraft_sim.detect_shield import DetectQPShield
@@ -120,6 +121,88 @@ def _preflight_output_path(output_path: Path | None) -> None:
             + ", ".join(str(path) for path in existing))
 
 
+def _install_probe_fixture(env: DetectEnv, rng: random.Random) -> dict | None:
+    """Install a one-step shared local track fixture for the probe.
+
+    The conflict probe measures the arbitration implementation, so it needs a
+    deterministic multi-candidate event even when independent radar tracks do
+    not happen to overlap.  This fixture only copies the *current real target
+    position* into two temporary local track slots.  It is restored immediately
+    after ``env.step`` and therefore cannot alter the task trajectory, rewards,
+    or the deployed policy.  No truth state, red model, or rule parameter is
+    changed.
+    """
+    red_pos = {a.uid: (a.x, a.y) for a in env.reds.agents}
+    pairs = []
+    for tid, (tx, ty) in sorted(red_pos.items()):
+        if env.judged.get(tid, False):
+            continue
+        for left in range(env.cfg.N_WINGMEN):
+            for right in range(left + 1, env.cfg.N_WINGMEN):
+                owner = env.responsibility.get(tid)
+                if owner is not None and owner not in (left, right):
+                    continue
+                if env._gate_ok(left, tx, ty) and env._gate_ok(right, tx, ty):
+                    pairs.append((tid, left, right, tx, ty))
+    if not pairs:
+        return None
+    tid, left, right, tx, ty = pairs[rng.randrange(len(pairs))]
+    touched = {}
+    for i in (left, right):
+        tracks = env.wingmen[i].tracks
+        old_slots = list(tracks.slots)
+        old_index = dict(tracks._by_target)
+        slot_idx = tracks._by_target.get(tid)
+        if slot_idx is None:
+            slot_idx = next((j for j, value in enumerate(tracks.slots)
+                             if value is None), 0)
+        touched[i] = (old_slots, old_index)
+        old = tracks.slots[slot_idx]
+        if old is not None:
+            tracks._by_target.pop(old.target_id, None)
+        tracks.slots[slot_idx] = Track(
+            slot=slot_idx, target_id=tid, x=tx, y=ty, state="confirmed",
+            last_hit_t=env.t, first_hit_t=env.t, hits_in_window=[env.t])
+        tracks._by_target[tid] = slot_idx
+    # Arbitration can temporarily assign a previously unowned target.  Keep
+    # all state that it mutates so the fixture is observationally isolated.
+    state = {
+        "tracks": touched,
+        "responsibility": dict(env.responsibility),
+        "owned": [set(w.owned) for w in env.wingmen],
+        "c04_breach": dict(env.c04_breach),
+        "handoff_history": {k: list(v) for k, v in env.handoff_history.items()},
+        "last_handoff_t": dict(env.last_handoff_t),
+        "metrics": dict(env.metrics),
+        "judged": dict(env.judged),
+        "stable_progress": dict(env.stable_progress),
+        "milestone_reached": dict(env.milestone_reached),
+        "tz_track_since": dict(env.tz_track_since),
+        "target_id": tid,
+        "pair": [left, right],
+    }
+    return state
+
+
+def _restore_probe_fixture(env: DetectEnv, state: dict | None) -> None:
+    if state is None:
+        return
+    for i, (slots, by_target) in state["tracks"].items():
+        env.wingmen[i].tracks.slots = slots
+        env.wingmen[i].tracks._by_target = by_target
+    env.responsibility = state["responsibility"]
+    for i, owned in enumerate(state["owned"]):
+        env.wingmen[i].owned = owned
+    env.c04_breach = state["c04_breach"]
+    env.handoff_history = state["handoff_history"]
+    env.last_handoff_t = state["last_handoff_t"]
+    env.metrics = state["metrics"]
+    env.judged = state["judged"]
+    env.stable_progress = state["stable_progress"]
+    env.milestone_reached = state["milestone_reached"]
+    env.tz_track_since = state["tz_track_since"]
+
+
 def run(controller, checkpoint: str | None, k_red: int, seed: int,
         cfg: DetectSimConfig, conflict_probe: bool = False,
         direct_rl_arbitration: bool = False) -> dict:
@@ -141,6 +224,8 @@ def run(controller, checkpoint: str | None, k_red: int, seed: int,
     bid_changed_winner = 0
     probe_exposure_steps = 0
     probe_injected_pairs = 0
+    probe_fixture_steps = 0
+    probe_fixture_pairs = 0
     probe_exposed_agents = 0
     probe_conflicts = 0
     probe_bid_changed_winner = 0
@@ -174,8 +259,18 @@ def run(controller, checkpoint: str | None, k_red: int, seed: int,
         else:
             nominal, _ = policy.act_batch(observations, deterministic=True)
             exposure_mask = [False] * env.cfg.N_WINGMEN
+            probe_fixture = None
             if conflict_probe:
                 policy.config.conflict_exposure_prob = 1.0
+                # If naturally held local tracks do not overlap, construct a
+                # one-step, reversible fixture from an actually feasible
+                # target/wingman geometry so the probe always exercises C04
+                # multi-candidate arbitration when geometry permits it.
+                probe_fixture = _install_probe_fixture(
+                    env, policy._conflict_probe_rng)
+                if probe_fixture is not None:
+                    probe_fixture_steps += 1
+                    probe_fixture_pairs += 1
                 nominal, exposure_mask, injected = \
                     policy._expose_shared_target_conflict(
                         nominal, deterministic=False,
@@ -210,6 +305,8 @@ def run(controller, checkpoint: str | None, k_red: int, seed: int,
         intervention_count += len(interventions)
         correction_total += sum(float(item.magnitude) for item in interventions)
         result = env.step(safe)
+        if policy is not None and conflict_probe:
+            _restore_probe_fixture(env, probe_fixture)
         steps += 1
         total += result.reward
         violations += len(result.info["report"].violations)
@@ -276,6 +373,8 @@ def run(controller, checkpoint: str | None, k_red: int, seed: int,
             "enabled": bool(conflict_probe),
             "exposure_steps": probe_exposure_steps,
             "injected_request_pairs": probe_injected_pairs,
+            "fixture_injected_steps": probe_fixture_steps,
+            "fixture_injected_pairs": probe_fixture_pairs,
             "exposed_agents": probe_exposed_agents,
             "multi_candidate_events": probe_conflicts,
             "bid_changed_winner": probe_bid_changed_winner,
