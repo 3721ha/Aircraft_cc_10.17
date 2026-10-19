@@ -10,7 +10,10 @@ Phases:
 Outputs: runs/detect_pilot/pilot_log.json, pilot_bc.pt, pilot_final.pt
 Run from workspace root:  Aircraft_mumt/.venv/Scripts/python.exe _p3_pilot.py
 """
+from __future__ import annotations
+
 import json
+import math
 import os
 import shutil
 import sys
@@ -28,19 +31,13 @@ from _experiment_provenance import (add_input, add_output, artifact_record,
                                     capture_source_snapshot,
                                     register_active_run, track_run_lifecycle,
                                     write_json_atomic)
+from _curriculum_guard import (resolve_curriculum_start,
+                               validate_best_record)
 
 OUT = Path(os.environ.get(
     "MUMT_PILOT_OUT",
     str(ROOT / "Aircraft_mumt" / "runs" / "detect_pilot")))
-OUT.mkdir(parents=True, exist_ok=True)
-SOURCE_SNAPSHOT = capture_source_snapshot(
-    ROOT, OUT, [ROOT / "_p3_pilot.py"])
-
-from aircraft_sim.detect_baselines import HeurPolicy              # noqa: E402
-from aircraft_sim.detect_env import DetectEnv                     # noqa: E402
-from aircraft_sim.detect_config import DetectSimConfig             # noqa: E402
-from aircraft_sim.detect_mappo import DetectMAPPOPolicy           # noqa: E402
-from aircraft_sim.detect_shield import DetectQPShield             # noqa: E402
+OUT = OUT.resolve()
 
 # CLI: _p3_pilot.py [phase] ; phase = bc | pilot <iter0> <n_iters> | eval
 #      | curr <k> <iter0> <n_iters>  (curriculum: train at K=k, eval each 10)
@@ -96,6 +93,10 @@ VALIDATION_SEEDS = [int(value) for value in os.environ.get(
     "MUMT_VALIDATION_SEEDS", "200,201,202,203,204,205,206,207,208,209"
 ).split(",") if value.strip()]
 CURR_INIT = os.environ.get("MUMT_CURR_INIT")
+CURR_START_MODE = os.environ.get("MUMT_CURR_START_MODE")
+CURR_EXPECTED_SHA256 = os.environ.get("MUMT_CURR_EXPECTED_SHA256")
+TRAIN_SEED_START = int(os.environ.get("MUMT_TRAIN_SEED_START", "2000"))
+CURR_PATIENCE = int(os.environ.get("MUMT_CURR_PATIENCE", "0"))
 
 if EPISODES_PER_ITER < 1:
     raise ValueError("MUMT_EPISODES_PER_ITER must be at least 1")
@@ -103,25 +104,69 @@ if VALIDATION_EVERY < 1:
     raise ValueError("MUMT_VALIDATION_EVERY must be at least 1")
 if not VALIDATION_SEEDS:
     raise ValueError("MUMT_VALIDATION_SEEDS must contain at least one seed")
+if len(set(VALIDATION_SEEDS)) != len(VALIDATION_SEEDS):
+    raise ValueError("Validation seeds must be unique")
+if CURR_PATIENCE < 0 or TRAIN_SEED_START < 0:
+    raise ValueError("Patience and training seed start must be nonnegative")
+CURR_START = None
+if PHASE == "curr":
+    CURR_START = resolve_curriculum_start(
+        ROOT, OUT, CURR_K, ITERS0, N_ITERS, CURR_INIT,
+        CURR_START_MODE, CURR_EXPECTED_SHA256)
+    seed_first = TRAIN_SEED_START + ITERS0 * EPISODES_PER_ITER
+    seed_end = TRAIN_SEED_START + (ITERS0 + N_ITERS) * EPISODES_PER_ITER
+    if any(seed_first <= seed < seed_end for seed in VALIDATION_SEEDS):
+        raise ValueError("Training seeds overlap validation seeds")
+
+SOURCE_ENTRY_SCRIPTS = [ROOT / "_p3_pilot.py", ROOT / "_curriculum_guard.py"]
+if (ROOT / "_run_best_refine.py").is_file():
+    SOURCE_ENTRY_SCRIPTS.append(ROOT / "_run_best_refine.py")
+SOURCE_SNAPSHOT = capture_source_snapshot(ROOT, OUT, SOURCE_ENTRY_SCRIPTS)
+
+from aircraft_sim.detect_baselines import HeurPolicy              # noqa: E402
+from aircraft_sim.detect_env import DetectEnv                     # noqa: E402
+from aircraft_sim.detect_config import DetectSimConfig             # noqa: E402
+from aircraft_sim.detect_mappo import DetectMAPPOPolicy             # noqa: E402
+from aircraft_sim.detect_shield import DetectQPShield              # noqa: E402
 
 
 def evaluate(pol, shield, seeds, k=EVAL_K):
     rows = []
-    for s in seeds:
-        env = _make_env()
-        env.reset({"seed": s, "k_red": k})
-        pol.env = env
-        ret, steps, vio = 0.0, 0, 0
-        while env.terminal is None:
-            obs = env.observe()
-            nom = {i: pol.act_with_log_prob(obs[i], deterministic=True)[0] for i in obs}
-            safe, _ = shield.filter(env, nom)
-            res = env.step(safe)
-            ret += res.reward
-            vio += len(res.info["report"].violations)
-            steps += 1
-        rows.append({"seed": s, "terminal": env.terminal, "return": round(ret, 1),
-                     "steps": steps, "violations": vio})
+    original_env = pol.env
+    try:
+        for s in seeds:
+            env = _make_env()
+            env.reset({"seed": s, "k_red": k})
+            pol.env = env
+            ret, steps, vio = 0.0, 0, 0
+            arbitration_events = 0
+            changed_winners = 0
+            while env.terminal is None:
+                obs = env.observe()
+                nom = {i: pol.act_with_log_prob(obs[i], deterministic=True)[0] for i in obs}
+                safe, _ = shield.filter(env, nom)
+                res = env.step(safe)
+                ret += res.reward
+                vio += len(res.info["report"].violations)
+                for event in res.info.get("arbitration", []):
+                    if len(event.get("candidates", [])) < 2:
+                        continue
+                    arbitration_events += 1
+                    scores = event.get("scores", {})
+                    owner = event.get("previous_owner")
+                    if scores:
+                        raw = max(scores, key=lambda i: (scores[i], i == owner, -int(i)))
+                        if (owner in scores and raw != owner and scores[raw]
+                                <= scores[owner] + float(event.get("hysteresis", 0))):
+                            raw = owner
+                        changed_winners += int(int(event["winner"]) != int(raw))
+                steps += 1
+            rows.append({"seed": s, "terminal": env.terminal, "return": round(ret, 1),
+                         "steps": steps, "violations": vio,
+                         "multi_candidate_events": arbitration_events,
+                         "winner_changes_vs_fixed_score": changed_winners})
+    finally:
+        pol.env = original_env
     return rows
 
 
@@ -178,6 +223,13 @@ def evaluate_paired(pol, shield, seeds, k):
         "task_config_sha256": canonical_sha256(_env_config()),
         "rl": _eval_summary(rl_rows),
         "heur": _eval_summary(heur_rows),
+        "natural_arbitration": {
+            "rl_multi_candidate_events": sum(
+                row["multi_candidate_events"] for row in rl_rows),
+            "rl_winner_changes_vs_fixed_score": sum(
+                row["winner_changes_vs_fixed_score"] for row in rl_rows),
+            "forced_probe_enabled": False,
+        },
         "by_seed": [
             {"seed": seed, "rl": rl, "heur": heur}
             for seed, rl, heur in zip(seeds, rl_rows, heur_rows)
@@ -208,6 +260,38 @@ def _best_validation_record(log, key, best_path):
     if not isinstance(validation, dict):
         return None
     return _validation_rank(validation)
+
+
+def _consider_curriculum_candidate(pol, log, run_record, paired, iteration,
+                                   best_path, best_key, best_rank, stage):
+    """Include the input policy in selection; ties never discard it."""
+    for side in ("rl", "heur"):
+        if not all(math.isfinite(float(value))
+                   for value in paired[side].values()):
+            raise ValueError("Nonfinite paired validation metrics")
+    paired["run_id"] = run_record["run_id"]
+    paired["stage"] = stage
+    paired["iter"] = iteration
+    paired["source_manifest_sha256"] = run_record[
+        "effective_source"]["manifest_sha256"]
+    candidate_rank = _validation_rank(paired)
+    improved = best_rank is None or candidate_rank > best_rank
+    if improved:
+        _save_checkpoint(pol, best_path)
+        archive = _archive_checkpoint(
+            run_record, best_path, "curriculum_best_checkpoint",
+            f"{best_path.stem}_{stage}_{iteration:06d}.pt")
+        add_output(run_record, best_path, "curriculum_best_checkpoint")
+        paired["best_checkpoint"] = artifact_record(
+            best_path, "curriculum_best_checkpoint")
+        paired["best_checkpoint"]["archive"] = archive
+        log[best_key] = {
+            "iter": iteration, "stage": stage,
+            "checkpoint": best_path.name,
+            "checkpoint_sha256": paired["best_checkpoint"]["sha256"],
+            "rank": list(candidate_rank), "validation": paired,
+        }
+    return candidate_rank if improved else best_rank, improved
 
 
 def _load_log():
@@ -257,7 +341,9 @@ def _run_metrics_snapshot(log, run_record):
                 and validation.get("run_id") == run_id):
             metrics["records"][key] = value
     for key in ("pilot_validation", "curr_k2_validation", "curr_k3_validation",
-                "curr_k4_validation"):
+                "curr_k4_validation") + tuple(
+                    key for key in log if key.startswith("curr_k")
+                    and key.endswith(("_baseline", "_last_validation"))):
         value = log.get(key)
         if isinstance(value, dict) and value.get("run_id") == run_id:
             metrics["records"][key] = value
@@ -346,11 +432,13 @@ def _persist_run_record(log, run_record):
     })
 
 
-def _load_policy_checkpoint(pol, path, run_record, role):
+def _load_policy_checkpoint(pol, path, run_record, role, expected_sha256=None):
     path = Path(path).resolve()
     before = artifact_record(path, role)
     if not before["exists"]:
         raise FileNotFoundError(path)
+    if expected_sha256 and before["sha256"] != expected_sha256:
+        raise RuntimeError(f"Chosen checkpoint changed after preflight: {path}")
     snapshot_path = (OUT / "provenance" /
                      f"{run_record['run_id']}_input_{role}_{path.name}")
     snapshot_path.parent.mkdir(parents=True, exist_ok=True)
@@ -393,16 +481,22 @@ def _configure_policy(pol):
     lr_text = os.environ.get("MUMT_PPO_LR")
     if lr_text:
         lr = float(lr_text)
+        if not math.isfinite(lr) or lr <= 0:
+            raise ValueError("MUMT_PPO_LR must be finite and positive")
         pol.config.learning_rate = lr
         for group in pol.optimizer.param_groups:
             group["lr"] = lr
     epochs_text = os.environ.get("MUMT_PPO_EPOCHS")
     if epochs_text:
-        pol.config.epochs = max(1, int(epochs_text))
+        pol.config.epochs = int(epochs_text)
+        if pol.config.epochs < 1:
+            raise ValueError("MUMT_PPO_EPOCHS must be positive")
     exposure_text = os.environ.get("MUMT_CONFLICT_EXPOSURE_PROB")
     if exposure_text:
-        pol.config.conflict_exposure_prob = min(
-            1.0, max(0.0, float(exposure_text)))
+        probability = float(exposure_text)
+        if not math.isfinite(probability) or not 0 <= probability <= 1:
+            raise ValueError("MUMT_CONFLICT_EXPOSURE_PROB must be in [0,1]")
+        pol.config.conflict_exposure_prob = probability
     if os.environ.get("MUMT_BID_ONLY_PPO"):
         pol.config.bid_only_ppo = os.environ["MUMT_BID_ONLY_PPO"] != "0"
     if os.environ.get("MUMT_RL_DIRECT_ARBITRATION"):
@@ -423,8 +517,10 @@ def _apply_bid_std_override(pol):
         # Training-time exploration knob for the arbitration bid only.  The
         # deployed action remains the deterministic actor mean; this does not
         # alter the task rules or arbitration formula.
-        pol.model.bid_log_std.data.fill_(float(bid_std_text))
-        pol.model.bid_log_std.data.clamp_(-2.5, 0.0)
+        bid_std = float(bid_std_text)
+        if not math.isfinite(bid_std) or not -2.5 <= bid_std <= 0:
+            raise ValueError("MUMT_BID_LOG_STD must be finite and in [-2.5,0]")
+        pol.model.bid_log_std.data.fill_(bid_std)
 
 
 @track_run_lifecycle
@@ -437,7 +533,7 @@ def main():
     run_record = capture_run_provenance(
         repo_root=ROOT,
         output_dir=OUT,
-        entry_scripts=[ROOT / "_p3_pilot.py"],
+        entry_scripts=SOURCE_ENTRY_SCRIPTS,
         phase=PHASE,
         task_config=env.cfg,
         algorithm_config=pol.config,
@@ -453,6 +549,9 @@ def main():
                       "validation_seeds": EVAL_SEEDS},
             "curriculum": {"k": CURR_K, "iter_start": ITERS0,
                            "iterations": N_ITERS,
+                           "start": CURR_START,
+                           "training_seed_start": TRAIN_SEED_START,
+                           "early_stopping_patience": CURR_PATIENCE,
                            "validation_seeds": VALIDATION_SEEDS,
                            "fixed_w8_scale": FIXED_W8_SCALE,
                            "w8_start": CURRICULUM_START,
@@ -659,38 +758,14 @@ def main():
 
     # ---------------- Phase 2b: curriculum long run ----------------
     if PHASE == "curr":
-        # A fresh curriculum run must start from the current BC policy.  An
-        # old curr_k*.pt may contain a degraded policy from an earlier
-        # experiment, so it is only valid when resuming with ITERS0 > 0.
-        ckpt = OUT / f"curr_k{CURR_K}.pt"
-        if ITERS0 == 0:
-            loaded = None
-            # pilot_bc.pt is the only preferred starting point for a fresh
-            # curriculum run.  The other checkpoints are fallback sources,
-            # never an existing curr_k*.pt.
-            candidates = ([Path(CURR_INIT)] if CURR_INIT else []) + [
-                OUT / "pilot_bc.pt", OUT / "dagger_latest.pt", OUT / "pilot_final.pt"]
-            for candidate in candidates:
-                if not candidate.is_absolute():
-                    candidate = ROOT / candidate
-                if candidate.exists():
-                    _load_policy_checkpoint(
-                        pol, candidate, run_record,
-                        "curriculum_initial_checkpoint")
-                    loaded = candidate
-                    break
-            if loaded is None:
-                raise FileNotFoundError(
-                    "No fresh curriculum checkpoint found; expected pilot_bc.pt")
-            print(f"[curr K={CURR_K}] fresh start from {loaded.name}", flush=True)
-        else:
-            if not ckpt.exists():
-                raise FileNotFoundError(
-                    f"Cannot resume curr K={CURR_K} at iter {ITERS0}: "
-                    f"missing {ckpt.name}")
-            _load_policy_checkpoint(
-                pol, ckpt, run_record, "curriculum_resume_checkpoint")
-            print(f"[curr K={CURR_K}] resume from {ckpt.name}", flush=True)
+        loaded = Path(CURR_START["path"])
+        _load_policy_checkpoint(
+            pol, loaded, run_record,
+            "curriculum_resume_checkpoint" if ITERS0 else
+            "curriculum_initial_checkpoint", CURR_START["sha256"])
+        run_record["curriculum_start"] = dict(CURR_START)
+        print(f"[curr K={CURR_K}] mode={CURR_START['mode']} "
+              f"source={loaded} sha256={CURR_START['sha256']}", flush=True)
         _persist_run_record(_load_log(), run_record)
         _apply_bid_std_override(pol)
         env = _make_env()
@@ -706,6 +781,9 @@ def main():
             "episodes_per_iter": EPISODES_PER_ITER,
             "validation_every": VALIDATION_EVERY,
             "validation_seeds": VALIDATION_SEEDS,
+            "training_seed_start": TRAIN_SEED_START,
+            "early_stopping_patience": CURR_PATIENCE,
+            "initial_checkpoint": dict(CURR_START),
             "task_numeric_config": {
                 "stable_window": env.cfg.STABLE_WINDOW,
                 "age_std_track": env.cfg.AGE_STD_TRACK,
@@ -729,9 +807,20 @@ def main():
             log[ck] = []
             log[best_key] = None
             best_rank = None
+            baseline = evaluate_paired(pol, shield, VALIDATION_SEEDS, k=CURR_K)
+            baseline["checkpoint"] = run_record["inputs"][-1]
+            best_rank, _ = _consider_curriculum_candidate(
+                pol, log, run_record, baseline, -1, best_path, best_key,
+                best_rank, "initial_checkpoint")
+            log[f"{ck}_baseline"] = baseline
+            print(f"[initial baseline K={CURR_K}] RL={baseline['rl']} "
+                  f"HEUR={baseline['heur']}; preserved before PPO", flush=True)
+            _persist_run_record(log, run_record)
         else:
             log.setdefault(ck, [])
-            best_rank = _best_validation_record(log, best_key, best_path)
+            best_rank = validate_best_record(
+                log, best_key, best_path, CURR_K, VALIDATION_SEEDS,
+                canonical_sha256(_env_config()))
             if best_path.exists():
                 inherited_best = _archive_checkpoint(
                     run_record, best_path, "curriculum_best_checkpoint",
@@ -742,6 +831,7 @@ def main():
                         validation.setdefault("best_checkpoint", {})[
                             "archive"] = inherited_best
                 _persist_run_record(log, run_record)
+        stalled_validations = 0
         for it in range(ITERS0, ITERS0 + N_ITERS):
             w8_scale = _w8_scale_for_iter(it)
             rollout, ep_rets, ep_term, ep_steps, ep_vio = [], [], [], [], []
@@ -749,7 +839,7 @@ def main():
             for ep in range(EPISODES_PER_ITER):
                 data = pol.collect(
                                    k_red=CURR_K,
-                                   seed=2000 + it * EPISODES_PER_ITER + ep,
+                                   seed=TRAIN_SEED_START + it * EPISODES_PER_ITER + ep,
                                    w8_scale=w8_scale)
                 rollout.extend(data)
                 ep_rets.append(sum(d["reward"] for d in data) / pol.config.reward_scale)
@@ -965,27 +1055,12 @@ def main():
                 current_checkpoint = OUT / f"curr_k{CURR_K}.pt"
                 paired["checkpoint"] = artifact_record(
                     current_checkpoint, "curriculum_validation_checkpoint")
-                candidate_rank = _validation_rank(paired)
-                is_best = best_rank is None or candidate_rank > best_rank
+                best_rank, is_best = _consider_curriculum_candidate(
+                    pol, log, run_record, paired, it, best_path, best_key,
+                    best_rank, "ppo_update")
                 log[ck][-1]["validation"] = paired
-                if is_best:
-                    _save_checkpoint(pol, best_path)
-                    best_archive = _archive_checkpoint(
-                        run_record, best_path, "curriculum_best_checkpoint",
-                        f"curr_k{CURR_K}_best_iter_{it:06d}.pt")
-                    add_output(run_record, best_path,
-                               "curriculum_best_checkpoint")
-                    paired["best_checkpoint"] = artifact_record(
-                        best_path, "curriculum_best_checkpoint")
-                    paired["best_checkpoint"]["archive"] = best_archive
-                    best_rank = candidate_rank
-                    log[best_key] = {
-                        "iter": it,
-                        "checkpoint": best_path.name,
-                        "checkpoint_sha256": paired["best_checkpoint"]["sha256"],
-                        "rank": list(candidate_rank),
-                        "validation": paired,
-                    }
+                log[f"{ck}_last_validation"] = paired
+                stalled_validations = 0 if is_best else stalled_validations + 1
                 rl_metrics, heur_metrics = paired["rl"], paired["heur"]
                 print(
                     f"  [paired validation K={CURR_K}] "
@@ -999,6 +1074,19 @@ def main():
                     f"({best_path.name})",
                     flush=True)
             _persist_run_record(log, run_record)
+            if should_validate and CURR_PATIENCE and stalled_validations >= CURR_PATIENCE:
+                run_record["early_stopping"] = {
+                    "triggered": True, "iter": it,
+                    "patience": CURR_PATIENCE,
+                    "reason": "no validation rank improvement over preserved best",
+                }
+                print(f"[early stop K={CURR_K}] iter={it}, "
+                      f"best_iter={log[best_key]['iter']} kept", flush=True)
+                _persist_run_record(log, run_record)
+                break
+        run_record["completed_iterations"] = sum(
+            row.get("run_id") == run_record["run_id"] for row in log[ck])
+        run_record.setdefault("early_stopping", {"triggered": False})
         if best_path.exists():
             pol.load(str(best_path))
         best_record = log.get(best_key)

@@ -1,0 +1,2 @@
+# Preserve experiment artifact bytes: provenance records contain SHA256 hashes.
+runs/model_optimization_v1/** -text

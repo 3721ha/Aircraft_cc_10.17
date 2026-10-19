@@ -1,0 +1,60 @@
+{
+  "source": {
+    "source_run": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k3_w8a10",
+    "source_log": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k3_w8a10\\pilot_log.json",
+    "source_best_iter": 4,
+    "checkpoint": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k3_w8a10\\curr_k3_best.pt",
+    "checkpoint_sha256": "15e4350b3736e503c5a68d9850e367e1c661cec4f106e432009dbc35465f9f58"
+  },
+  "output": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\best_refine_verification_20261020\\k3",
+  "task_numeric_config": {
+    "stable_window": 8,
+    "age_std_track": 10.0,
+    "c04_range": 80.0,
+    "sector_axis_max_deg": 60.0,
+    "arb_bid_weight": 0.35,
+    "arb_hysteresis": 0.2
+  },
+  "mode": "joint",
+  "command": [
+    "D:\\Desktop\\Aircraft_mumt_cc\\Aircraft_mumt\\.venv\\Scripts\\python.exe",
+    "D:\\Desktop\\Aircraft_mumt_cc\\_p3_pilot.py",
+    "curr",
+    "3",
+    "0",
+    "1"
+  ],
+  "cwd": "D:\\Desktop\\Aircraft_mumt_cc",
+  "training_environment": {
+    "MUMT_PILOT_OUT": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\best_refine_verification_20261020\\k3",
+    "MUMT_CURR_INIT": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k3_w8a10\\curr_k3_best.pt",
+    "MUMT_CURR_START_MODE": "best",
+    "MUMT_CURR_EXPECTED_SHA256": "15e4350b3736e503c5a68d9850e367e1c661cec4f106e432009dbc35465f9f58",
+    "MUMT_W8_FIXED": "0.2",
+    "MUMT_STABLE_WINDOW": "8",
+    "MUMT_AGE_STD_TRACK": "10",
+    "MUMT_C04_RANGE": "80",
+    "MUMT_SECTOR_AXIS_MAX_DEG": "60",
+    "MUMT_ARB_BID_WEIGHT": "0.35",
+    "MUMT_ARB_HYSTERESIS": "0.2",
+    "MUMT_RL_DIRECT_ARBITRATION": "1",
+    "MUMT_CONFLICT_EXPOSURE_PROB": "1",
+    "MUMT_BID_ONLY_PPO": "0",
+    "MUMT_PPO_LR": "1e-05",
+    "MUMT_PPO_EPOCHS": "2",
+    "MUMT_EPISODES_PER_ITER": "1",
+    "MUMT_VALIDATION_EVERY": "1",
+    "MUMT_VALIDATION_SEEDS": "230,231",
+    "MUMT_TRAIN_SEED_START": "10000",
+    "MUMT_CURR_PATIENCE": "1"
+  }
+}
+[PPO] lr=1e-05 epochs=2 shield_aware=False cf_request_credit=0.25 conflict_exposure=1 bid_only=False direct_rl_arbitration=True
+[curr K=3] mode=best source=D:\Desktop\Aircraft_mumt_cc\runs\model_optimization_v1\curriculum_k3_w8a10\curr_k3_best.pt sha256=15e4350b3736e503c5a68d9850e367e1c661cec4f106e432009dbc35465f9f58
+[initial baseline K=3] RL={'success_rate': 1.0, 'mean_return': -2824.0, 'violations_per_step': 4.0961} HEUR={'success_rate': 0.5, 'mean_return': -4386.9, 'violations_per_step': 6.9927}; preserved before PPO
+D:\Desktop\Aircraft_mumt_cc\Aircraft_mumt\aircraft_sim\detect_mappo.py:705: UserWarning: Creating a tensor from a list of numpy.ndarrays is extremely slow. Please consider converting the list to a single numpy.ndarray with numpy.array() before converting to a tensor. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\torch\csrc\utils\tensor_new.cpp:256.)
+  torch.tensor([team], dtype=torch.float32)).item())
+[curr_k3 00] episodes=1 ret=  -849.9 succ=100% vio/step=5.02 req=155 C04=79/76 assign=48+1 bid_cf=1/1 bid_info=1.00 bid_grad=1.99e+01 bid_delta=2.37e-04 bid_kl=8.00e-06 stable=84 qp=1.00 kl=0.000
+  [paired validation K=3] RL=50%/-2409/4.0726 vs HEUR=50%/-4387/6.9927; best=kept (curr_k3_best.pt)
+[early stop K=3] iter=0, best_iter=-1 kept
+[best paired validation K=3 iter=-1] RL success=100% vs HEUR=50%; return=-2824.0 vs HEUR -4386.9; violations/step=4.0961 vs HEUR=6.9927; acceptance=PASS
