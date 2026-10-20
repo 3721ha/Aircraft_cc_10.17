@@ -33,6 +33,8 @@ from _experiment_provenance import (add_input, add_output, artifact_record,
                                     write_json_atomic)
 from _curriculum_guard import (resolve_curriculum_start,
                                validate_best_record)
+from _arbitration_training import (candidate_repair_request,
+                                   repair_dead_candidate_head_for_training)
 
 OUT = Path(os.environ.get(
     "MUMT_PILOT_OUT",
@@ -48,6 +50,8 @@ CURR_K = int(sys.argv[2]) if PHASE == "curr" and len(sys.argv) > 2 else 2
 if PHASE == "curr":
     ITERS0 = int(sys.argv[3]) if len(sys.argv) > 3 else 0
     N_ITERS = int(sys.argv[4]) if len(sys.argv) > 4 else 50
+CANDIDATE_REPAIR = candidate_repair_request(
+    os.environ, phase=PHASE, iteration=ITERS0)
 
 
 def _env_config() -> DetectSimConfig:
@@ -118,7 +122,8 @@ if PHASE == "curr":
     if any(seed_first <= seed < seed_end for seed in VALIDATION_SEEDS):
         raise ValueError("Training seeds overlap validation seeds")
 
-SOURCE_ENTRY_SCRIPTS = [ROOT / "_p3_pilot.py", ROOT / "_curriculum_guard.py"]
+SOURCE_ENTRY_SCRIPTS = [ROOT / "_p3_pilot.py", ROOT / "_curriculum_guard.py",
+                        ROOT / "_arbitration_training.py"]
 for optional_script in ("_run_best_refine.py", "_run_k4_diagnostics.py"):
     if (ROOT / optional_script).is_file():
         SOURCE_ENTRY_SCRIPTS.append(ROOT / optional_script)
@@ -500,6 +505,13 @@ def _configure_policy(pol):
         pol.config.conflict_exposure_prob = probability
     if os.environ.get("MUMT_BID_ONLY_PPO"):
         pol.config.bid_only_ppo = os.environ["MUMT_BID_ONLY_PPO"] != "0"
+    residual_text = os.environ.get("MUMT_TASK_RESIDUAL_ONLY_PPO")
+    if residual_text is not None:
+        if residual_text not in {"0", "1"}:
+            raise ValueError("MUMT_TASK_RESIDUAL_ONLY_PPO must be 0 or 1")
+        pol.config.task_residual_only_ppo = residual_text == "1"
+    if pol.config.bid_only_ppo and pol.config.task_residual_only_ppo:
+        raise ValueError("bid-only and task-residual-only PPO are mutually exclusive")
     if os.environ.get("MUMT_RL_DIRECT_ARBITRATION"):
         pol.config.direct_rl_arbitration = (
             os.environ["MUMT_RL_DIRECT_ARBITRATION"] != "0")
@@ -520,6 +532,7 @@ def _configure_policy(pol):
           f"cf_request_credit={pol.config.cf_request_credit:g} "
           f"conflict_exposure={pol.config.conflict_exposure_prob:g} "
           f"bid_only={pol.config.bid_only_ppo} "
+          f"task_residual_only={pol.config.task_residual_only_ppo} "
           f"policy_anchor_coef={pol.config.policy_anchor_coef:g} "
           f"direct_rl_arbitration={pol.config.direct_rl_arbitration}", flush=True)
 
@@ -551,6 +564,36 @@ def _initialize_curriculum_anchor(pol, run_record, start, iteration):
     }
 
 
+def _initialize_candidate_training_branch(pol, run_record, start, iteration):
+    """Record every new curriculum's effective start after runtime overrides."""
+    request = CANDIDATE_REPAIR
+    # Keep a runtime guard as well as the process preflight: no resume can
+    # accidentally perform a second hidden mutation through this helper.
+    if request["enabled"] and (iteration != 0 or PHASE != "curr"):
+        raise ValueError("Candidate-head training repair cannot run during resume/evaluation")
+    repair = (repair_dead_candidate_head_for_training(pol.model, seed=request["seed"])
+              if request["enabled"] else {"status": "not_requested"})
+    repair["source_checkpoint_sha256"] = start["sha256"]
+    repair["source_checkpoint_path"] = start["path"]
+    repair["resume"] = iteration > 0
+    # Even a healthy head, or disabled repair, can start from different
+    # effective weights after the bid-std override and anchor refresh. The
+    # baseline must identify this exact serialized state, not the loaded source.
+    if PHASE == "curr" and iteration == 0:
+        snapshot = (OUT / "provenance" /
+                    f"{run_record['run_id']}_effective_initial.pt")
+        snapshot.parent.mkdir(parents=True, exist_ok=True)
+        pol.save(str(snapshot))
+        artifact = artifact_record(snapshot, "curriculum_effective_initial_checkpoint")
+        add_output(run_record, snapshot, "curriculum_effective_initial_checkpoint")
+        repair["effective_checkpoint"] = artifact
+        if repair["status"] == "repaired":
+            repair["repaired_checkpoint"] = artifact
+    run_record["candidate_head_training_repair"] = repair
+    print(f"[candidate training repair] status={repair['status']} "
+          f"seed={request['seed']} source_sha256={start['sha256']}", flush=True)
+
+
 @track_run_lifecycle
 def main():
     t_start = time.time()
@@ -578,6 +621,7 @@ def main():
             "curriculum": {"k": CURR_K, "iter_start": ITERS0,
                            "iterations": N_ITERS,
                            "start": CURR_START,
+                           "candidate_head_repair": CANDIDATE_REPAIR,
                            "training_seed_start": TRAIN_SEED_START,
                            "early_stopping_patience": CURR_PATIENCE,
                            "validation_seeds": VALIDATION_SEEDS,
@@ -797,6 +841,7 @@ def main():
         _persist_run_record(_load_log(), run_record)
         _apply_bid_std_override(pol)
         _initialize_curriculum_anchor(pol, run_record, CURR_START, ITERS0)
+        _initialize_candidate_training_branch(pol, run_record, CURR_START, ITERS0)
         env = _make_env()
         pol.env = env
         log = _load_log()
@@ -813,6 +858,7 @@ def main():
             "training_seed_start": TRAIN_SEED_START,
             "early_stopping_patience": CURR_PATIENCE,
             "initial_checkpoint": dict(CURR_START),
+            "candidate_head_training_repair": run_record["candidate_head_training_repair"],
             "diagnostic_case": os.environ.get("MUMT_DIAGNOSTIC_CASE"),
             "diagnostic_suite_sha256": os.environ.get("MUMT_DIAGNOSTIC_SUITE_SHA256"),
             "training_return_semantics": {
@@ -832,6 +878,8 @@ def main():
                 "learning_rate": pol.config.learning_rate,
                 "epochs": pol.config.epochs,
                 "bid_only_ppo": pol.config.bid_only_ppo,
+                "task_residual_only_ppo": pol.config.task_residual_only_ppo,
+                "cf_bid_utility_scale": pol.config.cf_bid_utility_scale,
                 "direct_rl_arbitration": pol.config.direct_rl_arbitration,
                 "policy_anchor_coef": pol.config.policy_anchor_coef,
                 "policy_anchor_monitor": pol.config.policy_anchor_monitor,
@@ -846,7 +894,8 @@ def main():
             log[best_key] = None
             best_rank = None
             baseline = evaluate_paired(pol, shield, VALIDATION_SEEDS, k=CURR_K)
-            baseline["checkpoint"] = run_record["inputs"][-1]
+            baseline["checkpoint"] = run_record["candidate_head_training_repair"].get(
+                "effective_checkpoint", run_record["inputs"][-1])
             best_rank, _ = _consider_curriculum_candidate(
                 pol, log, run_record, baseline, -1, best_path, best_key,
                 best_rank, "initial_checkpoint")
@@ -1009,6 +1058,14 @@ def main():
                     stats.get("bid_gradient_norm", 0.0), 8),
                 "bid_parameter_delta_l2": round(
                     stats.get("bid_parameter_delta_l2", 0.0), 8),
+                "task_residual_gradient_norm": round(
+                    stats.get("task_residual_gradient_norm", 0.0), 8),
+                "critic_gradient_norm": round(
+                    stats.get("critic_gradient_norm", 0.0), 8),
+                "task_residual_parameter_delta_l2": round(
+                    stats.get("task_residual_parameter_delta_l2", 0.0), 8),
+                "task_residual_xi_row_unchanged": stats.get(
+                    "task_residual_xi_row_unchanged"),
                 "w8_scale": round(w8_scale, 2),
                 "k": CURR_K,
                 "agent_steps": agent_steps,

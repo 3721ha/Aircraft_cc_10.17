@@ -1,0 +1,177 @@
+{
+  "scope": "implementation_and_conditional_learning_not_task_performance",
+  "smokes": [
+    {
+      "run": "eventwise_pg_smoke_k4_20261021",
+      "log_sha256": "4f38952ce5a0a37fe26a1b82016b14e10f1cb5cfbd805794bc35fed6c3499efa",
+      "source_integrity": {
+        "verified_at_utc": "2026-10-20T11:13:45.377893+00:00",
+        "unchanged": true,
+        "changed_files": []
+      },
+      "effective_start": {
+        "role": "candidate_repaired_initial_checkpoint",
+        "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\eventwise_pg_smoke_k4_20261021\\provenance\\20261020T111225.727236Z_6224_d11b6b50_candidate_repaired_initial.pt",
+        "exists": true,
+        "size_bytes": 1620273,
+        "sha256": "9f3f319d86658ad3c3a7a40205c4440ede1151ca2607bef34b1883ed7860943a"
+      },
+      "changed_tensors": [],
+      "protected_changes": [],
+      "xi_row_exact": true,
+      "update": {
+        "episode_seeds": [
+          150000,
+          150001
+        ],
+        "cf_bid_events": 0,
+        "cf_bid_informative_events": 0,
+        "cf_bid_candidate_branches": 0,
+        "bid_gradient_norm": 0.0,
+        "bid_parameter_delta_l2": 0.0,
+        "bid_post_update_kl": 0.0
+      },
+      "baseline": {
+        "success_rate": 0.0,
+        "mean_return": -7571.6,
+        "violations_per_step": 6.9656
+      },
+      "after": {
+        "success_rate": 0.0,
+        "mean_return": -7571.6,
+        "violations_per_step": 6.9656
+      },
+      "interpretation": "wiring check only; one or two validation episodes cannot establish success improvement"
+    },
+    {
+      "run": "eventwise_pg_conflict_smoke_k4_20261021",
+      "log_sha256": "9511f8a855ced91638cc639ab1d0a9b35c399c7269ab293cb469a0c0304f8f05",
+      "source_integrity": {
+        "verified_at_utc": "2026-10-20T11:15:05.694305+00:00",
+        "unchanged": true,
+        "changed_files": []
+      },
+      "effective_start": {
+        "role": "candidate_repaired_initial_checkpoint",
+        "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\eventwise_pg_conflict_smoke_k4_20261021\\provenance\\20261020T111429.028304Z_25200_35f10438_candidate_repaired_initial.pt",
+        "exists": true,
+        "size_bytes": 1620363,
+        "sha256": "ec3f41cf5528deb5f6d0ff1a041960e6e5440202e8d612c0ca3cd8f16386e3e4"
+      },
+      "changed_tensors": [
+        "bid_log_std",
+        "bid_head.weight",
+        "bid_head.bias",
+        "bid_candidate_head.0.weight",
+        "bid_candidate_head.0.bias",
+        "bid_candidate_head.2.weight",
+        "bid_candidate_head.2.bias",
+        "bid_conflict_residual.weight"
+      ],
+      "protected_changes": [],
+      "xi_row_exact": true,
+      "update": {
+        "episode_seeds": [
+          100001
+        ],
+        "cf_bid_events": 27,
+        "cf_bid_informative_events": 27,
+        "cf_bid_candidate_branches": 54,
+        "bid_gradient_norm": 12.80125904,
+        "bid_parameter_delta_l2": 0.00754835,
+        "bid_post_update_kl": 0.000632
+      },
+      "baseline": {
+        "success_rate": 1.0,
+        "mean_return": -3202.5,
+        "violations_per_step": 7.2555
+      },
+      "after": {
+        "success_rate": 1.0,
+        "mean_return": -3202.5,
+        "violations_per_step": 7.2555
+      },
+      "interpretation": "wiring check only; one or two validation episodes cannot establish success improvement"
+    },
+    {
+      "run": "residual_pg_smoke_k4_20261021",
+      "log_sha256": "8ab1f2fb729febc13f446bfb955ff6ac5305a7ece6c001c95cd466ddc6302d1c",
+      "source_integrity": {
+        "verified_at_utc": "2026-10-20T11:25:12.937163+00:00",
+        "unchanged": true,
+        "changed_files": []
+      },
+      "effective_start": {
+        "role": "curriculum_effective_initial_checkpoint",
+        "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\provenance\\20261020T112414.566227Z_30504_46541c9a_effective_initial.pt",
+        "exists": true,
+        "size_bytes": 1618913,
+        "sha256": "608fdc8e91fa8465344c1c5628e28a0838926facdcbd181e0b3204c4cd2cb942"
+      },
+      "changed_tensors": [
+        "conflict_residual.weight",
+        "critic.0.weight",
+        "critic.0.bias",
+        "critic.2.weight",
+        "critic.2.bias",
+        "critic.4.weight",
+        "critic.4.bias"
+      ],
+      "protected_changes": [],
+      "xi_row_exact": true,
+      "update": {
+        "episode_seeds": [
+          100001
+        ],
+        "cf_bid_events": 0,
+        "cf_bid_informative_events": 0,
+        "cf_bid_candidate_branches": 0,
+        "bid_gradient_norm": 0.0,
+        "bid_parameter_delta_l2": 0.0,
+        "bid_post_update_kl": 0.0,
+        "task_residual_gradient_norm": 0.16309404,
+        "critic_gradient_norm": 0.37754813,
+        "task_residual_parameter_delta_l2": 0.00022954,
+        "task_residual_xi_row_unchanged": true
+      },
+      "baseline": {
+        "success_rate": 0.0,
+        "mean_return": -4365.1,
+        "violations_per_step": 6.9143
+      },
+      "after": {
+        "success_rate": 0.0,
+        "mean_return": -4365.0,
+        "violations_per_step": 6.9143
+      },
+      "interpretation": "wiring check only; one or two validation episodes cannot establish success improvement"
+    }
+  ],
+  "protected_tracked_files_unchanged": [
+    "Aircraft_mumt/aircraft_sim/detect_config.py",
+    "Aircraft_mumt/aircraft_sim/detect_env.py",
+    "Aircraft_mumt/aircraft_sim/detect_rules.py",
+    "Aircraft_mumt/aircraft_sim/red_agent.py",
+    "Aircraft_mumt/aircraft_sim/scenarios.py",
+    "teacher/simulator/aircraft_sim/__init__.py",
+    "teacher/simulator/aircraft_sim/__pycache__/__init__.cpython-312.pyc",
+    "teacher/simulator/aircraft_sim/__pycache__/detect_config.cpython-312.pyc",
+    "teacher/simulator/aircraft_sim/__pycache__/detect_env.cpython-312.pyc",
+    "teacher/simulator/aircraft_sim/__pycache__/detect_models.cpython-312.pyc",
+    "teacher/simulator/aircraft_sim/__pycache__/detect_rules.cpython-312.pyc",
+    "teacher/simulator/aircraft_sim/__pycache__/models.cpython-312.pyc",
+    "teacher/simulator/aircraft_sim/__pycache__/radar.cpython-312.pyc",
+    "teacher/simulator/aircraft_sim/__pycache__/red_agent.cpython-312.pyc",
+    "teacher/simulator/aircraft_sim/__pycache__/track.cpython-312.pyc",
+    "teacher/simulator/aircraft_sim/detect_config.py",
+    "teacher/simulator/aircraft_sim/detect_env.py",
+    "teacher/simulator/aircraft_sim/detect_models.py",
+    "teacher/simulator/aircraft_sim/detect_rules.py",
+    "teacher/simulator/aircraft_sim/models.py",
+    "teacher/simulator/aircraft_sim/radar.py",
+    "teacher/simulator/aircraft_sim/red_agent.py",
+    "teacher/simulator/aircraft_sim/track.py",
+    "teacher/simulator/run_smoke.py"
+  ],
+  "source_checkpoint_sha256": "386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797"
+}

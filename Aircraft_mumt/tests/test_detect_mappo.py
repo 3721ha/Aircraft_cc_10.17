@@ -419,7 +419,7 @@ def test_bid_event_mean_ignores_inactive_samples_and_keeps_gradient():
 
 
 def test_counterfactual_bid_credit_uses_event_winner_utilities():
-    """Each candidate receives its utility contrast against the event mean."""
+    """All sampled bids receive the realized winner's joint outcome credit."""
     from aircraft_sim.detect_models import DetectAction, DetectRole
 
     env, _, pol = _make(seed=77)
@@ -464,10 +464,9 @@ def test_counterfactual_bid_credit_uses_event_winner_utilities():
     assert masks[0][0] is True
     assert masks[1][0] is True
     assert advantages[0][0] > 0.0
-    assert advantages[1][0] < 0.0
-    assert np.isclose(advantages[0][0], -advantages[1][0])
+    assert np.isclose(advantages[0][0], advantages[1][0])
 
-    # Reverse the task utility ordering and candidate-specific credit reverses.
+    # Reverse utility ordering: discourage the entire sampled winning action.
     negative_advantages = [[0.0] * 8 for _ in range(3)]
     negative_masks = [[False] * 8 for _ in range(3)]
     pol._counterfactual_bid_credit(
@@ -481,9 +480,8 @@ def test_counterfactual_bid_credit_uses_event_winner_utilities():
     assert negative_masks[0][0] is True
     assert negative_masks[1][0] is True
     assert negative_advantages[0][0] < 0.0
-    assert negative_advantages[1][0] > 0.0
     assert np.isclose(negative_advantages[0][0],
-                      -negative_advantages[1][0])
+                      negative_advantages[1][0])
 
 
 def test_counterfactual_bid_credit_enumerates_flat_bid_plateau():
@@ -533,15 +531,15 @@ def test_counterfactual_bid_credit_enumerates_flat_bid_plateau():
     assert result["utility_spreads"] == [0.2]
     assert negative_masks[0][0]
     assert negative_masks[1][0]
-    assert negative[0][0] > 0.0
+    assert negative[0][0] < 0.0
     assert negative[1][0] < 0.0
-    assert np.isclose(negative[0][0], -negative[1][0])
+    assert np.isclose(negative[0][0], negative[1][0])
 
     result, negative, negative_masks = run(-0.1)
     assert result["informative_events"] == 1
     assert negative_masks[0][0]
     assert negative_masks[1][0]
-    assert negative[0][0] > 0.0
+    assert negative[0][0] < 0.0
     assert negative[1][0] < 0.0
 
 

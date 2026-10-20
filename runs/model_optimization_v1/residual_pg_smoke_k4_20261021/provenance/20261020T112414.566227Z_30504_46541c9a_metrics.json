@@ -1,0 +1,1515 @@
+{
+ "run_id": "20261020T112414.566227Z_30504_46541c9a",
+ "phase": "curr",
+ "task_config_sha256": "87e5fcd38254e5c1c06f98b7f8a379a9d101cfe7f70dcd78c3c2b2157516e248",
+ "algorithm_config_sha256": "7b0997483e356036057d7e81f9d599f10014cfc2187dd3546b85f5257930a46d",
+ "source_manifest_sha256": "a361208ee485ee5d00720f262b7f2922f680169ad6ab675168520e0d041b4d9c",
+ "records": {
+  "curr_k4": [
+   {
+    "iter": 0,
+    "run_id": "20261020T112414.566227Z_30504_46541c9a",
+    "mean_return": -11480.2,
+    "mean_environment_return": -11477.9,
+    "episode_seeds": [
+     100001
+    ],
+    "success": 1.0,
+    "vio_per_step": 8.491,
+    "qp_share": 1.0,
+    "approx_kl": 0.0,
+    "bid_approx_kl": 0.0,
+    "bid_post_update_kl": 0.0,
+    "policy_anchor_kl": -0.0,
+    "post_update_policy_anchor_kl": -0.0,
+    "bid_active_slot_count": 0,
+    "bid_active_slot_count_by_index": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "cf_bid_informative_fraction": 0.0,
+    "bid_gradient_norm": 0.0,
+    "bid_parameter_delta_l2": 0.0,
+    "task_residual_gradient_norm": 0.16309404,
+    "critic_gradient_norm": 0.37754813,
+    "task_residual_parameter_delta_l2": 0.00022954,
+    "task_residual_xi_row_unchanged": true,
+    "w8_scale": 1.0,
+    "k": 4,
+    "agent_steps": 2220,
+    "environment_steps": 740,
+    "exposed_agent_steps": 0,
+    "nonexposed_agent_fraction": 1.0,
+    "track_actions": 310,
+    "track_action_rate": 0.1396,
+    "nonzero_pointer": 159,
+    "nonzero_pointer_rate": 0.0716,
+    "valid_requests": 159,
+    "valid_request_rate": 0.0716,
+    "requests": 159,
+    "c04_pass_requests": 62,
+    "c04_rejected_requests": 97,
+    "request_winners": 62,
+    "new_assignments": 26,
+    "handoffs": 1,
+    "mean_owned_targets": 0.3149,
+    "stable_target_steps": 35,
+    "stable_progress_ticks": 140,
+    "interventions": 967,
+    "intervention_rate": 0.4356,
+    "mean_correction": 0.887368,
+    "max_stable_progress": 7,
+    "intervention_loss": 1.303665,
+    "intervention_fraction": 0.435586,
+    "cf_nonzero_frac": 0.004955,
+    "gear_gate_active_frac": 0.004955,
+    "gear_gate_credit_mean": -0.004955,
+    "bid_event_frac": 0.0,
+    "bid_action_mean": 0.0,
+    "bid_action_std": 0.0,
+    "bid_events": 0,
+    "bid_events_per_episode": 0.0,
+    "bid_participants": 0,
+    "bid_participation_rate": 0.0,
+    "bid_event_step_rate": 0.0,
+    "forced_overlap_pairs": 0,
+    "pointer_exposed_agents": 0,
+    "exposed_multi_candidate_events": 0,
+    "unexposed_multi_candidate_events": 0,
+    "bid_changed_winner": 0,
+    "cf_bid_events": 0,
+    "cf_bid_informative_events": 0,
+    "cf_bid_candidate_branches": 0,
+    "cf_bid_uncontrollable_events": 0,
+    "cf_bid_mean_utility_spread": 0.0,
+    "cf_bid_mean_actual_regret": 0.0,
+    "cf_bid_mean_abs_advantage": 0.0,
+    "rule_conflict_feature_mean": [
+     0.00262,
+     0.023874,
+     0.013063,
+     0.362072,
+     0.02319,
+     0.045946,
+     0.0,
+     0.367797,
+     0.0,
+     0.024844,
+     0.531637,
+     0.001158,
+     0.001046
+    ],
+    "rule_conflict_feature_nonzero_rate": [
+     0.008108,
+     0.028829,
+     0.088739,
+     0.532432,
+     0.197297,
+     0.287387,
+     0.0,
+     0.677027,
+     0.0,
+     0.06036,
+     0.586486,
+     0.014865,
+     0.008559
+    ],
+    "rule_conflict_any_rate": 0.975676,
+    "checkpoint": {
+     "role": "curriculum_iteration_checkpoint",
+     "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\curr_k4.pt",
+     "exists": true,
+     "size_bytes": 1613903,
+     "sha256": "472ac44a8e9a46d43a9c4075109b318eebd6868fdddbd5b31278e3a6d03ab6bb",
+     "run_id": "20261020T112414.566227Z_30504_46541c9a",
+     "archive": {
+      "role": "curriculum_iteration_checkpoint_archive",
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\provenance\\20261020T112414.566227Z_30504_46541c9a_curr_k4_iter_000000.pt",
+      "exists": true,
+      "size_bytes": 1613903,
+      "sha256": "472ac44a8e9a46d43a9c4075109b318eebd6868fdddbd5b31278e3a6d03ab6bb",
+      "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\curr_k4.pt"
+     }
+    },
+    "validation": {
+     "k": 4,
+     "seeds": [
+      103003
+     ],
+     "stable_window": 8,
+     "task_config": {
+      "dt": 1.0,
+      "horizon": 900,
+      "L_X": 160.0,
+      "L_Y": 120.0,
+      "X_CUTOFF": 40.0,
+      "X_TRACK": 110.0,
+      "AGE_STD_TRACK": 10.0,
+      "AGE_STD_DETECT": 5.0,
+      "STABLE_WINDOW": 8,
+      "N_WINGMEN": 3,
+      "BLUE_V_MIN_MA": 0.4,
+      "BLUE_V_MAX_MA": 0.95,
+      "OMEGA_CRUISE_DEG": 3.0,
+      "OMEGA_MANEUVER_DEG": 6.0,
+      "ACCEL_MAX_MA_S": 0.1,
+      "K_PSI": 1.0,
+      "K_V_MS": 30.0,
+      "MANNED_V_MIN_MA": 0.5,
+      "MANNED_V_MAX_MA": 0.9,
+      "MANNED_OMEGA_DEG": 3.0,
+      "K_RED": 4,
+      "RED_CRUISE_MA": 0.75,
+      "RED_MANEUVER_MA_RANGE": [
+       0.6,
+       0.9
+      ],
+      "RED_OMEGA_DEG": 8.0,
+      "RED_DUTY_MIN": 0.7,
+      "RED_DUTY_MAX": 0.8,
+      "RED_STAGGER_KM": 8.0,
+      "RED_X0": 158.0,
+      "RED_MANEUVER_RESAMPLE": [
+       20,
+       40
+      ],
+      "RED_TURN_POISSON_MEAN": 30.0,
+      "RED_SNAKE_HALF_ANGLE_DEG": 30.0,
+      "RED_SNAKE_PERIOD": 20.0,
+      "RED_EDGE_SUPPRESS_KM": 5.0,
+      "RED_REGAIN_T": [
+       12.0,
+       20.0
+      ],
+      "RED_REGAIN_SPREAD_DEG": 30.0,
+      "RED_SEP_WARN_KM": 18.0,
+      "RED_SEP_HARD_KM": 2.0,
+      "RED_SEP_BIAS_DEG": 45.0,
+      "RED_PAIR_SUBLANE_KM": 4.0,
+      "R_MAX": 80.0,
+      "FOV_HALF_DEG": 7.5,
+      "BEAM_DWELL": 0.5,
+      "GEAR_FRAME": {
+       "7.5": 0.5,
+       "15.0": 1.0,
+       "30.0": 2.0,
+       "45.0": 3.0,
+       "60.0": 4.0
+      },
+      "GEARS_SEARCH": [
+       45.0,
+       60.0
+      ],
+      "GEARS_TRACK": [
+       7.5,
+       15.0,
+       30.0,
+       45.0
+      ],
+      "PD_TIERS": [
+       [
+        0.5,
+        0.9
+       ],
+       [
+        0.8,
+        0.6
+       ],
+       [
+        1.0,
+        0.3
+       ]
+      ],
+      "SECTOR_AXIS_MAX_DEG": 60.0,
+      "AXIS_TRIM_SCALE_DEG": 15.0,
+      "TRACK_INIT_HITS": 2,
+      "TRACK_INIT_WINDOW": 6.5,
+      "TRACK_CONFIRM_TIME": 5.0,
+      "TRACK_CONFIRM_GAP_MAX": 1.6,
+      "AGE_DEGRADE": 8.0,
+      "AGE_DROP": 13.0,
+      "COV_SHRINK": 0.8,
+      "COV_Q_KM2_S": 0.25,
+      "SIGMA_REF": 4.0,
+      "MAR": 40.0,
+      "MOR": 60.0,
+      "MAR_MOR_VARIANTS": [
+       [
+        40.0,
+        60.0
+       ],
+       [
+        30.0,
+        50.0
+       ],
+       [
+        20.0,
+        40.0
+       ]
+      ],
+      "K_SIGMA": 3.0,
+      "MOR_GRADIENT_SPAN": 20.0,
+      "D_SAFE": 2.0,
+      "D_SAFE_LOOKAHEAD": 3.0,
+      "BOUNDARY_PREDICT": 5.0,
+      "LINK_RATE_HZ": 1.0,
+      "LINK_DELAY_S": 1.0,
+      "T_SCAN_REQ": 120.0,
+      "HANDOFF_MIN_INTERVAL": 30.0,
+      "HANDOFF_INTERVAL_SWEEP": [
+       10.0,
+       20.0,
+       30.0
+      ],
+      "C04_RANGE": 80.0,
+      "C04_RESPONSE": 5.0,
+      "T_DWELL": 5.0,
+      "APPROVAL_DELAY_INIT": 0.0,
+      "LINK_DROP_RATE": 0.3,
+      "LINK_DROP_WINDOW": 10.0,
+      "UPLINK_LOSS_P": 0.05,
+      "E03_AREA_PER_KM": 5.0,
+      "N_SUBZONES": 3,
+      "TRACK_SWEET_DIST": 62.0,
+      "TRACK_K_D": 0.0025,
+      "CAP_X": 15.0,
+      "CAP_Y": 60.0,
+      "CAP_LEG_Y": 10.0,
+      "CAP_LEG_X": 5.0,
+      "ARB_WEIGHTS": [
+       1.0,
+       1.0,
+       0.5,
+       0.5,
+       0.3
+      ],
+      "ARB_HYSTERESIS": 0.2,
+      "ARB_BID_WEIGHT": 0.35,
+      "W1_TRACK_TICK": 0.02,
+      "W2_DETECT_TICK": 0.005,
+      "W3_STABLE": 10.0,
+      "W4_SUCCESS": 50.0,
+      "W5_MOR_GRAD": 0.02,
+      "W6_MAR": 0.1,
+      "W7_HANDOFF": 0.5,
+      "W8_LAYER": [
+       10.0,
+       7.5,
+       10.0,
+       5.0,
+       2.5,
+       1.25
+      ],
+      "W8_SCALE": 1.0,
+      "M05_GRACE": 5.0,
+      "W9_FAILURE": 50.0,
+      "STEP_COST": 0.005,
+      "OBS_DIM": 169,
+      "TRACK_SLOTS": 8,
+      "NET_HIDDEN": 128,
+      "TOTAL_STEPS": 1500000,
+      "N_ENVS": 16,
+      "N_SEEDS": 10,
+      "BC_EPOCHS": [
+       50,
+       100
+      ],
+      "CONVERGE_WINDOW": 100,
+      "seed": 7
+     },
+     "task_config_sha256": "87e5fcd38254e5c1c06f98b7f8a379a9d101cfe7f70dcd78c3c2b2157516e248",
+     "rl": {
+      "success_rate": 0.0,
+      "mean_return": -4365.0,
+      "violations_per_step": 6.9143
+     },
+     "heur": {
+      "success_rate": 1.0,
+      "mean_return": -5305.3,
+      "violations_per_step": 9.1064
+     },
+     "natural_arbitration": {
+      "rl_multi_candidate_events": 0,
+      "rl_winner_changes_vs_fixed_score": 0,
+      "forced_probe_enabled": false
+     },
+     "by_seed": [
+      {
+       "seed": 103003,
+       "rl": {
+        "seed": 103003,
+        "terminal": "failure",
+        "return": -4365.0,
+        "steps": 700,
+        "violations": 4840,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 103003,
+        "terminal": "success",
+        "return": -5305.3,
+        "steps": 545,
+        "violations": 4963
+       }
+      }
+     ],
+     "run_id": "20261020T112414.566227Z_30504_46541c9a",
+     "source_manifest_sha256": "a361208ee485ee5d00720f262b7f2922f680169ad6ab675168520e0d041b4d9c",
+     "checkpoint": {
+      "role": "curriculum_validation_checkpoint",
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\curr_k4.pt",
+      "exists": true,
+      "size_bytes": 1613903,
+      "sha256": "472ac44a8e9a46d43a9c4075109b318eebd6868fdddbd5b31278e3a6d03ab6bb"
+     },
+     "stage": "ppo_update",
+     "iter": 0,
+     "best_checkpoint": {
+      "role": "curriculum_best_checkpoint",
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\curr_k4_best.pt",
+      "exists": true,
+      "size_bytes": 1614417,
+      "sha256": "f9cb1255936593fd6af3e57444e0d8dbb737dee9ef579e9ad33b4a106926d021",
+      "archive": {
+       "role": "curriculum_best_checkpoint_archive",
+       "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\provenance\\20261020T112414.566227Z_30504_46541c9a_curr_k4_best_ppo_update_000000.pt",
+       "exists": true,
+       "size_bytes": 1614417,
+       "sha256": "f9cb1255936593fd6af3e57444e0d8dbb737dee9ef579e9ad33b4a106926d021",
+       "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\curr_k4_best.pt"
+      }
+     },
+     "acceptance": {
+      "success_at_least_heur": false,
+      "mean_return_at_least_heur": true,
+      "violations_below_heur": true,
+      "passed": false
+     }
+    }
+   }
+  ],
+  "curr_k4_best": {
+   "iter": 0,
+   "stage": "ppo_update",
+   "checkpoint": "curr_k4_best.pt",
+   "checkpoint_sha256": "f9cb1255936593fd6af3e57444e0d8dbb737dee9ef579e9ad33b4a106926d021",
+   "rank": [
+    0.0,
+    -4365.0,
+    -6.9143
+   ],
+   "validation": {
+    "k": 4,
+    "seeds": [
+     103003
+    ],
+    "stable_window": 8,
+    "task_config": {
+     "dt": 1.0,
+     "horizon": 900,
+     "L_X": 160.0,
+     "L_Y": 120.0,
+     "X_CUTOFF": 40.0,
+     "X_TRACK": 110.0,
+     "AGE_STD_TRACK": 10.0,
+     "AGE_STD_DETECT": 5.0,
+     "STABLE_WINDOW": 8,
+     "N_WINGMEN": 3,
+     "BLUE_V_MIN_MA": 0.4,
+     "BLUE_V_MAX_MA": 0.95,
+     "OMEGA_CRUISE_DEG": 3.0,
+     "OMEGA_MANEUVER_DEG": 6.0,
+     "ACCEL_MAX_MA_S": 0.1,
+     "K_PSI": 1.0,
+     "K_V_MS": 30.0,
+     "MANNED_V_MIN_MA": 0.5,
+     "MANNED_V_MAX_MA": 0.9,
+     "MANNED_OMEGA_DEG": 3.0,
+     "K_RED": 4,
+     "RED_CRUISE_MA": 0.75,
+     "RED_MANEUVER_MA_RANGE": [
+      0.6,
+      0.9
+     ],
+     "RED_OMEGA_DEG": 8.0,
+     "RED_DUTY_MIN": 0.7,
+     "RED_DUTY_MAX": 0.8,
+     "RED_STAGGER_KM": 8.0,
+     "RED_X0": 158.0,
+     "RED_MANEUVER_RESAMPLE": [
+      20,
+      40
+     ],
+     "RED_TURN_POISSON_MEAN": 30.0,
+     "RED_SNAKE_HALF_ANGLE_DEG": 30.0,
+     "RED_SNAKE_PERIOD": 20.0,
+     "RED_EDGE_SUPPRESS_KM": 5.0,
+     "RED_REGAIN_T": [
+      12.0,
+      20.0
+     ],
+     "RED_REGAIN_SPREAD_DEG": 30.0,
+     "RED_SEP_WARN_KM": 18.0,
+     "RED_SEP_HARD_KM": 2.0,
+     "RED_SEP_BIAS_DEG": 45.0,
+     "RED_PAIR_SUBLANE_KM": 4.0,
+     "R_MAX": 80.0,
+     "FOV_HALF_DEG": 7.5,
+     "BEAM_DWELL": 0.5,
+     "GEAR_FRAME": {
+      "7.5": 0.5,
+      "15.0": 1.0,
+      "30.0": 2.0,
+      "45.0": 3.0,
+      "60.0": 4.0
+     },
+     "GEARS_SEARCH": [
+      45.0,
+      60.0
+     ],
+     "GEARS_TRACK": [
+      7.5,
+      15.0,
+      30.0,
+      45.0
+     ],
+     "PD_TIERS": [
+      [
+       0.5,
+       0.9
+      ],
+      [
+       0.8,
+       0.6
+      ],
+      [
+       1.0,
+       0.3
+      ]
+     ],
+     "SECTOR_AXIS_MAX_DEG": 60.0,
+     "AXIS_TRIM_SCALE_DEG": 15.0,
+     "TRACK_INIT_HITS": 2,
+     "TRACK_INIT_WINDOW": 6.5,
+     "TRACK_CONFIRM_TIME": 5.0,
+     "TRACK_CONFIRM_GAP_MAX": 1.6,
+     "AGE_DEGRADE": 8.0,
+     "AGE_DROP": 13.0,
+     "COV_SHRINK": 0.8,
+     "COV_Q_KM2_S": 0.25,
+     "SIGMA_REF": 4.0,
+     "MAR": 40.0,
+     "MOR": 60.0,
+     "MAR_MOR_VARIANTS": [
+      [
+       40.0,
+       60.0
+      ],
+      [
+       30.0,
+       50.0
+      ],
+      [
+       20.0,
+       40.0
+      ]
+     ],
+     "K_SIGMA": 3.0,
+     "MOR_GRADIENT_SPAN": 20.0,
+     "D_SAFE": 2.0,
+     "D_SAFE_LOOKAHEAD": 3.0,
+     "BOUNDARY_PREDICT": 5.0,
+     "LINK_RATE_HZ": 1.0,
+     "LINK_DELAY_S": 1.0,
+     "T_SCAN_REQ": 120.0,
+     "HANDOFF_MIN_INTERVAL": 30.0,
+     "HANDOFF_INTERVAL_SWEEP": [
+      10.0,
+      20.0,
+      30.0
+     ],
+     "C04_RANGE": 80.0,
+     "C04_RESPONSE": 5.0,
+     "T_DWELL": 5.0,
+     "APPROVAL_DELAY_INIT": 0.0,
+     "LINK_DROP_RATE": 0.3,
+     "LINK_DROP_WINDOW": 10.0,
+     "UPLINK_LOSS_P": 0.05,
+     "E03_AREA_PER_KM": 5.0,
+     "N_SUBZONES": 3,
+     "TRACK_SWEET_DIST": 62.0,
+     "TRACK_K_D": 0.0025,
+     "CAP_X": 15.0,
+     "CAP_Y": 60.0,
+     "CAP_LEG_Y": 10.0,
+     "CAP_LEG_X": 5.0,
+     "ARB_WEIGHTS": [
+      1.0,
+      1.0,
+      0.5,
+      0.5,
+      0.3
+     ],
+     "ARB_HYSTERESIS": 0.2,
+     "ARB_BID_WEIGHT": 0.35,
+     "W1_TRACK_TICK": 0.02,
+     "W2_DETECT_TICK": 0.005,
+     "W3_STABLE": 10.0,
+     "W4_SUCCESS": 50.0,
+     "W5_MOR_GRAD": 0.02,
+     "W6_MAR": 0.1,
+     "W7_HANDOFF": 0.5,
+     "W8_LAYER": [
+      10.0,
+      7.5,
+      10.0,
+      5.0,
+      2.5,
+      1.25
+     ],
+     "W8_SCALE": 1.0,
+     "M05_GRACE": 5.0,
+     "W9_FAILURE": 50.0,
+     "STEP_COST": 0.005,
+     "OBS_DIM": 169,
+     "TRACK_SLOTS": 8,
+     "NET_HIDDEN": 128,
+     "TOTAL_STEPS": 1500000,
+     "N_ENVS": 16,
+     "N_SEEDS": 10,
+     "BC_EPOCHS": [
+      50,
+      100
+     ],
+     "CONVERGE_WINDOW": 100,
+     "seed": 7
+    },
+    "task_config_sha256": "87e5fcd38254e5c1c06f98b7f8a379a9d101cfe7f70dcd78c3c2b2157516e248",
+    "rl": {
+     "success_rate": 0.0,
+     "mean_return": -4365.0,
+     "violations_per_step": 6.9143
+    },
+    "heur": {
+     "success_rate": 1.0,
+     "mean_return": -5305.3,
+     "violations_per_step": 9.1064
+    },
+    "natural_arbitration": {
+     "rl_multi_candidate_events": 0,
+     "rl_winner_changes_vs_fixed_score": 0,
+     "forced_probe_enabled": false
+    },
+    "by_seed": [
+     {
+      "seed": 103003,
+      "rl": {
+       "seed": 103003,
+       "terminal": "failure",
+       "return": -4365.0,
+       "steps": 700,
+       "violations": 4840,
+       "multi_candidate_events": 0,
+       "winner_changes_vs_fixed_score": 0
+      },
+      "heur": {
+       "seed": 103003,
+       "terminal": "success",
+       "return": -5305.3,
+       "steps": 545,
+       "violations": 4963
+      }
+     }
+    ],
+    "run_id": "20261020T112414.566227Z_30504_46541c9a",
+    "source_manifest_sha256": "a361208ee485ee5d00720f262b7f2922f680169ad6ab675168520e0d041b4d9c",
+    "checkpoint": {
+     "role": "curriculum_validation_checkpoint",
+     "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\curr_k4.pt",
+     "exists": true,
+     "size_bytes": 1613903,
+     "sha256": "472ac44a8e9a46d43a9c4075109b318eebd6868fdddbd5b31278e3a6d03ab6bb"
+    },
+    "stage": "ppo_update",
+    "iter": 0,
+    "best_checkpoint": {
+     "role": "curriculum_best_checkpoint",
+     "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\curr_k4_best.pt",
+     "exists": true,
+     "size_bytes": 1614417,
+     "sha256": "f9cb1255936593fd6af3e57444e0d8dbb737dee9ef579e9ad33b4a106926d021",
+     "archive": {
+      "role": "curriculum_best_checkpoint_archive",
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\provenance\\20261020T112414.566227Z_30504_46541c9a_curr_k4_best_ppo_update_000000.pt",
+      "exists": true,
+      "size_bytes": 1614417,
+      "sha256": "f9cb1255936593fd6af3e57444e0d8dbb737dee9ef579e9ad33b4a106926d021",
+      "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\curr_k4_best.pt"
+     }
+    },
+    "acceptance": {
+     "success_at_least_heur": false,
+     "mean_return_at_least_heur": true,
+     "violations_below_heur": true,
+     "passed": false
+    }
+   }
+  },
+  "curr_k4_validation": {
+   "k": 4,
+   "seeds": [
+    103003
+   ],
+   "stable_window": 8,
+   "task_config": {
+    "dt": 1.0,
+    "horizon": 900,
+    "L_X": 160.0,
+    "L_Y": 120.0,
+    "X_CUTOFF": 40.0,
+    "X_TRACK": 110.0,
+    "AGE_STD_TRACK": 10.0,
+    "AGE_STD_DETECT": 5.0,
+    "STABLE_WINDOW": 8,
+    "N_WINGMEN": 3,
+    "BLUE_V_MIN_MA": 0.4,
+    "BLUE_V_MAX_MA": 0.95,
+    "OMEGA_CRUISE_DEG": 3.0,
+    "OMEGA_MANEUVER_DEG": 6.0,
+    "ACCEL_MAX_MA_S": 0.1,
+    "K_PSI": 1.0,
+    "K_V_MS": 30.0,
+    "MANNED_V_MIN_MA": 0.5,
+    "MANNED_V_MAX_MA": 0.9,
+    "MANNED_OMEGA_DEG": 3.0,
+    "K_RED": 4,
+    "RED_CRUISE_MA": 0.75,
+    "RED_MANEUVER_MA_RANGE": [
+     0.6,
+     0.9
+    ],
+    "RED_OMEGA_DEG": 8.0,
+    "RED_DUTY_MIN": 0.7,
+    "RED_DUTY_MAX": 0.8,
+    "RED_STAGGER_KM": 8.0,
+    "RED_X0": 158.0,
+    "RED_MANEUVER_RESAMPLE": [
+     20,
+     40
+    ],
+    "RED_TURN_POISSON_MEAN": 30.0,
+    "RED_SNAKE_HALF_ANGLE_DEG": 30.0,
+    "RED_SNAKE_PERIOD": 20.0,
+    "RED_EDGE_SUPPRESS_KM": 5.0,
+    "RED_REGAIN_T": [
+     12.0,
+     20.0
+    ],
+    "RED_REGAIN_SPREAD_DEG": 30.0,
+    "RED_SEP_WARN_KM": 18.0,
+    "RED_SEP_HARD_KM": 2.0,
+    "RED_SEP_BIAS_DEG": 45.0,
+    "RED_PAIR_SUBLANE_KM": 4.0,
+    "R_MAX": 80.0,
+    "FOV_HALF_DEG": 7.5,
+    "BEAM_DWELL": 0.5,
+    "GEAR_FRAME": {
+     "7.5": 0.5,
+     "15.0": 1.0,
+     "30.0": 2.0,
+     "45.0": 3.0,
+     "60.0": 4.0
+    },
+    "GEARS_SEARCH": [
+     45.0,
+     60.0
+    ],
+    "GEARS_TRACK": [
+     7.5,
+     15.0,
+     30.0,
+     45.0
+    ],
+    "PD_TIERS": [
+     [
+      0.5,
+      0.9
+     ],
+     [
+      0.8,
+      0.6
+     ],
+     [
+      1.0,
+      0.3
+     ]
+    ],
+    "SECTOR_AXIS_MAX_DEG": 60.0,
+    "AXIS_TRIM_SCALE_DEG": 15.0,
+    "TRACK_INIT_HITS": 2,
+    "TRACK_INIT_WINDOW": 6.5,
+    "TRACK_CONFIRM_TIME": 5.0,
+    "TRACK_CONFIRM_GAP_MAX": 1.6,
+    "AGE_DEGRADE": 8.0,
+    "AGE_DROP": 13.0,
+    "COV_SHRINK": 0.8,
+    "COV_Q_KM2_S": 0.25,
+    "SIGMA_REF": 4.0,
+    "MAR": 40.0,
+    "MOR": 60.0,
+    "MAR_MOR_VARIANTS": [
+     [
+      40.0,
+      60.0
+     ],
+     [
+      30.0,
+      50.0
+     ],
+     [
+      20.0,
+      40.0
+     ]
+    ],
+    "K_SIGMA": 3.0,
+    "MOR_GRADIENT_SPAN": 20.0,
+    "D_SAFE": 2.0,
+    "D_SAFE_LOOKAHEAD": 3.0,
+    "BOUNDARY_PREDICT": 5.0,
+    "LINK_RATE_HZ": 1.0,
+    "LINK_DELAY_S": 1.0,
+    "T_SCAN_REQ": 120.0,
+    "HANDOFF_MIN_INTERVAL": 30.0,
+    "HANDOFF_INTERVAL_SWEEP": [
+     10.0,
+     20.0,
+     30.0
+    ],
+    "C04_RANGE": 80.0,
+    "C04_RESPONSE": 5.0,
+    "T_DWELL": 5.0,
+    "APPROVAL_DELAY_INIT": 0.0,
+    "LINK_DROP_RATE": 0.3,
+    "LINK_DROP_WINDOW": 10.0,
+    "UPLINK_LOSS_P": 0.05,
+    "E03_AREA_PER_KM": 5.0,
+    "N_SUBZONES": 3,
+    "TRACK_SWEET_DIST": 62.0,
+    "TRACK_K_D": 0.0025,
+    "CAP_X": 15.0,
+    "CAP_Y": 60.0,
+    "CAP_LEG_Y": 10.0,
+    "CAP_LEG_X": 5.0,
+    "ARB_WEIGHTS": [
+     1.0,
+     1.0,
+     0.5,
+     0.5,
+     0.3
+    ],
+    "ARB_HYSTERESIS": 0.2,
+    "ARB_BID_WEIGHT": 0.35,
+    "W1_TRACK_TICK": 0.02,
+    "W2_DETECT_TICK": 0.005,
+    "W3_STABLE": 10.0,
+    "W4_SUCCESS": 50.0,
+    "W5_MOR_GRAD": 0.02,
+    "W6_MAR": 0.1,
+    "W7_HANDOFF": 0.5,
+    "W8_LAYER": [
+     10.0,
+     7.5,
+     10.0,
+     5.0,
+     2.5,
+     1.25
+    ],
+    "W8_SCALE": 1.0,
+    "M05_GRACE": 5.0,
+    "W9_FAILURE": 50.0,
+    "STEP_COST": 0.005,
+    "OBS_DIM": 169,
+    "TRACK_SLOTS": 8,
+    "NET_HIDDEN": 128,
+    "TOTAL_STEPS": 1500000,
+    "N_ENVS": 16,
+    "N_SEEDS": 10,
+    "BC_EPOCHS": [
+     50,
+     100
+    ],
+    "CONVERGE_WINDOW": 100,
+    "seed": 7
+   },
+   "task_config_sha256": "87e5fcd38254e5c1c06f98b7f8a379a9d101cfe7f70dcd78c3c2b2157516e248",
+   "rl": {
+    "success_rate": 0.0,
+    "mean_return": -4365.0,
+    "violations_per_step": 6.9143
+   },
+   "heur": {
+    "success_rate": 1.0,
+    "mean_return": -5305.3,
+    "violations_per_step": 9.1064
+   },
+   "natural_arbitration": {
+    "rl_multi_candidate_events": 0,
+    "rl_winner_changes_vs_fixed_score": 0,
+    "forced_probe_enabled": false
+   },
+   "by_seed": [
+    {
+     "seed": 103003,
+     "rl": {
+      "seed": 103003,
+      "terminal": "failure",
+      "return": -4365.0,
+      "steps": 700,
+      "violations": 4840,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 103003,
+      "terminal": "success",
+      "return": -5305.3,
+      "steps": 545,
+      "violations": 4963
+     }
+    }
+   ],
+   "run_id": "20261020T112414.566227Z_30504_46541c9a",
+   "source_manifest_sha256": "a361208ee485ee5d00720f262b7f2922f680169ad6ab675168520e0d041b4d9c",
+   "checkpoint": {
+    "role": "curriculum_validation_checkpoint",
+    "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\curr_k4.pt",
+    "exists": true,
+    "size_bytes": 1613903,
+    "sha256": "472ac44a8e9a46d43a9c4075109b318eebd6868fdddbd5b31278e3a6d03ab6bb"
+   },
+   "stage": "ppo_update",
+   "iter": 0,
+   "best_checkpoint": {
+    "role": "curriculum_best_checkpoint",
+    "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\curr_k4_best.pt",
+    "exists": true,
+    "size_bytes": 1614417,
+    "sha256": "f9cb1255936593fd6af3e57444e0d8dbb737dee9ef579e9ad33b4a106926d021",
+    "archive": {
+     "role": "curriculum_best_checkpoint_archive",
+     "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\provenance\\20261020T112414.566227Z_30504_46541c9a_curr_k4_best_ppo_update_000000.pt",
+     "exists": true,
+     "size_bytes": 1614417,
+     "sha256": "f9cb1255936593fd6af3e57444e0d8dbb737dee9ef579e9ad33b4a106926d021",
+     "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\curr_k4_best.pt"
+    }
+   },
+   "acceptance": {
+    "success_at_least_heur": false,
+    "mean_return_at_least_heur": true,
+    "violations_below_heur": true,
+    "passed": false
+   }
+  },
+  "curr_k4_baseline": {
+   "k": 4,
+   "seeds": [
+    103003
+   ],
+   "stable_window": 8,
+   "task_config": {
+    "dt": 1.0,
+    "horizon": 900,
+    "L_X": 160.0,
+    "L_Y": 120.0,
+    "X_CUTOFF": 40.0,
+    "X_TRACK": 110.0,
+    "AGE_STD_TRACK": 10.0,
+    "AGE_STD_DETECT": 5.0,
+    "STABLE_WINDOW": 8,
+    "N_WINGMEN": 3,
+    "BLUE_V_MIN_MA": 0.4,
+    "BLUE_V_MAX_MA": 0.95,
+    "OMEGA_CRUISE_DEG": 3.0,
+    "OMEGA_MANEUVER_DEG": 6.0,
+    "ACCEL_MAX_MA_S": 0.1,
+    "K_PSI": 1.0,
+    "K_V_MS": 30.0,
+    "MANNED_V_MIN_MA": 0.5,
+    "MANNED_V_MAX_MA": 0.9,
+    "MANNED_OMEGA_DEG": 3.0,
+    "K_RED": 4,
+    "RED_CRUISE_MA": 0.75,
+    "RED_MANEUVER_MA_RANGE": [
+     0.6,
+     0.9
+    ],
+    "RED_OMEGA_DEG": 8.0,
+    "RED_DUTY_MIN": 0.7,
+    "RED_DUTY_MAX": 0.8,
+    "RED_STAGGER_KM": 8.0,
+    "RED_X0": 158.0,
+    "RED_MANEUVER_RESAMPLE": [
+     20,
+     40
+    ],
+    "RED_TURN_POISSON_MEAN": 30.0,
+    "RED_SNAKE_HALF_ANGLE_DEG": 30.0,
+    "RED_SNAKE_PERIOD": 20.0,
+    "RED_EDGE_SUPPRESS_KM": 5.0,
+    "RED_REGAIN_T": [
+     12.0,
+     20.0
+    ],
+    "RED_REGAIN_SPREAD_DEG": 30.0,
+    "RED_SEP_WARN_KM": 18.0,
+    "RED_SEP_HARD_KM": 2.0,
+    "RED_SEP_BIAS_DEG": 45.0,
+    "RED_PAIR_SUBLANE_KM": 4.0,
+    "R_MAX": 80.0,
+    "FOV_HALF_DEG": 7.5,
+    "BEAM_DWELL": 0.5,
+    "GEAR_FRAME": {
+     "7.5": 0.5,
+     "15.0": 1.0,
+     "30.0": 2.0,
+     "45.0": 3.0,
+     "60.0": 4.0
+    },
+    "GEARS_SEARCH": [
+     45.0,
+     60.0
+    ],
+    "GEARS_TRACK": [
+     7.5,
+     15.0,
+     30.0,
+     45.0
+    ],
+    "PD_TIERS": [
+     [
+      0.5,
+      0.9
+     ],
+     [
+      0.8,
+      0.6
+     ],
+     [
+      1.0,
+      0.3
+     ]
+    ],
+    "SECTOR_AXIS_MAX_DEG": 60.0,
+    "AXIS_TRIM_SCALE_DEG": 15.0,
+    "TRACK_INIT_HITS": 2,
+    "TRACK_INIT_WINDOW": 6.5,
+    "TRACK_CONFIRM_TIME": 5.0,
+    "TRACK_CONFIRM_GAP_MAX": 1.6,
+    "AGE_DEGRADE": 8.0,
+    "AGE_DROP": 13.0,
+    "COV_SHRINK": 0.8,
+    "COV_Q_KM2_S": 0.25,
+    "SIGMA_REF": 4.0,
+    "MAR": 40.0,
+    "MOR": 60.0,
+    "MAR_MOR_VARIANTS": [
+     [
+      40.0,
+      60.0
+     ],
+     [
+      30.0,
+      50.0
+     ],
+     [
+      20.0,
+      40.0
+     ]
+    ],
+    "K_SIGMA": 3.0,
+    "MOR_GRADIENT_SPAN": 20.0,
+    "D_SAFE": 2.0,
+    "D_SAFE_LOOKAHEAD": 3.0,
+    "BOUNDARY_PREDICT": 5.0,
+    "LINK_RATE_HZ": 1.0,
+    "LINK_DELAY_S": 1.0,
+    "T_SCAN_REQ": 120.0,
+    "HANDOFF_MIN_INTERVAL": 30.0,
+    "HANDOFF_INTERVAL_SWEEP": [
+     10.0,
+     20.0,
+     30.0
+    ],
+    "C04_RANGE": 80.0,
+    "C04_RESPONSE": 5.0,
+    "T_DWELL": 5.0,
+    "APPROVAL_DELAY_INIT": 0.0,
+    "LINK_DROP_RATE": 0.3,
+    "LINK_DROP_WINDOW": 10.0,
+    "UPLINK_LOSS_P": 0.05,
+    "E03_AREA_PER_KM": 5.0,
+    "N_SUBZONES": 3,
+    "TRACK_SWEET_DIST": 62.0,
+    "TRACK_K_D": 0.0025,
+    "CAP_X": 15.0,
+    "CAP_Y": 60.0,
+    "CAP_LEG_Y": 10.0,
+    "CAP_LEG_X": 5.0,
+    "ARB_WEIGHTS": [
+     1.0,
+     1.0,
+     0.5,
+     0.5,
+     0.3
+    ],
+    "ARB_HYSTERESIS": 0.2,
+    "ARB_BID_WEIGHT": 0.35,
+    "W1_TRACK_TICK": 0.02,
+    "W2_DETECT_TICK": 0.005,
+    "W3_STABLE": 10.0,
+    "W4_SUCCESS": 50.0,
+    "W5_MOR_GRAD": 0.02,
+    "W6_MAR": 0.1,
+    "W7_HANDOFF": 0.5,
+    "W8_LAYER": [
+     10.0,
+     7.5,
+     10.0,
+     5.0,
+     2.5,
+     1.25
+    ],
+    "W8_SCALE": 1.0,
+    "M05_GRACE": 5.0,
+    "W9_FAILURE": 50.0,
+    "STEP_COST": 0.005,
+    "OBS_DIM": 169,
+    "TRACK_SLOTS": 8,
+    "NET_HIDDEN": 128,
+    "TOTAL_STEPS": 1500000,
+    "N_ENVS": 16,
+    "N_SEEDS": 10,
+    "BC_EPOCHS": [
+     50,
+     100
+    ],
+    "CONVERGE_WINDOW": 100,
+    "seed": 7
+   },
+   "task_config_sha256": "87e5fcd38254e5c1c06f98b7f8a379a9d101cfe7f70dcd78c3c2b2157516e248",
+   "rl": {
+    "success_rate": 0.0,
+    "mean_return": -4365.1,
+    "violations_per_step": 6.9143
+   },
+   "heur": {
+    "success_rate": 1.0,
+    "mean_return": -5305.3,
+    "violations_per_step": 9.1064
+   },
+   "natural_arbitration": {
+    "rl_multi_candidate_events": 0,
+    "rl_winner_changes_vs_fixed_score": 0,
+    "forced_probe_enabled": false
+   },
+   "by_seed": [
+    {
+     "seed": 103003,
+     "rl": {
+      "seed": 103003,
+      "terminal": "failure",
+      "return": -4365.1,
+      "steps": 700,
+      "violations": 4840,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 103003,
+      "terminal": "success",
+      "return": -5305.3,
+      "steps": 545,
+      "violations": 4963
+     }
+    }
+   ],
+   "checkpoint": {
+    "role": "curriculum_effective_initial_checkpoint",
+    "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\provenance\\20261020T112414.566227Z_30504_46541c9a_effective_initial.pt",
+    "exists": true,
+    "size_bytes": 1618913,
+    "sha256": "608fdc8e91fa8465344c1c5628e28a0838926facdcbd181e0b3204c4cd2cb942"
+   },
+   "run_id": "20261020T112414.566227Z_30504_46541c9a",
+   "stage": "initial_checkpoint",
+   "iter": -1,
+   "source_manifest_sha256": "a361208ee485ee5d00720f262b7f2922f680169ad6ab675168520e0d041b4d9c",
+   "best_checkpoint": {
+    "role": "curriculum_best_checkpoint",
+    "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\curr_k4_best.pt",
+    "exists": true,
+    "size_bytes": 1614417,
+    "sha256": "aad2b926711492291a148407a1a843bfdbd85c73c80924c53456c508b2270f2b",
+    "archive": {
+     "role": "curriculum_best_checkpoint_archive",
+     "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\provenance\\20261020T112414.566227Z_30504_46541c9a_curr_k4_best_initial_checkpoint_-00001.pt",
+     "exists": true,
+     "size_bytes": 1614417,
+     "sha256": "aad2b926711492291a148407a1a843bfdbd85c73c80924c53456c508b2270f2b",
+     "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\curr_k4_best.pt"
+    }
+   }
+  },
+  "curr_k4_last_validation": {
+   "k": 4,
+   "seeds": [
+    103003
+   ],
+   "stable_window": 8,
+   "task_config": {
+    "dt": 1.0,
+    "horizon": 900,
+    "L_X": 160.0,
+    "L_Y": 120.0,
+    "X_CUTOFF": 40.0,
+    "X_TRACK": 110.0,
+    "AGE_STD_TRACK": 10.0,
+    "AGE_STD_DETECT": 5.0,
+    "STABLE_WINDOW": 8,
+    "N_WINGMEN": 3,
+    "BLUE_V_MIN_MA": 0.4,
+    "BLUE_V_MAX_MA": 0.95,
+    "OMEGA_CRUISE_DEG": 3.0,
+    "OMEGA_MANEUVER_DEG": 6.0,
+    "ACCEL_MAX_MA_S": 0.1,
+    "K_PSI": 1.0,
+    "K_V_MS": 30.0,
+    "MANNED_V_MIN_MA": 0.5,
+    "MANNED_V_MAX_MA": 0.9,
+    "MANNED_OMEGA_DEG": 3.0,
+    "K_RED": 4,
+    "RED_CRUISE_MA": 0.75,
+    "RED_MANEUVER_MA_RANGE": [
+     0.6,
+     0.9
+    ],
+    "RED_OMEGA_DEG": 8.0,
+    "RED_DUTY_MIN": 0.7,
+    "RED_DUTY_MAX": 0.8,
+    "RED_STAGGER_KM": 8.0,
+    "RED_X0": 158.0,
+    "RED_MANEUVER_RESAMPLE": [
+     20,
+     40
+    ],
+    "RED_TURN_POISSON_MEAN": 30.0,
+    "RED_SNAKE_HALF_ANGLE_DEG": 30.0,
+    "RED_SNAKE_PERIOD": 20.0,
+    "RED_EDGE_SUPPRESS_KM": 5.0,
+    "RED_REGAIN_T": [
+     12.0,
+     20.0
+    ],
+    "RED_REGAIN_SPREAD_DEG": 30.0,
+    "RED_SEP_WARN_KM": 18.0,
+    "RED_SEP_HARD_KM": 2.0,
+    "RED_SEP_BIAS_DEG": 45.0,
+    "RED_PAIR_SUBLANE_KM": 4.0,
+    "R_MAX": 80.0,
+    "FOV_HALF_DEG": 7.5,
+    "BEAM_DWELL": 0.5,
+    "GEAR_FRAME": {
+     "7.5": 0.5,
+     "15.0": 1.0,
+     "30.0": 2.0,
+     "45.0": 3.0,
+     "60.0": 4.0
+    },
+    "GEARS_SEARCH": [
+     45.0,
+     60.0
+    ],
+    "GEARS_TRACK": [
+     7.5,
+     15.0,
+     30.0,
+     45.0
+    ],
+    "PD_TIERS": [
+     [
+      0.5,
+      0.9
+     ],
+     [
+      0.8,
+      0.6
+     ],
+     [
+      1.0,
+      0.3
+     ]
+    ],
+    "SECTOR_AXIS_MAX_DEG": 60.0,
+    "AXIS_TRIM_SCALE_DEG": 15.0,
+    "TRACK_INIT_HITS": 2,
+    "TRACK_INIT_WINDOW": 6.5,
+    "TRACK_CONFIRM_TIME": 5.0,
+    "TRACK_CONFIRM_GAP_MAX": 1.6,
+    "AGE_DEGRADE": 8.0,
+    "AGE_DROP": 13.0,
+    "COV_SHRINK": 0.8,
+    "COV_Q_KM2_S": 0.25,
+    "SIGMA_REF": 4.0,
+    "MAR": 40.0,
+    "MOR": 60.0,
+    "MAR_MOR_VARIANTS": [
+     [
+      40.0,
+      60.0
+     ],
+     [
+      30.0,
+      50.0
+     ],
+     [
+      20.0,
+      40.0
+     ]
+    ],
+    "K_SIGMA": 3.0,
+    "MOR_GRADIENT_SPAN": 20.0,
+    "D_SAFE": 2.0,
+    "D_SAFE_LOOKAHEAD": 3.0,
+    "BOUNDARY_PREDICT": 5.0,
+    "LINK_RATE_HZ": 1.0,
+    "LINK_DELAY_S": 1.0,
+    "T_SCAN_REQ": 120.0,
+    "HANDOFF_MIN_INTERVAL": 30.0,
+    "HANDOFF_INTERVAL_SWEEP": [
+     10.0,
+     20.0,
+     30.0
+    ],
+    "C04_RANGE": 80.0,
+    "C04_RESPONSE": 5.0,
+    "T_DWELL": 5.0,
+    "APPROVAL_DELAY_INIT": 0.0,
+    "LINK_DROP_RATE": 0.3,
+    "LINK_DROP_WINDOW": 10.0,
+    "UPLINK_LOSS_P": 0.05,
+    "E03_AREA_PER_KM": 5.0,
+    "N_SUBZONES": 3,
+    "TRACK_SWEET_DIST": 62.0,
+    "TRACK_K_D": 0.0025,
+    "CAP_X": 15.0,
+    "CAP_Y": 60.0,
+    "CAP_LEG_Y": 10.0,
+    "CAP_LEG_X": 5.0,
+    "ARB_WEIGHTS": [
+     1.0,
+     1.0,
+     0.5,
+     0.5,
+     0.3
+    ],
+    "ARB_HYSTERESIS": 0.2,
+    "ARB_BID_WEIGHT": 0.35,
+    "W1_TRACK_TICK": 0.02,
+    "W2_DETECT_TICK": 0.005,
+    "W3_STABLE": 10.0,
+    "W4_SUCCESS": 50.0,
+    "W5_MOR_GRAD": 0.02,
+    "W6_MAR": 0.1,
+    "W7_HANDOFF": 0.5,
+    "W8_LAYER": [
+     10.0,
+     7.5,
+     10.0,
+     5.0,
+     2.5,
+     1.25
+    ],
+    "W8_SCALE": 1.0,
+    "M05_GRACE": 5.0,
+    "W9_FAILURE": 50.0,
+    "STEP_COST": 0.005,
+    "OBS_DIM": 169,
+    "TRACK_SLOTS": 8,
+    "NET_HIDDEN": 128,
+    "TOTAL_STEPS": 1500000,
+    "N_ENVS": 16,
+    "N_SEEDS": 10,
+    "BC_EPOCHS": [
+     50,
+     100
+    ],
+    "CONVERGE_WINDOW": 100,
+    "seed": 7
+   },
+   "task_config_sha256": "87e5fcd38254e5c1c06f98b7f8a379a9d101cfe7f70dcd78c3c2b2157516e248",
+   "rl": {
+    "success_rate": 0.0,
+    "mean_return": -4365.0,
+    "violations_per_step": 6.9143
+   },
+   "heur": {
+    "success_rate": 1.0,
+    "mean_return": -5305.3,
+    "violations_per_step": 9.1064
+   },
+   "natural_arbitration": {
+    "rl_multi_candidate_events": 0,
+    "rl_winner_changes_vs_fixed_score": 0,
+    "forced_probe_enabled": false
+   },
+   "by_seed": [
+    {
+     "seed": 103003,
+     "rl": {
+      "seed": 103003,
+      "terminal": "failure",
+      "return": -4365.0,
+      "steps": 700,
+      "violations": 4840,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 103003,
+      "terminal": "success",
+      "return": -5305.3,
+      "steps": 545,
+      "violations": 4963
+     }
+    }
+   ],
+   "run_id": "20261020T112414.566227Z_30504_46541c9a",
+   "source_manifest_sha256": "a361208ee485ee5d00720f262b7f2922f680169ad6ab675168520e0d041b4d9c",
+   "checkpoint": {
+    "role": "curriculum_validation_checkpoint",
+    "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\curr_k4.pt",
+    "exists": true,
+    "size_bytes": 1613903,
+    "sha256": "472ac44a8e9a46d43a9c4075109b318eebd6868fdddbd5b31278e3a6d03ab6bb"
+   },
+   "stage": "ppo_update",
+   "iter": 0,
+   "best_checkpoint": {
+    "role": "curriculum_best_checkpoint",
+    "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\curr_k4_best.pt",
+    "exists": true,
+    "size_bytes": 1614417,
+    "sha256": "f9cb1255936593fd6af3e57444e0d8dbb737dee9ef579e9ad33b4a106926d021",
+    "archive": {
+     "role": "curriculum_best_checkpoint_archive",
+     "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\provenance\\20261020T112414.566227Z_30504_46541c9a_curr_k4_best_ppo_update_000000.pt",
+     "exists": true,
+     "size_bytes": 1614417,
+     "sha256": "f9cb1255936593fd6af3e57444e0d8dbb737dee9ef579e9ad33b4a106926d021",
+     "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\curr_k4_best.pt"
+    }
+   },
+   "acceptance": {
+    "success_at_least_heur": false,
+    "mean_return_at_least_heur": true,
+    "violations_below_heur": true,
+    "passed": false
+   }
+  }
+ },
+ "training_state_semantics": {
+  "mode": "weights_only_warm_start",
+  "optimizer_state_restored": false,
+  "rng_state_restored": false,
+  "note": "Checkpoint loading restores model weights only; optimizer and RNG are initialized for this invocation."
+ },
+ "inputs": [
+  {
+   "role": "curriculum_initial_checkpoint",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k4_w8a10\\curr_k4_best.pt",
+   "exists": true,
+   "size_bytes": 1076189,
+   "sha256": "386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797",
+   "checkpoint_saved_config": {
+    "hidden_size": 128,
+    "clip_ratio": 0.2,
+    "learning_rate": 1e-05,
+    "bc_learning_rate": 0.001,
+    "value_coef": 0.5,
+    "entropy_coef": 0.01,
+    "intervention_coef": 0.2,
+    "shield_aware_continuous": false,
+    "mask_intervened_continuous": true,
+    "epochs": 2,
+    "gamma": 0.99,
+    "gae_lambda": 0.95,
+    "reward_scale": 0.1,
+    "initial_log_std": -1.2,
+    "target_kl": 0.01,
+    "bid_target_kl": 0.01,
+    "shaping_kappa": 0.05,
+    "shaping_age_cap": 8.0,
+    "role_shaping_kappa": 0.3,
+    "role_adv_coef": 1.5,
+    "geo_shaping_kappa": 0.15,
+    "stable_shaping_kappa": 1.0,
+    "cf_adv_coef": 1.0,
+    "cf_ownership_bonus": 0.5,
+    "cf_request_credit": 0.25,
+    "cf_global_mix": 0.25,
+    "cf_role_coef": 0.5,
+    "cf_bid_coef": 1.0,
+    "cf_bid_margin_coef": 0.25,
+    "cf_bid_margin_temp": 0.25,
+    "bid_only_ppo": false,
+    "direct_rl_arbitration": true,
+    "gear_gate_coef": 0.0,
+    "conflict_exposure_prob": 1.0,
+    "xi_ppo_coef": 0.0,
+    "xi_anchor_coef": 1.0
+   },
+   "checkpoint_config_sha256": "7855af904bd7ba9dc80cf90bb997597b803b28042414b88f2013718a11f0749a",
+   "archived_snapshot": {
+    "role": "curriculum_initial_checkpoint_snapshot",
+    "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\provenance\\20261020T112414.566227Z_30504_46541c9a_input_curriculum_initial_checkpoint_curr_k4_best.pt",
+    "exists": true,
+    "size_bytes": 1076189,
+    "sha256": "386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797"
+   }
+  }
+ ],
+ "checkpoint_archives": [
+  {
+   "role": "curriculum_best_checkpoint_archive",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\provenance\\20261020T112414.566227Z_30504_46541c9a_curr_k4_best_initial_checkpoint_-00001.pt",
+   "exists": true,
+   "size_bytes": 1614417,
+   "sha256": "aad2b926711492291a148407a1a843bfdbd85c73c80924c53456c508b2270f2b",
+   "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\curr_k4_best.pt"
+  },
+  {
+   "role": "curriculum_iteration_checkpoint_archive",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\provenance\\20261020T112414.566227Z_30504_46541c9a_curr_k4_iter_000000.pt",
+   "exists": true,
+   "size_bytes": 1613903,
+   "sha256": "472ac44a8e9a46d43a9c4075109b318eebd6868fdddbd5b31278e3a6d03ab6bb",
+   "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\curr_k4.pt"
+  },
+  {
+   "role": "curriculum_best_checkpoint_archive",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\provenance\\20261020T112414.566227Z_30504_46541c9a_curr_k4_best_ppo_update_000000.pt",
+   "exists": true,
+   "size_bytes": 1614417,
+   "sha256": "f9cb1255936593fd6af3e57444e0d8dbb737dee9ef579e9ad33b4a106926d021",
+   "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\curr_k4_best.pt"
+  }
+ ]
+}

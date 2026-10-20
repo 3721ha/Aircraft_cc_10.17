@@ -1,0 +1,24 @@
+{
+  "scope": "only exact duplicates from this smoke; original run provenance describes files as captured before pruning",
+  "removed_duplicates": [
+    {
+      "removed": "runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\provenance\\20261020T112414.566227Z_30504_46541c9a_curr_k4_best_ppo_update_000000.pt",
+      "retained": "runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\curr_k4_best.pt",
+      "sha256": "f9cb1255936593fd6af3e57444e0d8dbb737dee9ef579e9ad33b4a106926d021",
+      "bytes": 1614417
+    },
+    {
+      "removed": "runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\provenance\\20261020T112414.566227Z_30504_46541c9a_curr_k4_iter_000000.pt",
+      "retained": "runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\curr_k4.pt",
+      "sha256": "472ac44a8e9a46d43a9c4075109b318eebd6868fdddbd5b31278e3a6d03ab6bb",
+      "bytes": 1613903
+    }
+  ],
+  "retained_checkpoint_sha256": {
+    "runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\curr_k4.pt": "472ac44a8e9a46d43a9c4075109b318eebd6868fdddbd5b31278e3a6d03ab6bb",
+    "runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\curr_k4_best.pt": "f9cb1255936593fd6af3e57444e0d8dbb737dee9ef579e9ad33b4a106926d021",
+    "runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\provenance\\20261020T112414.566227Z_30504_46541c9a_curr_k4_best_initial_checkpoint_-00001.pt": "aad2b926711492291a148407a1a843bfdbd85c73c80924c53456c508b2270f2b",
+    "runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\provenance\\20261020T112414.566227Z_30504_46541c9a_effective_initial.pt": "608fdc8e91fa8465344c1c5628e28a0838926facdcbd181e0b3204c4cd2cb942",
+    "runs\\model_optimization_v1\\residual_pg_smoke_k4_20261021\\provenance\\20261020T112414.566227Z_30504_46541c9a_input_curriculum_initial_checkpoint_curr_k4_best.pt": "386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797"
+  }
+}

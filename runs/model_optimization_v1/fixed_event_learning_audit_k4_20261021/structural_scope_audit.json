@@ -1,0 +1,495 @@
+{
+  "schema_version": 1,
+  "created_at_utc": "2026-10-20T11:24:52.093433+00:00",
+  "scope": "Read-only structural audit of existing logs, archived source and checkpoint tensors; no environment rollout or training run performed.",
+  "previous_run_source": {
+    "git_head": "4fee7a0ace8bcbc34fd44f33ec48cbb7b04dc16c",
+    "git_branch": "experiments/bid-entropy-normalized-20261019",
+    "manifest_sha256": "84e54ed59a92a33e86fee4900c634d520c66aa2c90787cd72939509cd8c2de32",
+    "snapshot_path": "runs/model_optimization_v1/eventwise_cf_k4_w8a10_v1_20261020/provenance/20261020T101955.748480Z_22824_4ad9d1d9_source.zip",
+    "snapshot_sha256": "39e0de9249505bb1bc6831fe89e11a7bbc0920a86172f93d4aa5d29415097134",
+    "snapshot_verified_against_record": true,
+    "archived_files": [
+      {
+        "path": "Aircraft_mumt/aircraft_sim/detect_env.py",
+        "sha256": "5a5bf6b8fed4b423c49c3a08afca765b2b089026aae9b9e363c56d66293db1bd",
+        "size_bytes": 40540,
+        "anchors": {
+          "direct_rl_event": 460,
+          "direct_argmax": 466,
+          "multi_candidate_recording": 477
+        }
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/detect_mappo.py",
+        "sha256": "5dd008d748de103cc38cecd81b5ca84a4c1f16fabc42576885577295e1661c34",
+        "size_bytes": 115519,
+        "anchors": {
+          "bid_only_parameter_filter": 1730
+        }
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/detect_rules.py",
+        "sha256": "b28d3eff3bd35758650c2b971e316e85bb1a3532aaabc4ba962e1faa13d040fc",
+        "size_bytes": 17088,
+        "anchors": {
+          "rule_layer": 56,
+          "conflict_pairs": 73
+        }
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/detect_encoder.py",
+        "sha256": "8a1cbb6558521cf5d56aec884d00cb5c4b88c98e577b8804b07e2482a630b4b8",
+        "size_bytes": 12244,
+        "anchors": {
+          "soft_conflict_features": 49
+        }
+      },
+      {
+        "path": "_p3_pilot.py",
+        "sha256": "618f44d65ff3ad7c28afa6129333a29272c12362e7b04080bda72a8f46cd2e36",
+        "size_bytes": 60531,
+        "anchors": {
+          "deterministic_evaluation": 147,
+          "natural_arbitration_summary": 227
+        }
+      }
+    ]
+  },
+  "initial_checkpoint": {
+    "path": "runs/model_optimization_v1/curriculum_k4_w8a10/curr_k4_best.pt",
+    "sha256": "386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797"
+  },
+  "runs": [
+    {
+      "label": "previous_training",
+      "log_path": "runs/model_optimization_v1/eventwise_cf_k4_w8a10_v1_20261020/pilot_log.json",
+      "log_sha256": "a770715696b1a702ffcacf9c272af3d66062bf0653cbd713ea41c3e7ce38737e",
+      "initial_rl_summary": {
+        "success_rate": 0.2,
+        "mean_return": -9041.4,
+        "violations_per_step": 8.7249
+      },
+      "final_rl_summary": {
+        "success_rate": 0.2,
+        "mean_return": -9041.4,
+        "violations_per_step": 8.7249
+      },
+      "heur_summary": {
+        "success_rate": 0.9,
+        "mean_return": -3436.5,
+        "violations_per_step": 7.2592
+      },
+      "natural_arbitration": {
+        "rl_multi_candidate_events": 18,
+        "rl_winner_changes_vs_fixed_score": 7,
+        "forced_probe_enabled": false
+      },
+      "by_seed": [
+        {
+          "seed": 102000,
+          "rl_terminal": "failure",
+          "rl_return": -14154.1,
+          "rl_steps": 741,
+          "rl_violations": 5899,
+          "natural_multi_candidate_events": 3,
+          "winner_changes_vs_fixed_score": 0,
+          "heur_terminal": "success"
+        },
+        {
+          "seed": 102001,
+          "rl_terminal": "failure",
+          "rl_return": -6901.6,
+          "rl_steps": 737,
+          "rl_violations": 5964,
+          "natural_multi_candidate_events": 1,
+          "winner_changes_vs_fixed_score": 0,
+          "heur_terminal": "success"
+        },
+        {
+          "seed": 102002,
+          "rl_terminal": "success",
+          "rl_return": -3507.1,
+          "rl_steps": 683,
+          "rl_violations": 4314,
+          "natural_multi_candidate_events": 0,
+          "winner_changes_vs_fixed_score": 0,
+          "heur_terminal": "success"
+        },
+        {
+          "seed": 102003,
+          "rl_terminal": "failure",
+          "rl_return": -6013.6,
+          "rl_steps": 686,
+          "rl_violations": 5390,
+          "natural_multi_candidate_events": 1,
+          "winner_changes_vs_fixed_score": 1,
+          "heur_terminal": "success"
+        },
+        {
+          "seed": 102004,
+          "rl_terminal": "failure",
+          "rl_return": -10460.0,
+          "rl_steps": 784,
+          "rl_violations": 7696,
+          "natural_multi_candidate_events": 6,
+          "winner_changes_vs_fixed_score": 0,
+          "heur_terminal": "success"
+        },
+        {
+          "seed": 102005,
+          "rl_terminal": "failure",
+          "rl_return": -9279.8,
+          "rl_steps": 713,
+          "rl_violations": 6707,
+          "natural_multi_candidate_events": 1,
+          "winner_changes_vs_fixed_score": 0,
+          "heur_terminal": "success"
+        },
+        {
+          "seed": 102006,
+          "rl_terminal": "failure",
+          "rl_return": -8788.6,
+          "rl_steps": 757,
+          "rl_violations": 6065,
+          "natural_multi_candidate_events": 0,
+          "winner_changes_vs_fixed_score": 0,
+          "heur_terminal": "success"
+        },
+        {
+          "seed": 102007,
+          "rl_terminal": "failure",
+          "rl_return": -18829.7,
+          "rl_steps": 692,
+          "rl_violations": 8594,
+          "natural_multi_candidate_events": 0,
+          "winner_changes_vs_fixed_score": 0,
+          "heur_terminal": "success"
+        },
+        {
+          "seed": 102008,
+          "rl_terminal": "failure",
+          "rl_return": -11388.3,
+          "rl_steps": 712,
+          "rl_violations": 8312,
+          "natural_multi_candidate_events": 1,
+          "winner_changes_vs_fixed_score": 1,
+          "heur_terminal": "failure"
+        },
+        {
+          "seed": 102009,
+          "rl_terminal": "success",
+          "rl_return": -1091.0,
+          "rl_steps": 346,
+          "rl_violations": 833,
+          "natural_multi_candidate_events": 5,
+          "winner_changes_vs_fixed_score": 5,
+          "heur_terminal": "success"
+        }
+      ],
+      "validation_checkpoints": 5,
+      "all_validation_by_seed_identical_to_start": true,
+      "last_validation_by_seed_identical_to_start": true,
+      "recorded_training_mode": {
+        "bid_only_ppo": true,
+        "direct_rl_arbitration": true,
+        "conflict_exposure_prob": 1.0,
+        "policy_anchor_coef": 0.0
+      },
+      "final_checkpoint": {
+        "path": "runs/model_optimization_v1/eventwise_cf_k4_w8a10_v1_20261020/curr_k4.pt",
+        "sha256": "9f6a700bbecefc82af9579c22e5f2bcb19b4f31b433955ce395b4043fa600e56"
+      },
+      "task_parameters_equal_to_initial_after_legacy_migration": true,
+      "migration_detail": "Legacy conflict_residual.weight rows 0:20 are unchanged; legacy row 20 is the separately migrated bid residual.",
+      "task_parameter_mismatches": []
+    },
+    {
+      "label": "smoke_no_training_conflicts",
+      "log_path": "runs/model_optimization_v1/eventwise_pg_smoke_k4_20261021/pilot_log.json",
+      "log_sha256": "4f38952ce5a0a37fe26a1b82016b14e10f1cb5cfbd805794bc35fed6c3499efa",
+      "initial_rl_summary": {
+        "success_rate": 0.0,
+        "mean_return": -7571.6,
+        "violations_per_step": 6.9656
+      },
+      "final_rl_summary": {
+        "success_rate": 0.0,
+        "mean_return": -7571.6,
+        "violations_per_step": 6.9656
+      },
+      "heur_summary": {
+        "success_rate": 0.5,
+        "mean_return": -3412.1,
+        "violations_per_step": 8.0786
+      },
+      "natural_arbitration": {
+        "rl_multi_candidate_events": 0,
+        "rl_winner_changes_vs_fixed_score": 0,
+        "forced_probe_enabled": false
+      },
+      "by_seed": [
+        {
+          "seed": 103000,
+          "rl_terminal": "failure",
+          "rl_return": -6980.9,
+          "rl_steps": 721,
+          "rl_violations": 5114,
+          "natural_multi_candidate_events": 0,
+          "winner_changes_vs_fixed_score": 0,
+          "heur_terminal": "failure"
+        },
+        {
+          "seed": 103001,
+          "rl_terminal": "failure",
+          "rl_return": -8162.4,
+          "rl_steps": 703,
+          "rl_violations": 4805,
+          "natural_multi_candidate_events": 0,
+          "winner_changes_vs_fixed_score": 0,
+          "heur_terminal": "success"
+        }
+      ],
+      "validation_checkpoints": 1,
+      "all_validation_by_seed_identical_to_start": true,
+      "last_validation_by_seed_identical_to_start": true,
+      "recorded_training_mode": {
+        "bid_only_ppo": true,
+        "direct_rl_arbitration": true,
+        "conflict_exposure_prob": 1.0,
+        "policy_anchor_coef": 0.0
+      },
+      "final_checkpoint": {
+        "path": "runs/model_optimization_v1/eventwise_pg_smoke_k4_20261021/curr_k4.pt",
+        "sha256": "b6f75137620b233829d516a58d1b97f590af814bb2aaa217856277c9d00e4e1b"
+      },
+      "task_parameters_equal_to_initial_after_legacy_migration": true,
+      "migration_detail": "Legacy conflict_residual.weight rows 0:20 are unchanged; legacy row 20 is the separately migrated bid residual.",
+      "task_parameter_mismatches": []
+    },
+    {
+      "label": "smoke_training_conflicts",
+      "log_path": "runs/model_optimization_v1/eventwise_pg_conflict_smoke_k4_20261021/pilot_log.json",
+      "log_sha256": "9511f8a855ced91638cc639ab1d0a9b35c399c7269ab293cb469a0c0304f8f05",
+      "initial_rl_summary": {
+        "success_rate": 1.0,
+        "mean_return": -3202.5,
+        "violations_per_step": 7.2555
+      },
+      "final_rl_summary": {
+        "success_rate": 1.0,
+        "mean_return": -3202.5,
+        "violations_per_step": 7.2555
+      },
+      "heur_summary": {
+        "success_rate": 1.0,
+        "mean_return": -5054.3,
+        "violations_per_step": 9.3716
+      },
+      "natural_arbitration": {
+        "rl_multi_candidate_events": 0,
+        "rl_winner_changes_vs_fixed_score": 0,
+        "forced_probe_enabled": false
+      },
+      "by_seed": [
+        {
+          "seed": 103002,
+          "rl_terminal": "success",
+          "rl_return": -3202.5,
+          "rl_steps": 681,
+          "rl_violations": 4941,
+          "natural_multi_candidate_events": 0,
+          "winner_changes_vs_fixed_score": 0,
+          "heur_terminal": "success"
+        }
+      ],
+      "validation_checkpoints": 1,
+      "all_validation_by_seed_identical_to_start": true,
+      "last_validation_by_seed_identical_to_start": true,
+      "recorded_training_mode": {
+        "bid_only_ppo": true,
+        "direct_rl_arbitration": true,
+        "conflict_exposure_prob": 1.0,
+        "policy_anchor_coef": 0.0
+      },
+      "final_checkpoint": {
+        "path": "runs/model_optimization_v1/eventwise_pg_conflict_smoke_k4_20261021/curr_k4.pt",
+        "sha256": "60b79ce2091ad41f7b3850390978bf541cb70aa24f8871bc72aec73265bfd74b"
+      },
+      "task_parameters_equal_to_initial_after_legacy_migration": true,
+      "migration_detail": "Legacy conflict_residual.weight rows 0:20 are unchanged; legacy row 20 is the separately migrated bid residual.",
+      "task_parameter_mismatches": []
+    }
+  ],
+  "bid_only_validation_upper_bound": {
+    "validation_seeds": [
+      102000,
+      102001,
+      102002,
+      102003,
+      102004,
+      102005,
+      102006,
+      102007,
+      102008,
+      102009
+    ],
+    "total_episodes": 10,
+    "zero_event_episodes": [
+      102002,
+      102006,
+      102007
+    ],
+    "zero_event_failed_episodes_fixed_under_bid_only": [
+      102006,
+      102007
+    ],
+    "maximum_possible_successes": 8,
+    "success_rate_upper_bound": 0.8,
+    "heur_success_rate": 0.9,
+    "cannot_reach_heur_on_this_fixed_validation_set": true,
+    "conditions": [
+      "The same initial task-head parameters after legacy checkpoint migration.",
+      "Only bid_head, bid_candidate_head, bid_conflict_residual and bid_log_std may change.",
+      "The same simulator, task numeric configuration, initial seed and deterministic execution path.",
+      "Bid values have no task effect except selection from an existing arbitration candidate pool.",
+      "Every reference multi-candidate count of zero was recorded across the complete episode."
+    ],
+    "argument": [
+      "With identical task actions, the same simulator random stream and state give the same feasible candidate pools at the first step.",
+      "A pool with at most one candidate has the same selected candidate for all bid values; the rule monitor and flight shield do not consume bids for another purpose.",
+      "The next environment state, observation and deterministic task action are therefore unchanged; induction applies until termination.",
+      "Seeds 102006 and 102007 consequently remain failures for any bid-only policy under these conditions. Even perfect outcomes in the other eight episodes give at most 80%, below HEUR 90%."
+    ],
+    "not_claimed": [
+      "The task is globally impossible.",
+      "A controlled task-residual or joint RL method has the same ceiling.",
+      "Changing validation seeds is an acceptable way to satisfy the original success target."
+    ]
+  },
+  "smoke_interpretation": {
+    "zero_natural_event_validation_seeds": [
+      103000,
+      103001,
+      103002
+    ],
+    "task_metrics_must_remain_identical_under_bid_only_conditions": true,
+    "unchanged_smoke_metrics_prove_neither_learning_success_nor_learning_failure": true,
+    "training_conflicts_do_not_imply_validation_conflicts": true
+  },
+  "rule_conflict_scope": {
+    "actual_rule_family_count": 21,
+    "actual_rule_families": [
+      "C01",
+      "C02",
+      "C03",
+      "C04",
+      "C05",
+      "E01",
+      "E02",
+      "E03",
+      "F01",
+      "I02",
+      "I03",
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "S01",
+      "S02",
+      "S03",
+      "S04",
+      "S05"
+    ],
+    "actual_conflict_pair_count": 13,
+    "pairs": [
+      [
+        "C01",
+        "C03"
+      ],
+      [
+        "C01",
+        "M02"
+      ],
+      [
+        "C02",
+        "M01"
+      ],
+      [
+        "C03",
+        "M02"
+      ],
+      [
+        "E03",
+        "M05"
+      ],
+      [
+        "I02",
+        "M02"
+      ],
+      [
+        "I03",
+        "M02"
+      ],
+      [
+        "M01",
+        "M02"
+      ],
+      [
+        "M02",
+        "S02"
+      ],
+      [
+        "M02",
+        "S03"
+      ],
+      [
+        "M02",
+        "S04"
+      ],
+      [
+        "M02",
+        "S05"
+      ],
+      [
+        "M04",
+        "S04"
+      ]
+    ],
+    "stale_header_text": "18 predicates + 13 conflict pairs",
+    "authoritative_definition": "Archived RULE_LAYER and DETECT_CONFLICT_PAIRS; no rule change requested or performed.",
+    "encoder_conflict_features": "Thirteen local-observation soft regime proxies, not exact predicates or proof of conflict feasibility.",
+    "proxy_activity_threshold_in_legacy_eval": 0.1,
+    "threshold_activity_is_not_real_conflict_resolution_evidence": true,
+    "bid_control_scope": "Same-target responsibility winner selection among existing C04-feasible candidates. Later state effects are possible, but no direct control of all thirteen rule conflicts.",
+    "frozen_event_audit_scope": "One-step conditional responsibility arbitration on real collector events; not complete thirteen-pair resolution or episode success."
+  },
+  "legacy_truth_fixture_probe": {
+    "source_path": "_eval_conflict_paired.py",
+    "source_sha256": "f5f4ba2dd59c235cdbe84e676fb2e12f503b27e556c1756282725e3bdf870b43",
+    "fixture_install_function": "_install_probe_fixture",
+    "fixture_restore_function": "_restore_probe_fixture",
+    "observed_behavior": [
+      "Reads current simulator true red positions.",
+      "Writes synthetic confirmed tracks into two local track files and forces overlapping requests.",
+      "Calls env.step with altered task actions and tracks, then restores only a selected state subset.",
+      "The returned reward and rule report were computed before restoration.",
+      "Restoration omits terminal, role/gear/kinematics and some sensor/history/random state affected by the step."
+    ],
+    "conclusion": "Legacy forced-probe return, violations and success are not valid natural-task performance evidence; change-winner rate alone is not improved arbitration utility.",
+    "source_comment_warning": "The fixture docstring claims it cannot alter task trajectory or rewards; the actual step/restore order and restored fields do not establish that guarantee.",
+    "new_audit_boundary": "The frozen real-event audit avoids injected truth tracks and uses simulator-copy candidate outcomes. It remains conditional, one-step evidence."
+  },
+  "next_step_constraints": [
+    "Keep teacher, rule definitions, scenario and red model unchanged.",
+    "Preserve original validation seeds and report the structural bid-only limitation.",
+    "Use repaired bid PPO for mechanism checks, not as the sole route to the current 90% HEUR target.",
+    "A controlled RL task-residual mode can broaden the intervention surface while anchoring the starting task policy; its success must be separately measured.",
+    "Evaluate pair-specific conflict opportunities, candidate feasibility, selected resolution, priority violations and downstream utility before claiming coverage of all thirteen conflict pairs."
+  ],
+  "input_integrity": {
+    "existing_logs_unmodified": true,
+    "only_new_audit_documents_written": true
+  }
+}

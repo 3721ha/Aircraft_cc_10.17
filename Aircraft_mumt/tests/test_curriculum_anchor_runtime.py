@@ -109,7 +109,7 @@ def configured_policy(monkeypatch):
         config=SimpleNamespace(
             learning_rate=1e-4, epochs=2, shield_aware_continuous=False,
             cf_request_credit=0.25, conflict_exposure_prob=1.0,
-            bid_only_ppo=False, direct_rl_arbitration=True,
+            bid_only_ppo=False, task_residual_only_ppo=False, direct_rl_arbitration=True,
             policy_anchor_coef=0.0, policy_anchor_monitor=False),
         optimizer=SimpleNamespace(param_groups=[{"lr": 1e-4}]),
     )
@@ -140,6 +140,24 @@ def test_runtime_defaults_preserve_the_unregularized_training_path(configured_po
     configure(configured_policy)
     assert configured_policy.config.policy_anchor_coef == 0.0
     assert configured_policy.config.policy_anchor_monitor is False
+
+
+def test_runtime_residual_scope_is_explicit(monkeypatch, configured_policy):
+    configure, _ = _functions("_configure_policy", "_apply_bid_std_override")
+    monkeypatch.setenv("MUMT_TASK_RESIDUAL_ONLY_PPO", "1")
+    configure(configured_policy)
+    assert configured_policy.config.task_residual_only_ppo is True
+    configured_policy.config.bid_only_ppo = True
+    with pytest.raises(ValueError, match="mutually exclusive"):
+        configure(configured_policy)
+
+
+@pytest.mark.parametrize("value", ["yes", "", "2"])
+def test_runtime_rejects_invalid_residual_scope(monkeypatch, configured_policy, value):
+    configure, _ = _functions("_configure_policy", "_apply_bid_std_override")
+    monkeypatch.setenv("MUMT_TASK_RESIDUAL_ONLY_PPO", value)
+    with pytest.raises(ValueError, match="must be 0 or 1"):
+        configure(configured_policy)
 
 
 @pytest.mark.parametrize("value", ["nan", "inf", "-inf", "-1", "", "invalid"])

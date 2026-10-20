@@ -1,0 +1,61 @@
+﻿{
+  "source": {
+    "source_run": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k4_w8a10",
+    "source_log": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k4_w8a10\\pilot_log.json",
+    "source_log_sha256": "a320efd38c2ea83b217c838fa3bfc8984cc681e1c8236fd271b38bef00aecf94",
+    "source_best_iter": 24,
+    "checkpoint": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k4_w8a10\\curr_k4_best.pt",
+    "checkpoint_sha256": "386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797"
+  },
+  "output": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1",
+  "task_numeric_config": {
+    "stable_window": 8,
+    "age_std_track": 10.0,
+    "c04_range": 80.0,
+    "sector_axis_max_deg": 60.0,
+    "arb_bid_weight": 0.35,
+    "arb_hysteresis": 0.2
+  },
+  "training_controls": {
+    "conflict_exposure": 0.0,
+    "penalty_scale": 1.0,
+    "policy_anchor_coef": 1.0
+  },
+  "mode": "conflict-residual",
+  "command": [
+    "D:\\Desktop\\Aircraft_mumt_cc\\Aircraft_mumt\\.venv\\Scripts\\python.exe",
+    "D:\\Desktop\\Aircraft_mumt_cc\\_p3_pilot.py",
+    "curr",
+    "4",
+    "0",
+    "30"
+  ],
+  "cwd": "D:\\Desktop\\Aircraft_mumt_cc",
+  "training_environment": {
+    "MUMT_PILOT_OUT": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1",
+    "MUMT_CURR_INIT": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k4_w8a10\\curr_k4_best.pt",
+    "MUMT_CURR_START_MODE": "best",
+    "MUMT_CURR_EXPECTED_SHA256": "386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797",
+    "MUMT_W8_FIXED": "1.0",
+    "MUMT_STABLE_WINDOW": "8",
+    "MUMT_AGE_STD_TRACK": "10",
+    "MUMT_C04_RANGE": "80",
+    "MUMT_SECTOR_AXIS_MAX_DEG": "60",
+    "MUMT_ARB_BID_WEIGHT": "0.35",
+    "MUMT_ARB_HYSTERESIS": "0.2",
+    "MUMT_RL_DIRECT_ARBITRATION": "1",
+    "MUMT_CONFLICT_EXPOSURE_PROB": "0.0",
+    "MUMT_POLICY_ANCHOR_COEF": "1.0",
+    "MUMT_BID_ONLY_PPO": "0",
+    "MUMT_TASK_RESIDUAL_ONLY_PPO": "1",
+    "MUMT_PPO_LR": "1e-05",
+    "MUMT_PPO_EPOCHS": "2",
+    "MUMT_EPISODES_PER_ITER": "8",
+    "MUMT_VALIDATION_EVERY": "2",
+    "MUMT_VALIDATION_SEEDS": "102000,102001,102002,102003,102004,102005,102006,102007,102008,102009",
+    "MUMT_TRAIN_SEED_START": "160000",
+    "MUMT_CURR_PATIENCE": "0",
+    "MUMT_REPAIR_DEAD_CANDIDATE_HEAD": "1",
+    "MUMT_CANDIDATE_REPAIR_SEED": "20261021"
+  }
+}

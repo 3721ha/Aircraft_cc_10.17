@@ -1,0 +1,60 @@
+{
+  "date": "2026-10-20",
+  "pytest": {
+    "command": [
+      "D:\\Desktop\\Aircraft_mumt_cc\\Aircraft_mumt\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "tests/test_detect_event_credit.py",
+      "tests/test_detect_bid_policy_gradient.py",
+      "tests/test_arbitration_learning_audit.py",
+      "tests/test_best_refine_launcher.py",
+      "tests/test_arbitration_training_migration.py",
+      "tests/test_curriculum_anchor_runtime.py",
+      "tests/test_detect_mappo.py",
+      "tests/test_detect_slot_bids.py",
+      "tests/test_detect_residual_ppo.py",
+      "-q",
+      "--basetemp",
+      "runs/pytest_residual_saved_20261020"
+    ],
+    "working_directory": "D:\\Desktop\\Aircraft_mumt_cc\\Aircraft_mumt",
+    "returncode": 0,
+    "seconds": 64.68
+  },
+  "pytest_summary": "130 passed, 1 warning in 62.66s (0:01:02)",
+  "syntax_check_returncode": 0,
+  "diff_check_returncode": 0,
+  "training_script_preflight_passed": true,
+  "long_training_started": false,
+  "branch": "experiments/bid-entropy-normalized-20261019",
+  "parent_commit": "a19b6d54436a125bbae916481ab80a8ea9da6abe",
+  "source_sha256": {
+    "Aircraft_mumt/aircraft_sim/detect_mappo.py": "5e38b2434f509bb9af8bcfc6aabb0052e31050b56bf12b9e0b51e53745eb104a",
+    "_p3_pilot.py": "1eaebbd106d3a580e99a24fc2fe5692f8f823dfc23f597eef6d3020337d824a2",
+    "_run_best_refine.py": "de929b2d597ff2d2baedd31fd3a6dfe09b2c4a37ac25dc930415dfa7c25f193d",
+    "_arbitration_training.py": "44032ef42770caa831af7431a7034ec50281e86f5f34ac3e1bcf375da87545d7",
+    "_audit_arbitration_learning.py": "7c66deb19456d663a893059003df650244489c55f054c8ed691618e09e633bfc",
+    "Aircraft_mumt/tests/test_detect_residual_ppo.py": "acc946872d7a5f8c5b95d7c053433a4735f06478d3ed4c76904645afad28311f",
+    "Aircraft_mumt/tests/test_detect_bid_policy_gradient.py": "3d316715965e92b9b59ffef2eb9f34c4d5e0714688c8d2a1a793e7b8685bc398",
+    "Aircraft_mumt/tests/test_detect_event_credit.py": "961cdfd8ec4d7deba260b69f68256eb06876b7cf7f984e09a22808d39ca0337a",
+    "Aircraft_mumt/tests/test_arbitration_training_migration.py": "6cbecc751d8b1284e38e28393931407f1bd70475de183fe238a1b5037379c113",
+    "Aircraft_mumt/tests/test_arbitration_learning_audit.py": "988996807d6c650833fe7e79c125e0d4b2b862d6bfe34d9fbe286eccbb983dc6",
+    "Aircraft_mumt/tests/test_best_refine_launcher.py": "e539fcb006a15afb7b5db1080d9665017455921d7b92370fd12182c6581c0716",
+    "Aircraft_mumt/tests/test_curriculum_anchor_runtime.py": "a0ff017c07b1efb1b36806697440c68fa0d8df54849e56c9a769ae463a67cda8",
+    "Aircraft_mumt/tests/test_detect_mappo.py": "d88b2e6418e9fa978080f8ee097d4979c3c024ccb853e90c7c45acddee9031c7",
+    "Aircraft_mumt/tests/test_detect_slot_bids.py": "b9e3bec60e91e11439d2052798cbe92839359acc2c8276781935da948ea621e5"
+  },
+  "staged_whitespace_check": {
+    "command": [
+      "git",
+      "-c",
+      "core.whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol",
+      "diff",
+      "--cached",
+      "--check"
+    ],
+    "returncode": 0,
+    "note": "CRLF is accepted for Windows-generated audit JSON; preserve original log bytes and recorded hashes"
+  }
+}

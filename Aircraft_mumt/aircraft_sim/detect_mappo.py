@@ -188,6 +188,24 @@ def _grouped_masked_mean(values: torch.Tensor, mask: torch.Tensor,
     return (totals / counts.clamp_min(1.0)).mean()
 
 
+def _grouped_masked_sum_mean(values: torch.Tensor, mask: torch.Tensor,
+                             groups: torch.Tensor) -> torch.Tensor:
+    """Sum participating agents' scores per joint event, then average events."""
+    active = mask.to(dtype=torch.bool) & (groups >= 0)
+    if not active.any():
+        return values.sum() * 0.0
+    _, inverse = torch.unique(groups[active], sorted=True,
+                              return_inverse=True)
+    totals = values.new_zeros(int(inverse.max().item()) + 1)
+    totals.scatter_add_(0, inverse, values[active])
+    return totals.mean()
+
+
+def _event_winner_advantage(utilities: Dict[int, float], winner: int) -> float:
+    """Joint bid-action outcome relative to an action-independent event baseline."""
+    return float(utilities[winner]) - float(np.mean(list(utilities.values())))
+
+
 class DetectActorCritic(nn.Module):
     def __init__(self, observation_dim: int = 169, n_agents: int = 3,
                  hidden: int = 128, initial_log_std: float = -1.2):
@@ -363,15 +381,21 @@ class DetectMAPPOConfig:
     # all responsibility requests.
     cf_global_mix: float = 0.25
     cf_role_coef: float = 0.5
-    # Bid credit compares the sampled bid with a neutral bid on every legal
-    # multi-candidate event.  The margin term keeps a smooth signal when both
-    # bids select the same winner; it is bounded before PPO normalisation.
+    # Joint bid credit uses the actual sampled winner's environment-copy
+    # utility minus the event's action-independent mean candidate utility.
+    # A fixed positive scale preserves utility differences across events.
     cf_bid_coef: float = 1.0
+    cf_bid_utility_scale: float = 0.1
+    # Legacy checkpoint configuration fields; the winner-credit loss does
+    # not use a neutral-bid margin objective.
     cf_bid_margin_coef: float = 0.25
     cf_bid_margin_temp: float = 0.25
     # Targeted arbitration fine-tuning can isolate sparse bid credit from the
     # shared flight/task heads. The deployed actor still emits the full action.
     bid_only_ppo: bool = False
+    # Adapt only conflict-conditioned task residuals and arbitration bids;
+    # the inherited task controller remains a fixed deployment backbone.
+    task_residual_only_ppo: bool = False
     direct_rl_arbitration: bool = False
     # Disabled pending a reliable post-action C04 counterfactual.  The current
     # pre-step local estimate cannot account exactly for the applied axis trim,
@@ -394,6 +418,13 @@ class DetectMAPPOConfig:
     # Read-only cumulative drift diagnostics for unregularized control arms.
     policy_anchor_monitor: bool = False
 
+    def validate_training_mode(self) -> None:
+        if self.bid_only_ppo and self.task_residual_only_ppo:
+            raise ValueError("bid_only_ppo and task_residual_only_ppo are mutually exclusive")
+
+    def __post_init__(self) -> None:
+        self.validate_training_mode()
+
 
 class DetectMAPPOPolicy:
     def __init__(self, env, shield, config: DetectMAPPOConfig | None = None,
@@ -402,6 +433,7 @@ class DetectMAPPOPolicy:
         self.env = env
         self.shield = shield
         self.config = config or DetectMAPPOConfig()
+        self.config.validate_training_mode()
         self._conflict_rng = random.Random(seed)
         self._conflict_probe_rng = random.Random(seed ^ 0x5A17)
         self.encoder = DetectObservationEncoder(env.cfg)
@@ -869,6 +901,7 @@ class DetectMAPPOPolicy:
                     cf_bid_stats["uncontrollable_events"]),
                 "bid_cf_utility_spreads": cf_bid_stats["utility_spreads"],
                 "bid_cf_actual_regrets": cf_bid_stats["actual_regrets"],
+                "bid_cf_event_records": cf_bid_stats["event_records"],
                 "n_cf_bid_active_slots": sum(
                     any(mask) for mask in bid_cf_mask_slots),
                 "n_bid_events": len(arbitration),
@@ -998,7 +1031,13 @@ class DetectMAPPOPolicy:
         phi_before: float, phi_stable_before: float,
         advantages: List[List[float]], masks: List[List[bool]],
     ) -> dict:
-        """Credit direct-RL bids against event-local winner counterfactuals."""
+        """Use the sampled winner's utility for every bid in its joint event.
+
+        Forced-winner utilities give an action-independent baseline for this
+        event. The outcome advantage must depend on the winner of the actual
+        sampled bids; a fixed candidate-specific utility is not an advantage
+        of that candidate's sampled continuous bid.
+        """
         stats = {
             "events": 0,
             "informative_events": 0,
@@ -1006,6 +1045,7 @@ class DetectMAPPOPolicy:
             "uncontrollable_events": 0,
             "utility_spreads": [],
             "actual_regrets": [],
+            "event_records": [],
         }
         if env_before is None or not arbitration:
             return stats
@@ -1094,23 +1134,30 @@ class DetectMAPPOPolicy:
                 continue
             utility_values = list(utilities.values())
             utility_spread = max(utility_values) - min(utility_values)
-            baseline = float(np.mean(utility_values))
+            advantage = _event_winner_advantage(utilities, actual_winner)
+            actual_regret = max(utility_values) - utilities[actual_winner]
             stats["events"] += 1
             stats["utility_spreads"].append(float(utility_spread))
-            stats["actual_regrets"].append(
-                max(utility_values) - utilities[actual_winner])
+            stats["actual_regrets"].append(float(actual_regret))
+            stats["event_records"].append({
+                "tid": event.get("tid"),
+                "candidates": candidates,
+                "bid_slots": slots,
+                "winner": actual_winner,
+                "utilities": utilities,
+                "utility_spread": float(utility_spread),
+                "actual_regret": float(actual_regret),
+                "event_advantage": advantage,
+            })
             if utility_spread <= 1e-8:
                 continue
-            informative = False
             for agent_idx, slot_idx in slots.items():
-                advantage = utilities[agent_idx] - baseline
-                if abs(advantage) <= 1e-8:
-                    continue
                 advantages[agent_idx][slot_idx] += advantage
+                # Keep a middle-utility winner's zero advantage in the event
+                # population. Dropping that event would condition the loss
+                # denominator on the sampled bids.
                 masks[agent_idx][slot_idx] = True
-                informative = True
-            if informative:
-                stats["informative_events"] += 1
+            stats["informative_events"] += 1
         return stats
 
     def _potential_in_env(self, env, kind: str) -> float:
@@ -1531,9 +1578,10 @@ class DetectMAPPOPolicy:
         All three are normalised independently to unit variance before use.
         This prevents the role/pointer signals from being swamped by the
         global advantage when the latter is dominated by large penalties."""
+        cfg = self.config
+        cfg.validate_training_mode()
         if not rollout:
             return {"loss": 0.0}
-        cfg = self.config
         n = self.env.cfg.N_WINGMEN
         obs, team, acts, safes, bid_actions, old_logp = [], [], [], [], [], []
         rewards, values, dones = [], [], []
@@ -1631,7 +1679,7 @@ class DetectMAPPOPolicy:
         adv_ptr_t = cfg.cf_global_mix * adv_t + cfg.cf_adv_coef * cf_signal
         adv_role_t = adv_role_t + cfg.cf_role_coef * cf_signal
 
-        # Channel 4: causal bid credit from one-step opposite-bid replays.
+        # Channel 4: joint bid-action credit from forced-winner replays.
         bid_rank_t = torch.tensor(
             [item["bid_rank"][i] for item in rollout for i in range(n)],
             dtype=torch.float32)
@@ -1703,17 +1751,14 @@ class DetectMAPPOPolicy:
             [item.get("action_exposure_mask",
                       item.get("pointer_exposure_mask", [False] * n))[i]
              for item in rollout for i in range(n)], dtype=torch.bool)
-        active_cf = cf_bid_t[bid_active_t]
-        if active_cf.numel():
-            # Scale sparse utility deltas to PPO's unit-reward range without
-            # mean-centering: the sign is the causal preference. RMS keeps a
-            # single pivotal event informative instead of producing NaN/zero.
-            cf_scale = _grouped_masked_mean(
-                cf_bid_t.square(), bid_active_t,
-                bid_event_group_t).sqrt().clamp_min(1e-6)
-            cf_bid_norm = cf_bid_t / cf_scale
-        else:
-            cf_bid_norm = cf_bid_t
+        # A fixed utility scale preserves the relative importance of events.
+        # A scale estimated from sampled winner advantages depends on actions
+        # and can cancel/reweight their policy gradient, especially in sparse
+        # batches. Never normalize these credits by the sampled batch RMS.
+        if (not math.isfinite(cfg.cf_bid_utility_scale)
+                or cfg.cf_bid_utility_scale <= 0.0):
+            raise ValueError("cf_bid_utility_scale must be finite and positive")
+        cf_bid_norm = cf_bid_t / cfg.cf_bid_utility_scale
         adv_bid_t = torch.where(
             bid_active_t, cf_bid_norm, torch.zeros_like(cf_bid_norm))
 
@@ -1727,19 +1772,31 @@ class DetectMAPPOPolicy:
         approx_kl = torch.zeros(())
         bid_approx_kl = torch.zeros(())
         bid_grad_norm = torch.zeros(())
+        task_residual_grad_norm = torch.zeros(())
+        critic_grad_norm = torch.zeros(())
         bid_parameter_prefixes = (
             "bid_head.", "bid_candidate_head.", "bid_conflict_residual.")
         for name, parameter in self.model.named_parameters():
             is_bid_parameter = (
                 name.startswith(bid_parameter_prefixes)
                 or name == "bid_log_std")
-            parameter.requires_grad_(
-                is_bid_parameter or not cfg.bid_only_ppo)
-        bid_parameter_before = [p.detach().clone() for p in (
+            if cfg.task_residual_only_ppo:
+                trainable = (is_bid_parameter
+                             or name == "conflict_residual.weight"
+                             or name.startswith("critic."))
+            else:
+                trainable = is_bid_parameter or not cfg.bid_only_ppo
+            parameter.requires_grad_(trainable)
+        bid_parameters = (
             list(self.model.bid_head.parameters())
             + list(self.model.bid_candidate_head.parameters())
             + list(self.model.bid_conflict_residual.parameters())
-            + [self.model.bid_log_std])]
+            + [self.model.bid_log_std])
+        task_residual_parameters = list(self.model.conflict_residual.parameters())
+        critic_parameters = list(self.model.critic.parameters())
+        bid_parameter_before = [p.detach().clone() for p in bid_parameters]
+        task_residual_before = (self.model.conflict_residual.weight.detach().clone()
+                                if cfg.task_residual_only_ppo else None)
         for _ in range(cfg.epochs):
             # --- per-head forward pass ------------------------------------
             role_idx = act_t[:, 3].long().clamp(0, 1)
@@ -1794,7 +1851,7 @@ class DetectMAPPOPolicy:
                 if sample_weight is None:
                     return per_sample.mean()
                 if sample_groups is not None:
-                    return _grouped_masked_mean(
+                    return _grouped_masked_sum_mean(
                         per_sample, sample_weight > 0, sample_groups)
                 return (per_sample * sample_weight).sum() \
                     / sample_weight.sum().clamp_min(1.0)
@@ -1902,10 +1959,25 @@ class DetectMAPPOPolicy:
             bid_grad_norm = torch.sqrt(
                 torch.stack(bid_grad_terms).sum()
                 if bid_grad_terms else torch.zeros(()))
-            nn.utils.clip_grad_norm_(self.model.parameters(), 0.5)
+            if cfg.task_residual_only_ppo:
+                # u_xi is residual row 2. Mask its gradient before clipping,
+                # then restore its value after Adam so inherited momentum or
+                # weight decay cannot move this protected radar-axis control.
+                xi_residual = self.model.conflict_residual.weight
+                xi_residual_before = xi_residual[2].detach().clone()
+                if xi_residual.grad is not None:
+                    xi_residual.grad[2].zero_()
+                nn.utils.clip_grad_norm_(bid_parameters, 0.5)
+                task_residual_grad_norm = nn.utils.clip_grad_norm_(
+                    task_residual_parameters, 0.5)
+                critic_grad_norm = nn.utils.clip_grad_norm_(critic_parameters, 0.5)
+            else:
+                nn.utils.clip_grad_norm_(self.model.parameters(), 0.5)
             self.optimizer.step()
             with torch.no_grad():
-                if not cfg.bid_only_ppo:
+                if cfg.task_residual_only_ppo:
+                    xi_residual[2].copy_(xi_residual_before)
+                if not cfg.bid_only_ppo and not cfg.task_residual_only_ppo:
                     self.model.log_std.clamp_(-2.5, 0.0)
                 self.model.bid_log_std.clamp_(-2.5, 0.0)
             if (float(approx_kl.detach()) > cfg.target_kl
@@ -1959,6 +2031,14 @@ class DetectMAPPOPolicy:
                 / bid_candidate_t.sum()) if bid_candidate_t.any() else 0.0,
             "bid_gradient_norm": float(bid_grad_norm.detach()),
             "bid_parameter_delta_l2": float(bid_parameter_delta.detach()),
+            "task_residual_gradient_norm": float(task_residual_grad_norm.detach()),
+            "critic_gradient_norm": float(critic_grad_norm.detach()),
+            "task_residual_parameter_delta_l2": (float(torch.linalg.vector_norm(
+                self.model.conflict_residual.weight.detach() - task_residual_before))
+                if task_residual_before is not None else 0.0),
+            "task_residual_xi_row_unchanged": (bool(torch.equal(
+                self.model.conflict_residual.weight[2].detach(), task_residual_before[2]))
+                if task_residual_before is not None else True),
             "mean_return_scaled": float(returns.mean()),
             "rollout_steps": len(rollout),
             # RDAC diagnostics

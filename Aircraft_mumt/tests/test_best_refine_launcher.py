@@ -90,6 +90,43 @@ def test_environment_isolated_and_exact_best_selected(source_run, tmp_path):
     assert not output.exists()
 
 
+def test_candidate_repair_and_bid_exploration_are_explicit_and_isolated(source_run, tmp_path):
+    args = parse(source_run, tmp_path / "new_run",
+                 "--repair-dead-candidate-head", "--candidate-repair-seed", "53",
+                 "--bid-log-std", "-0.7")
+    launch = launcher.prepare_launch(args, {
+        "MUMT_CANDIDATE_REPAIR_SEED": "777",
+        "MUMT_BID_LOG_STD": "0",
+    })
+    env = launch["environment"]
+    assert env["MUMT_REPAIR_DEAD_CANDIDATE_HEAD"] == "1"
+    assert env["MUMT_CANDIDATE_REPAIR_SEED"] == "53"
+    assert env["MUMT_BID_LOG_STD"] == "-0.7"
+    clean = launcher.prepare_launch(parse(source_run, tmp_path / "clean"), {
+        "MUMT_REPAIR_DEAD_CANDIDATE_HEAD": "1",
+        "MUMT_CANDIDATE_REPAIR_SEED": "999",
+    })
+    assert "MUMT_REPAIR_DEAD_CANDIDATE_HEAD" not in clean["environment"]
+    assert "MUMT_CANDIDATE_REPAIR_SEED" not in clean["environment"]
+    assert not (tmp_path / "new_run").exists()
+
+
+@pytest.mark.parametrize("mode,bid_only,residual_only", [
+    ("bid-only", "1", "0"), ("joint", "0", "0"),
+    ("conflict-residual", "0", "1"),
+])
+def test_explicit_training_scope_replaces_stale_modes(
+        source_run, tmp_path, mode, bid_only, residual_only):
+    args = parse(source_run, tmp_path / "scope", "--mode", mode,
+                 "--penalty-scale", "1", "--conflict-exposure", "0",
+                 "--policy-anchor-coef", "1")
+    launch = launcher.prepare_launch(args, {
+        "MUMT_BID_ONLY_PPO": "1", "MUMT_TASK_RESIDUAL_ONLY_PPO": "1"})
+    assert launch["environment"]["MUMT_BID_ONLY_PPO"] == bid_only
+    assert launch["environment"]["MUMT_TASK_RESIDUAL_ONLY_PPO"] == residual_only
+    assert launch["mode"] == mode
+
+
 @pytest.mark.parametrize("exposure,penalty,anchor", [
     (0.0, 1.0, 0.0), (1.0, 0.0, 2.5), (0.4, 0.7, 0.15),
 ])

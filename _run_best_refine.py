@@ -63,6 +63,13 @@ def _nonnegative_float(value: str) -> float:
     return parsed
 
 
+def _bid_log_std(value: str) -> float:
+    parsed = float(value)
+    if not math.isfinite(parsed) or not -2.5 <= parsed <= 0.0:
+        raise argparse.ArgumentTypeError("must be finite and between -2.5 and 0")
+    return parsed
+
+
 def _seeds(value: str) -> list[int]:
     try:
         seeds = [int(item.strip()) for item in value.split(",")]
@@ -80,7 +87,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--iterations", type=_positive_int, default=20)
     parser.add_argument(
-        "--mode", choices=("joint", "bid-only"), default="bid-only",
+        "--mode", choices=("joint", "bid-only", "conflict-residual"), default="bid-only",
         help="Default to arbitration-only PPO so the task policy stays fixed.")
     parser.add_argument("--learning-rate", type=_positive_float, default=1e-5)
     parser.add_argument("--episodes-per-iter", type=_positive_int, default=8)
@@ -96,6 +103,12 @@ def build_parser() -> argparse.ArgumentParser:
                         help="Training violation penalty scale; does not change task thresholds.")
     parser.add_argument("--policy-anchor-coef", type=_nonnegative_float, default=0.0,
                         help="KL penalty coefficient against the fixed initial policy.")
+    parser.add_argument("--repair-dead-candidate-head", action="store_true",
+                        help="Explicit training-start repair; preserves initial outputs.")
+    parser.add_argument("--candidate-repair-seed", type=_nonnegative_int,
+                        default=20261021)
+    parser.add_argument("--bid-log-std", type=_bid_log_std,
+                        help="Explicit bid exploration override; omit to retain checkpoint.")
     parser.add_argument("--preflight-only", action="store_true")
     return parser
 
@@ -231,6 +244,7 @@ def prepare_launch(args: argparse.Namespace, environment: Mapping[str, str] | No
         "MUMT_CONFLICT_EXPOSURE_PROB": str(args.conflict_exposure),
         "MUMT_POLICY_ANCHOR_COEF": str(args.policy_anchor_coef),
         "MUMT_BID_ONLY_PPO": "1" if args.mode == "bid-only" else "0",
+        "MUMT_TASK_RESIDUAL_ONLY_PPO": "1" if args.mode == "conflict-residual" else "0",
         "MUMT_PPO_LR": str(args.learning_rate),
         "MUMT_PPO_EPOCHS": "2",
         "MUMT_EPISODES_PER_ITER": str(args.episodes_per_iter),
@@ -239,6 +253,14 @@ def prepare_launch(args: argparse.Namespace, environment: Mapping[str, str] | No
         "MUMT_TRAIN_SEED_START": str(training_seed_start),
         "MUMT_CURR_PATIENCE": str(args.patience),
     }
+    child_env.update(overrides)
+    if args.candidate_repair_seed >= 2**63:
+        raise ValueError("candidate repair seed must be less than 2**63")
+    if args.repair_dead_candidate_head:
+        overrides["MUMT_REPAIR_DEAD_CANDIDATE_HEAD"] = "1"
+        overrides["MUMT_CANDIDATE_REPAIR_SEED"] = str(args.candidate_repair_seed)
+    if args.bid_log_std is not None:
+        overrides["MUMT_BID_LOG_STD"] = str(args.bid_log_std)
     child_env.update(overrides)
     return {
         "source": source,

@@ -1,0 +1,22 @@
+{
+  "command": [
+    "D:\\Desktop\\Aircraft_mumt_cc\\Aircraft_mumt\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "tests/test_detect_event_credit.py",
+    "tests/test_detect_bid_policy_gradient.py",
+    "tests/test_arbitration_learning_audit.py",
+    "tests/test_best_refine_launcher.py",
+    "tests/test_arbitration_training_migration.py",
+    "tests/test_curriculum_anchor_runtime.py",
+    "tests/test_detect_mappo.py",
+    "tests/test_detect_slot_bids.py",
+    "tests/test_detect_residual_ppo.py",
+    "-q",
+    "--basetemp",
+    "runs/pytest_residual_saved_20261020"
+  ],
+  "working_directory": "D:\\Desktop\\Aircraft_mumt_cc\\Aircraft_mumt",
+  "returncode": 0,
+  "seconds": 64.68
+}

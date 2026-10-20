@@ -1,0 +1,23 @@
+{
+  "scope": "only exact duplicates from this smoke; original run provenance describes files as captured before pruning",
+  "removed_duplicates": [
+    {
+      "removed": "runs\\model_optimization_v1\\eventwise_pg_smoke_k4_20261021\\provenance\\20261020T111225.727236Z_6224_d11b6b50_curr_k4_best_initial_checkpoint_-00001.pt",
+      "retained": "runs\\model_optimization_v1\\eventwise_pg_smoke_k4_20261021\\curr_k4_best.pt",
+      "sha256": "18864fca25f57d43d2ab6e12f6c2f8d8119db2f6bbe92c3e1bf22f3a3d84f5bb",
+      "bytes": 1614353
+    },
+    {
+      "removed": "runs\\model_optimization_v1\\eventwise_pg_smoke_k4_20261021\\provenance\\20261020T111225.727236Z_6224_d11b6b50_curr_k4_iter_000000.pt",
+      "retained": "runs\\model_optimization_v1\\eventwise_pg_smoke_k4_20261021\\curr_k4.pt",
+      "sha256": "b6f75137620b233829d516a58d1b97f590af814bb2aaa217856277c9d00e4e1b",
+      "bytes": 1613903
+    }
+  ],
+  "retained_checkpoint_sha256": {
+    "runs\\model_optimization_v1\\eventwise_pg_smoke_k4_20261021\\curr_k4.pt": "b6f75137620b233829d516a58d1b97f590af814bb2aaa217856277c9d00e4e1b",
+    "runs\\model_optimization_v1\\eventwise_pg_smoke_k4_20261021\\curr_k4_best.pt": "18864fca25f57d43d2ab6e12f6c2f8d8119db2f6bbe92c3e1bf22f3a3d84f5bb",
+    "runs\\model_optimization_v1\\eventwise_pg_smoke_k4_20261021\\provenance\\20261020T111225.727236Z_6224_d11b6b50_candidate_repaired_initial.pt": "9f3f319d86658ad3c3a7a40205c4440ede1151ca2607bef34b1883ed7860943a",
+    "runs\\model_optimization_v1\\eventwise_pg_smoke_k4_20261021\\provenance\\20261020T111225.727236Z_6224_d11b6b50_input_curriculum_initial_checkpoint_curr_k4_best.pt": "386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797"
+  }
+}
