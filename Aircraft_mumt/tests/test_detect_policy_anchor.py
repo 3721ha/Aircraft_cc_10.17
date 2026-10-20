@@ -149,10 +149,11 @@ def test_bid_and_critic_have_no_direct_anchor_gradient():
     loss = policy._policy_anchor_kl(_obs(policy))
     loss.backward()
     for name, parameter in policy.model.named_parameters():
-        if name.startswith(("bid_head.", "bid_candidate_head.", "critic.")) or name == "bid_log_std":
+        if (name.startswith(("bid_head.", "bid_candidate_head.",
+                             "bid_conflict_residual.", "critic."))
+                or name == "bid_log_std"):
             assert parameter.grad is None, name
-    assert torch.equal(policy.model.conflict_residual.weight.grad[-1],
-                       torch.zeros_like(policy.model.conflict_residual.weight.grad[-1]))
+    assert policy.model.bid_conflict_residual.weight.grad is None
 
 
 def test_old_checkpoint_defaults_reference_to_loaded_model(tmp_path):
@@ -288,9 +289,8 @@ def test_bid_only_update_does_not_optimize_task_anchor():
     stats = policy.update(rollout)
     assert stats["policy_anchor_kl"] > 0.0
     for key, value in policy.model.state_dict().items():
-        if key.startswith(("bid_head.", "bid_candidate_head.")) or key == "bid_log_std":
+        if (key.startswith(("bid_head.", "bid_candidate_head.",
+                            "bid_conflict_residual."))
+                or key == "bid_log_std"):
             continue
-        if key == "conflict_residual.weight":
-            assert torch.equal(before[key][:-1], value[:-1]), key
-        else:
-            assert torch.equal(before[key], value), key
+        assert torch.equal(before[key], value), key

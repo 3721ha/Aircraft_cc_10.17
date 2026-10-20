@@ -79,7 +79,9 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--source-run", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--iterations", type=_positive_int, default=20)
-    parser.add_argument("--mode", choices=("joint", "bid-only"), default="joint")
+    parser.add_argument(
+        "--mode", choices=("joint", "bid-only"), default="bid-only",
+        help="Default to arbitration-only PPO so the task policy stays fixed.")
     parser.add_argument("--learning-rate", type=_positive_float, default=1e-5)
     parser.add_argument("--episodes-per-iter", type=_positive_int, default=8)
     parser.add_argument("--validation-every", type=_positive_int, default=2)

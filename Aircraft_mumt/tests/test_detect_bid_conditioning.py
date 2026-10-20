@@ -94,7 +94,8 @@ def test_legacy_checkpoint_preserves_initialized_candidate_head():
     legacy_state = {
         key: value for key, value in policy.model.state_dict().items()
         if not key.startswith("bid_candidate_head.")
-        and key != "conflict_residual.weight"
+        and key not in {"conflict_residual.weight",
+                        "bid_conflict_residual.weight"}
     }
     with tempfile.TemporaryDirectory() as temp_dir:
         path = Path(temp_dir) / "legacy.pt"
@@ -116,7 +117,10 @@ def test_legacy_checkpoint_preserves_initialized_candidate_head():
         assert torch.equal(policy.xi_anchor_model.state_dict()[key], expected)
     assert policy.model.bid_candidate_head[0].weight.abs().sum() > 0
     assert torch.count_nonzero(policy.model.conflict_residual.weight) == 0
+    assert torch.count_nonzero(policy.model.bid_conflict_residual.weight) == 0
     assert torch.count_nonzero(policy.xi_anchor_model.conflict_residual.weight) == 0
+    assert torch.count_nonzero(
+        policy.xi_anchor_model.bid_conflict_residual.weight) == 0
 
     obs = torch.zeros((2, 169))
     obs[0, 17] = 0.5

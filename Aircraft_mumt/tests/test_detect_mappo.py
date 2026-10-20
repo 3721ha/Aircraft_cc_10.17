@@ -70,6 +70,15 @@ def test_conflict_residual_is_zero_initialized_and_pair_conditioned():
         assert torch.equal(conditioned[index], base[index])
     assert torch.equal(conditioned[4], base[4].expand(-1, 8))
 
+    with torch.no_grad():
+        model.bid_conflict_residual.weight[0, 0] = 2.0
+        h = model.actor(obs)
+        base_bid = model.bid_head(h)
+        conditioned_bid = model.action_parameters(obs)[4]
+    assert torch.equal(conditioned_bid[0], base_bid[0].expand(8))
+    assert torch.allclose(
+        conditioned_bid[1] - base_bid[1], torch.ones(8), atol=1e-6)
+
 
 def test_old_track_age_cannot_pass_request_mask_after_feature_scaling():
     obs = torch.zeros((2, 169))
@@ -139,16 +148,21 @@ def test_load_accepts_only_legacy_zero_initialized_conflict_adapter():
     expected = {k: v.detach().clone() for k, v in policy.model.state_dict().items()}
     legacy = dict(expected)
     legacy.pop("conflict_residual.weight")
+    legacy.pop("bid_conflict_residual.weight")
     with tempfile.TemporaryDirectory(dir=Path(__file__).parent) as temp_dir:
         checkpoint = Path(temp_dir) / "legacy.pt"
         torch.save({"model": legacy}, checkpoint)
         with torch.no_grad():
             policy.model.conflict_residual.weight.fill_(1.0)
+            policy.model.bid_conflict_residual.weight.fill_(1.0)
         policy.load(str(checkpoint))
         assert torch.equal(policy.model.conflict_residual.weight,
                            torch.zeros_like(policy.model.conflict_residual.weight))
+        assert torch.equal(policy.model.bid_conflict_residual.weight,
+                           torch.zeros_like(policy.model.bid_conflict_residual.weight))
         for key, value in expected.items():
-            if key != "conflict_residual.weight":
+            if key not in {"conflict_residual.weight",
+                           "bid_conflict_residual.weight"}:
                 assert torch.equal(policy.model.state_dict()[key], value)
 
         malformed = dict(expected)
@@ -156,6 +170,39 @@ def test_load_accepts_only_legacy_zero_initialized_conflict_adapter():
         torch.save({"model": malformed}, checkpoint)
         with np.testing.assert_raises_regex(RuntimeError, "bid_head.bias"):
             policy.load(str(checkpoint))
+
+
+def test_load_splits_legacy_task_and_bid_conflict_residual(tmp_path):
+    _, _, policy = _make(seed=311)
+    state = {key: value.detach().clone()
+             for key, value in policy.model.state_dict().items()}
+    anchor_state = {key: value.detach().clone()
+                    for key, value in policy.xi_anchor_model.state_dict().items()}
+    task_residual = torch.arange(
+        state["conflict_residual.weight"].numel(), dtype=torch.float32
+    ).reshape_as(state["conflict_residual.weight"])
+    bid_residual = torch.arange(
+        state["bid_conflict_residual.weight"].numel(), dtype=torch.float32
+    ).reshape_as(state["bid_conflict_residual.weight"]) + 1000.0
+    state["conflict_residual.weight"] = torch.cat(
+        (task_residual, bid_residual), dim=0)
+    state.pop("bid_conflict_residual.weight")
+    anchor_task_residual = anchor_state["conflict_residual.weight"] + 2.0
+    anchor_bid_residual = anchor_state["bid_conflict_residual.weight"] + 3.0
+    anchor_state["conflict_residual.weight"] = torch.cat(
+        (anchor_task_residual, anchor_bid_residual), dim=0)
+    anchor_state.pop("bid_conflict_residual.weight")
+    checkpoint = tmp_path / "legacy_combined_residual.pt"
+    torch.save({"model": state, "xi_anchor_model": anchor_state}, checkpoint)
+
+    policy.load(str(checkpoint))
+
+    assert torch.equal(policy.model.conflict_residual.weight, task_residual)
+    assert torch.equal(policy.model.bid_conflict_residual.weight, bid_residual)
+    assert torch.equal(policy.xi_anchor_model.conflict_residual.weight,
+                       anchor_task_residual)
+    assert torch.equal(policy.xi_anchor_model.bid_conflict_residual.weight,
+                       anchor_bid_residual)
 
 
 def test_load_expands_legacy_151_dim_actor_and_team_critic():
@@ -272,7 +319,7 @@ def test_bid_head_is_bounded_and_updates_from_conflict_credit():
             item["team"][start + 156:start + 169] = encoded[156:169]
     with torch.no_grad():
         before = pol.model.bid_head.weight.detach().clone()
-        conflict_before = pol.model.conflict_residual.weight.detach().clone()
+        conflict_before = pol.model.bid_conflict_residual.weight.detach().clone()
     actions, logps = pol.act_batch(env.observe())
     assert all(-1.0 <= action.arbitration_bid <= 1.0
                for action in actions.values())
@@ -280,7 +327,7 @@ def test_bid_head_is_bounded_and_updates_from_conflict_credit():
     pol.update(data)
     assert not torch.equal(before, pol.model.bid_head.weight.detach())
     assert not torch.equal(conflict_before,
-                           pol.model.conflict_residual.weight.detach())
+                           pol.model.bid_conflict_residual.weight.detach())
 
 
 def test_direct_arbitration_mode_is_carried_by_rl_actions():
@@ -292,9 +339,25 @@ def test_direct_arbitration_mode_is_carried_by_rl_actions():
 
 def test_bid_only_ppo_keeps_non_bid_policy_fixed():
     env, shield, _ = _make(seed=17)
-    config = DetectMAPPOConfig(bid_only_ppo=True)
+    config = DetectMAPPOConfig(bid_only_ppo=False)
     pol = DetectMAPPOPolicy(env, shield, config=config, seed=17)
     data = pol.collect(k_red=2, seed=17)
+    # Simulate momentum left by a preceding joint update. Isolated refinement
+    # must leave every task parameter untouched even when its optimizer state
+    # is nonzero.
+    for name, parameter in pol.model.named_parameters():
+        if (name.startswith(("bid_head.", "bid_candidate_head.",
+                             "bid_conflict_residual."))
+                or name == "bid_log_std"):
+            continue
+        pol.optimizer.state[parameter] = {
+            "step": torch.tensor(1.0),
+            "exp_avg": torch.ones_like(parameter),
+            "exp_avg_sq": torch.ones_like(parameter),
+        }
+    with torch.no_grad():
+        pol.model.log_std.fill_(0.1)
+    pol.config.bid_only_ppo = True
     for item in data:
         item["bid_cf_adv"] = [0.0, 0.0, 0.0]
         item["bid_cf_mask"] = [False, False, False]
@@ -306,6 +369,8 @@ def test_bid_only_ppo_keeps_non_bid_policy_fixed():
         actor_before = [p.detach().clone() for p in pol.model.actor.parameters()]
         role_before = pol.model.role_head.weight.detach().clone()
         bid_before = pol.model.bid_head.weight.detach().clone()
+        task_residual_before = pol.model.conflict_residual.weight.detach().clone()
+        task_log_std_before = pol.model.log_std.detach().clone()
         critic_before = [p.detach().clone() for p in pol.model.critic.parameters()]
 
     pol.update(data)
@@ -313,9 +378,18 @@ def test_bid_only_ppo_keeps_non_bid_policy_fixed():
     assert all(torch.equal(before, after)
                for before, after in zip(actor_before, pol.model.actor.parameters()))
     assert torch.equal(role_before, pol.model.role_head.weight.detach())
+    assert torch.equal(task_residual_before,
+                       pol.model.conflict_residual.weight.detach())
+    assert torch.equal(task_log_std_before, pol.model.log_std.detach())
     assert all(torch.equal(before, after)
                for before, after in zip(critic_before, pol.model.critic.parameters()))
     assert not torch.equal(bid_before, pol.model.bid_head.weight.detach())
+    for name, parameter in pol.model.named_parameters():
+        is_bid_parameter = (
+            name.startswith(("bid_head.", "bid_candidate_head.",
+                             "bid_conflict_residual."))
+            or name == "bid_log_std")
+        assert parameter.requires_grad is is_bid_parameter, name
 
 
 def test_bid_event_mean_weights_events_not_candidate_count():
@@ -569,11 +643,15 @@ def test_bc_reduces_loss_on_heur_demos():
 
     before = loss_now()
     conflict_before = pol.model.conflict_residual.weight.detach().clone()
+    bid_conflict_before = pol.model.bid_conflict_residual.weight.detach().clone()
     pol.behavior_clone(demos, epochs=5)
     after = loss_now()
     assert after < before
     assert torch.equal(conflict_before, pol.model.conflict_residual.weight)
+    assert torch.equal(bid_conflict_before,
+                       pol.model.bid_conflict_residual.weight)
     assert not pol.model.conflict_residual.weight.requires_grad
+    assert not pol.model.bid_conflict_residual.weight.requires_grad
 
 
 def test_track_potential_bounds_and_zero_kappa():

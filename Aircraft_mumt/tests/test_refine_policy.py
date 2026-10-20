@@ -138,12 +138,11 @@ def test_bid_only_update_preserves_all_non_bid_state_and_action_parameters(
 
     after = policy.model.state_dict()
     for key, expected in before.items():
-        if key.startswith(("bid_head.", "bid_candidate_head.")) or key == "bid_log_std":
+        if (key.startswith(("bid_head.", "bid_candidate_head.",
+                            "bid_conflict_residual."))
+                or key == "bid_log_std"):
             continue
-        if key == "conflict_residual.weight":
-            assert torch.equal(expected[:-1], after[key][:-1]), key
-        else:
-            assert torch.equal(expected, after[key]), key
+        assert torch.equal(expected, after[key]), key
     _assert_state_equal(anchor_before, policy.xi_anchor_model.state_dict())
     with torch.no_grad():
         parameters_after = policy.model.action_parameters(observations)
@@ -157,3 +156,6 @@ def test_bid_only_update_preserves_all_non_bid_state_and_action_parameters(
     assert any(not torch.equal(before[key], after[key]) for key in before
                if key.startswith(("bid_head.", "bid_candidate_head.")))
     assert not torch.equal(parameters_before[-1], parameters_after[-1])
+    assert not torch.equal(
+        before["bid_conflict_residual.weight"],
+        after["bid_conflict_residual.weight"])

@@ -44,7 +44,8 @@ from .detect_models import DetectAction, DetectRole
 ACT_DIM = 7        # [u_psi, u_v, u_xi, role, gear, pointer, arbitration_bid]
 SQUASH_EPS = 1e-5
 N_CONFLICT_FEATURES = 13
-CONFLICT_RESIDUAL_DIM = 3 + 2 + 6 + 9 + 1
+CONFLICT_TASK_RESIDUAL_DIM = 3 + 2 + 6 + 9
+BID_CONFLICT_RESIDUAL_DIM = 1
 TRACK_BLOCK_START = 17
 TRACK_FEATURES_PER_SLOT = 14
 TRACK_CANDIDATE_FEATURES = TRACK_FEATURES_PER_SLOT
@@ -211,8 +212,11 @@ class DetectActorCritic(nn.Module):
         # initialization preserves the BC/base policy until PPO finds useful
         # conflict-conditioned residuals.
         self.conflict_residual = nn.Linear(
-            N_CONFLICT_FEATURES, CONFLICT_RESIDUAL_DIM, bias=False)
+            N_CONFLICT_FEATURES, CONFLICT_TASK_RESIDUAL_DIM, bias=False)
         nn.init.zeros_(self.conflict_residual.weight)
+        self.bid_conflict_residual = nn.Linear(
+            N_CONFLICT_FEATURES, BID_CONFLICT_RESIDUAL_DIM, bias=False)
+        nn.init.zeros_(self.bid_conflict_residual.weight)
         self.log_std = nn.Parameter(torch.full((3,), initial_log_std))
         self.bid_log_std = nn.Parameter(torch.tensor(-1.5))
         self.critic = nn.Sequential(
@@ -229,6 +233,7 @@ class DetectActorCritic(nn.Module):
             conflict_features = obs.new_zeros((*obs.shape[:-1],
                                                 N_CONFLICT_FEATURES))
         residual = self.conflict_residual(conflict_features)
+        bid_residual = self.bid_conflict_residual(conflict_features)
         i = 0
         cont_loc = self.cont_head(h) + residual[..., i:i + 3]
         i += 3
@@ -241,7 +246,7 @@ class DetectActorCritic(nn.Module):
         # Each bid is conditioned on the track in the corresponding local
         # slot.  Detaching the shared actor keeps sparse arbitration credit in
         # the bid branch; the candidate head still learns from slot features.
-        bid_base = self.bid_head(h.detach()) + residual[..., i:i + 1]
+        bid_base = self.bid_head(h.detach()) + bid_residual
         slots = obs[..., TRACK_BLOCK_START:
                     TRACK_BLOCK_START + 8 * TRACK_FEATURES_PER_SLOT]
         slots = slots.reshape(*obs.shape[:-1], 8, TRACK_FEATURES_PER_SLOT)
@@ -1701,14 +1706,19 @@ class DetectMAPPOPolicy:
         approx_kl = torch.zeros(())
         bid_approx_kl = torch.zeros(())
         bid_grad_norm = torch.zeros(())
-        self.model.conflict_residual.weight.requires_grad_(True)
-        bid_residual_row = CONFLICT_RESIDUAL_DIM - 1
+        bid_parameter_prefixes = (
+            "bid_head.", "bid_candidate_head.", "bid_conflict_residual.")
+        for name, parameter in self.model.named_parameters():
+            is_bid_parameter = (
+                name.startswith(bid_parameter_prefixes)
+                or name == "bid_log_std")
+            parameter.requires_grad_(
+                is_bid_parameter or not cfg.bid_only_ppo)
         bid_parameter_before = [p.detach().clone() for p in (
             list(self.model.bid_head.parameters())
             + list(self.model.bid_candidate_head.parameters())
-            + [self.model.bid_log_std,
-               self.model.conflict_residual.weight[
-                   bid_residual_row:bid_residual_row + 1]])]
+            + list(self.model.bid_conflict_residual.parameters())
+            + [self.model.bid_log_std])]
         for _ in range(cfg.epochs):
             # --- per-head forward pass ------------------------------------
             role_idx = act_t[:, 3].long().clamp(0, 1)
@@ -1865,19 +1875,17 @@ class DetectMAPPOPolicy:
                 parameter.grad.detach().square().sum()
                 for parameter in (list(self.model.bid_head.parameters())
                                   + list(self.model.bid_candidate_head.parameters())
+                                  + list(self.model.bid_conflict_residual.parameters())
                                   + [self.model.bid_log_std])
                 if parameter.grad is not None]
-            residual_grad = self.model.conflict_residual.weight.grad
-            if residual_grad is not None:
-                bid_grad_terms.append(
-                    residual_grad[bid_residual_row].detach().square().sum())
             bid_grad_norm = torch.sqrt(
                 torch.stack(bid_grad_terms).sum()
                 if bid_grad_terms else torch.zeros(()))
             nn.utils.clip_grad_norm_(self.model.parameters(), 0.5)
             self.optimizer.step()
             with torch.no_grad():
-                self.model.log_std.clamp_(-2.5, 0.0)
+                if not cfg.bid_only_ppo:
+                    self.model.log_std.clamp_(-2.5, 0.0)
                 self.model.bid_log_std.clamp_(-2.5, 0.0)
             if (float(approx_kl.detach()) > cfg.target_kl
                     or float(bid_approx_kl.detach()) > cfg.bid_target_kl):
@@ -1888,9 +1896,8 @@ class DetectMAPPOPolicy:
                 bid_parameter_before,
                 list(self.model.bid_head.parameters())
                 + list(self.model.bid_candidate_head.parameters())
-                + [self.model.bid_log_std,
-                   self.model.conflict_residual.weight[
-                       bid_residual_row:bid_residual_row + 1]])))
+                + list(self.model.bid_conflict_residual.parameters())
+                + [self.model.bid_log_std])))
         with torch.no_grad():
             post_bid_loc = self.model.action_parameters(obs_t)[-1]
             post_bid_dist = Normal(
@@ -1975,6 +1982,7 @@ class DetectMAPPOPolicy:
         # The demonstrations teach flight/task execution.  Conflict arbitration
         # remains an RL capability and is trained only by PPO rollouts.
         self.model.conflict_residual.weight.requires_grad_(False)
+        self.model.bid_conflict_residual.weight.requires_grad_(False)
         for parameter in self.model.bid_candidate_head.parameters():
             parameter.requires_grad_(False)
         obs = torch.tensor(np.asarray([d[0] for d in demos]), dtype=torch.float32)
@@ -2071,7 +2079,8 @@ class DetectMAPPOPolicy:
 
     def load(self, path: str) -> None:
         checkpoint = torch.load(path, map_location="cpu")
-        allowed_legacy_missing = {"conflict_residual.weight"}
+        allowed_legacy_missing = {
+            "conflict_residual.weight", "bid_conflict_residual.weight"}
         legacy_observation_dim = self.encoder.dimension - 18
 
         def expand_legacy_input(state, expected, key, chunked=False):
@@ -2099,10 +2108,24 @@ class DetectMAPPOPolicy:
             return compatible
 
         def compatible_state(state, expected, component):
+            state = dict(state)
             state = expand_legacy_input(
                 state, expected, "actor.0.weight")
             state = expand_legacy_input(
                 state, expected, "critic.0.weight", chunked=True)
+            legacy_residual = state.get("conflict_residual.weight")
+            bid_residual_key = "bid_conflict_residual.weight"
+            task_residual_shape = expected["conflict_residual.weight"].shape
+            bid_residual_shape = expected[bid_residual_key].shape
+            if (legacy_residual is not None
+                    and bid_residual_key not in state
+                    and legacy_residual.shape == (
+                        task_residual_shape[0] + bid_residual_shape[0],
+                        task_residual_shape[1])):
+                state["conflict_residual.weight"] = legacy_residual[
+                    :task_residual_shape[0]]
+                state[bid_residual_key] = legacy_residual[
+                    task_residual_shape[0]:]
             missing = set(expected) - set(state)
             unexpected = set(state) - set(expected)
             mismatched = {
@@ -2124,11 +2147,11 @@ class DetectMAPPOPolicy:
 
             compatible = dict(state)
             for key in missing:
-                # The residual is a zero-effect legacy addition. The candidate
+                # Residuals are zero-effect legacy additions. The candidate
                 # head must retain its fresh initialization so PPO can learn it.
-                compatible[key] = (torch.zeros_like(expected[key])
-                                   if key in allowed_legacy_missing
-                                   else expected[key])
+                compatible[key] = (
+                    torch.zeros_like(expected[key])
+                    if key in allowed_legacy_missing else expected[key])
             return compatible
 
         compatible = compatible_state(

@@ -71,7 +71,8 @@ def test_environment_isolated_and_exact_best_selected(source_run, tmp_path):
     assert env["MUMT_CURR_INIT"] == str(source_run / "curr_k3_best.pt")
     assert env["MUMT_CURR_EXPECTED_SHA256"] == hashlib.sha256((source_run / "curr_k3_best.pt").read_bytes()).hexdigest()
     assert env["MUMT_CURR_START_MODE"] == "best"
-    assert env["MUMT_BID_ONLY_PPO"] == "0"
+    assert launch["mode"] == "bid-only"
+    assert env["MUMT_BID_ONLY_PPO"] == "1"
     assert env["MUMT_TRAIN_SEED_START"] == "10000"
     assert env["MUMT_SECTOR_AXIS_MAX_DEG"] == "60"
     assert env["MUMT_CONFLICT_EXPOSURE_PROB"] == "1.0"
