@@ -1,0 +1,312 @@
+{
+ "status": "insufficient_independent_event_coverage",
+ "updates": [],
+ "coverage": {
+  "train": {
+   "events": 37,
+   "informative_events": 37,
+   "event_episodes": 26,
+   "informative_episodes": 26,
+   "events_by_episode": {
+    "184003": 1,
+    "184004": 1,
+    "184006": 1,
+    "184010": 1,
+    "184013": 1,
+    "184015": 1,
+    "184018": 2,
+    "184020": 2,
+    "184025": 2,
+    "184026": 2,
+    "184030": 1,
+    "184031": 1,
+    "184038": 3,
+    "184039": 1,
+    "184040": 1,
+    "184043": 1,
+    "184046": 2,
+    "184047": 1,
+    "184048": 1,
+    "184049": 2,
+    "184050": 1,
+    "184051": 1,
+    "184052": 2,
+    "184056": 1,
+    "184059": 1,
+    "184063": 3
+   },
+   "informative_events_by_episode": {
+    "184003": 1,
+    "184004": 1,
+    "184006": 1,
+    "184010": 1,
+    "184013": 1,
+    "184015": 1,
+    "184018": 2,
+    "184020": 2,
+    "184025": 2,
+    "184026": 2,
+    "184030": 1,
+    "184031": 1,
+    "184038": 3,
+    "184039": 1,
+    "184040": 1,
+    "184043": 1,
+    "184046": 2,
+    "184047": 1,
+    "184048": 1,
+    "184049": 2,
+    "184050": 1,
+    "184051": 1,
+    "184052": 2,
+    "184056": 1,
+    "184059": 1,
+    "184063": 3
+   }
+  },
+  "heldout": {
+   "events": 7,
+   "informative_events": 7,
+   "event_episodes": 5,
+   "informative_episodes": 5,
+   "events_by_episode": {
+    "185006": 2,
+    "185007": 1,
+    "185009": 1,
+    "185010": 2,
+    "185013": 1
+   },
+   "informative_events_by_episode": {
+    "185006": 2,
+    "185007": 1,
+    "185009": 1,
+    "185010": 2,
+    "185013": 1
+   }
+  }
+ },
+ "source_checkpoint_sha256": "38815f375df492ee320d9a0d4a9105efaf3944a6694165b295f646c9917aea18",
+ "source_snapshot": {
+  "files": [
+   {
+    "path": "_arbitration_training.py",
+    "sha256": "44032ef42770caa831af7431a7034ec50281e86f5f34ac3e1bcf375da87545d7",
+    "size_bytes": 5525
+   },
+   {
+    "path": "_audit_arbitration_learning.py",
+    "sha256": "27a338d43aeb234af3bfe0602b7c81b0de2d4ce273622d7ecbce3e94a96835d5",
+    "size_bytes": 24986
+   },
+   {
+    "path": "_experiment_provenance.py",
+    "sha256": "b3c5af46679cd5656da95c2836f95efd7d0c9dd7d497f09b74d0bece942ae870",
+    "size_bytes": 12782
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/__init__.py",
+    "sha256": "1c30dea3f76fb8c840ff26a2318b3a7354e4475237d38ec1f5feef9e148d82e2",
+    "size_bytes": 2035
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/baselines.py",
+    "sha256": "9af6e9136b654926c93eb2ff791d748d7b7cb77171eb53c08818e61d508f478b",
+    "size_bytes": 7724
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/belief.py",
+    "sha256": "d3616e05ceddd1d6b489727ae581d3783896549d075828fcf55d2f2c3fccde88",
+    "size_bytes": 23817
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/config.py",
+    "sha256": "6fc19d45e7989c0f69598cae129448419879be0c1c9f6abd8c3f309188e8d5c6",
+    "size_bytes": 1663
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/detect_baselines.py",
+    "sha256": "bf916952de3e7413e2d09add2fa50cf7cc797c7161be0e6bacea9f59f889e9b7",
+    "size_bytes": 12387
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/detect_config.py",
+    "sha256": "7c98eeb5fe61bf261ca6bb4d9ca5f187e2744d92f8a9a2d51b62e9d470c8453e",
+    "size_bytes": 11676
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/detect_encoder.py",
+    "sha256": "8a1cbb6558521cf5d56aec884d00cb5c4b88c98e577b8804b07e2482a630b4b8",
+    "size_bytes": 12244
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/detect_env.py",
+    "sha256": "5a5bf6b8fed4b423c49c3a08afca765b2b089026aae9b9e363c56d66293db1bd",
+    "size_bytes": 40540
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/detect_mappo.py",
+    "sha256": "395dacc4d9501c6b885a5ccb23f37c7ab89565974cd8a2d3fb6ac02eb2252886",
+    "size_bytes": 127585
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/detect_models.py",
+    "sha256": "67e16d8116f16bf67e43818a5426b8447e72ab14fd8330d3f67e604c2e901e1b",
+    "size_bytes": 1953
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/detect_rules.py",
+    "sha256": "b28d3eff3bd35758650c2b971e316e85bb1a3532aaabc4ba962e1faa13d040fc",
+    "size_bytes": 17088
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/detect_shield.py",
+    "sha256": "a89b1be63d86643060280cc745d7eb7f08961fd70e37f9c1809a992a4d77196b",
+    "size_bytes": 23864
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/detect_task_adapter.py",
+    "sha256": "7c2aa6d55449d1c85c40cf74b0a5a6edde78e48d7c10458689172b98e75ba78b",
+    "size_bytes": 4392
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/env.py",
+    "sha256": "37d7577017f42790fe5c90b15369128141de175b6d37e1a0ae4c051ee377a4eb",
+    "size_bytes": 13825
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/evaluation.py",
+    "sha256": "ea0265dcce06af5de53e49d8f0d5fb6089372d59621abec8f66aa8ed3f70de4e",
+    "size_bytes": 16968
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/high_fidelity.py",
+    "sha256": "f236e48282ca5e31d9b703d195c647d885a367a736dee2c047e1147913328374",
+    "size_bytes": 6412
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/jsbsim_env.py",
+    "sha256": "e419d4b6f1ff958087ea83bbefb8d99f0d10797bb6d2703508d1ca07834ad576",
+    "size_bytes": 13196
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/mappo.py",
+    "sha256": "f076ef2dd8742cf277a40e11881f710cfa725244b56689db67b99c9386c07b8f",
+    "size_bytes": 29108
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/metrics.py",
+    "sha256": "7189025f91ee205a4fa8353f29565a02221ff50806b3c252fc8bb4b3fc4e4d39",
+    "size_bytes": 1276
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/models.py",
+    "sha256": "19588887f064934e50f6b5e5dc75054070b18d6f8849dadd7e5daf0b1be45be5",
+    "size_bytes": 2465
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/policies.py",
+    "sha256": "b676b830d1470b8b27d2bdc575f10700de4c979314e443ef968ceec994c1f8a0",
+    "size_bytes": 2628
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/qp_shield.py",
+    "sha256": "4a1b41548477b851772158efc3f3a4354e67f4292ce4288b47381a9b6599555e",
+    "size_bytes": 39137
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/radar.py",
+    "sha256": "fdeb7b31f23af73cd297325396a38b0bd0f6f6cd289c512a113760d21d0e790e",
+    "size_bytes": 8781
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/red_agent.py",
+    "sha256": "14d7a81377c805c77c2fd5bca9eda8cdcace9cf9b76b08bd3e636a2c8e2bf5cc",
+    "size_bytes": 14930
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/risk_calibration.py",
+    "sha256": "8d2a3a09f4ad82a93eac2d803317a20d9b06e1d6649ad0ceaf9a68fab658d7fd",
+    "size_bytes": 1520
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/rl_api.py",
+    "sha256": "2a5db9f46e847ef2d099483a8188bee437eae728d6880c6fcd0bb89af93e245c",
+    "size_bytes": 8698
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/rule_graph.py",
+    "sha256": "ccba638cc81e7873c899afe58d00094e57a1402ad05109fa45120995768e010e",
+    "size_bytes": 10789
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/rules.py",
+    "sha256": "13cd3567db92eac41885ecd10574dcf8f0149e5ff05544bb6ff40de09e56f036",
+    "size_bytes": 11524
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/scenarios.py",
+    "sha256": "9e1dee4a3b9406420577e9fab41eed1f07a47c5c608087af0e9bb8810c2b60cb",
+    "size_bytes": 7658
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/shield.py",
+    "sha256": "70fd21bd78a95be534b93131c7662941996de23f5c53aad86d104b43fe1e9483",
+    "size_bytes": 4800
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/stl.py",
+    "sha256": "0e1d0087e896d554650a87d8613482563e0f1e9a0065c528979c52abbf77c450",
+    "size_bytes": 1448
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/track.py",
+    "sha256": "6d392274e4fde68b3c92a2a6e98b2c9fee23d7ce4e84d253d1a5d371325befa2",
+    "size_bytes": 7468
+   },
+   {
+    "path": "Aircraft_mumt/requirements-inferred.txt",
+    "sha256": "40aebc14ef905e58743d9cfee7d6014b7c5cf2affcc884d235a17d9d3b11568f",
+    "size_bytes": 467
+   },
+   {
+    "path": "Aircraft_mumt/requirements-reproduce.txt",
+    "sha256": "635f9a669910815458f0138229732576be90ac44bde15220bc74f5ad23ae46f6",
+    "size_bytes": 230
+   }
+  ],
+  "manifest_sha256": "7c68b26ff4a11c0d877d1b6b54273f3bd8a289c810d8f3bf77d76aabbe874440",
+  "snapshot_path": "runs/model_optimization_v1/window_diverse_event_learning_k4_w8a10_v1/provenance/20261020T150239.961268Z_31008_fcc63fdf_source.zip",
+  "snapshot_sha256": "88656bbbb325704baab47b98464c64c3132875376dae67da6ff6c215deccf079",
+  "captured_at_utc": "2026-10-20T15:02:39.988668+00:00"
+ },
+ "source_changed_during_run": [],
+ "event_bank_sha256": "4097635c7d065abdba8956a3852534da72b4f30d9623a140e6447fabc3416832",
+ "event_bank_input": null,
+ "arguments": {
+  "checkpoint": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\curr_k4_best.pt",
+  "expected_sha256": "38815f375df492ee320d9a0d4a9105efaf3944a6694165b295f646c9917aea18",
+  "output": "runs\\model_optimization_v1\\window_diverse_event_learning_k4_w8a10_v1",
+  "k": 4,
+  "train_seeds": "184000,184001,184002,184003,184004,184005,184006,184007,184008,184009,184010,184011,184012,184013,184014,184015,184016,184017,184018,184019,184020,184021,184022,184023,184024,184025,184026,184027,184028,184029,184030,184031,184032,184033,184034,184035,184036,184037,184038,184039,184040,184041,184042,184043,184044,184045,184046,184047,184048,184049,184050,184051,184052,184053,184054,184055,184056,184057,184058,184059,184060,184061,184062,184063",
+  "heldout_seeds": "185000,185001,185002,185003,185004,185005,185006,185007,185008,185009,185010,185011,185012,185013,185014,185015",
+  "max_events_per_split": 256,
+  "event_bank": null,
+  "updates": 48,
+  "events_per_update": 32,
+  "learning_rate": 0.0001,
+  "epochs": 2,
+  "utility_scale": 0.1,
+  "cf_bid_horizon": 8,
+  "conflict_exposure": 1.0,
+  "max_events_per_episode": 4,
+  "min_event_gap": 24,
+  "episode_balanced": true,
+  "min_train_event_episodes": 16,
+  "min_heldout_event_episodes": 8,
+  "preflight_only": false,
+  "mc_samples": 4096,
+  "training_seed": 20261021,
+  "repair_seed": 20261021
+ },
+ "report_content_sha256": "a305cbb84cf5fd287585d424f769fef2f301f84eedb40bb0e4009054eb001845"
+}

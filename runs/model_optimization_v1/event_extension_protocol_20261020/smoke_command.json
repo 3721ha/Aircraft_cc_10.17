@@ -1,0 +1,15 @@
+{
+  "command": [
+    ".\\Aircraft_mumt\\.venv\\Scripts\\python.exe",
+    "_extend_arbitration_event_bank.py",
+    "--source-run",
+    "runs/model_optimization_v1/window_diverse_event_learning_k4_w8a10_v1",
+    "--output",
+    "runs/model_optimization_v1/event_extension_smoke_k4_20261020",
+    "--heldout-seeds",
+    "186000",
+    "--collection-seed",
+    "20261023"
+  ],
+  "returncode": 0
+}

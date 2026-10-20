@@ -1,0 +1,15 @@
+{
+  "command": [
+    ".\\Aircraft_mumt\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "Aircraft_mumt/tests/test_arbitration_event_extension.py",
+    "Aircraft_mumt/tests/test_arbitration_learning_audit.py",
+    "-q",
+    "--basetemp",
+    "Aircraft_mumt/runs/pytest_event_extension_final_20261020",
+    "--junitxml",
+    "runs\\model_optimization_v1\\event_extension_protocol_20261020\\pytest.xml"
+  ],
+  "returncode": 0
+}

@@ -1,0 +1,16 @@
+{
+ "related_tests": 37,
+ "test_exit_code": 0,
+ "launcher_preflight": 0,
+ "real_collection_exit_code": 0,
+ "reused_bank_coverage_stop_verified": true,
+ "original_user_data_unchanged": true,
+ "protected_file_changes": [],
+ "python_compilation": "passed",
+ "formal_extension_started_by_agent": false,
+ "files": {
+  "_extend_arbitration_event_bank.py": "6bb7b5258c742a093a508690504c31a36f30093f94c5d6c953f302b6731bd9c8",
+  "Aircraft_mumt/tests/test_arbitration_event_extension.py": "e0a6c5c8d3ced9a03ac4e0dcfdd0c5edbd9182aefe3032ad0742425d639b2ab1",
+  "runs/model_optimization_v1/window_geometry_protocol_20261020/resume_diverse_events.ps1": "4d67cb0721d3e5e1e19cd57703f1dfa82543e59ea4bcc28525804c7bc18a1182"
+ }
+}
