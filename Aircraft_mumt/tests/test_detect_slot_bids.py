@@ -72,30 +72,33 @@ def test_counterfactual_bid_credit_uses_only_event_bid_slots():
     policy._potential_in_env = lambda _env, _kind: 0.0
     advantages = [[0.0] * 8 for _ in range(3)]
     masks = [[False] * 8 for _ in range(3)]
-    events, changed_slots, _directional = policy._counterfactual_bid_credit(
+    stats = policy._counterfactual_bid_credit(
         replay, baseline,
         [{"tid": 9, "candidates": [0, 1], "winner": 0,
+          "arbitration_mode": "rl_direct",
           "bid_slots": {0: 2, 1: 5}}],
-        actual_shaped_reward=0.2, phi_before=0.0,
+        phi_before=0.0,
         phi_stable_before=0.0, advantages=advantages, masks=masks)
 
-    assert events == 1
-    assert changed_slots == 1
+    assert stats["events"] == 1
+    assert stats["informative_events"] == 1
+    assert stats["candidate_branches"] == 2
+    assert stats["actual_regrets"] == [0.0]
     assert masks[0][2]
     assert not any(masks[0][slot] for slot in range(8) if slot != 2)
-    assert not masks[1][5]
-    assert advantages[1][5] == 0.0
+    assert masks[1][5]
     assert not any(masks[1][slot] for slot in range(8) if slot != 5)
-    assert abs(advantages[1][5]) < 1e-8
+    assert advantages[1][5] < 0.0
     assert advantages[0][2] > 0.0
-    # Each candidate gets a zero-bid replay; the flat candidate also gets
-    # deterministic -1/+1 endpoint probes for directional credit.
-    assert len(replay.calls) == 4
-    assert replay.calls[0][0][2] == 0.0
+    assert len(replay.calls) == 2
+    assert replay.calls[0][0][2] == 1.0
+    assert replay.calls[0][1][5] == -1.0
     assert replay.calls[0][0][0] == baseline[0].arbitration_bids[0]
-    assert replay.calls[0][1] == baseline[1].arbitration_bids
-    assert replay.calls[1][0] == baseline[0].arbitration_bids
-    assert replay.calls[1][1][5] == 0.0
+    assert replay.calls[0][1][0] == baseline[1].arbitration_bids[0]
+    assert replay.calls[1][0][2] == -1.0
+    assert replay.calls[1][1][5] == 1.0
+    assert replay.calls[1][0][0] == baseline[0].arbitration_bids[0]
+    assert replay.calls[1][1][0] == baseline[1].arbitration_bids[0]
 
 
 def test_ppo_trains_and_reports_only_active_bid_slot():

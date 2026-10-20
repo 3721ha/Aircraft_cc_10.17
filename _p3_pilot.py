@@ -939,12 +939,23 @@ def main():
                 for item in rollout)
             n_cf_bid_events = sum(
                 int(item.get("n_cf_bid_events", 0)) for item in rollout)
-            n_cf_bid_changed_winner = sum(
-                int(item.get("n_cf_bid_changed_winner", 0))
+            n_cf_bid_informative_events = sum(
+                int(item.get("n_cf_bid_informative_events", 0))
                 for item in rollout)
-            n_cf_bid_directional_slots = sum(
-                int(item.get("n_cf_bid_directional_slots", 0))
+            n_cf_bid_candidate_branches = sum(
+                int(item.get("n_cf_bid_candidate_branches", 0))
                 for item in rollout)
+            n_cf_bid_uncontrollable_events = sum(
+                int(item.get("n_cf_bid_uncontrollable_events", 0))
+                for item in rollout)
+            cf_bid_utility_spreads = [
+                float(value)
+                for item in rollout
+                for value in item.get("bid_cf_utility_spreads", [])]
+            cf_bid_actual_regrets = [
+                float(value)
+                for item in rollout
+                for value in item.get("bid_cf_actual_regrets", [])]
             cf_bid_advantages = [
                 abs(float(value))
                 for item in rollout
@@ -1062,8 +1073,16 @@ def main():
                     n_bid_events - n_exposed_multi_candidate_events),
                 "bid_changed_winner": n_bid_changed_winner,
                 "cf_bid_events": n_cf_bid_events,
-                "cf_bid_changed_winner": n_cf_bid_changed_winner,
-                "cf_bid_directional_slots": n_cf_bid_directional_slots,
+                "cf_bid_informative_events": n_cf_bid_informative_events,
+                "cf_bid_candidate_branches": n_cf_bid_candidate_branches,
+                "cf_bid_uncontrollable_events": (
+                    n_cf_bid_uncontrollable_events),
+                "cf_bid_mean_utility_spread": round(
+                    float(np.mean(cf_bid_utility_spreads))
+                    if cf_bid_utility_spreads else 0.0, 6),
+                "cf_bid_mean_actual_regret": round(
+                    float(np.mean(cf_bid_actual_regrets))
+                    if cf_bid_actual_regrets else 0.0, 6),
                 "cf_bid_mean_abs_advantage": round(
                     float(np.mean(cf_bid_advantages))
                     if cf_bid_advantages else 0.0, 6),
@@ -1081,7 +1100,9 @@ def main():
                   f"vio/step={entry['vio_per_step']:.2f} req={n_requests} "
                   f"C04={n_c04_pass_requests}/{n_c04_rejected_requests} "
                   f"assign={n_new_assignments}+{n_handoffs} "
-                  f"bid_cf={n_cf_bid_changed_winner}/{n_cf_bid_events} "
+                  f"bid_cf={n_cf_bid_informative_events}/{n_cf_bid_events} "
+                  f"branches={n_cf_bid_candidate_branches} "
+                  f"regret={entry['cf_bid_mean_actual_regret']:.3f} "
                   f"bid_info={entry['cf_bid_informative_fraction']:.2f} "
                   f"bid_grad={entry['bid_gradient_norm']:.2e} "
                   f"bid_delta={entry['bid_parameter_delta_l2']:.2e} "

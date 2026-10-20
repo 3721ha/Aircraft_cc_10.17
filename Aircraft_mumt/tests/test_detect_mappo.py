@@ -418,18 +418,21 @@ def test_bid_event_mean_ignores_inactive_samples_and_keeps_gradient():
     assert torch.isclose(active_value.grad, torch.tensor(1.0))
 
 
-def test_counterfactual_bid_credit_uses_zero_bid_baseline_per_slot():
-    """Every contested slot gets real hard-arbitration baseline credit."""
+def test_counterfactual_bid_credit_uses_event_winner_utilities():
+    """Each candidate receives its utility contrast against the event mean."""
     from aircraft_sim.detect_models import DetectAction, DetectRole
 
     env, _, pol = _make(seed=77)
 
     class ReplayEnv:
+        def __init__(self, reward_by_winner=(3.0, 1.0)):
+            self.reward_by_winner = reward_by_winner
+
         def step(self, actions):
-            # Agent 0's positive slot bid wins; reversing it makes agent 1 win.
+            # The event's direct-RL winner is the highest forced bid.
             winner = 0 if actions[0].arbitration_bids[0] > 0.0 else 1
             return SimpleNamespace(
-                reward=3.0 if winner == 0 else 1.0,
+                reward=self.reward_by_winner[winner],
                 done=False,
                 info={"arbitration": [{"tid": 9, "winner": winner}]},
             )
@@ -446,39 +449,45 @@ def test_counterfactual_bid_credit_uses_zero_bid_baseline_per_slot():
     }
     advantages = [[0.0] * 8 for _ in range(3)]
     masks = [[False] * 8 for _ in range(3)]
-    events, changed, _directional = pol._counterfactual_bid_credit(
+    events = pol._counterfactual_bid_credit(
         ReplayEnv(), actions,
         [{"tid": 9, "candidates": [0, 1], "winner": 0,
+          "arbitration_mode": "rl_direct",
           "bid_slots": {0: 0, 1: 0}}],
-        actual_shaped_reward=0.3, phi_before=0.0,
+        phi_before=0.0,
         phi_stable_before=0.0, advantages=advantages, masks=masks)
 
-    assert events == 1
-    assert changed == 1
+    assert events["events"] == 1
+    assert events["informative_events"] == 1
+    assert events["candidate_branches"] == 2
+    assert events["actual_regrets"] == [0.0]
     assert masks[0][0] is True
+    assert masks[1][0] is True
     assert advantages[0][0] > 0.0
-    # Agent 1 is also an observed candidate; its neutral branch keeps the
-    # same winner and therefore receives an exact zero advantage.
-    assert masks[1][0] is False
-    assert abs(advantages[1][0]) < 1e-8
+    assert advantages[1][0] < 0.0
+    assert np.isclose(advantages[0][0], -advantages[1][0])
 
-    # Reverse the task utility ordering: the sampled bid should now be
-    # discouraged even though it still selected the same baseline winner.
+    # Reverse the task utility ordering and candidate-specific credit reverses.
     negative_advantages = [[0.0] * 8 for _ in range(3)]
     negative_masks = [[False] * 8 for _ in range(3)]
     pol._counterfactual_bid_credit(
-        ReplayEnv(), actions,
+        ReplayEnv(reward_by_winner=(1.0, 3.0)), actions,
         [{"tid": 9, "candidates": [0, 1], "winner": 0,
+          "arbitration_mode": "rl_direct",
           "bid_slots": {0: 0, 1: 0}}],
-        actual_shaped_reward=0.05, phi_before=0.0,
+        phi_before=0.0,
         phi_stable_before=0.0, advantages=negative_advantages,
         masks=negative_masks)
     assert negative_masks[0][0] is True
+    assert negative_masks[1][0] is True
     assert negative_advantages[0][0] < 0.0
+    assert negative_advantages[1][0] > 0.0
+    assert np.isclose(negative_advantages[0][0],
+                      -negative_advantages[1][0])
 
 
-def test_counterfactual_bid_credit_breaks_flat_arbitration_plateau():
-    """Endpoint utility probes give direction when sampled-vs-zero is flat."""
+def test_counterfactual_bid_credit_enumerates_flat_bid_plateau():
+    """Winner enumeration supplies utility contrast despite flat sampled bids."""
     from aircraft_sim.detect_models import DetectAction, DetectRole
 
     _, _, pol = _make(seed=78)
@@ -487,7 +496,7 @@ def test_counterfactual_bid_credit_breaks_flat_arbitration_plateau():
     class ReplayEnv:
         def step(self, actions):
             bid = actions[0].arbitration_bids[0]
-            utility = 2.0 if bid > 0.5 else 0.0 if bid < -0.5 else 1.0
+            utility = 2.0 if bid > 0.5 else 0.0
             winner = 0 if bid > 0.5 else 1
             return SimpleNamespace(
                 reward=utility,
@@ -510,22 +519,30 @@ def test_counterfactual_bid_credit_breaks_flat_arbitration_plateau():
         result = pol._counterfactual_bid_credit(
             ReplayEnv(), actions,
             [{"tid": 9, "candidates": [0, 1], "winner": 1,
+              "arbitration_mode": "rl_direct",
               "bid_slots": {0: 0, 1: 0}}],
-            actual_shaped_reward=0.1, phi_before=0.0,
+            phi_before=0.0,
             phi_stable_before=0.0, advantages=advantages, masks=masks)
         return result, advantages, masks
 
-    (events, changed, directional), positive, positive_masks = run(0.1)
-    assert events == 1
-    assert changed == 0
-    assert directional == 1
-    assert positive_masks[0][0]
-    assert positive[0][0] > 0.0
-
-    (_events, _changed, directional), negative, negative_masks = run(-0.1)
-    assert directional == 1
+    result, negative, negative_masks = run(0.1)
+    assert result["events"] == 1
+    assert result["informative_events"] == 1
+    assert result["candidate_branches"] == 2
+    assert result["actual_regrets"] == [0.2]
+    assert result["utility_spreads"] == [0.2]
     assert negative_masks[0][0]
-    assert negative[0][0] < 0.0
+    assert negative_masks[1][0]
+    assert negative[0][0] > 0.0
+    assert negative[1][0] < 0.0
+    assert np.isclose(negative[0][0], -negative[1][0])
+
+    result, negative, negative_masks = run(-0.1)
+    assert result["informative_events"] == 1
+    assert negative_masks[0][0]
+    assert negative_masks[1][0]
+    assert negative[0][0] > 0.0
+    assert negative[1][0] < 0.0
 
 
 def test_counterfactual_bid_credit_masks_non_pivotal_slot():
@@ -536,11 +553,21 @@ def test_counterfactual_bid_credit_masks_non_pivotal_slot():
     pol._potential_in_env = lambda _env, _kind: 0.0
 
     class ReplayEnv:
+        def __init__(self, with_tracks=False):
+            if with_tracks:
+                track = SimpleNamespace(target_id=9)
+                self.wingmen = [
+                    SimpleNamespace(tracks=SimpleNamespace(slots=[track]))
+                    for _ in range(2)]
+
         def step(self, actions):
+            winner = max(
+                actions,
+                key=lambda i: actions[i].arbitration_bids[0])
             return SimpleNamespace(
                 reward=1.0,
                 done=False,
-                info={"arbitration": [{"tid": 9, "winner": 0}]},
+                info={"arbitration": [{"tid": 9, "winner": winner}]},
             )
 
     actions = {
@@ -551,19 +578,31 @@ def test_counterfactual_bid_credit_masks_non_pivotal_slot():
     }
     advantages = [[0.0] * 8 for _ in range(3)]
     masks = [[False] * 8 for _ in range(3)]
-    events, changed, _directional = pol._counterfactual_bid_credit(
+    stats = pol._counterfactual_bid_credit(
         ReplayEnv(), actions,
         [{"tid": 9, "candidates": [0, 1], "winner": 0,
+          "arbitration_mode": "rl_direct",
           "bid_slots": {0: 0, 1: 0}}],
-        actual_shaped_reward=0.1, phi_before=0.0,
+        phi_before=0.0,
         phi_stable_before=0.0, advantages=advantages, masks=masks)
 
-    assert events == 1
-    assert changed == 0
+    assert stats["events"] == 1
+    assert stats["informative_events"] == 0
     assert masks[0][0] is False
     assert masks[1][0] is False
     assert advantages[0][0] == 0.0
     assert advantages[1][0] == 0.0
+
+    invalid = pol._counterfactual_bid_credit(
+        ReplayEnv(with_tracks=True), actions,
+        [{"tid": 9, "candidates": [0, 1], "winner": 0,
+          "arbitration_mode": "rl_direct",
+          "bid_slots": {0: 1, 1: 0}}],
+        phi_before=0.0,
+        phi_stable_before=0.0, advantages=advantages, masks=masks)
+    assert invalid["events"] == 0
+    assert invalid["uncontrollable_events"] == 1
+    assert not any(any(mask) for mask in masks)
 
 
 def test_arbitration_precheck_includes_incumbent_challenger_pair():

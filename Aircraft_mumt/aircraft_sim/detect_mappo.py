@@ -784,9 +784,8 @@ class DetectMAPPOPolicy:
             shaped = float(res.reward) * self.config.reward_scale \
                 + self.config.gamma * phi_after - phi_before \
                 + self.config.gamma * phi_stable_after - phi_stable_before
-            (cf_bid_events, cf_bid_changed,
-             cf_bid_directional_slots) = self._counterfactual_bid_credit(
-                arbitration_replay_env, safe, arbitration, shaped,
+            cf_bid_stats = self._counterfactual_bid_credit(
+                arbitration_replay_env, safe, arbitration,
                 phi_before, phi_stable_before, bid_cf_adv_slots,
                 bid_cf_mask_slots)
             bid_cf_adv = [
@@ -861,9 +860,15 @@ class DetectMAPPOPolicy:
                 "bid_cf_mask": bid_cf_mask,
                 "bid_cf_adv_slots": bid_cf_adv_slots,
                 "bid_cf_mask_slots": bid_cf_mask_slots,
-                "n_cf_bid_events": cf_bid_events,
-                "n_cf_bid_changed_winner": cf_bid_changed,
-                "n_cf_bid_directional_slots": cf_bid_directional_slots,
+                "n_cf_bid_events": cf_bid_stats["events"],
+                "n_cf_bid_informative_events": (
+                    cf_bid_stats["informative_events"]),
+                "n_cf_bid_candidate_branches": (
+                    cf_bid_stats["candidate_branches"]),
+                "n_cf_bid_uncontrollable_events": (
+                    cf_bid_stats["uncontrollable_events"]),
+                "bid_cf_utility_spreads": cf_bid_stats["utility_spreads"],
+                "bid_cf_actual_regrets": cf_bid_stats["actual_regrets"],
                 "n_cf_bid_active_slots": sum(
                     any(mask) for mask in bid_cf_mask_slots),
                 "n_bid_events": len(arbitration),
@@ -989,25 +994,21 @@ class DetectMAPPOPolicy:
 
     def _counterfactual_bid_credit(
         self, env_before, actions: Dict[int, DetectAction],
-        arbitration: Sequence[dict], actual_shaped_reward: float,
+        arbitration: Sequence[dict],
         phi_before: float, phi_stable_before: float,
         advantages: List[List[float]], masks: List[List[bool]],
-    ) -> Tuple[int, int, int]:
-        """Credit each contested slot against a real zero-bid baseline.
-
-        The environment keeps the hard winner and hysteresis semantics.  For
-        every candidate in an observed multi-candidate event, one replay sets
-        only that candidate's mapped slot to zero and compares its shaped
-        utility with the sampled action.  The replay utility is independent of
-        the candidate's sampled bid, so this is a valid action-dependent
-        baseline for the slot-wise PPO score function.  It also avoids using a
-        HEUR winner label or changing the deployed arbitration rule.
-        """
+    ) -> dict:
+        """Credit direct-RL bids against event-local winner counterfactuals."""
+        stats = {
+            "events": 0,
+            "informative_events": 0,
+            "candidate_branches": 0,
+            "uncontrollable_events": 0,
+            "utility_spreads": [],
+            "actual_regrets": [],
+        }
         if env_before is None or not arbitration:
-            return 0, 0, 0
-        active_event_keys = set()
-        changed_slots = set()
-        directional_slots = set()
+            return stats
 
         def replay_utility(branch_actions, target_id):
             branch = deepcopy(env_before)
@@ -1030,67 +1031,87 @@ class DetectMAPPOPolicy:
         for event in arbitration:
             candidates = [int(i) for i in event.get("candidates", [])
                           if int(i) in actions]
-            if len(candidates) < 2:
+            if (len(candidates) < 2
+                    or event.get("arbitration_mode") != "rl_direct"):
                 continue
             slot_map = event.get("bid_slots", {})
+            slots = {}
+            controllable = True
             for agent_idx in candidates:
                 slot_value = slot_map.get(
                     agent_idx, slot_map.get(str(agent_idx)))
                 action = actions[agent_idx]
                 if (slot_value is None or action.arbitration_bids is None):
-                    continue
+                    controllable = False
+                    break
                 slot_idx = int(slot_value)
                 if not 0 <= slot_idx < len(action.arbitration_bids):
-                    continue
-                sampled_bid = float(action.arbitration_bids[slot_idx])
-                # The neutral branch is a one-slot intervention.  All other
-                # candidates, slots, roles, pointers, and flight controls are
-                # held at the action actually sent to the environment.
-                neutral_bids = list(action.arbitration_bids)
-                neutral_bids[slot_idx] = 0.0
-                branch_actions = dict(actions)
-                branch_actions[agent_idx] = replace(
-                    action, arbitration_bid=0.0,
-                    arbitration_bids=tuple(neutral_bids))
-                neutral_utility, matching = replay_utility(
-                    branch_actions, event.get("tid"))
-                if matching is None:
-                    continue
-                active_event_keys.add(event.get("tid"))
-                exact_advantage = actual_shaped_reward - neutral_utility
-                bid_advantage = exact_advantage
-                if int(matching["winner"]) != int(event["winner"]):
-                    changed_slots.add((agent_idx, slot_idx))
+                    controllable = False
+                    break
+                if hasattr(env_before, "wingmen"):
+                    wingmen = env_before.wingmen
+                    if (not 0 <= agent_idx < len(wingmen)
+                            or slot_idx >= len(wingmen[agent_idx].tracks.slots)):
+                        controllable = False
+                        break
+                    track = wingmen[agent_idx].tracks.slots[slot_idx]
+                    if (track is None
+                            or track.target_id != event.get("tid")):
+                        controllable = False
+                        break
+                slots[agent_idx] = slot_idx
+            if not controllable:
+                stats["uncontrollable_events"] += 1
+                continue
 
-                # Hard arbitration is flat until a bid crosses its score
-                # margin. Endpoint replays provide a causal direction through
-                # that flat region without changing deployed arbitration.
-                if abs(exact_advantage) <= 1e-8:
-                    probe_utilities = []
-                    for probe_bid in (-1.0, 1.0):
-                        probe_bids = list(action.arbitration_bids)
-                        probe_bids[slot_idx] = probe_bid
-                        probe_actions = dict(actions)
-                        probe_actions[agent_idx] = replace(
-                            action, arbitration_bid=probe_bid,
-                            arbitration_bids=tuple(probe_bids))
-                        utility, _ = replay_utility(
-                            probe_actions, event.get("tid"))
-                        probe_utilities.append(utility)
-                    if all(value is not None for value in probe_utilities):
-                        slope = 0.5 * (probe_utilities[1]
-                                       - probe_utilities[0])
-                        directional_advantage = float(np.clip(
-                            self.config.cf_bid_margin_coef * slope
-                            * sampled_bid, -1.0, 1.0))
-                        if abs(directional_advantage) > 1e-8:
-                            bid_advantage += directional_advantage
-                            directional_slots.add((agent_idx, slot_idx))
-                if abs(bid_advantage) > 1e-8:
-                    advantages[agent_idx][slot_idx] += bid_advantage
-                    masks[agent_idx][slot_idx] = True
-        return (len(active_event_keys), len(changed_slots),
-                len(directional_slots))
+            utilities = {}
+            for forced_winner in candidates:
+                branch_actions = dict(actions)
+                for agent_idx in candidates:
+                    action = actions[agent_idx]
+                    slot_idx = slots[agent_idx]
+                    forced_bid = 1.0 if agent_idx == forced_winner else -1.0
+                    bids = list(action.arbitration_bids)
+                    bids[slot_idx] = forced_bid
+                    branch_actions[agent_idx] = replace(
+                        action, arbitration_bid=forced_bid,
+                        arbitration_bids=tuple(bids))
+                utility, matching = replay_utility(
+                    branch_actions, event.get("tid"))
+                stats["candidate_branches"] += 1
+                if (utility is None or matching is None
+                        or int(matching.get("winner", -1)) != forced_winner):
+                    controllable = False
+                    break
+                utilities[forced_winner] = utility
+            if not controllable or len(utilities) != len(candidates):
+                stats["uncontrollable_events"] += 1
+                continue
+
+            actual_winner = int(event.get("winner", -1))
+            if actual_winner not in utilities:
+                stats["uncontrollable_events"] += 1
+                continue
+            utility_values = list(utilities.values())
+            utility_spread = max(utility_values) - min(utility_values)
+            baseline = float(np.mean(utility_values))
+            stats["events"] += 1
+            stats["utility_spreads"].append(float(utility_spread))
+            stats["actual_regrets"].append(
+                max(utility_values) - utilities[actual_winner])
+            if utility_spread <= 1e-8:
+                continue
+            informative = False
+            for agent_idx, slot_idx in slots.items():
+                advantage = utilities[agent_idx] - baseline
+                if abs(advantage) <= 1e-8:
+                    continue
+                advantages[agent_idx][slot_idx] += advantage
+                masks[agent_idx][slot_idx] = True
+                informative = True
+            if informative:
+                stats["informative_events"] += 1
+        return stats
 
     def _potential_in_env(self, env, kind: str) -> float:
         """Evaluate existing training potentials against a replayed env."""
