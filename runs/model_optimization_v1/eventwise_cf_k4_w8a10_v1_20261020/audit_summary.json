@@ -1,0 +1,315 @@
+{
+  "run_id": "20261020T102001.444436Z_22824_c50494bc",
+  "training_code_commit": "4fee7a0ace8bcbc34fd44f33ec48cbb7b04dc16c",
+  "status": "completed",
+  "completed_iterations": 10,
+  "completed_episodes": 80,
+  "early_stopping": {
+    "triggered": true,
+    "iter": 9,
+    "patience": 5,
+    "reason": "no validation rank improvement over preserved best"
+  },
+  "source_integrity": {
+    "verified_at_utc": "2026-10-20T10:36:49.467164+00:00",
+    "unchanged": true,
+    "changed_files": []
+  },
+  "current_source_matches_recorded_hashes": true,
+  "task_config_sha256": "87e5fcd38254e5c1c06f98b7f8a379a9d101cfe7f70dcd78c3c2b2157516e248",
+  "baseline": {
+    "seeds": [
+      102000,
+      102001,
+      102002,
+      102003,
+      102004,
+      102005,
+      102006,
+      102007,
+      102008,
+      102009
+    ],
+    "rl": {
+      "success_rate": 0.2,
+      "mean_return": -9041.4,
+      "violations_per_step": 8.7249
+    },
+    "heur": {
+      "success_rate": 0.9,
+      "mean_return": -3436.5,
+      "violations_per_step": 7.2592
+    },
+    "natural_arbitration": {
+      "rl_multi_candidate_events": 18,
+      "rl_winner_changes_vs_fixed_score": 7,
+      "forced_probe_enabled": false
+    }
+  },
+  "latest": {
+    "iter": 9,
+    "seeds": [
+      102000,
+      102001,
+      102002,
+      102003,
+      102004,
+      102005,
+      102006,
+      102007,
+      102008,
+      102009
+    ],
+    "rl": {
+      "success_rate": 0.2,
+      "mean_return": -9041.4,
+      "violations_per_step": 8.7249
+    },
+    "heur": {
+      "success_rate": 0.9,
+      "mean_return": -3436.5,
+      "violations_per_step": 7.2592
+    },
+    "natural_arbitration": {
+      "rl_multi_candidate_events": 18,
+      "rl_winner_changes_vs_fixed_score": 7,
+      "forced_probe_enabled": false
+    }
+  },
+  "selected_iteration": -1,
+  "all_validation_by_seed_metrics_equal_baseline": true,
+  "training_totals": {
+    "environment_steps": 51684,
+    "agent_steps": 155052,
+    "bid_events": 448,
+    "exposed_multi_candidate_events": 389,
+    "cf_bid_events": 413,
+    "cf_bid_informative_events": 412,
+    "cf_bid_candidate_branches": 827,
+    "cf_bid_uncontrollable_events": 16,
+    "bid_active_slot_count": 825
+  },
+  "weighted_cf_mean_utility_spread": 0.1906181234866828,
+  "weighted_cf_mean_actual_regret": 0.08827742615012106,
+  "changed_parameters_best_to_latest": [
+    {
+      "parameter": "bid_log_std",
+      "l2": 2.6166439056396484e-05,
+      "max_abs": 2.6166439056396484e-05
+    },
+    {
+      "parameter": "bid_head.weight",
+      "l2": 0.0006799048278480768,
+      "max_abs": 0.00012829899787902832
+    },
+    {
+      "parameter": "bid_head.bias",
+      "l2": 3.3017247915267944e-05,
+      "max_abs": 3.3017247915267944e-05
+    },
+    {
+      "parameter": "bid_candidate_head.2.bias",
+      "l2": 3.302108962088823e-05,
+      "max_abs": 3.302108962088823e-05
+    },
+    {
+      "parameter": "bid_conflict_residual.weight",
+      "l2": 0.00019763404270634055,
+      "max_abs": 9.563833009451628e-05
+    }
+  ],
+  "candidate_head_weights": {
+    "source": {
+      "bid_candidate_head.0.weight": {
+        "shape": [
+          64,
+          142
+        ],
+        "l2": 0.0,
+        "nonzero": 0
+      },
+      "bid_candidate_head.0.bias": {
+        "shape": [
+          64
+        ],
+        "l2": 0.0,
+        "nonzero": 0
+      },
+      "bid_candidate_head.2.weight": {
+        "shape": [
+          1,
+          64
+        ],
+        "l2": 0.0,
+        "nonzero": 0
+      },
+      "bid_candidate_head.2.bias": {
+        "shape": [
+          1
+        ],
+        "l2": 0.00044244766468182206,
+        "nonzero": 1
+      }
+    },
+    "best": {
+      "bid_candidate_head.0.weight": {
+        "shape": [
+          64,
+          142
+        ],
+        "l2": 0.0,
+        "nonzero": 0
+      },
+      "bid_candidate_head.0.bias": {
+        "shape": [
+          64
+        ],
+        "l2": 0.0,
+        "nonzero": 0
+      },
+      "bid_candidate_head.2.weight": {
+        "shape": [
+          1,
+          64
+        ],
+        "l2": 0.0,
+        "nonzero": 0
+      },
+      "bid_candidate_head.2.bias": {
+        "shape": [
+          1
+        ],
+        "l2": 0.00044244766468182206,
+        "nonzero": 1
+      }
+    },
+    "latest": {
+      "bid_candidate_head.0.weight": {
+        "shape": [
+          64,
+          142
+        ],
+        "l2": 0.0,
+        "nonzero": 0
+      },
+      "bid_candidate_head.0.bias": {
+        "shape": [
+          64
+        ],
+        "l2": 0.0,
+        "nonzero": 0
+      },
+      "bid_candidate_head.2.weight": {
+        "shape": [
+          1,
+          64
+        ],
+        "l2": 0.0,
+        "nonzero": 0
+      },
+      "bid_candidate_head.2.bias": {
+        "shape": [
+          1
+        ],
+        "l2": 0.00040942657506093383,
+        "nonzero": 1
+      }
+    }
+  },
+  "candidate_head_gradient_norms_for_nonzero_output_loss": {
+    "0.weight": 0.0,
+    "0.bias": 0.0,
+    "2.weight": 0.0,
+    "2.bias": 10.0
+  },
+  "continuous_ppo_direction_examples": [
+    {
+      "positive_advantage": 1.0,
+      "latent_bid_sample": -0.8,
+      "mean_loss_gradient": 3.200000047683716,
+      "gradient_descent_direction": -1
+    },
+    {
+      "positive_advantage": 1.0,
+      "latent_bid_sample": 0.8,
+      "mean_loss_gradient": -3.200000047683716,
+      "gradient_descent_direction": 1
+    }
+  ],
+  "interpretation": "Candidate utility minus event mean is independent of its sampled bid for a fixed replayed event. Applying that value to the sampled continuous bid log-probability does not enforce raising higher-utility bids. Nonzero gradients are insufficient evidence. All-zero input and output matrices in the candidate head also block feature-dependent learning; only output bias receives a gradient.",
+  "scope": "Read-only analysis of recorded run/checkpoints plus small autograd checks; no new training or algorithm changes.",
+  "checkpoint_pruning": [
+    {
+      "path": "provenance\\20261020T102001.444436Z_22824_c50494bc_curr_k4_iter_000000.pt",
+      "sha256": "abfb3d6689042346f054f1a0a43a0a35a2522524f012acc277ac263713f199b4",
+      "size_bytes": 1613839,
+      "iteration": 0,
+      "reason": "Not selected; preserve baseline and iter9 for audit. Per-iteration metrics and hashes remain in original run log.",
+      "pruned": true
+    },
+    {
+      "path": "provenance\\20261020T102001.444436Z_22824_c50494bc_curr_k4_iter_000001.pt",
+      "sha256": "dbcc56c035324fad066320f09e467754b01e4730c585c709333a3af0f96f3292",
+      "size_bytes": 1613839,
+      "iteration": 1,
+      "reason": "Not selected; preserve baseline and iter9 for audit. Per-iteration metrics and hashes remain in original run log.",
+      "pruned": true
+    },
+    {
+      "path": "provenance\\20261020T102001.444436Z_22824_c50494bc_curr_k4_iter_000002.pt",
+      "sha256": "28737c465a9fe664484fb3c6f518c299f978f58d8d18f5d714e12113b2b885c8",
+      "size_bytes": 1613839,
+      "iteration": 2,
+      "reason": "Not selected; preserve baseline and iter9 for audit. Per-iteration metrics and hashes remain in original run log.",
+      "pruned": true
+    },
+    {
+      "path": "provenance\\20261020T102001.444436Z_22824_c50494bc_curr_k4_iter_000003.pt",
+      "sha256": "dd0ba45b06d7e40eb22b26bcc21850737ecba1105f3f687e32f939a6faa054fd",
+      "size_bytes": 1613839,
+      "iteration": 3,
+      "reason": "Not selected; preserve baseline and iter9 for audit. Per-iteration metrics and hashes remain in original run log.",
+      "pruned": true
+    },
+    {
+      "path": "provenance\\20261020T102001.444436Z_22824_c50494bc_curr_k4_iter_000004.pt",
+      "sha256": "3995c98c108daeaddee3213659288dfb5c9e776b14cf728e7b00a51ed505eb7f",
+      "size_bytes": 1613839,
+      "iteration": 4,
+      "reason": "Not selected; preserve baseline and iter9 for audit. Per-iteration metrics and hashes remain in original run log.",
+      "pruned": true
+    },
+    {
+      "path": "provenance\\20261020T102001.444436Z_22824_c50494bc_curr_k4_iter_000005.pt",
+      "sha256": "9d61d49a7e5db340f7a68c70539b2be289d89555857d34e4e2e9f31b2c0345ed",
+      "size_bytes": 1613839,
+      "iteration": 5,
+      "reason": "Not selected; preserve baseline and iter9 for audit. Per-iteration metrics and hashes remain in original run log.",
+      "pruned": true
+    },
+    {
+      "path": "provenance\\20261020T102001.444436Z_22824_c50494bc_curr_k4_iter_000006.pt",
+      "sha256": "41b0335f0d6312cc962eb7b93b884cb20f13a06afbff5e48a7b669ef50fe64c1",
+      "size_bytes": 1613839,
+      "iteration": 6,
+      "reason": "Not selected; preserve baseline and iter9 for audit. Per-iteration metrics and hashes remain in original run log.",
+      "pruned": true
+    },
+    {
+      "path": "provenance\\20261020T102001.444436Z_22824_c50494bc_curr_k4_iter_000007.pt",
+      "sha256": "51a83e94152005c05f39943675bfd79be155abfec687afe84f561d9cd5c50897",
+      "size_bytes": 1613839,
+      "iteration": 7,
+      "reason": "Not selected; preserve baseline and iter9 for audit. Per-iteration metrics and hashes remain in original run log.",
+      "pruned": true
+    },
+    {
+      "path": "provenance\\20261020T102001.444436Z_22824_c50494bc_curr_k4_iter_000008.pt",
+      "sha256": "1b51514a67a130b1d190173dd9fa55669bd7f20ec3138f087d733a0767fc0b94",
+      "size_bytes": 1613839,
+      "iteration": 8,
+      "reason": "Not selected; preserve baseline and iter9 for audit. Per-iteration metrics and hashes remain in original run log.",
+      "pruned": true
+    }
+  ]
+}
