@@ -61,6 +61,9 @@ def test_environment_isolated_and_exact_best_selected(source_run, tmp_path):
         "MUMT_BID_LOG_STD": "-3.0",
         "MUMT_BID_ONLY_PPO": "1",
         "MUMT_UNKNOWN_STALE": "bad",
+        "MUMT_CONFLICT_EXPOSURE_PROB": "0.7",
+        "MUMT_W8_FIXED": "1",
+        "MUMT_POLICY_ANCHOR_COEF": "999",
         "mumt_w8_span": "1",
     })
     env = launch["environment"]
@@ -71,10 +74,53 @@ def test_environment_isolated_and_exact_best_selected(source_run, tmp_path):
     assert env["MUMT_BID_ONLY_PPO"] == "0"
     assert env["MUMT_TRAIN_SEED_START"] == "10000"
     assert env["MUMT_SECTOR_AXIS_MAX_DEG"] == "60"
+    assert env["MUMT_CONFLICT_EXPOSURE_PROB"] == "1.0"
+    assert env["MUMT_W8_FIXED"] == "0.2"
+    assert env["MUMT_POLICY_ANCHOR_COEF"] == "0.0"
+    assert launch["training_controls"] == {
+        "conflict_exposure": 1.0, "penalty_scale": 0.2, "policy_anchor_coef": 0.0,
+    }
+    assert launch["source"]["source_log_sha256"] == hashlib.sha256(
+        (source_run / "pilot_log.json").read_bytes()).hexdigest()
     assert "MUMT_BID_LOG_STD" not in env
     assert "MUMT_UNKNOWN_STALE" not in env
     assert "mumt_w8_span" not in env
     assert launch["command"][-4:] == ["curr", "3", "0", "20"]
+    assert not output.exists()
+
+
+@pytest.mark.parametrize("exposure,penalty,anchor", [
+    (0.0, 1.0, 0.0), (1.0, 0.0, 2.5), (0.4, 0.7, 0.15),
+])
+def test_explicit_training_controls_replace_inherited_values(source_run, tmp_path, exposure, penalty, anchor):
+    args = parse(source_run, tmp_path / "new_run", "--conflict-exposure", str(exposure),
+                 "--penalty-scale", str(penalty), "--policy-anchor-coef", str(anchor))
+    launch = launcher.prepare_launch(args, {
+        "MUMT_CONFLICT_EXPOSURE_PROB": "1",
+        "MUMT_W8_FIXED": "0.2",
+        "MUMT_POLICY_ANCHOR_COEF": "999",
+        "mumt_policy_anchor_coef": "888",
+    })
+    assert launch["training_controls"] == {
+        "conflict_exposure": exposure, "penalty_scale": penalty, "policy_anchor_coef": anchor,
+    }
+    assert launch["environment"]["MUMT_CONFLICT_EXPOSURE_PROB"] == str(exposure)
+    assert launch["environment"]["MUMT_W8_FIXED"] == str(penalty)
+    assert launch["environment"]["MUMT_POLICY_ANCHOR_COEF"] == str(anchor)
+    assert "mumt_policy_anchor_coef" not in launch["environment"]
+    assert launch["task_numeric_config"] == launcher.TASK_CONFIG
+
+
+@pytest.mark.parametrize("option,value", [
+    (option, value)
+    for option in ("--conflict-exposure", "--penalty-scale")
+    for value in ("-0.01", "1.01", "nan", "inf", "-inf")
+] + [("--policy-anchor-coef", value) for value in ("-0.01", "nan", "inf", "-inf")])
+def test_invalid_training_controls_rejected_by_cli(source_run, tmp_path, option, value):
+    output = tmp_path / "never_created"
+    with pytest.raises(SystemExit) as exc:
+        parse(source_run, output, f"{option}={value}")
+    assert exc.value.code == 2
     assert not output.exists()
 
 
@@ -136,14 +182,21 @@ def test_preflight_is_read_only(source_run, tmp_path, monkeypatch, capsys):
 
     monkeypatch.setattr(launcher.subprocess, "run", never_spawn)
     output = tmp_path / "preflight_output"
+    original_source = {path.name: path.read_bytes() for path in source_run.iterdir()}
     result = launcher.main(["--k", "3", "--source-run", str(source_run),
-                            "--output", str(output), "--preflight-only"])
+                            "--output", str(output), "--preflight-only",
+                            "--conflict-exposure", "0", "--penalty-scale", "1",
+                            "--policy-anchor-coef", "0.25"])
     report = json.loads(capsys.readouterr().out)
     assert result == 0
     assert not output.exists()
     assert report["source"]["source_best_iter"] == 4
     assert "environment" not in report
     assert report["training_environment"]["MUMT_CURR_START_MODE"] == "best"
+    assert report["training_controls"] == {
+        "conflict_exposure": 0.0, "penalty_scale": 1.0, "policy_anchor_coef": 0.25,
+    }
+    assert {path.name: path.read_bytes() for path in source_run.iterdir()} == original_source
 
 
 def test_execution_uses_root_and_propagates_child_failure(source_run, tmp_path, monkeypatch):

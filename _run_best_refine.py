@@ -49,6 +49,20 @@ def _positive_float(value: str) -> float:
     return parsed
 
 
+def _unit_interval(value: str) -> float:
+    parsed = float(value)
+    if not math.isfinite(parsed) or not 0.0 <= parsed <= 1.0:
+        raise argparse.ArgumentTypeError("must be finite and between 0 and 1")
+    return parsed
+
+
+def _nonnegative_float(value: str) -> float:
+    parsed = float(value)
+    if not math.isfinite(parsed) or parsed < 0.0:
+        raise argparse.ArgumentTypeError("must be finite and nonnegative")
+    return parsed
+
+
 def _seeds(value: str) -> list[int]:
     try:
         seeds = [int(item.strip()) for item in value.split(",")]
@@ -74,6 +88,12 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--validation-seeds", type=_seeds,
                         default=list(range(230, 240)))
     parser.add_argument("--training-seed-start", type=_nonnegative_int)
+    parser.add_argument("--conflict-exposure", type=_unit_interval, default=1.0,
+                        help="Training conflict exposure probability; evaluation remains natural.")
+    parser.add_argument("--penalty-scale", type=_unit_interval, default=0.2,
+                        help="Training violation penalty scale; does not change task thresholds.")
+    parser.add_argument("--policy-anchor-coef", type=_nonnegative_float, default=0.0,
+                        help="KL penalty coefficient against the fixed initial policy.")
     parser.add_argument("--preflight-only", action="store_true")
     return parser
 
@@ -110,7 +130,8 @@ def verify_source(source_run: Path, k: int) -> dict[str, Any]:
     log_path = source_run / "pilot_log.json"
     if not log_path.is_file():
         raise ValueError(f"source pilot log does not exist: {log_path}")
-    data = _mapping(json.loads(log_path.read_text(encoding="utf-8")), "pilot_log")
+    log_bytes = log_path.read_bytes()
+    data = _mapping(json.loads(log_bytes.decode("utf-8")), "pilot_log")
     best = _mapping(data.get(f"curr_k{k}_best"), f"curr_k{k}_best")
     iteration = best.get("iter")
     if isinstance(iteration, bool) or not isinstance(iteration, int) or iteration < -1:
@@ -168,6 +189,7 @@ def verify_source(source_run: Path, k: int) -> dict[str, Any]:
     return {
         "source_run": str(source_run),
         "source_log": str(log_path),
+        "source_log_sha256": hashlib.sha256(log_bytes).hexdigest(),
         "source_best_iter": iteration,
         "checkpoint": str(checkpoint),
         "checkpoint_sha256": actual_hash,
@@ -196,7 +218,7 @@ def prepare_launch(args: argparse.Namespace, environment: Mapping[str, str] | No
         "MUMT_CURR_INIT": source["checkpoint"],
         "MUMT_CURR_START_MODE": "best",
         "MUMT_CURR_EXPECTED_SHA256": source["checkpoint_sha256"],
-        "MUMT_W8_FIXED": "0.2",
+        "MUMT_W8_FIXED": str(args.penalty_scale),
         "MUMT_STABLE_WINDOW": "8",
         "MUMT_AGE_STD_TRACK": "10",
         "MUMT_C04_RANGE": "80",
@@ -204,7 +226,8 @@ def prepare_launch(args: argparse.Namespace, environment: Mapping[str, str] | No
         "MUMT_ARB_BID_WEIGHT": "0.35",
         "MUMT_ARB_HYSTERESIS": "0.2",
         "MUMT_RL_DIRECT_ARBITRATION": "1",
-        "MUMT_CONFLICT_EXPOSURE_PROB": "1",
+        "MUMT_CONFLICT_EXPOSURE_PROB": str(args.conflict_exposure),
+        "MUMT_POLICY_ANCHOR_COEF": str(args.policy_anchor_coef),
         "MUMT_BID_ONLY_PPO": "1" if args.mode == "bid-only" else "0",
         "MUMT_PPO_LR": str(args.learning_rate),
         "MUMT_PPO_EPOCHS": "2",
@@ -219,6 +242,11 @@ def prepare_launch(args: argparse.Namespace, environment: Mapping[str, str] | No
         "source": source,
         "output": str(output),
         "task_numeric_config": TASK_CONFIG.copy(),
+        "training_controls": {
+            "conflict_exposure": args.conflict_exposure,
+            "penalty_scale": args.penalty_scale,
+            "policy_anchor_coef": args.policy_anchor_coef,
+        },
         "mode": args.mode,
         "command": [sys.executable, str(ROOT / "_p3_pilot.py"), "curr", str(args.k), "0", str(args.iterations)],
         "cwd": str(ROOT),

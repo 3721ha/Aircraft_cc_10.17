@@ -119,8 +119,9 @@ if PHASE == "curr":
         raise ValueError("Training seeds overlap validation seeds")
 
 SOURCE_ENTRY_SCRIPTS = [ROOT / "_p3_pilot.py", ROOT / "_curriculum_guard.py"]
-if (ROOT / "_run_best_refine.py").is_file():
-    SOURCE_ENTRY_SCRIPTS.append(ROOT / "_run_best_refine.py")
+for optional_script in ("_run_best_refine.py", "_run_k4_diagnostics.py"):
+    if (ROOT / optional_script).is_file():
+        SOURCE_ENTRY_SCRIPTS.append(ROOT / optional_script)
 SOURCE_SNAPSHOT = capture_source_snapshot(ROOT, OUT, SOURCE_ENTRY_SCRIPTS)
 
 from aircraft_sim.detect_baselines import HeurPolicy              # noqa: E402
@@ -502,12 +503,24 @@ def _configure_policy(pol):
     if os.environ.get("MUMT_RL_DIRECT_ARBITRATION"):
         pol.config.direct_rl_arbitration = (
             os.environ["MUMT_RL_DIRECT_ARBITRATION"] != "0")
+    anchor_text = os.environ.get("MUMT_POLICY_ANCHOR_COEF")
+    if anchor_text is not None:
+        anchor_coef = float(anchor_text)
+        if not math.isfinite(anchor_coef) or anchor_coef < 0:
+            raise ValueError("MUMT_POLICY_ANCHOR_COEF must be finite and nonnegative")
+        pol.config.policy_anchor_coef = anchor_coef
+    monitor_text = os.environ.get("MUMT_POLICY_ANCHOR_MONITOR")
+    if monitor_text is not None:
+        if monitor_text not in {"0", "1"}:
+            raise ValueError("MUMT_POLICY_ANCHOR_MONITOR must be 0 or 1")
+        pol.config.policy_anchor_monitor = monitor_text == "1"
     _apply_bid_std_override(pol)
     print(f"[PPO] lr={pol.config.learning_rate:g} epochs={pol.config.epochs} "
           f"shield_aware={pol.config.shield_aware_continuous} "
           f"cf_request_credit={pol.config.cf_request_credit:g} "
           f"conflict_exposure={pol.config.conflict_exposure_prob:g} "
           f"bid_only={pol.config.bid_only_ppo} "
+          f"policy_anchor_coef={pol.config.policy_anchor_coef:g} "
           f"direct_rl_arbitration={pol.config.direct_rl_arbitration}", flush=True)
 
 
@@ -521,6 +534,21 @@ def _apply_bid_std_override(pol):
         if not math.isfinite(bid_std) or not -2.5 <= bid_std <= 0:
             raise ValueError("MUMT_BID_LOG_STD must be finite and in [-2.5,0]")
         pol.model.bid_log_std.data.fill_(bid_std)
+
+
+def _initialize_curriculum_anchor(pol, run_record, start, iteration):
+    """New refinement uses its chosen RL model; resume retains its reference."""
+    if iteration == 0:
+        pol.refresh_policy_anchor()
+    run_record["policy_anchor"] = {
+        "coefficient": pol.config.policy_anchor_coef,
+        "monitor_enabled": pol.config.policy_anchor_monitor,
+        "reference": "initial RL checkpoint" if iteration == 0 else
+                     "reference restored from checkpoint",
+        "includes": ["continuous", "role", "conditional_gear", "conditional_pointer"],
+        "excludes": ["arbitration_bid"],
+        "initial_checkpoint_sha256": start["sha256"] if iteration == 0 else None,
+    }
 
 
 @track_run_lifecycle
@@ -768,6 +796,7 @@ def main():
               f"source={loaded} sha256={CURR_START['sha256']}", flush=True)
         _persist_run_record(_load_log(), run_record)
         _apply_bid_std_override(pol)
+        _initialize_curriculum_anchor(pol, run_record, CURR_START, ITERS0)
         env = _make_env()
         pol.env = env
         log = _load_log()
@@ -784,6 +813,13 @@ def main():
             "training_seed_start": TRAIN_SEED_START,
             "early_stopping_patience": CURR_PATIENCE,
             "initial_checkpoint": dict(CURR_START),
+            "diagnostic_case": os.environ.get("MUMT_DIAGNOSTIC_CASE"),
+            "diagnostic_suite_sha256": os.environ.get("MUMT_DIAGNOSTIC_SUITE_SHA256"),
+            "training_return_semantics": {
+                "mean_return": "shaped reward divided by algorithm reward_scale",
+                "mean_environment_return": "unshaped environment reward at this training penalty scale",
+                "selection": "natural paired validation at W8_SCALE=1, without training shaping or exposure",
+            },
             "task_numeric_config": {
                 "stable_window": env.cfg.STABLE_WINDOW,
                 "age_std_track": env.cfg.AGE_STD_TRACK,
@@ -797,6 +833,8 @@ def main():
                 "epochs": pol.config.epochs,
                 "bid_only_ppo": pol.config.bid_only_ppo,
                 "direct_rl_arbitration": pol.config.direct_rl_arbitration,
+                "policy_anchor_coef": pol.config.policy_anchor_coef,
+                "policy_anchor_monitor": pol.config.policy_anchor_monitor,
                 "conflict_exposure_prob": (
                     pol.config.conflict_exposure_prob),
             },
@@ -835,6 +873,7 @@ def main():
         for it in range(ITERS0, ITERS0 + N_ITERS):
             w8_scale = _w8_scale_for_iter(it)
             rollout, ep_rets, ep_term, ep_steps, ep_vio = [], [], [], [], []
+            ep_environment_rets = []
             n_qp = n_fb = 0
             for ep in range(EPISODES_PER_ITER):
                 data = pol.collect(
@@ -843,6 +882,7 @@ def main():
                                    w8_scale=w8_scale)
                 rollout.extend(data)
                 ep_rets.append(sum(d["reward"] for d in data) / pol.config.reward_scale)
+                ep_environment_rets.append(sum(d["environment_reward"] for d in data))
                 ep_term.append(data[-1]["terminal"])
                 ep_steps.append(len(data))
                 ep_vio.append(sum(d["violations"] for d in data))
@@ -854,6 +894,9 @@ def main():
             # from a tracking/progress problem without changing the scenario.
             n_agents = pol.env.cfg.N_WINGMEN
             agent_steps = len(rollout) * n_agents
+            exposed_agent_steps = sum(
+                sum(bool(value) for value in item.get("action_exposure_mask", []))
+                for item in rollout)
             n_track_actions = sum(
                 int(item.get("n_track_actions", 0)) for item in rollout)
             n_nonzero_pointer = sum(
@@ -930,6 +973,10 @@ def main():
                 "iter": it,
                 "run_id": run_record["run_id"],
                 "mean_return": round(sum(ep_rets) / len(ep_rets), 1),
+                "mean_environment_return": round(float(np.mean(ep_environment_rets)), 1),
+                "episode_seeds": [
+                    TRAIN_SEED_START + it * EPISODES_PER_ITER + ep
+                    for ep in range(EPISODES_PER_ITER)],
                 "success": sum(t == "success" for t in ep_term) / len(ep_term),
                 "vio_per_step": round(sum(ep_vio) / max(1, sum(ep_steps)), 3),
                 "qp_share": round(n_qp / max(1, n_qp + n_fb), 3),
@@ -938,6 +985,9 @@ def main():
                     stats.get("bid_approx_kl", 0.0), 6),
                 "bid_post_update_kl": round(
                     stats.get("bid_post_update_kl", 0.0), 6),
+                "policy_anchor_kl": round(stats.get("policy_anchor_kl", 0.0), 8),
+                "post_update_policy_anchor_kl": round(
+                    stats.get("post_update_policy_anchor_kl", 0.0), 8),
                 "bid_active_slot_count": int(
                     stats.get("bid_active_slot_count", 0)),
                 "bid_active_slot_count_by_index": stats.get(
@@ -951,6 +1001,10 @@ def main():
                 "w8_scale": round(w8_scale, 2),
                 "k": CURR_K,
                 "agent_steps": agent_steps,
+                "environment_steps": len(rollout),
+                "exposed_agent_steps": exposed_agent_steps,
+                "nonexposed_agent_fraction": round(
+                    1.0 - exposed_agent_steps / max(1, agent_steps), 6),
                 "track_actions": n_track_actions,
                 "track_action_rate": round(
                     n_track_actions / max(1, agent_steps), 4),
@@ -1004,6 +1058,8 @@ def main():
                 "pointer_exposed_agents": n_pointer_exposed,
                 "exposed_multi_candidate_events": (
                     n_exposed_multi_candidate_events),
+                "unexposed_multi_candidate_events": (
+                    n_bid_events - n_exposed_multi_candidate_events),
                 "bid_changed_winner": n_bid_changed_winner,
                 "cf_bid_events": n_cf_bid_events,
                 "cf_bid_changed_winner": n_cf_bid_changed_winner,
@@ -1030,6 +1086,7 @@ def main():
                   f"bid_grad={entry['bid_gradient_norm']:.2e} "
                   f"bid_delta={entry['bid_parameter_delta_l2']:.2e} "
                   f"bid_kl={entry['bid_post_update_kl']:.2e} "
+                  f"anchor_kl={entry['post_update_policy_anchor_kl']:.2e} "
                   f"stable={stable_progress_ticks} qp={entry['qp_share']:.2f} "
                   f"kl={entry['approx_kl']:.3f}", flush=True)
             _save_checkpoint(pol, OUT / f"curr_k{CURR_K}.pt")

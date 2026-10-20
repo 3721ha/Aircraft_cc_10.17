@@ -35,7 +35,7 @@ from typing import Dict, List, Sequence, Tuple
 import numpy as np
 import torch
 from torch import nn
-from torch.distributions import Categorical, Normal
+from torch.distributions import Categorical, Normal, kl_divergence
 
 from .detect_config import DetectSimConfig, ZONE_TRACKING
 from .detect_encoder import DetectObservationEncoder, DetectActionCodec, GEAR_ORDER
@@ -382,6 +382,12 @@ class DetectMAPPOConfig:
     # weight keeps u_xi anchored until an explicit experiment enables it.
     xi_ppo_coef: float = 0.0
     xi_anchor_coef: float = 1.0
+    # Optional task-policy trust region around the explicitly selected start.
+    # This reference is an RL checkpoint, independent of the u_xi BC anchor;
+    # it excludes arbitration bids and uses only encoded local observations.
+    policy_anchor_coef: float = 0.0
+    # Read-only cumulative drift diagnostics for unregularized control arms.
+    policy_anchor_monitor: bool = False
 
 
 class DetectMAPPOPolicy:
@@ -402,8 +408,71 @@ class DetectMAPPOPolicy:
         self.xi_anchor_model = deepcopy(self.model).eval()
         for parameter in self.xi_anchor_model.parameters():
             parameter.requires_grad_(False)
+        if (not math.isfinite(self.config.policy_anchor_coef)
+                or self.config.policy_anchor_coef < 0.0):
+            raise ValueError("policy_anchor_coef must be finite and nonnegative")
+        self.policy_anchor_model = deepcopy(self.model).eval()
+        for parameter in self.policy_anchor_model.parameters():
+            parameter.requires_grad_(False)
         self.optimizer = torch.optim.Adam(self.model.parameters(),
                                           lr=self.config.learning_rate)
+
+    def refresh_policy_anchor(self) -> None:
+        """Freeze the current RL task policy as a new refinement reference.
+
+        Call explicitly after loading a chosen starting checkpoint. Loading a
+        resumed run instead preserves its saved reference across updates.
+        """
+        self.policy_anchor_model.load_state_dict(self.model.state_dict())
+        self.policy_anchor_model.eval()
+        for parameter in self.policy_anchor_model.parameters():
+            parameter.requires_grad_(False)
+
+    def _policy_anchor_kl(self, obs: torch.Tensor,
+                          current_parameters=None) -> torch.Tensor:
+        """Exact KL(reference task action || current task action), excluding bid.
+
+        The three tanh-Normal controls share a bijective transform, so their
+        KL equals the latent Normal KL. Gear and pointer are conditioned on
+        role: sum both conditional KLs using the reference role probabilities,
+        rather than the sampled role or a detached current-role weighting.
+        """
+        if current_parameters is None:
+            current_parameters = self.model.action_parameters(obs)
+        current_loc, current_role, current_gear, current_pointer = \
+            current_parameters[:4]
+        with torch.no_grad():
+            self.policy_anchor_model.eval()
+            reference = self.policy_anchor_model.action_parameters(obs)
+            reference_loc, reference_role, reference_gear, reference_pointer = \
+                reference[:4]
+            # Match actor_distribution/act_batch exactly; update() clamps the
+            # stored log_std after stepping, not inside either distribution.
+            reference_cont = Normal(
+                reference_loc, self.policy_anchor_model.log_std.exp())
+            reference_role_dist = Categorical(logits=reference_role)
+        current_cont = Normal(current_loc, self.model.log_std.exp())
+        current_role_dist = Categorical(logits=current_role)
+        per_sample = (kl_divergence(reference_cont, current_cont).sum(-1)
+                      + kl_divergence(reference_role_dist, current_role_dist))
+        valid_slots = _encoded_request_mask(obs)
+        for role in (0, 1):
+            role_idx = torch.full((obs.shape[0],), role, dtype=torch.long,
+                                  device=obs.device)
+            reference_gear_dist = Categorical(logits=_gear_masked_logits(
+                reference_gear, role_idx))
+            current_gear_dist = Categorical(logits=_gear_masked_logits(
+                current_gear, role_idx))
+            reference_pointer_dist = Categorical(logits=_pointer_masked_logits(
+                reference_pointer, role_idx, valid_slots))
+            current_pointer_dist = Categorical(logits=_pointer_masked_logits(
+                current_pointer, role_idx, valid_slots))
+            conditional_kl = (
+                kl_divergence(reference_gear_dist, current_gear_dist)
+                + kl_divergence(reference_pointer_dist, current_pointer_dist))
+            per_sample = (per_sample
+                          + reference_role_dist.probs[:, role] * conditional_kl)
+        return per_sample.mean()
 
     def _refresh_xi_anchor(self) -> None:
         self.xi_anchor_model.load_state_dict(self.model.state_dict())
@@ -737,6 +806,9 @@ class DetectMAPPOPolicy:
                 "safe_logp_cont": safe_logp_cont,
                 "value": value,
                 "reward": shaped,
+                "environment_reward": float(res.reward),
+                "shaping_reward": (shaped
+                                   - float(res.reward) * self.config.reward_scale),
                 "done": res.done,
                 "intervened": {it.uid: it.kind for it in interventions},
                 "n_interventions": len(interventions),
@@ -1722,6 +1794,11 @@ class DetectMAPPOPolicy:
             loss_cont_xi = _ppo_head_loss(cont_xi_logp, old_logp_xi, adv_t,
                                           cont_weight)
             xi_anchor_loss = self._xi_anchor_kl(obs_t, cont_loc)
+            policy_anchor_kl = (
+                self._policy_anchor_kl(
+                    obs_t, (cont_loc, role_logits, base_gear_logits,
+                            base_pointer_logits))
+                if cfg.policy_anchor_coef > 0.0 else obs_t.new_zeros(()))
             loss_role = _ppo_head_loss(
                 role_logp, old_logp_role, adv_role_t,
                 (~action_exposure_t).float())
@@ -1736,6 +1813,7 @@ class DetectMAPPOPolicy:
                 bid_active_t.float(), bid_event_group_t)
             policy_loss = (loss_cont_uv + cfg.xi_ppo_coef * loss_cont_xi
                            + cfg.xi_anchor_coef * xi_anchor_loss
+                           + cfg.policy_anchor_coef * policy_anchor_kl
                            + loss_role + loss_gear + loss_ptr + loss_bid)
             if cfg.bid_only_ppo:
                 policy_loss = loss_bid
@@ -1825,12 +1903,18 @@ class DetectMAPPOPolicy:
             post_bid_kl = (
                 ((post_bid_ratio - 1.0) - post_bid_log_ratio)[bid_active_t].mean()
                 if bid_active_t.any() else torch.zeros(()))
+            post_policy_anchor_kl = (
+                self._policy_anchor_kl(obs_t)
+                if (cfg.policy_anchor_coef > 0.0 or cfg.policy_anchor_monitor)
+                else obs_t.new_zeros(()))
         active_bid_actions = bid_actions_t[bid_active_t]
         stats.update({
             "loss": float(loss.detach()),
             "policy_loss": float(policy_loss.detach()),
             "xi_ppo_loss": float(loss_cont_xi.detach()),
             "xi_anchor_loss": float(xi_anchor_loss.detach()),
+            "policy_anchor_kl": float(policy_anchor_kl.detach()),
+            "post_update_policy_anchor_kl": float(post_policy_anchor_kl.detach()),
             "value_loss": float(value_loss.detach()),
             "intervention_loss": float(intervention_loss.detach()),
             "intervention_fraction": float(intervention_mask.float().mean()),
@@ -1982,6 +2066,7 @@ class DetectMAPPOPolicy:
     def save(self, path: str) -> None:
         torch.save({"model": self.model.state_dict(),
                     "xi_anchor_model": self.xi_anchor_model.state_dict(),
+                    "policy_anchor_model": self.policy_anchor_model.state_dict(),
                     "config": self.config.__dict__}, path)
 
     def load(self, path: str) -> None:
@@ -2058,4 +2143,16 @@ class DetectMAPPOPolicy:
             self.xi_anchor_model.load_state_dict(anchor_compatible, strict=True)
             self.xi_anchor_model.eval()
             for parameter in self.xi_anchor_model.parameters():
+                parameter.requires_grad_(False)
+        policy_anchor_state = checkpoint.get("policy_anchor_model")
+        if policy_anchor_state is None:
+            self.refresh_policy_anchor()
+        else:
+            policy_anchor_compatible = compatible_state(
+                policy_anchor_state, self.policy_anchor_model.state_dict(),
+                "policy-anchor")
+            self.policy_anchor_model.load_state_dict(
+                policy_anchor_compatible, strict=True)
+            self.policy_anchor_model.eval()
+            for parameter in self.policy_anchor_model.parameters():
                 parameter.requires_grad_(False)

@@ -1,0 +1,8 @@
+[PPO] lr=1e-05 epochs=2 shield_aware=False cf_request_credit=0.25 conflict_exposure=0 bid_only=False policy_anchor_coef=0 direct_rl_arbitration=True
+[curr K=4] mode=best source=D:\Desktop\Aircraft_mumt_cc\runs\model_optimization_v1\curriculum_k4_w8a10\curr_k4_best.pt sha256=386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797
+[initial baseline K=4] RL={'success_rate': 0.0, 'mean_return': -7817.3, 'violations_per_step': 8.7779} HEUR={'success_rate': 0.0, 'mean_return': -8114.4, 'violations_per_step': 9.7354}; preserved before PPO
+D:\Desktop\Aircraft_mumt_cc\Aircraft_mumt\aircraft_sim\detect_mappo.py:774: UserWarning: Creating a tensor from a list of numpy.ndarrays is extremely slow. Please consider converting the list to a single numpy.ndarray with numpy.array() before converting to a tensor. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\torch\csrc\utils\tensor_new.cpp:256.)
+  torch.tensor([team], dtype=torch.float32)).item())
+[curr_k4 00] episodes=1 ret= -4998.3 succ=100% vio/step=6.77 req=165 C04=79/86 assign=47+2 bid_cf=0/0 bid_info=0.00 bid_grad=0.00e+00 bid_delta=0.00e+00 bid_kl=0.00e+00 anchor_kl=8.59e-04 stable=133 qp=1.00 kl=0.000
+  [paired validation K=4] RL=0%/-4520/6.7693 vs HEUR=0%/-8114/9.7354; best=updated (curr_k4_best.pt)
+[best paired validation K=4 iter=0] RL success=0% vs HEUR=0%; return=-4520.5 vs HEUR -8114.4; violations/step=6.7693 vs HEUR=9.7354; acceptance=PASS
