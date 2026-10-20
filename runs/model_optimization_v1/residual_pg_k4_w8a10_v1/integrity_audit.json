@@ -1,0 +1,1639 @@
+{
+  "audit_schema_version": 1,
+  "audited_at_utc": "2026-10-20T13:08:28.799924+00:00",
+  "scope": "Independent integrity and checkpoint audit; no training or evaluation performed. This JSON is the only artifact written.",
+  "run_id": "20261020T113840.918006Z_1244_48cf6804",
+  "run_status": "completed",
+  "completed_iterations": 30,
+  "git_at_run": {
+    "head": "0543eaeb91109222bac8cb31cdf9306a62f6a811",
+    "branch": "experiments/bid-entropy-normalized-20261019",
+    "dirty": true
+  },
+  "all_checks_passed": true,
+  "checks": {
+    "manifest_record_equals_log": true,
+    "run_record_sha256_matches": true,
+    "source_manifest_sha256_matches": true,
+    "source_zip_sha256_matches": true,
+    "all_zip_source_files_match": true,
+    "all_current_source_files_match": true,
+    "task_config_sha256_matches": true,
+    "algorithm_config_sha256_matches": true,
+    "metrics_artifact_matches": true,
+    "metrics_records_equal_log": true,
+    "all_references_match": true,
+    "all_checkpoint_archives_match": true,
+    "all_30_iteration_freezes_match": true,
+    "best_model_equals_iter_3_archive": true,
+    "all_selected_parameters_finite": true,
+    "all_selected_anchors_bitwise_equal": true,
+    "all_selected_frozen_tensors_bitwise_equal": true,
+    "all_selected_xi_rows_bitwise_equal": true,
+    "legacy_residual_split_bitwise_preserved": true
+  },
+  "record_integrity": {
+    "manifest_path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804.json",
+    "expected_run_record_sha256": "0d8f776f3056db2545888e5a39171367cda0354b116b3c11d82e374f339c7af2",
+    "actual_run_record_sha256": "0d8f776f3056db2545888e5a39171367cda0354b116b3c11d82e374f339c7af2",
+    "expected_metrics_sha256": "e5d1074becd9a20898aa537531cec06a56180d10d01ca2af7f6bb3ea451e46d7",
+    "actual_metrics_sha256": "e5d1074becd9a20898aa537531cec06a56180d10d01ca2af7f6bb3ea451e46d7",
+    "expected_task_config_sha256": "87e5fcd38254e5c1c06f98b7f8a379a9d101cfe7f70dcd78c3c2b2157516e248",
+    "actual_task_config_sha256": "87e5fcd38254e5c1c06f98b7f8a379a9d101cfe7f70dcd78c3c2b2157516e248",
+    "expected_algorithm_config_sha256": "7b0997483e356036057d7e81f9d599f10014cfc2187dd3546b85f5257930a46d",
+    "actual_algorithm_config_sha256": "7b0997483e356036057d7e81f9d599f10014cfc2187dd3546b85f5257930a46d"
+  },
+  "source_integrity": {
+    "zip_path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113833.250877Z_1244_a3a6c6fa_source.zip",
+    "zip_members_count": 39,
+    "manifest_file_count": 39,
+    "expected_zip_sha256": "92d779f1d4d268af4c12953929eb4c59cbf1f1312c48138122d0744e81e4a200",
+    "actual_zip_sha256": "92d779f1d4d268af4c12953929eb4c59cbf1f1312c48138122d0744e81e4a200",
+    "expected_manifest_sha256": "4735c3ade0a0fb9c7cbca81a332108a8bcf9c9875200168ff0983dcda612387a",
+    "actual_manifest_sha256": "4735c3ade0a0fb9c7cbca81a332108a8bcf9c9875200168ff0983dcda612387a",
+    "logged_end_of_run_integrity": {
+      "verified_at_utc": "2026-10-20T12:44:45.610649+00:00",
+      "unchanged": true,
+      "changed_files": []
+    },
+    "files": [
+      {
+        "path": "_arbitration_training.py",
+        "expected_sha256": "44032ef42770caa831af7431a7034ec50281e86f5f34ac3e1bcf375da87545d7",
+        "zip_sha256": "44032ef42770caa831af7431a7034ec50281e86f5f34ac3e1bcf375da87545d7",
+        "current_sha256": "44032ef42770caa831af7431a7034ec50281e86f5f34ac3e1bcf375da87545d7",
+        "expected_size_bytes": 5525,
+        "zip_size_bytes": 5525,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "_curriculum_guard.py",
+        "expected_sha256": "11c849efa30ce9463e828aa8426c1f2ff2cd7afaef9ec1316ce5ecbec00d4593",
+        "zip_sha256": "11c849efa30ce9463e828aa8426c1f2ff2cd7afaef9ec1316ce5ecbec00d4593",
+        "current_sha256": "11c849efa30ce9463e828aa8426c1f2ff2cd7afaef9ec1316ce5ecbec00d4593",
+        "expected_size_bytes": 4534,
+        "zip_size_bytes": 4534,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "_experiment_provenance.py",
+        "expected_sha256": "b3c5af46679cd5656da95c2836f95efd7d0c9dd7d497f09b74d0bece942ae870",
+        "zip_sha256": "b3c5af46679cd5656da95c2836f95efd7d0c9dd7d497f09b74d0bece942ae870",
+        "current_sha256": "b3c5af46679cd5656da95c2836f95efd7d0c9dd7d497f09b74d0bece942ae870",
+        "expected_size_bytes": 12782,
+        "zip_size_bytes": 12782,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "_p3_pilot.py",
+        "expected_sha256": "1eaebbd106d3a580e99a24fc2fe5692f8f823dfc23f597eef6d3020337d824a2",
+        "zip_sha256": "1eaebbd106d3a580e99a24fc2fe5692f8f823dfc23f597eef6d3020337d824a2",
+        "current_sha256": "1eaebbd106d3a580e99a24fc2fe5692f8f823dfc23f597eef6d3020337d824a2",
+        "expected_size_bytes": 64161,
+        "zip_size_bytes": 64161,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "_run_best_refine.py",
+        "expected_sha256": "de929b2d597ff2d2baedd31fd3a6dfe09b2c4a37ac25dc930415dfa7c25f193d",
+        "zip_sha256": "de929b2d597ff2d2baedd31fd3a6dfe09b2c4a37ac25dc930415dfa7c25f193d",
+        "current_sha256": "de929b2d597ff2d2baedd31fd3a6dfe09b2c4a37ac25dc930415dfa7c25f193d",
+        "expected_size_bytes": 13664,
+        "zip_size_bytes": 13664,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "_run_k4_diagnostics.py",
+        "expected_sha256": "3d08ab465274f517695c25665e87df357fc89b9c03f559f1d61ce2b154d65308",
+        "zip_sha256": "3d08ab465274f517695c25665e87df357fc89b9c03f559f1d61ce2b154d65308",
+        "current_sha256": "3d08ab465274f517695c25665e87df357fc89b9c03f559f1d61ce2b154d65308",
+        "expected_size_bytes": 11816,
+        "zip_size_bytes": 11816,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/__init__.py",
+        "expected_sha256": "1c30dea3f76fb8c840ff26a2318b3a7354e4475237d38ec1f5feef9e148d82e2",
+        "zip_sha256": "1c30dea3f76fb8c840ff26a2318b3a7354e4475237d38ec1f5feef9e148d82e2",
+        "current_sha256": "1c30dea3f76fb8c840ff26a2318b3a7354e4475237d38ec1f5feef9e148d82e2",
+        "expected_size_bytes": 2035,
+        "zip_size_bytes": 2035,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/baselines.py",
+        "expected_sha256": "9af6e9136b654926c93eb2ff791d748d7b7cb77171eb53c08818e61d508f478b",
+        "zip_sha256": "9af6e9136b654926c93eb2ff791d748d7b7cb77171eb53c08818e61d508f478b",
+        "current_sha256": "9af6e9136b654926c93eb2ff791d748d7b7cb77171eb53c08818e61d508f478b",
+        "expected_size_bytes": 7724,
+        "zip_size_bytes": 7724,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/belief.py",
+        "expected_sha256": "d3616e05ceddd1d6b489727ae581d3783896549d075828fcf55d2f2c3fccde88",
+        "zip_sha256": "d3616e05ceddd1d6b489727ae581d3783896549d075828fcf55d2f2c3fccde88",
+        "current_sha256": "d3616e05ceddd1d6b489727ae581d3783896549d075828fcf55d2f2c3fccde88",
+        "expected_size_bytes": 23817,
+        "zip_size_bytes": 23817,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/config.py",
+        "expected_sha256": "6fc19d45e7989c0f69598cae129448419879be0c1c9f6abd8c3f309188e8d5c6",
+        "zip_sha256": "6fc19d45e7989c0f69598cae129448419879be0c1c9f6abd8c3f309188e8d5c6",
+        "current_sha256": "6fc19d45e7989c0f69598cae129448419879be0c1c9f6abd8c3f309188e8d5c6",
+        "expected_size_bytes": 1663,
+        "zip_size_bytes": 1663,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/detect_baselines.py",
+        "expected_sha256": "bf916952de3e7413e2d09add2fa50cf7cc797c7161be0e6bacea9f59f889e9b7",
+        "zip_sha256": "bf916952de3e7413e2d09add2fa50cf7cc797c7161be0e6bacea9f59f889e9b7",
+        "current_sha256": "bf916952de3e7413e2d09add2fa50cf7cc797c7161be0e6bacea9f59f889e9b7",
+        "expected_size_bytes": 12387,
+        "zip_size_bytes": 12387,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/detect_config.py",
+        "expected_sha256": "7c98eeb5fe61bf261ca6bb4d9ca5f187e2744d92f8a9a2d51b62e9d470c8453e",
+        "zip_sha256": "7c98eeb5fe61bf261ca6bb4d9ca5f187e2744d92f8a9a2d51b62e9d470c8453e",
+        "current_sha256": "7c98eeb5fe61bf261ca6bb4d9ca5f187e2744d92f8a9a2d51b62e9d470c8453e",
+        "expected_size_bytes": 11676,
+        "zip_size_bytes": 11676,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/detect_encoder.py",
+        "expected_sha256": "8a1cbb6558521cf5d56aec884d00cb5c4b88c98e577b8804b07e2482a630b4b8",
+        "zip_sha256": "8a1cbb6558521cf5d56aec884d00cb5c4b88c98e577b8804b07e2482a630b4b8",
+        "current_sha256": "8a1cbb6558521cf5d56aec884d00cb5c4b88c98e577b8804b07e2482a630b4b8",
+        "expected_size_bytes": 12244,
+        "zip_size_bytes": 12244,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/detect_env.py",
+        "expected_sha256": "5a5bf6b8fed4b423c49c3a08afca765b2b089026aae9b9e363c56d66293db1bd",
+        "zip_sha256": "5a5bf6b8fed4b423c49c3a08afca765b2b089026aae9b9e363c56d66293db1bd",
+        "current_sha256": "5a5bf6b8fed4b423c49c3a08afca765b2b089026aae9b9e363c56d66293db1bd",
+        "expected_size_bytes": 40540,
+        "zip_size_bytes": 40540,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/detect_mappo.py",
+        "expected_sha256": "5e38b2434f509bb9af8bcfc6aabb0052e31050b56bf12b9e0b51e53745eb104a",
+        "zip_sha256": "5e38b2434f509bb9af8bcfc6aabb0052e31050b56bf12b9e0b51e53745eb104a",
+        "current_sha256": "5e38b2434f509bb9af8bcfc6aabb0052e31050b56bf12b9e0b51e53745eb104a",
+        "expected_size_bytes": 120211,
+        "zip_size_bytes": 120211,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/detect_models.py",
+        "expected_sha256": "67e16d8116f16bf67e43818a5426b8447e72ab14fd8330d3f67e604c2e901e1b",
+        "zip_sha256": "67e16d8116f16bf67e43818a5426b8447e72ab14fd8330d3f67e604c2e901e1b",
+        "current_sha256": "67e16d8116f16bf67e43818a5426b8447e72ab14fd8330d3f67e604c2e901e1b",
+        "expected_size_bytes": 1953,
+        "zip_size_bytes": 1953,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/detect_rules.py",
+        "expected_sha256": "b28d3eff3bd35758650c2b971e316e85bb1a3532aaabc4ba962e1faa13d040fc",
+        "zip_sha256": "b28d3eff3bd35758650c2b971e316e85bb1a3532aaabc4ba962e1faa13d040fc",
+        "current_sha256": "b28d3eff3bd35758650c2b971e316e85bb1a3532aaabc4ba962e1faa13d040fc",
+        "expected_size_bytes": 17088,
+        "zip_size_bytes": 17088,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/detect_shield.py",
+        "expected_sha256": "a89b1be63d86643060280cc745d7eb7f08961fd70e37f9c1809a992a4d77196b",
+        "zip_sha256": "a89b1be63d86643060280cc745d7eb7f08961fd70e37f9c1809a992a4d77196b",
+        "current_sha256": "a89b1be63d86643060280cc745d7eb7f08961fd70e37f9c1809a992a4d77196b",
+        "expected_size_bytes": 23864,
+        "zip_size_bytes": 23864,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/env.py",
+        "expected_sha256": "37d7577017f42790fe5c90b15369128141de175b6d37e1a0ae4c051ee377a4eb",
+        "zip_sha256": "37d7577017f42790fe5c90b15369128141de175b6d37e1a0ae4c051ee377a4eb",
+        "current_sha256": "37d7577017f42790fe5c90b15369128141de175b6d37e1a0ae4c051ee377a4eb",
+        "expected_size_bytes": 13825,
+        "zip_size_bytes": 13825,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/evaluation.py",
+        "expected_sha256": "ea0265dcce06af5de53e49d8f0d5fb6089372d59621abec8f66aa8ed3f70de4e",
+        "zip_sha256": "ea0265dcce06af5de53e49d8f0d5fb6089372d59621abec8f66aa8ed3f70de4e",
+        "current_sha256": "ea0265dcce06af5de53e49d8f0d5fb6089372d59621abec8f66aa8ed3f70de4e",
+        "expected_size_bytes": 16968,
+        "zip_size_bytes": 16968,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/high_fidelity.py",
+        "expected_sha256": "f236e48282ca5e31d9b703d195c647d885a367a736dee2c047e1147913328374",
+        "zip_sha256": "f236e48282ca5e31d9b703d195c647d885a367a736dee2c047e1147913328374",
+        "current_sha256": "f236e48282ca5e31d9b703d195c647d885a367a736dee2c047e1147913328374",
+        "expected_size_bytes": 6412,
+        "zip_size_bytes": 6412,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/jsbsim_env.py",
+        "expected_sha256": "e419d4b6f1ff958087ea83bbefb8d99f0d10797bb6d2703508d1ca07834ad576",
+        "zip_sha256": "e419d4b6f1ff958087ea83bbefb8d99f0d10797bb6d2703508d1ca07834ad576",
+        "current_sha256": "e419d4b6f1ff958087ea83bbefb8d99f0d10797bb6d2703508d1ca07834ad576",
+        "expected_size_bytes": 13196,
+        "zip_size_bytes": 13196,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/mappo.py",
+        "expected_sha256": "f076ef2dd8742cf277a40e11881f710cfa725244b56689db67b99c9386c07b8f",
+        "zip_sha256": "f076ef2dd8742cf277a40e11881f710cfa725244b56689db67b99c9386c07b8f",
+        "current_sha256": "f076ef2dd8742cf277a40e11881f710cfa725244b56689db67b99c9386c07b8f",
+        "expected_size_bytes": 29108,
+        "zip_size_bytes": 29108,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/metrics.py",
+        "expected_sha256": "7189025f91ee205a4fa8353f29565a02221ff50806b3c252fc8bb4b3fc4e4d39",
+        "zip_sha256": "7189025f91ee205a4fa8353f29565a02221ff50806b3c252fc8bb4b3fc4e4d39",
+        "current_sha256": "7189025f91ee205a4fa8353f29565a02221ff50806b3c252fc8bb4b3fc4e4d39",
+        "expected_size_bytes": 1276,
+        "zip_size_bytes": 1276,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/models.py",
+        "expected_sha256": "19588887f064934e50f6b5e5dc75054070b18d6f8849dadd7e5daf0b1be45be5",
+        "zip_sha256": "19588887f064934e50f6b5e5dc75054070b18d6f8849dadd7e5daf0b1be45be5",
+        "current_sha256": "19588887f064934e50f6b5e5dc75054070b18d6f8849dadd7e5daf0b1be45be5",
+        "expected_size_bytes": 2465,
+        "zip_size_bytes": 2465,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/policies.py",
+        "expected_sha256": "b676b830d1470b8b27d2bdc575f10700de4c979314e443ef968ceec994c1f8a0",
+        "zip_sha256": "b676b830d1470b8b27d2bdc575f10700de4c979314e443ef968ceec994c1f8a0",
+        "current_sha256": "b676b830d1470b8b27d2bdc575f10700de4c979314e443ef968ceec994c1f8a0",
+        "expected_size_bytes": 2628,
+        "zip_size_bytes": 2628,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/qp_shield.py",
+        "expected_sha256": "4a1b41548477b851772158efc3f3a4354e67f4292ce4288b47381a9b6599555e",
+        "zip_sha256": "4a1b41548477b851772158efc3f3a4354e67f4292ce4288b47381a9b6599555e",
+        "current_sha256": "4a1b41548477b851772158efc3f3a4354e67f4292ce4288b47381a9b6599555e",
+        "expected_size_bytes": 39137,
+        "zip_size_bytes": 39137,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/radar.py",
+        "expected_sha256": "fdeb7b31f23af73cd297325396a38b0bd0f6f6cd289c512a113760d21d0e790e",
+        "zip_sha256": "fdeb7b31f23af73cd297325396a38b0bd0f6f6cd289c512a113760d21d0e790e",
+        "current_sha256": "fdeb7b31f23af73cd297325396a38b0bd0f6f6cd289c512a113760d21d0e790e",
+        "expected_size_bytes": 8781,
+        "zip_size_bytes": 8781,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/red_agent.py",
+        "expected_sha256": "14d7a81377c805c77c2fd5bca9eda8cdcace9cf9b76b08bd3e636a2c8e2bf5cc",
+        "zip_sha256": "14d7a81377c805c77c2fd5bca9eda8cdcace9cf9b76b08bd3e636a2c8e2bf5cc",
+        "current_sha256": "14d7a81377c805c77c2fd5bca9eda8cdcace9cf9b76b08bd3e636a2c8e2bf5cc",
+        "expected_size_bytes": 14930,
+        "zip_size_bytes": 14930,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/risk_calibration.py",
+        "expected_sha256": "8d2a3a09f4ad82a93eac2d803317a20d9b06e1d6649ad0ceaf9a68fab658d7fd",
+        "zip_sha256": "8d2a3a09f4ad82a93eac2d803317a20d9b06e1d6649ad0ceaf9a68fab658d7fd",
+        "current_sha256": "8d2a3a09f4ad82a93eac2d803317a20d9b06e1d6649ad0ceaf9a68fab658d7fd",
+        "expected_size_bytes": 1520,
+        "zip_size_bytes": 1520,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/rl_api.py",
+        "expected_sha256": "2a5db9f46e847ef2d099483a8188bee437eae728d6880c6fcd0bb89af93e245c",
+        "zip_sha256": "2a5db9f46e847ef2d099483a8188bee437eae728d6880c6fcd0bb89af93e245c",
+        "current_sha256": "2a5db9f46e847ef2d099483a8188bee437eae728d6880c6fcd0bb89af93e245c",
+        "expected_size_bytes": 8698,
+        "zip_size_bytes": 8698,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/rule_graph.py",
+        "expected_sha256": "ccba638cc81e7873c899afe58d00094e57a1402ad05109fa45120995768e010e",
+        "zip_sha256": "ccba638cc81e7873c899afe58d00094e57a1402ad05109fa45120995768e010e",
+        "current_sha256": "ccba638cc81e7873c899afe58d00094e57a1402ad05109fa45120995768e010e",
+        "expected_size_bytes": 10789,
+        "zip_size_bytes": 10789,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/rules.py",
+        "expected_sha256": "13cd3567db92eac41885ecd10574dcf8f0149e5ff05544bb6ff40de09e56f036",
+        "zip_sha256": "13cd3567db92eac41885ecd10574dcf8f0149e5ff05544bb6ff40de09e56f036",
+        "current_sha256": "13cd3567db92eac41885ecd10574dcf8f0149e5ff05544bb6ff40de09e56f036",
+        "expected_size_bytes": 11524,
+        "zip_size_bytes": 11524,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/scenarios.py",
+        "expected_sha256": "9e1dee4a3b9406420577e9fab41eed1f07a47c5c608087af0e9bb8810c2b60cb",
+        "zip_sha256": "9e1dee4a3b9406420577e9fab41eed1f07a47c5c608087af0e9bb8810c2b60cb",
+        "current_sha256": "9e1dee4a3b9406420577e9fab41eed1f07a47c5c608087af0e9bb8810c2b60cb",
+        "expected_size_bytes": 7658,
+        "zip_size_bytes": 7658,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/shield.py",
+        "expected_sha256": "70fd21bd78a95be534b93131c7662941996de23f5c53aad86d104b43fe1e9483",
+        "zip_sha256": "70fd21bd78a95be534b93131c7662941996de23f5c53aad86d104b43fe1e9483",
+        "current_sha256": "70fd21bd78a95be534b93131c7662941996de23f5c53aad86d104b43fe1e9483",
+        "expected_size_bytes": 4800,
+        "zip_size_bytes": 4800,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/stl.py",
+        "expected_sha256": "0e1d0087e896d554650a87d8613482563e0f1e9a0065c528979c52abbf77c450",
+        "zip_sha256": "0e1d0087e896d554650a87d8613482563e0f1e9a0065c528979c52abbf77c450",
+        "current_sha256": "0e1d0087e896d554650a87d8613482563e0f1e9a0065c528979c52abbf77c450",
+        "expected_size_bytes": 1448,
+        "zip_size_bytes": 1448,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "Aircraft_mumt/aircraft_sim/track.py",
+        "expected_sha256": "6d392274e4fde68b3c92a2a6e98b2c9fee23d7ce4e84d253d1a5d371325befa2",
+        "zip_sha256": "6d392274e4fde68b3c92a2a6e98b2c9fee23d7ce4e84d253d1a5d371325befa2",
+        "current_sha256": "6d392274e4fde68b3c92a2a6e98b2c9fee23d7ce4e84d253d1a5d371325befa2",
+        "expected_size_bytes": 7468,
+        "zip_size_bytes": 7468,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "Aircraft_mumt/requirements-inferred.txt",
+        "expected_sha256": "40aebc14ef905e58743d9cfee7d6014b7c5cf2affcc884d235a17d9d3b11568f",
+        "zip_sha256": "40aebc14ef905e58743d9cfee7d6014b7c5cf2affcc884d235a17d9d3b11568f",
+        "current_sha256": "40aebc14ef905e58743d9cfee7d6014b7c5cf2affcc884d235a17d9d3b11568f",
+        "expected_size_bytes": 467,
+        "zip_size_bytes": 467,
+        "zip_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "Aircraft_mumt/requirements-reproduce.txt",
+        "expected_sha256": "635f9a669910815458f0138229732576be90ac44bde15220bc74f5ad23ae46f6",
+        "zip_sha256": "635f9a669910815458f0138229732576be90ac44bde15220bc74f5ad23ae46f6",
+        "current_sha256": "635f9a669910815458f0138229732576be90ac44bde15220bc74f5ad23ae46f6",
+        "expected_size_bytes": 230,
+        "zip_size_bytes": 230,
+        "zip_matches": true,
+        "current_matches": true
+      }
+    ]
+  },
+  "references": [
+    {
+      "role": "curriculum_initial_checkpoint",
+      "path": "runs\\model_optimization_v1\\curriculum_k4_w8a10\\curr_k4_best.pt",
+      "expected_sha256": "386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797",
+      "actual_sha256": "386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797",
+      "expected_size_bytes": 1076189,
+      "actual_size_bytes": 1076189,
+      "passed": true
+    },
+    {
+      "role": "curriculum_effective_initial_checkpoint",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_effective_initial.pt",
+      "expected_sha256": "e38262195b354f56b49f1d353ed8935404bbd7d465c027cf9f08a36a68630c28",
+      "actual_sha256": "e38262195b354f56b49f1d353ed8935404bbd7d465c027cf9f08a36a68630c28",
+      "expected_size_bytes": 1618823,
+      "actual_size_bytes": 1618823,
+      "passed": true
+    },
+    {
+      "role": "curriculum_latest_checkpoint",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\curr_k4.pt",
+      "expected_sha256": "67090f34c0763cca35e471d74e0dedadaaefdb65cf248e8f88177f963886acc9",
+      "actual_sha256": "67090f34c0763cca35e471d74e0dedadaaefdb65cf248e8f88177f963886acc9",
+      "expected_size_bytes": 1613903,
+      "actual_size_bytes": 1613903,
+      "passed": true
+    },
+    {
+      "role": "curriculum_best_checkpoint",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\curr_k4_best.pt",
+      "expected_sha256": "38815f375df492ee320d9a0d4a9105efaf3944a6694165b295f646c9917aea18",
+      "actual_sha256": "38815f375df492ee320d9a0d4a9105efaf3944a6694165b295f646c9917aea18",
+      "expected_size_bytes": 1614417,
+      "actual_size_bytes": 1614417,
+      "passed": true
+    },
+    {
+      "role": "input_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_input_curriculum_initial_checkpoint_curr_k4_best.pt",
+      "expected_sha256": "386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797",
+      "actual_sha256": "386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797",
+      "expected_size_bytes": 1076189,
+      "actual_size_bytes": 1076189,
+      "passed": true
+    }
+  ],
+  "checkpoint_archive_count": 33,
+  "checkpoint_archives": [
+    {
+      "role": "checkpoint_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_best_initial_checkpoint_-00001.pt",
+      "expected_sha256": "aad2b926711492291a148407a1a843bfdbd85c73c80924c53456c508b2270f2b",
+      "actual_sha256": "aad2b926711492291a148407a1a843bfdbd85c73c80924c53456c508b2270f2b",
+      "expected_size_bytes": 1614417,
+      "actual_size_bytes": 1614417,
+      "passed": true
+    },
+    {
+      "role": "checkpoint_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000000.pt",
+      "expected_sha256": "ce2e227477afb416d58685ae098231113e3caba99f8a10b6179f4b435f5e30e8",
+      "actual_sha256": "ce2e227477afb416d58685ae098231113e3caba99f8a10b6179f4b435f5e30e8",
+      "expected_size_bytes": 1613903,
+      "actual_size_bytes": 1613903,
+      "passed": true
+    },
+    {
+      "role": "checkpoint_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000001.pt",
+      "expected_sha256": "429798abc4bddd07bf4b0a22c205843a1faee844a32a2e8249715c6b9f7eb1d3",
+      "actual_sha256": "429798abc4bddd07bf4b0a22c205843a1faee844a32a2e8249715c6b9f7eb1d3",
+      "expected_size_bytes": 1613903,
+      "actual_size_bytes": 1613903,
+      "passed": true
+    },
+    {
+      "role": "checkpoint_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_best_ppo_update_000001.pt",
+      "expected_sha256": "1e04c0abd91766c344f9024bace2f10403a68aa5f05d177d674da6627fd06f6b",
+      "actual_sha256": "1e04c0abd91766c344f9024bace2f10403a68aa5f05d177d674da6627fd06f6b",
+      "expected_size_bytes": 1614417,
+      "actual_size_bytes": 1614417,
+      "passed": true
+    },
+    {
+      "role": "checkpoint_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000002.pt",
+      "expected_sha256": "543d5aa46b0f6c2f46e75663c359b90f74dd3f34da6af03ddfa8c738fd25f54a",
+      "actual_sha256": "543d5aa46b0f6c2f46e75663c359b90f74dd3f34da6af03ddfa8c738fd25f54a",
+      "expected_size_bytes": 1613903,
+      "actual_size_bytes": 1613903,
+      "passed": true
+    },
+    {
+      "role": "checkpoint_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000003.pt",
+      "expected_sha256": "198f052f4087d779e93667e3f376533e7cf4273d9c09a00dbb75a2a1cc7d16e0",
+      "actual_sha256": "198f052f4087d779e93667e3f376533e7cf4273d9c09a00dbb75a2a1cc7d16e0",
+      "expected_size_bytes": 1613903,
+      "actual_size_bytes": 1613903,
+      "passed": true
+    },
+    {
+      "role": "checkpoint_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_best_ppo_update_000003.pt",
+      "expected_sha256": "38815f375df492ee320d9a0d4a9105efaf3944a6694165b295f646c9917aea18",
+      "actual_sha256": "38815f375df492ee320d9a0d4a9105efaf3944a6694165b295f646c9917aea18",
+      "expected_size_bytes": 1614417,
+      "actual_size_bytes": 1614417,
+      "passed": true
+    },
+    {
+      "role": "checkpoint_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000004.pt",
+      "expected_sha256": "1787b1de9c946bb5c15bdcc07a68d103247852a2a3b4f4f65ad7742b91dcde1c",
+      "actual_sha256": "1787b1de9c946bb5c15bdcc07a68d103247852a2a3b4f4f65ad7742b91dcde1c",
+      "expected_size_bytes": 1613903,
+      "actual_size_bytes": 1613903,
+      "passed": true
+    },
+    {
+      "role": "checkpoint_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000005.pt",
+      "expected_sha256": "9fa26402b7bc13c87e6a96ab7c6e02f09bfdc442f183430651214920f566a68f",
+      "actual_sha256": "9fa26402b7bc13c87e6a96ab7c6e02f09bfdc442f183430651214920f566a68f",
+      "expected_size_bytes": 1613903,
+      "actual_size_bytes": 1613903,
+      "passed": true
+    },
+    {
+      "role": "checkpoint_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000006.pt",
+      "expected_sha256": "09f8e2700fe51282955e3217f95da600e521220ee9bc611ef9687e6b7b140093",
+      "actual_sha256": "09f8e2700fe51282955e3217f95da600e521220ee9bc611ef9687e6b7b140093",
+      "expected_size_bytes": 1613903,
+      "actual_size_bytes": 1613903,
+      "passed": true
+    },
+    {
+      "role": "checkpoint_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000007.pt",
+      "expected_sha256": "80b10c66b2fa104ceaf7a94684cacd0a06315ba2bafab7ea4cc80662a843fc28",
+      "actual_sha256": "80b10c66b2fa104ceaf7a94684cacd0a06315ba2bafab7ea4cc80662a843fc28",
+      "expected_size_bytes": 1613903,
+      "actual_size_bytes": 1613903,
+      "passed": true
+    },
+    {
+      "role": "checkpoint_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000008.pt",
+      "expected_sha256": "99eb300067d09fdd5f87860586d8d51f62d7e637c8dae3480179107b0ad74e4f",
+      "actual_sha256": "99eb300067d09fdd5f87860586d8d51f62d7e637c8dae3480179107b0ad74e4f",
+      "expected_size_bytes": 1613903,
+      "actual_size_bytes": 1613903,
+      "passed": true
+    },
+    {
+      "role": "checkpoint_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000009.pt",
+      "expected_sha256": "206a8974aee82fdc89e9093b003f56a2024c1e8a1fdb8120c961ac7c78ce2e66",
+      "actual_sha256": "206a8974aee82fdc89e9093b003f56a2024c1e8a1fdb8120c961ac7c78ce2e66",
+      "expected_size_bytes": 1613903,
+      "actual_size_bytes": 1613903,
+      "passed": true
+    },
+    {
+      "role": "checkpoint_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000010.pt",
+      "expected_sha256": "020ce229d65b16070dfd495181040210e8226bc1ad1f6f5aee84e39265500f07",
+      "actual_sha256": "020ce229d65b16070dfd495181040210e8226bc1ad1f6f5aee84e39265500f07",
+      "expected_size_bytes": 1613903,
+      "actual_size_bytes": 1613903,
+      "passed": true
+    },
+    {
+      "role": "checkpoint_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000011.pt",
+      "expected_sha256": "8515eea99d13345c204c40bdb6ed7537577bb0067157c399c4b9be2eb0355430",
+      "actual_sha256": "8515eea99d13345c204c40bdb6ed7537577bb0067157c399c4b9be2eb0355430",
+      "expected_size_bytes": 1613903,
+      "actual_size_bytes": 1613903,
+      "passed": true
+    },
+    {
+      "role": "checkpoint_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000012.pt",
+      "expected_sha256": "bdb026aee14677ffd7d625f7ba802db5a0b8c9a7875e362a5ea0cf8d25762d2d",
+      "actual_sha256": "bdb026aee14677ffd7d625f7ba802db5a0b8c9a7875e362a5ea0cf8d25762d2d",
+      "expected_size_bytes": 1613903,
+      "actual_size_bytes": 1613903,
+      "passed": true
+    },
+    {
+      "role": "checkpoint_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000013.pt",
+      "expected_sha256": "e8b9ad2cff37cd288e84e9b41272d567fd2e8a3d382e92290b98d19cbe5e6365",
+      "actual_sha256": "e8b9ad2cff37cd288e84e9b41272d567fd2e8a3d382e92290b98d19cbe5e6365",
+      "expected_size_bytes": 1613903,
+      "actual_size_bytes": 1613903,
+      "passed": true
+    },
+    {
+      "role": "checkpoint_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000014.pt",
+      "expected_sha256": "d2f6ce9d03063de72a9585df23734cf28633583ebe7f5323b8ec4b2e4a776ebd",
+      "actual_sha256": "d2f6ce9d03063de72a9585df23734cf28633583ebe7f5323b8ec4b2e4a776ebd",
+      "expected_size_bytes": 1613903,
+      "actual_size_bytes": 1613903,
+      "passed": true
+    },
+    {
+      "role": "checkpoint_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000015.pt",
+      "expected_sha256": "542831726fc62ca3e7814afd8f61421848ed2ee342dc7880a5b486646d99a1e3",
+      "actual_sha256": "542831726fc62ca3e7814afd8f61421848ed2ee342dc7880a5b486646d99a1e3",
+      "expected_size_bytes": 1613903,
+      "actual_size_bytes": 1613903,
+      "passed": true
+    },
+    {
+      "role": "checkpoint_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000016.pt",
+      "expected_sha256": "2bc6fc4a7726bb6ba378f16d561c8af38e7e7a6361530362dbcabb2d8b77898f",
+      "actual_sha256": "2bc6fc4a7726bb6ba378f16d561c8af38e7e7a6361530362dbcabb2d8b77898f",
+      "expected_size_bytes": 1613903,
+      "actual_size_bytes": 1613903,
+      "passed": true
+    },
+    {
+      "role": "checkpoint_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000017.pt",
+      "expected_sha256": "27a16a504204c09f2a394a6386f7168e2c270939c1488b6eba8c665e06e1ab34",
+      "actual_sha256": "27a16a504204c09f2a394a6386f7168e2c270939c1488b6eba8c665e06e1ab34",
+      "expected_size_bytes": 1613903,
+      "actual_size_bytes": 1613903,
+      "passed": true
+    },
+    {
+      "role": "checkpoint_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000018.pt",
+      "expected_sha256": "7331d2346d7d8048d8d0f3fdb5bd642df710988c2567b1822d2f23c9ecd1929b",
+      "actual_sha256": "7331d2346d7d8048d8d0f3fdb5bd642df710988c2567b1822d2f23c9ecd1929b",
+      "expected_size_bytes": 1613903,
+      "actual_size_bytes": 1613903,
+      "passed": true
+    },
+    {
+      "role": "checkpoint_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000019.pt",
+      "expected_sha256": "4d526784c50b65347c0b837fa1b6b75ed142416a6ddd4dd2c2cb25479a2c4cf4",
+      "actual_sha256": "4d526784c50b65347c0b837fa1b6b75ed142416a6ddd4dd2c2cb25479a2c4cf4",
+      "expected_size_bytes": 1613903,
+      "actual_size_bytes": 1613903,
+      "passed": true
+    },
+    {
+      "role": "checkpoint_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000020.pt",
+      "expected_sha256": "45b6ab460958609d0c9fd86b0b279d4a42b45d29636a67800f1ba6f75f365ef7",
+      "actual_sha256": "45b6ab460958609d0c9fd86b0b279d4a42b45d29636a67800f1ba6f75f365ef7",
+      "expected_size_bytes": 1613903,
+      "actual_size_bytes": 1613903,
+      "passed": true
+    },
+    {
+      "role": "checkpoint_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000021.pt",
+      "expected_sha256": "12a1c66c5e923a6fc8aee96cb79875a366f73f4a79bb900050f51c0f21e422da",
+      "actual_sha256": "12a1c66c5e923a6fc8aee96cb79875a366f73f4a79bb900050f51c0f21e422da",
+      "expected_size_bytes": 1613903,
+      "actual_size_bytes": 1613903,
+      "passed": true
+    },
+    {
+      "role": "checkpoint_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000022.pt",
+      "expected_sha256": "b8c40f24b8260aaf9f9527b7a74df6e4094ecf2c8db1581379bb03b4228a9817",
+      "actual_sha256": "b8c40f24b8260aaf9f9527b7a74df6e4094ecf2c8db1581379bb03b4228a9817",
+      "expected_size_bytes": 1613903,
+      "actual_size_bytes": 1613903,
+      "passed": true
+    },
+    {
+      "role": "checkpoint_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000023.pt",
+      "expected_sha256": "f062930edf817bdf9009b05d615a29249e7dd03ca2b2ae346450f2751a2db271",
+      "actual_sha256": "f062930edf817bdf9009b05d615a29249e7dd03ca2b2ae346450f2751a2db271",
+      "expected_size_bytes": 1613903,
+      "actual_size_bytes": 1613903,
+      "passed": true
+    },
+    {
+      "role": "checkpoint_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000024.pt",
+      "expected_sha256": "15cb66aaaeb1a9ea3a1af7516432d795752792bbfcc8b260dc6d0d82f7e61a5e",
+      "actual_sha256": "15cb66aaaeb1a9ea3a1af7516432d795752792bbfcc8b260dc6d0d82f7e61a5e",
+      "expected_size_bytes": 1613903,
+      "actual_size_bytes": 1613903,
+      "passed": true
+    },
+    {
+      "role": "checkpoint_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000025.pt",
+      "expected_sha256": "ed0468f12d0f91b823c74e0942934a5bad5fe830ebdd930473a685698e3f041e",
+      "actual_sha256": "ed0468f12d0f91b823c74e0942934a5bad5fe830ebdd930473a685698e3f041e",
+      "expected_size_bytes": 1613903,
+      "actual_size_bytes": 1613903,
+      "passed": true
+    },
+    {
+      "role": "checkpoint_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000026.pt",
+      "expected_sha256": "e05f09ad48aefa67ccd03236a19e45b2567e69c37d45ecb66af3204b8d873303",
+      "actual_sha256": "e05f09ad48aefa67ccd03236a19e45b2567e69c37d45ecb66af3204b8d873303",
+      "expected_size_bytes": 1613903,
+      "actual_size_bytes": 1613903,
+      "passed": true
+    },
+    {
+      "role": "checkpoint_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000027.pt",
+      "expected_sha256": "b44ce87e82d5e5480ed15299e45f870c5436707c5903d1c3bec9e56d081ca76b",
+      "actual_sha256": "b44ce87e82d5e5480ed15299e45f870c5436707c5903d1c3bec9e56d081ca76b",
+      "expected_size_bytes": 1613903,
+      "actual_size_bytes": 1613903,
+      "passed": true
+    },
+    {
+      "role": "checkpoint_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000028.pt",
+      "expected_sha256": "3eee681b4f00e8df9f26c89deebb7468da3f546629b291b16bb123bf94d4e689",
+      "actual_sha256": "3eee681b4f00e8df9f26c89deebb7468da3f546629b291b16bb123bf94d4e689",
+      "expected_size_bytes": 1613903,
+      "actual_size_bytes": 1613903,
+      "passed": true
+    },
+    {
+      "role": "checkpoint_archive",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000029.pt",
+      "expected_sha256": "67090f34c0763cca35e471d74e0dedadaaefdb65cf248e8f88177f963886acc9",
+      "actual_sha256": "67090f34c0763cca35e471d74e0dedadaaefdb65cf248e8f88177f963886acc9",
+      "expected_size_bytes": 1613903,
+      "actual_size_bytes": 1613903,
+      "passed": true
+    }
+  ],
+  "legacy_migration": {
+    "original_residual_shape": [
+      21,
+      13
+    ],
+    "effective_task_residual_shape": [
+      20,
+      13
+    ],
+    "effective_bid_residual_shape": [
+      1,
+      13
+    ],
+    "task_first_20_rows_bitwise_preserved": true,
+    "bid_last_row_bitwise_preserved": true,
+    "candidate_training_repair": {
+      "method": "zero_output_preserving_hidden_linear_reset_v1",
+      "scope": "explicit initial curriculum training startup only",
+      "seed": 20261021,
+      "dead_detection": "input weight, input bias, output weight are exactly zero",
+      "detected_dead": true,
+      "status": "repaired",
+      "before": {
+        "bid_candidate_head.0.weight": {
+          "shape": [
+            64,
+            142
+          ],
+          "dtype": "torch.float32",
+          "sha256": "efef5456ffeac8b161066859030f070c520ad31c462f3d9ed85cb89dd32dcd41",
+          "nonzero_count": 0
+        },
+        "bid_candidate_head.0.bias": {
+          "shape": [
+            64
+          ],
+          "dtype": "torch.float32",
+          "sha256": "51404b1b80295dd69f84d2871691b5261e547eee420ec34f378e0a65880246fd",
+          "nonzero_count": 0
+        },
+        "bid_candidate_head.2.weight": {
+          "shape": [
+            1,
+            64
+          ],
+          "dtype": "torch.float32",
+          "sha256": "bea1c8f8419310cd202e652a0ee4d6c291c209b072daaa38793dc3d5737f9c36",
+          "nonzero_count": 0
+        },
+        "bid_candidate_head.2.bias": {
+          "shape": [
+            1
+          ],
+          "dtype": "torch.float32",
+          "sha256": "0a8ae30430af624fd29fff2b8d56f459cf76167f883a7e6daa42b5055a1b1210",
+          "nonzero_count": 1
+        }
+      },
+      "global_torch_rng_modified": false,
+      "after": {
+        "bid_candidate_head.0.weight": {
+          "shape": [
+            64,
+            142
+          ],
+          "dtype": "torch.float32",
+          "sha256": "90436b39d731e2851904b34a88453767770bce792c874f680313aba111aa62f3",
+          "nonzero_count": 9088
+        },
+        "bid_candidate_head.0.bias": {
+          "shape": [
+            64
+          ],
+          "dtype": "torch.float32",
+          "sha256": "4178796ae1f1bb662dd2b2ec3da5e2dc0da88e4cf9860f438672ce324c749356",
+          "nonzero_count": 64
+        },
+        "bid_candidate_head.2.weight": {
+          "shape": [
+            1,
+            64
+          ],
+          "dtype": "torch.float32",
+          "sha256": "bea1c8f8419310cd202e652a0ee4d6c291c209b072daaa38793dc3d5737f9c36",
+          "nonzero_count": 0
+        },
+        "bid_candidate_head.2.bias": {
+          "shape": [
+            1
+          ],
+          "dtype": "torch.float32",
+          "sha256": "0a8ae30430af624fd29fff2b8d56f459cf76167f883a7e6daa42b5055a1b1210",
+          "nonzero_count": 1
+        }
+      },
+      "changed_tensors": [
+        "bid_candidate_head.0.weight",
+        "bid_candidate_head.0.bias"
+      ],
+      "output_preservation": {
+        "verified": true,
+        "guarantee": "Output weight remains exactly zero and output bias is unchanged; the candidate head output equals its existing output bias for all finite inputs. Other model tensors are not modified.",
+        "output_weight_unchanged": true,
+        "output_bias_unchanged": true
+      },
+      "source_checkpoint_sha256": "386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797",
+      "source_checkpoint_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k4_w8a10\\curr_k4_best.pt",
+      "resume": false,
+      "effective_checkpoint": {
+        "role": "curriculum_effective_initial_checkpoint",
+        "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_effective_initial.pt",
+        "exists": true,
+        "size_bytes": 1618823,
+        "sha256": "e38262195b354f56b49f1d353ed8935404bbd7d465c027cf9f08a36a68630c28"
+      },
+      "repaired_checkpoint": {
+        "role": "curriculum_effective_initial_checkpoint",
+        "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_effective_initial.pt",
+        "exists": true,
+        "size_bytes": 1618823,
+        "sha256": "e38262195b354f56b49f1d353ed8935404bbd7d465c027cf9f08a36a68630c28"
+      }
+    }
+  },
+  "tensor_comparison_method": "Compare dtype, shape, and contiguous CPU tensor raw bytes via uint8. Numeric difference summaries are separate from bitwise freeze checks.",
+  "selected_checkpoint_parameter_comparisons": [
+    {
+      "label": "best_iter_3",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\curr_k4_best.pt",
+      "sha256": "38815f375df492ee320d9a0d4a9105efaf3944a6694165b295f646c9917aea18",
+      "unchanged_tensor_names": [
+        "log_std",
+        "actor.0.weight",
+        "actor.0.bias",
+        "actor.2.weight",
+        "actor.2.bias",
+        "cont_head.weight",
+        "cont_head.bias",
+        "role_head.weight",
+        "role_head.bias",
+        "gear_head.weight",
+        "gear_head.bias",
+        "pointer_head.weight",
+        "pointer_head.bias"
+      ],
+      "changed_tensors": [
+        {
+          "name": "bid_log_std",
+          "shape": [],
+          "changed_elements": 1,
+          "max_abs_change": 3.427267074584961e-05,
+          "initial_nonzero": 1,
+          "final_nonzero": 1
+        },
+        {
+          "name": "bid_head.weight",
+          "shape": [
+            1,
+            128
+          ],
+          "changed_elements": 128,
+          "max_abs_change": 7.973983883857727e-05,
+          "initial_nonzero": 128,
+          "final_nonzero": 128
+        },
+        {
+          "name": "bid_head.bias",
+          "shape": [
+            1
+          ],
+          "changed_elements": 1,
+          "max_abs_change": 2.602115273475647e-05,
+          "initial_nonzero": 1,
+          "final_nonzero": 1
+        },
+        {
+          "name": "bid_candidate_head.0.weight",
+          "shape": [
+            64,
+            142
+          ],
+          "changed_elements": 9024,
+          "max_abs_change": 6.225332617759705e-05,
+          "initial_nonzero": 9088,
+          "final_nonzero": 9088
+        },
+        {
+          "name": "bid_candidate_head.0.bias",
+          "shape": [
+            64
+          ],
+          "changed_elements": 64,
+          "max_abs_change": 3.7027522921562195e-05,
+          "initial_nonzero": 64,
+          "final_nonzero": 64
+        },
+        {
+          "name": "bid_candidate_head.2.weight",
+          "shape": [
+            1,
+            64
+          ],
+          "changed_elements": 64,
+          "max_abs_change": 7.496136822737753e-05,
+          "initial_nonzero": 0,
+          "final_nonzero": 64
+        },
+        {
+          "name": "bid_candidate_head.2.bias",
+          "shape": [
+            1
+          ],
+          "changed_elements": 1,
+          "max_abs_change": 2.60240922216326e-05,
+          "initial_nonzero": 1,
+          "final_nonzero": 1
+        },
+        {
+          "name": "conflict_residual.weight",
+          "shape": [
+            20,
+            13
+          ],
+          "changed_elements": 179,
+          "max_abs_change": 8.051516488194466e-05,
+          "initial_nonzero": 204,
+          "final_nonzero": 204
+        },
+        {
+          "name": "bid_conflict_residual.weight",
+          "shape": [
+            1,
+            13
+          ],
+          "changed_elements": 11,
+          "max_abs_change": 7.771444506943226e-05,
+          "initial_nonzero": 11,
+          "final_nonzero": 11
+        },
+        {
+          "name": "critic.0.weight",
+          "shape": [
+            128,
+            507
+          ],
+          "changed_elements": 35968,
+          "max_abs_change": 8.075404912233353e-05,
+          "initial_nonzero": 64896,
+          "final_nonzero": 64896
+        },
+        {
+          "name": "critic.0.bias",
+          "shape": [
+            128
+          ],
+          "changed_elements": 128,
+          "max_abs_change": 8.011562749743462e-05,
+          "initial_nonzero": 128,
+          "final_nonzero": 128
+        },
+        {
+          "name": "critic.2.weight",
+          "shape": [
+            128,
+            128
+          ],
+          "changed_elements": 16384,
+          "max_abs_change": 8.050352334976196e-05,
+          "initial_nonzero": 16384,
+          "final_nonzero": 16384
+        },
+        {
+          "name": "critic.2.bias",
+          "shape": [
+            128
+          ],
+          "changed_elements": 128,
+          "max_abs_change": 7.997453212738037e-05,
+          "initial_nonzero": 128,
+          "final_nonzero": 128
+        },
+        {
+          "name": "critic.4.weight",
+          "shape": [
+            1,
+            128
+          ],
+          "changed_elements": 128,
+          "max_abs_change": 8.020550012588501e-05,
+          "initial_nonzero": 128,
+          "final_nonzero": 128
+        },
+        {
+          "name": "critic.4.bias",
+          "shape": [
+            1
+          ],
+          "changed_elements": 1,
+          "max_abs_change": 7.986277341842651e-05,
+          "initial_nonzero": 1,
+          "final_nonzero": 1
+        }
+      ],
+      "frozen_tensors": [
+        {
+          "name": "log_std",
+          "bitwise_equal": true
+        },
+        {
+          "name": "actor.0.weight",
+          "bitwise_equal": true
+        },
+        {
+          "name": "actor.0.bias",
+          "bitwise_equal": true
+        },
+        {
+          "name": "actor.2.weight",
+          "bitwise_equal": true
+        },
+        {
+          "name": "actor.2.bias",
+          "bitwise_equal": true
+        },
+        {
+          "name": "cont_head.weight",
+          "bitwise_equal": true
+        },
+        {
+          "name": "cont_head.bias",
+          "bitwise_equal": true
+        },
+        {
+          "name": "role_head.weight",
+          "bitwise_equal": true
+        },
+        {
+          "name": "role_head.bias",
+          "bitwise_equal": true
+        },
+        {
+          "name": "gear_head.weight",
+          "bitwise_equal": true
+        },
+        {
+          "name": "gear_head.bias",
+          "bitwise_equal": true
+        },
+        {
+          "name": "pointer_head.weight",
+          "bitwise_equal": true
+        },
+        {
+          "name": "pointer_head.bias",
+          "bitwise_equal": true
+        }
+      ],
+      "xi_residual_row_2_bitwise_equal": true,
+      "anchors": {
+        "xi_anchor_model": {
+          "tensors_checked": 28,
+          "mismatches": [],
+          "all_bitwise_equal": true
+        },
+        "policy_anchor_model": {
+          "tensors_checked": 28,
+          "mismatches": [],
+          "all_bitwise_equal": true
+        }
+      },
+      "config_equal": true,
+      "all_model_tensors_finite": true
+    },
+    {
+      "label": "latest_iter_29",
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\curr_k4.pt",
+      "sha256": "67090f34c0763cca35e471d74e0dedadaaefdb65cf248e8f88177f963886acc9",
+      "unchanged_tensor_names": [
+        "log_std",
+        "actor.0.weight",
+        "actor.0.bias",
+        "actor.2.weight",
+        "actor.2.bias",
+        "cont_head.weight",
+        "cont_head.bias",
+        "role_head.weight",
+        "role_head.bias",
+        "gear_head.weight",
+        "gear_head.bias",
+        "pointer_head.weight",
+        "pointer_head.bias"
+      ],
+      "changed_tensors": [
+        {
+          "name": "bid_log_std",
+          "shape": [],
+          "changed_elements": 1,
+          "max_abs_change": 7.224082946777344e-05,
+          "initial_nonzero": 1,
+          "final_nonzero": 1
+        },
+        {
+          "name": "bid_head.weight",
+          "shape": [
+            1,
+            128
+          ],
+          "changed_elements": 128,
+          "max_abs_change": 0.0003744363784790039,
+          "initial_nonzero": 128,
+          "final_nonzero": 128
+        },
+        {
+          "name": "bid_head.bias",
+          "shape": [
+            1
+          ],
+          "changed_elements": 1,
+          "max_abs_change": 3.271177411079407e-05,
+          "initial_nonzero": 1,
+          "final_nonzero": 1
+        },
+        {
+          "name": "bid_candidate_head.0.weight",
+          "shape": [
+            64,
+            142
+          ],
+          "changed_elements": 9088,
+          "max_abs_change": 0.00048546306788921356,
+          "initial_nonzero": 9088,
+          "final_nonzero": 9088
+        },
+        {
+          "name": "bid_candidate_head.0.bias",
+          "shape": [
+            64
+          ],
+          "changed_elements": 64,
+          "max_abs_change": 0.00020038150250911713,
+          "initial_nonzero": 64,
+          "final_nonzero": 64
+        },
+        {
+          "name": "bid_candidate_head.2.weight",
+          "shape": [
+            1,
+            64
+          ],
+          "changed_elements": 64,
+          "max_abs_change": 0.0003811181231867522,
+          "initial_nonzero": 0,
+          "final_nonzero": 64
+        },
+        {
+          "name": "bid_candidate_head.2.bias",
+          "shape": [
+            1
+          ],
+          "changed_elements": 1,
+          "max_abs_change": 3.271002788096666e-05,
+          "initial_nonzero": 1,
+          "final_nonzero": 1
+        },
+        {
+          "name": "conflict_residual.weight",
+          "shape": [
+            20,
+            13
+          ],
+          "changed_elements": 192,
+          "max_abs_change": 0.0005919593386352062,
+          "initial_nonzero": 204,
+          "final_nonzero": 205
+        },
+        {
+          "name": "bid_conflict_residual.weight",
+          "shape": [
+            1,
+            13
+          ],
+          "changed_elements": 11,
+          "max_abs_change": 0.0002813355531543493,
+          "initial_nonzero": 11,
+          "final_nonzero": 11
+        },
+        {
+          "name": "critic.0.weight",
+          "shape": [
+            128,
+            507
+          ],
+          "changed_elements": 41344,
+          "max_abs_change": 0.0006906148046255112,
+          "initial_nonzero": 64896,
+          "final_nonzero": 64896
+        },
+        {
+          "name": "critic.0.bias",
+          "shape": [
+            128
+          ],
+          "changed_elements": 128,
+          "max_abs_change": 0.0006861770525574684,
+          "initial_nonzero": 128,
+          "final_nonzero": 128
+        },
+        {
+          "name": "critic.2.weight",
+          "shape": [
+            128,
+            128
+          ],
+          "changed_elements": 16384,
+          "max_abs_change": 0.0006221226649358869,
+          "initial_nonzero": 16384,
+          "final_nonzero": 16384
+        },
+        {
+          "name": "critic.2.bias",
+          "shape": [
+            128
+          ],
+          "changed_elements": 128,
+          "max_abs_change": 0.0005864687263965607,
+          "initial_nonzero": 128,
+          "final_nonzero": 128
+        },
+        {
+          "name": "critic.4.weight",
+          "shape": [
+            1,
+            128
+          ],
+          "changed_elements": 128,
+          "max_abs_change": 0.0006230641156435013,
+          "initial_nonzero": 128,
+          "final_nonzero": 128
+        },
+        {
+          "name": "critic.4.bias",
+          "shape": [
+            1
+          ],
+          "changed_elements": 1,
+          "max_abs_change": 0.0005815774202346802,
+          "initial_nonzero": 1,
+          "final_nonzero": 1
+        }
+      ],
+      "frozen_tensors": [
+        {
+          "name": "log_std",
+          "bitwise_equal": true
+        },
+        {
+          "name": "actor.0.weight",
+          "bitwise_equal": true
+        },
+        {
+          "name": "actor.0.bias",
+          "bitwise_equal": true
+        },
+        {
+          "name": "actor.2.weight",
+          "bitwise_equal": true
+        },
+        {
+          "name": "actor.2.bias",
+          "bitwise_equal": true
+        },
+        {
+          "name": "cont_head.weight",
+          "bitwise_equal": true
+        },
+        {
+          "name": "cont_head.bias",
+          "bitwise_equal": true
+        },
+        {
+          "name": "role_head.weight",
+          "bitwise_equal": true
+        },
+        {
+          "name": "role_head.bias",
+          "bitwise_equal": true
+        },
+        {
+          "name": "gear_head.weight",
+          "bitwise_equal": true
+        },
+        {
+          "name": "gear_head.bias",
+          "bitwise_equal": true
+        },
+        {
+          "name": "pointer_head.weight",
+          "bitwise_equal": true
+        },
+        {
+          "name": "pointer_head.bias",
+          "bitwise_equal": true
+        }
+      ],
+      "xi_residual_row_2_bitwise_equal": true,
+      "anchors": {
+        "xi_anchor_model": {
+          "tensors_checked": 28,
+          "mismatches": [],
+          "all_bitwise_equal": true
+        },
+        "policy_anchor_model": {
+          "tensors_checked": 28,
+          "mismatches": [],
+          "all_bitwise_equal": true
+        }
+      },
+      "config_equal": true,
+      "all_model_tensors_finite": true
+    }
+  ],
+  "iteration_freeze_archive_count": 30,
+  "iteration_freeze_checks": [
+    {
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000000.pt",
+      "frozen_tensor_count": 13,
+      "mismatches": [],
+      "xi_residual_row_2_bitwise_equal": true,
+      "passed": true
+    },
+    {
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000001.pt",
+      "frozen_tensor_count": 13,
+      "mismatches": [],
+      "xi_residual_row_2_bitwise_equal": true,
+      "passed": true
+    },
+    {
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000002.pt",
+      "frozen_tensor_count": 13,
+      "mismatches": [],
+      "xi_residual_row_2_bitwise_equal": true,
+      "passed": true
+    },
+    {
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000003.pt",
+      "frozen_tensor_count": 13,
+      "mismatches": [],
+      "xi_residual_row_2_bitwise_equal": true,
+      "passed": true
+    },
+    {
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000004.pt",
+      "frozen_tensor_count": 13,
+      "mismatches": [],
+      "xi_residual_row_2_bitwise_equal": true,
+      "passed": true
+    },
+    {
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000005.pt",
+      "frozen_tensor_count": 13,
+      "mismatches": [],
+      "xi_residual_row_2_bitwise_equal": true,
+      "passed": true
+    },
+    {
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000006.pt",
+      "frozen_tensor_count": 13,
+      "mismatches": [],
+      "xi_residual_row_2_bitwise_equal": true,
+      "passed": true
+    },
+    {
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000007.pt",
+      "frozen_tensor_count": 13,
+      "mismatches": [],
+      "xi_residual_row_2_bitwise_equal": true,
+      "passed": true
+    },
+    {
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000008.pt",
+      "frozen_tensor_count": 13,
+      "mismatches": [],
+      "xi_residual_row_2_bitwise_equal": true,
+      "passed": true
+    },
+    {
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000009.pt",
+      "frozen_tensor_count": 13,
+      "mismatches": [],
+      "xi_residual_row_2_bitwise_equal": true,
+      "passed": true
+    },
+    {
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000010.pt",
+      "frozen_tensor_count": 13,
+      "mismatches": [],
+      "xi_residual_row_2_bitwise_equal": true,
+      "passed": true
+    },
+    {
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000011.pt",
+      "frozen_tensor_count": 13,
+      "mismatches": [],
+      "xi_residual_row_2_bitwise_equal": true,
+      "passed": true
+    },
+    {
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000012.pt",
+      "frozen_tensor_count": 13,
+      "mismatches": [],
+      "xi_residual_row_2_bitwise_equal": true,
+      "passed": true
+    },
+    {
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000013.pt",
+      "frozen_tensor_count": 13,
+      "mismatches": [],
+      "xi_residual_row_2_bitwise_equal": true,
+      "passed": true
+    },
+    {
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000014.pt",
+      "frozen_tensor_count": 13,
+      "mismatches": [],
+      "xi_residual_row_2_bitwise_equal": true,
+      "passed": true
+    },
+    {
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000015.pt",
+      "frozen_tensor_count": 13,
+      "mismatches": [],
+      "xi_residual_row_2_bitwise_equal": true,
+      "passed": true
+    },
+    {
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000016.pt",
+      "frozen_tensor_count": 13,
+      "mismatches": [],
+      "xi_residual_row_2_bitwise_equal": true,
+      "passed": true
+    },
+    {
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000017.pt",
+      "frozen_tensor_count": 13,
+      "mismatches": [],
+      "xi_residual_row_2_bitwise_equal": true,
+      "passed": true
+    },
+    {
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000018.pt",
+      "frozen_tensor_count": 13,
+      "mismatches": [],
+      "xi_residual_row_2_bitwise_equal": true,
+      "passed": true
+    },
+    {
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000019.pt",
+      "frozen_tensor_count": 13,
+      "mismatches": [],
+      "xi_residual_row_2_bitwise_equal": true,
+      "passed": true
+    },
+    {
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000020.pt",
+      "frozen_tensor_count": 13,
+      "mismatches": [],
+      "xi_residual_row_2_bitwise_equal": true,
+      "passed": true
+    },
+    {
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000021.pt",
+      "frozen_tensor_count": 13,
+      "mismatches": [],
+      "xi_residual_row_2_bitwise_equal": true,
+      "passed": true
+    },
+    {
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000022.pt",
+      "frozen_tensor_count": 13,
+      "mismatches": [],
+      "xi_residual_row_2_bitwise_equal": true,
+      "passed": true
+    },
+    {
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000023.pt",
+      "frozen_tensor_count": 13,
+      "mismatches": [],
+      "xi_residual_row_2_bitwise_equal": true,
+      "passed": true
+    },
+    {
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000024.pt",
+      "frozen_tensor_count": 13,
+      "mismatches": [],
+      "xi_residual_row_2_bitwise_equal": true,
+      "passed": true
+    },
+    {
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000025.pt",
+      "frozen_tensor_count": 13,
+      "mismatches": [],
+      "xi_residual_row_2_bitwise_equal": true,
+      "passed": true
+    },
+    {
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000026.pt",
+      "frozen_tensor_count": 13,
+      "mismatches": [],
+      "xi_residual_row_2_bitwise_equal": true,
+      "passed": true
+    },
+    {
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000027.pt",
+      "frozen_tensor_count": 13,
+      "mismatches": [],
+      "xi_residual_row_2_bitwise_equal": true,
+      "passed": true
+    },
+    {
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000028.pt",
+      "frozen_tensor_count": 13,
+      "mismatches": [],
+      "xi_residual_row_2_bitwise_equal": true,
+      "passed": true
+    },
+    {
+      "path": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000029.pt",
+      "frozen_tensor_count": 13,
+      "mismatches": [],
+      "xi_residual_row_2_bitwise_equal": true,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Parameter updates and frozen tensor preservation do not establish improved task success or generalization.",
+    "Checkpoint snapshots verify stored iteration endpoints, not intermediate optimizer states.",
+    "HEUR superiority must be established separately with paired held-out evaluation."
+  ],
+  "blocking_findings": []
+}

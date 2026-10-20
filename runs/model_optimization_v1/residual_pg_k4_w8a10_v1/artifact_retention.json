@@ -1,0 +1,267 @@
+{
+  "scope": "only this completed run; original provenance and integrity audit describe all captured files before pruning",
+  "integrity_audit_sha256": "48d0a64976f38a1ef8d2a41bfde5ba53047e80e390f180a1fa8e81623ea0cf29",
+  "status": "cleanup_blocked_files_retained",
+  "remove": [
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000000.pt",
+      "sha256": "ce2e227477afb416d58685ae098231113e3caba99f8a10b6179f4b435f5e30e8",
+      "bytes": 1613903,
+      "reason": "unselected intermediate iteration",
+      "iter": 0
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000001.pt",
+      "sha256": "429798abc4bddd07bf4b0a22c205843a1faee844a32a2e8249715c6b9f7eb1d3",
+      "bytes": 1613903,
+      "reason": "unselected intermediate iteration",
+      "iter": 1
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000002.pt",
+      "sha256": "543d5aa46b0f6c2f46e75663c359b90f74dd3f34da6af03ddfa8c738fd25f54a",
+      "bytes": 1613903,
+      "reason": "unselected intermediate iteration",
+      "iter": 2
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000004.pt",
+      "sha256": "1787b1de9c946bb5c15bdcc07a68d103247852a2a3b4f4f65ad7742b91dcde1c",
+      "bytes": 1613903,
+      "reason": "unselected intermediate iteration",
+      "iter": 4
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000005.pt",
+      "sha256": "9fa26402b7bc13c87e6a96ab7c6e02f09bfdc442f183430651214920f566a68f",
+      "bytes": 1613903,
+      "reason": "unselected intermediate iteration",
+      "iter": 5
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000006.pt",
+      "sha256": "09f8e2700fe51282955e3217f95da600e521220ee9bc611ef9687e6b7b140093",
+      "bytes": 1613903,
+      "reason": "unselected intermediate iteration",
+      "iter": 6
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000007.pt",
+      "sha256": "80b10c66b2fa104ceaf7a94684cacd0a06315ba2bafab7ea4cc80662a843fc28",
+      "bytes": 1613903,
+      "reason": "unselected intermediate iteration",
+      "iter": 7
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000008.pt",
+      "sha256": "99eb300067d09fdd5f87860586d8d51f62d7e637c8dae3480179107b0ad74e4f",
+      "bytes": 1613903,
+      "reason": "unselected intermediate iteration",
+      "iter": 8
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000009.pt",
+      "sha256": "206a8974aee82fdc89e9093b003f56a2024c1e8a1fdb8120c961ac7c78ce2e66",
+      "bytes": 1613903,
+      "reason": "unselected intermediate iteration",
+      "iter": 9
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000010.pt",
+      "sha256": "020ce229d65b16070dfd495181040210e8226bc1ad1f6f5aee84e39265500f07",
+      "bytes": 1613903,
+      "reason": "unselected intermediate iteration",
+      "iter": 10
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000011.pt",
+      "sha256": "8515eea99d13345c204c40bdb6ed7537577bb0067157c399c4b9be2eb0355430",
+      "bytes": 1613903,
+      "reason": "unselected intermediate iteration",
+      "iter": 11
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000012.pt",
+      "sha256": "bdb026aee14677ffd7d625f7ba802db5a0b8c9a7875e362a5ea0cf8d25762d2d",
+      "bytes": 1613903,
+      "reason": "unselected intermediate iteration",
+      "iter": 12
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000013.pt",
+      "sha256": "e8b9ad2cff37cd288e84e9b41272d567fd2e8a3d382e92290b98d19cbe5e6365",
+      "bytes": 1613903,
+      "reason": "unselected intermediate iteration",
+      "iter": 13
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000014.pt",
+      "sha256": "d2f6ce9d03063de72a9585df23734cf28633583ebe7f5323b8ec4b2e4a776ebd",
+      "bytes": 1613903,
+      "reason": "unselected intermediate iteration",
+      "iter": 14
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000015.pt",
+      "sha256": "542831726fc62ca3e7814afd8f61421848ed2ee342dc7880a5b486646d99a1e3",
+      "bytes": 1613903,
+      "reason": "unselected intermediate iteration",
+      "iter": 15
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000016.pt",
+      "sha256": "2bc6fc4a7726bb6ba378f16d561c8af38e7e7a6361530362dbcabb2d8b77898f",
+      "bytes": 1613903,
+      "reason": "unselected intermediate iteration",
+      "iter": 16
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000017.pt",
+      "sha256": "27a16a504204c09f2a394a6386f7168e2c270939c1488b6eba8c665e06e1ab34",
+      "bytes": 1613903,
+      "reason": "unselected intermediate iteration",
+      "iter": 17
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000018.pt",
+      "sha256": "7331d2346d7d8048d8d0f3fdb5bd642df710988c2567b1822d2f23c9ecd1929b",
+      "bytes": 1613903,
+      "reason": "unselected intermediate iteration",
+      "iter": 18
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000019.pt",
+      "sha256": "4d526784c50b65347c0b837fa1b6b75ed142416a6ddd4dd2c2cb25479a2c4cf4",
+      "bytes": 1613903,
+      "reason": "unselected intermediate iteration",
+      "iter": 19
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000020.pt",
+      "sha256": "45b6ab460958609d0c9fd86b0b279d4a42b45d29636a67800f1ba6f75f365ef7",
+      "bytes": 1613903,
+      "reason": "unselected intermediate iteration",
+      "iter": 20
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000021.pt",
+      "sha256": "12a1c66c5e923a6fc8aee96cb79875a366f73f4a79bb900050f51c0f21e422da",
+      "bytes": 1613903,
+      "reason": "unselected intermediate iteration",
+      "iter": 21
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000022.pt",
+      "sha256": "b8c40f24b8260aaf9f9527b7a74df6e4094ecf2c8db1581379bb03b4228a9817",
+      "bytes": 1613903,
+      "reason": "unselected intermediate iteration",
+      "iter": 22
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000023.pt",
+      "sha256": "f062930edf817bdf9009b05d615a29249e7dd03ca2b2ae346450f2751a2db271",
+      "bytes": 1613903,
+      "reason": "unselected intermediate iteration",
+      "iter": 23
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000024.pt",
+      "sha256": "15cb66aaaeb1a9ea3a1af7516432d795752792bbfcc8b260dc6d0d82f7e61a5e",
+      "bytes": 1613903,
+      "reason": "unselected intermediate iteration",
+      "iter": 24
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000025.pt",
+      "sha256": "ed0468f12d0f91b823c74e0942934a5bad5fe830ebdd930473a685698e3f041e",
+      "bytes": 1613903,
+      "reason": "unselected intermediate iteration",
+      "iter": 25
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000026.pt",
+      "sha256": "e05f09ad48aefa67ccd03236a19e45b2567e69c37d45ecb66af3204b8d873303",
+      "bytes": 1613903,
+      "reason": "unselected intermediate iteration",
+      "iter": 26
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000027.pt",
+      "sha256": "b44ce87e82d5e5480ed15299e45f870c5436707c5903d1c3bec9e56d081ca76b",
+      "bytes": 1613903,
+      "reason": "unselected intermediate iteration",
+      "iter": 27
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000028.pt",
+      "sha256": "3eee681b4f00e8df9f26c89deebb7468da3f546629b291b16bb123bf94d4e689",
+      "bytes": 1613903,
+      "reason": "unselected intermediate iteration",
+      "iter": 28
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_best_ppo_update_000001.pt",
+      "sha256": "1e04c0abd91766c344f9024bace2f10403a68aa5f05d177d674da6627fd06f6b",
+      "bytes": 1614417,
+      "reason": "superseded earlier selected candidate",
+      "iter": 1
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_best_ppo_update_000003.pt",
+      "sha256": "38815f375df492ee320d9a0d4a9105efaf3944a6694165b295f646c9917aea18",
+      "bytes": 1614417,
+      "reason": "byte-identical retained checkpoint copy",
+      "retained": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\curr_k4_best.pt"
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000029.pt",
+      "sha256": "67090f34c0763cca35e471d74e0dedadaaefdb65cf248e8f88177f963886acc9",
+      "bytes": 1613903,
+      "reason": "byte-identical retained checkpoint copy",
+      "retained": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\curr_k4.pt"
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T130145.940631Z_1176_7c6c1e82_input_policy_checkpoint_curr_k4_best.pt",
+      "sha256": "38815f375df492ee320d9a0d4a9105efaf3944a6694165b295f646c9917aea18",
+      "bytes": 1614417,
+      "reason": "byte-identical retained checkpoint copy",
+      "retained": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\curr_k4_best.pt"
+    }
+  ],
+  "retain": [
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\curr_k4.pt",
+      "sha256": "67090f34c0763cca35e471d74e0dedadaaefdb65cf248e8f88177f963886acc9",
+      "bytes": 1613903
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\curr_k4_best.pt",
+      "sha256": "38815f375df492ee320d9a0d4a9105efaf3944a6694165b295f646c9917aea18",
+      "bytes": 1614417
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_best_initial_checkpoint_-00001.pt",
+      "sha256": "aad2b926711492291a148407a1a843bfdbd85c73c80924c53456c508b2270f2b",
+      "bytes": 1614417
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_curr_k4_iter_000003.pt",
+      "sha256": "198f052f4087d779e93667e3f376533e7cf4273d9c09a00dbb75a2a1cc7d16e0",
+      "bytes": 1613903
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_effective_initial.pt",
+      "sha256": "e38262195b354f56b49f1d353ed8935404bbd7d465c027cf9f08a36a68630c28",
+      "bytes": 1618823
+    },
+    {
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\provenance\\20261020T113840.918006Z_1244_48cf6804_input_curriculum_initial_checkpoint_curr_k4_best.pt",
+      "sha256": "386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797",
+      "bytes": 1076189
+    }
+  ],
+  "planned_freed_bytes": 51646438,
+  "deletion_performed": false,
+  "cleanup_rejection": "Automatic approval review rejected the removal command: blocked by policy.",
+  "archive_scope": "Commit the retain list, logs and audit evidence; all planned removal files remain locally and are excluded from this archive commit."
+}

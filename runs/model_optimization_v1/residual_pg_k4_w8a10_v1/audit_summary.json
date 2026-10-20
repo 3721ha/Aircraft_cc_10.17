@@ -1,0 +1,451 @@
+{
+  "conclusion": "Some validation improvement, but neither validation nor reserved test meets HEUR; no task impossibility claim. No new training or code changes during this result review.",
+  "training": {
+    "iterations": 30,
+    "episodes": 240,
+    "environment_steps": 156731,
+    "training_seed_first": 160000,
+    "training_seed_last": 160239,
+    "duration_seconds": 3962.594,
+    "successes_stochastic": 114,
+    "counterfactual_events": 177,
+    "informative_events": 177,
+    "candidate_branches": 354,
+    "uncontrollable_events": 65,
+    "all_xi_row_unchanged": true
+  },
+  "validation": {
+    "seeds": [
+      102000,
+      102001,
+      102002,
+      102003,
+      102004,
+      102005,
+      102006,
+      102007,
+      102008,
+      102009
+    ],
+    "initial_rl": {
+      "success_rate": 0.2,
+      "mean_return": -9041.4,
+      "violations_per_step": 8.7249
+    },
+    "best_iter": 3,
+    "best_rl": {
+      "success_rate": 0.4,
+      "mean_return": -7657.8,
+      "violations_per_step": 8.0563
+    },
+    "latest_iter": 29,
+    "latest_rl": {
+      "success_rate": 0.4,
+      "mean_return": -8628.2,
+      "violations_per_step": 8.3409
+    },
+    "heur": {
+      "success_rate": 0.9,
+      "mean_return": -3436.5,
+      "violations_per_step": 7.2592
+    },
+    "trend": [
+      {
+        "iter": 1,
+        "success_rate": 0.3,
+        "mean_return": -7691.8,
+        "violations_per_step": 8.0649
+      },
+      {
+        "iter": 3,
+        "success_rate": 0.4,
+        "mean_return": -7657.8,
+        "violations_per_step": 8.0563
+      },
+      {
+        "iter": 5,
+        "success_rate": 0.1,
+        "mean_return": -8565.8,
+        "violations_per_step": 8.6168
+      },
+      {
+        "iter": 7,
+        "success_rate": 0.3,
+        "mean_return": -8409.3,
+        "violations_per_step": 8.5393
+      },
+      {
+        "iter": 9,
+        "success_rate": 0.3,
+        "mean_return": -8307.3,
+        "violations_per_step": 8.4171
+      },
+      {
+        "iter": 11,
+        "success_rate": 0.3,
+        "mean_return": -8351.2,
+        "violations_per_step": 8.4248
+      },
+      {
+        "iter": 13,
+        "success_rate": 0.3,
+        "mean_return": -8351.7,
+        "violations_per_step": 8.4241
+      },
+      {
+        "iter": 15,
+        "success_rate": 0.3,
+        "mean_return": -8361.0,
+        "violations_per_step": 8.4188
+      },
+      {
+        "iter": 17,
+        "success_rate": 0.2,
+        "mean_return": -8403.7,
+        "violations_per_step": 8.4168
+      },
+      {
+        "iter": 19,
+        "success_rate": 0.2,
+        "mean_return": -8410.9,
+        "violations_per_step": 8.428
+      },
+      {
+        "iter": 21,
+        "success_rate": 0.2,
+        "mean_return": -8412.7,
+        "violations_per_step": 8.4309
+      },
+      {
+        "iter": 23,
+        "success_rate": 0.3,
+        "mean_return": -8349.2,
+        "violations_per_step": 8.4666
+      },
+      {
+        "iter": 25,
+        "success_rate": 0.3,
+        "mean_return": -8916.7,
+        "violations_per_step": 8.4312
+      },
+      {
+        "iter": 27,
+        "success_rate": 0.3,
+        "mean_return": -8909.0,
+        "violations_per_step": 8.4291
+      },
+      {
+        "iter": 29,
+        "success_rate": 0.4,
+        "mean_return": -8628.2,
+        "violations_per_step": 8.3409
+      }
+    ],
+    "initial_vs_best_by_seed": [
+      {
+        "seed": 102000,
+        "initial": {
+          "seed": 102000,
+          "terminal": "failure",
+          "return": -14154.1,
+          "steps": 741,
+          "violations": 5899,
+          "multi_candidate_events": 3,
+          "winner_changes_vs_fixed_score": 0
+        },
+        "best": {
+          "seed": 102000,
+          "terminal": "failure",
+          "return": -14154.0,
+          "steps": 741,
+          "violations": 5900,
+          "multi_candidate_events": 3,
+          "winner_changes_vs_fixed_score": 0
+        },
+        "return_change": 0.1000000000003638
+      },
+      {
+        "seed": 102001,
+        "initial": {
+          "seed": 102001,
+          "terminal": "failure",
+          "return": -6901.6,
+          "steps": 737,
+          "violations": 5964,
+          "multi_candidate_events": 1,
+          "winner_changes_vs_fixed_score": 0
+        },
+        "best": {
+          "seed": 102001,
+          "terminal": "failure",
+          "return": -6900.3,
+          "steps": 737,
+          "violations": 5963,
+          "multi_candidate_events": 1,
+          "winner_changes_vs_fixed_score": 0
+        },
+        "return_change": 1.300000000000182
+      },
+      {
+        "seed": 102002,
+        "initial": {
+          "seed": 102002,
+          "terminal": "success",
+          "return": -3507.1,
+          "steps": 683,
+          "violations": 4314,
+          "multi_candidate_events": 0,
+          "winner_changes_vs_fixed_score": 0
+        },
+        "best": {
+          "seed": 102002,
+          "terminal": "success",
+          "return": -3487.6,
+          "steps": 636,
+          "violations": 3855,
+          "multi_candidate_events": 0,
+          "winner_changes_vs_fixed_score": 0
+        },
+        "return_change": 19.5
+      },
+      {
+        "seed": 102003,
+        "initial": {
+          "seed": 102003,
+          "terminal": "failure",
+          "return": -6013.6,
+          "steps": 686,
+          "violations": 5390,
+          "multi_candidate_events": 1,
+          "winner_changes_vs_fixed_score": 1
+        },
+        "best": {
+          "seed": 102003,
+          "terminal": "failure",
+          "return": -6023.2,
+          "steps": 686,
+          "violations": 5390,
+          "multi_candidate_events": 1,
+          "winner_changes_vs_fixed_score": 1
+        },
+        "return_change": -9.599999999999454
+      },
+      {
+        "seed": 102004,
+        "initial": {
+          "seed": 102004,
+          "terminal": "failure",
+          "return": -10460.0,
+          "steps": 784,
+          "violations": 7696,
+          "multi_candidate_events": 6,
+          "winner_changes_vs_fixed_score": 0
+        },
+        "best": {
+          "seed": 102004,
+          "terminal": "failure",
+          "return": -10460.0,
+          "steps": 784,
+          "violations": 7696,
+          "multi_candidate_events": 6,
+          "winner_changes_vs_fixed_score": 0
+        },
+        "return_change": 0.0
+      },
+      {
+        "seed": 102005,
+        "initial": {
+          "seed": 102005,
+          "terminal": "failure",
+          "return": -9279.8,
+          "steps": 713,
+          "violations": 6707,
+          "multi_candidate_events": 1,
+          "winner_changes_vs_fixed_score": 0
+        },
+        "best": {
+          "seed": 102005,
+          "terminal": "failure",
+          "return": -9279.8,
+          "steps": 713,
+          "violations": 6708,
+          "multi_candidate_events": 1,
+          "winner_changes_vs_fixed_score": 0
+        },
+        "return_change": 0.0
+      },
+      {
+        "seed": 102006,
+        "initial": {
+          "seed": 102006,
+          "terminal": "failure",
+          "return": -8788.6,
+          "steps": 757,
+          "violations": 6065,
+          "multi_candidate_events": 0,
+          "winner_changes_vs_fixed_score": 0
+        },
+        "best": {
+          "seed": 102006,
+          "terminal": "success",
+          "return": -8467.6,
+          "steps": 755,
+          "violations": 6072,
+          "multi_candidate_events": 0,
+          "winner_changes_vs_fixed_score": 0
+        },
+        "return_change": 321.0
+      },
+      {
+        "seed": 102007,
+        "initial": {
+          "seed": 102007,
+          "terminal": "failure",
+          "return": -18829.7,
+          "steps": 692,
+          "violations": 8594,
+          "multi_candidate_events": 0,
+          "winner_changes_vs_fixed_score": 0
+        },
+        "best": {
+          "seed": 102007,
+          "terminal": "failure",
+          "return": -12036.5,
+          "steps": 692,
+          "violations": 7223,
+          "multi_candidate_events": 0,
+          "winner_changes_vs_fixed_score": 0
+        },
+        "return_change": 6793.200000000001
+      },
+      {
+        "seed": 102008,
+        "initial": {
+          "seed": 102008,
+          "terminal": "failure",
+          "return": -11388.3,
+          "steps": 712,
+          "violations": 8312,
+          "multi_candidate_events": 1,
+          "winner_changes_vs_fixed_score": 1
+        },
+        "best": {
+          "seed": 102008,
+          "terminal": "success",
+          "return": -4677.9,
+          "steps": 484,
+          "violations": 3322,
+          "multi_candidate_events": 0,
+          "winner_changes_vs_fixed_score": 0
+        },
+        "return_change": 6710.4
+      },
+      {
+        "seed": 102009,
+        "initial": {
+          "seed": 102009,
+          "terminal": "success",
+          "return": -1091.0,
+          "steps": 346,
+          "violations": 833,
+          "multi_candidate_events": 5,
+          "winner_changes_vs_fixed_score": 5
+        },
+        "best": {
+          "seed": 102009,
+          "terminal": "success",
+          "return": -1091.0,
+          "steps": 346,
+          "violations": 833,
+          "multi_candidate_events": 5,
+          "winner_changes_vs_fixed_score": 5
+        },
+        "return_change": 0.0
+      }
+    ]
+  },
+  "reserved_test": {
+    "selected_checkpoint_sha256": "38815f375df492ee320d9a0d4a9105efaf3944a6694165b295f646c9917aea18",
+    "seeds": [
+      162000,
+      162001,
+      162002,
+      162003,
+      162004,
+      162005,
+      162006,
+      162007,
+      162008,
+      162009,
+      162010,
+      162011,
+      162012,
+      162013,
+      162014,
+      162015,
+      162016,
+      162017,
+      162018,
+      162019,
+      162020,
+      162021,
+      162022,
+      162023,
+      162024,
+      162025,
+      162026,
+      162027,
+      162028,
+      162029
+    ],
+    "mode": "natural_paired_eval",
+    "rl": {
+      "episodes": 30,
+      "successes": 11,
+      "success_rate": 0.36666666666666664,
+      "mean_return": -8125.905133333333,
+      "violations_per_step": 7.8982303128644595,
+      "environment_steps": 19721,
+      "natural_multi_candidate_events": 57,
+      "winner_changes_vs_fixed_score": 14,
+      "success_rate_wilson95": [
+        0.21873920806100708,
+        0.5448643634520511
+      ]
+    },
+    "heur": {
+      "episodes": 30,
+      "successes": 25,
+      "success_rate": 0.8333333333333334,
+      "mean_return": -3550.0472,
+      "violations_per_step": 7.399933422103862,
+      "environment_steps": 15020,
+      "natural_multi_candidate_events": 4,
+      "winner_changes_vs_fixed_score": 0,
+      "success_rate_wilson95": [
+        0.6643564949358398,
+        0.9266345762815145
+      ]
+    },
+    "paired_success": {
+      "rl_only": 2,
+      "heur_only": 16,
+      "mcnemar_exact_two_sided_p": 0.001312255859375
+    },
+    "source_integrity": {
+      "verified_at_utc": "2026-10-20T13:05:54.597887+00:00",
+      "unchanged": true,
+      "changed_files": []
+    },
+    "checkpoint_unchanged": true,
+    "task_config_matches_training_validation": true,
+    "initial_model_not_evaluated_on_reserved_test": true,
+    "limitation": "This test compares the selected model to HEUR; it does not estimate improvement from the initial RL model on these seeds."
+  },
+  "source_artifacts": {
+    "pilot_log_sha256": "bb5372d946a0620b9b2d1536e56861e24a0aa7135a95c5c0c686fc7e10c42668",
+    "heldout_result_sha256": "27e56ab855f94148f36633bed862f50a61b6a0564017a1d31d1565de4c054f98",
+    "heldout_sidecar_sha256": "6f4c98ce315653ac8afd27b133d82affbc3e235eb1afb5b92c6d6dc3d733659c"
+  },
+  "next_step": "Retain iter3, do not extend iter29 training. Diagnose long-horizon task credit and candidate/geometry feature expressiveness; require a separate controlled ablation before attributing gains to arbitration. The reserved test is now consumed; do not tune against it."
+}
