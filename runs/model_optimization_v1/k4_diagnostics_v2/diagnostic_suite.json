@@ -1,0 +1,647 @@
+{
+ "status": "completed",
+ "plan": {
+  "output_root": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2",
+  "jobs": [
+   {
+    "name": "control",
+    "source": {
+     "source_run": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k4_w8a10",
+     "source_log": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k4_w8a10\\pilot_log.json",
+     "source_log_sha256": "a320efd38c2ea83b217c838fa3bfc8984cc681e1c8236fd271b38bef00aecf94",
+     "source_best_iter": 24,
+     "checkpoint": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k4_w8a10\\curr_k4_best.pt",
+     "checkpoint_sha256": "386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797"
+    },
+    "output": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\control",
+    "task_numeric_config": {
+     "stable_window": 8,
+     "age_std_track": 10.0,
+     "c04_range": 80.0,
+     "sector_axis_max_deg": 60.0,
+     "arb_bid_weight": 0.35,
+     "arb_hysteresis": 0.2
+    },
+    "training_controls": {
+     "conflict_exposure": 1.0,
+     "penalty_scale": 0.2,
+     "policy_anchor_coef": 0.0
+    },
+    "mode": "joint",
+    "command": [
+     "D:\\Desktop\\Aircraft_mumt_cc\\Aircraft_mumt\\.venv\\Scripts\\python.exe",
+     "D:\\Desktop\\Aircraft_mumt_cc\\_p3_pilot.py",
+     "curr",
+     "4",
+     "0",
+     "8"
+    ],
+    "cwd": "D:\\Desktop\\Aircraft_mumt_cc",
+    "training_environment": {
+     "MUMT_PILOT_OUT": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\control",
+     "MUMT_CURR_INIT": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k4_w8a10\\curr_k4_best.pt",
+     "MUMT_CURR_START_MODE": "best",
+     "MUMT_CURR_EXPECTED_SHA256": "386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797",
+     "MUMT_W8_FIXED": "0.2",
+     "MUMT_STABLE_WINDOW": "8",
+     "MUMT_AGE_STD_TRACK": "10",
+     "MUMT_C04_RANGE": "80",
+     "MUMT_SECTOR_AXIS_MAX_DEG": "60",
+     "MUMT_ARB_BID_WEIGHT": "0.35",
+     "MUMT_ARB_HYSTERESIS": "0.2",
+     "MUMT_RL_DIRECT_ARBITRATION": "1",
+     "MUMT_CONFLICT_EXPOSURE_PROB": "1.0",
+     "MUMT_POLICY_ANCHOR_COEF": "0.0",
+     "MUMT_BID_ONLY_PPO": "0",
+     "MUMT_PPO_LR": "1e-05",
+     "MUMT_PPO_EPOCHS": "2",
+     "MUMT_EPISODES_PER_ITER": "8",
+     "MUMT_VALIDATION_EVERY": "2",
+     "MUMT_VALIDATION_SEEDS": "230,231,232,233,234,235,236,237,238,239",
+     "MUMT_TRAIN_SEED_START": "30000",
+     "MUMT_CURR_PATIENCE": "0",
+     "MUMT_POLICY_ANCHOR_MONITOR": "1"
+    }
+   },
+   {
+    "name": "natural_requests",
+    "source": {
+     "source_run": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k4_w8a10",
+     "source_log": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k4_w8a10\\pilot_log.json",
+     "source_log_sha256": "a320efd38c2ea83b217c838fa3bfc8984cc681e1c8236fd271b38bef00aecf94",
+     "source_best_iter": 24,
+     "checkpoint": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k4_w8a10\\curr_k4_best.pt",
+     "checkpoint_sha256": "386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797"
+    },
+    "output": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\natural_requests",
+    "task_numeric_config": {
+     "stable_window": 8,
+     "age_std_track": 10.0,
+     "c04_range": 80.0,
+     "sector_axis_max_deg": 60.0,
+     "arb_bid_weight": 0.35,
+     "arb_hysteresis": 0.2
+    },
+    "training_controls": {
+     "conflict_exposure": 0.0,
+     "penalty_scale": 0.2,
+     "policy_anchor_coef": 0.0
+    },
+    "mode": "joint",
+    "command": [
+     "D:\\Desktop\\Aircraft_mumt_cc\\Aircraft_mumt\\.venv\\Scripts\\python.exe",
+     "D:\\Desktop\\Aircraft_mumt_cc\\_p3_pilot.py",
+     "curr",
+     "4",
+     "0",
+     "8"
+    ],
+    "cwd": "D:\\Desktop\\Aircraft_mumt_cc",
+    "training_environment": {
+     "MUMT_PILOT_OUT": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\natural_requests",
+     "MUMT_CURR_INIT": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k4_w8a10\\curr_k4_best.pt",
+     "MUMT_CURR_START_MODE": "best",
+     "MUMT_CURR_EXPECTED_SHA256": "386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797",
+     "MUMT_W8_FIXED": "0.2",
+     "MUMT_STABLE_WINDOW": "8",
+     "MUMT_AGE_STD_TRACK": "10",
+     "MUMT_C04_RANGE": "80",
+     "MUMT_SECTOR_AXIS_MAX_DEG": "60",
+     "MUMT_ARB_BID_WEIGHT": "0.35",
+     "MUMT_ARB_HYSTERESIS": "0.2",
+     "MUMT_RL_DIRECT_ARBITRATION": "1",
+     "MUMT_CONFLICT_EXPOSURE_PROB": "0.0",
+     "MUMT_POLICY_ANCHOR_COEF": "0.0",
+     "MUMT_BID_ONLY_PPO": "0",
+     "MUMT_PPO_LR": "1e-05",
+     "MUMT_PPO_EPOCHS": "2",
+     "MUMT_EPISODES_PER_ITER": "8",
+     "MUMT_VALIDATION_EVERY": "2",
+     "MUMT_VALIDATION_SEEDS": "230,231,232,233,234,235,236,237,238,239",
+     "MUMT_TRAIN_SEED_START": "30000",
+     "MUMT_CURR_PATIENCE": "0",
+     "MUMT_POLICY_ANCHOR_MONITOR": "1"
+    }
+   },
+   {
+    "name": "full_penalty",
+    "source": {
+     "source_run": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k4_w8a10",
+     "source_log": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k4_w8a10\\pilot_log.json",
+     "source_log_sha256": "a320efd38c2ea83b217c838fa3bfc8984cc681e1c8236fd271b38bef00aecf94",
+     "source_best_iter": 24,
+     "checkpoint": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k4_w8a10\\curr_k4_best.pt",
+     "checkpoint_sha256": "386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797"
+    },
+    "output": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty",
+    "task_numeric_config": {
+     "stable_window": 8,
+     "age_std_track": 10.0,
+     "c04_range": 80.0,
+     "sector_axis_max_deg": 60.0,
+     "arb_bid_weight": 0.35,
+     "arb_hysteresis": 0.2
+    },
+    "training_controls": {
+     "conflict_exposure": 1.0,
+     "penalty_scale": 1.0,
+     "policy_anchor_coef": 0.0
+    },
+    "mode": "joint",
+    "command": [
+     "D:\\Desktop\\Aircraft_mumt_cc\\Aircraft_mumt\\.venv\\Scripts\\python.exe",
+     "D:\\Desktop\\Aircraft_mumt_cc\\_p3_pilot.py",
+     "curr",
+     "4",
+     "0",
+     "8"
+    ],
+    "cwd": "D:\\Desktop\\Aircraft_mumt_cc",
+    "training_environment": {
+     "MUMT_PILOT_OUT": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty",
+     "MUMT_CURR_INIT": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k4_w8a10\\curr_k4_best.pt",
+     "MUMT_CURR_START_MODE": "best",
+     "MUMT_CURR_EXPECTED_SHA256": "386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797",
+     "MUMT_W8_FIXED": "1.0",
+     "MUMT_STABLE_WINDOW": "8",
+     "MUMT_AGE_STD_TRACK": "10",
+     "MUMT_C04_RANGE": "80",
+     "MUMT_SECTOR_AXIS_MAX_DEG": "60",
+     "MUMT_ARB_BID_WEIGHT": "0.35",
+     "MUMT_ARB_HYSTERESIS": "0.2",
+     "MUMT_RL_DIRECT_ARBITRATION": "1",
+     "MUMT_CONFLICT_EXPOSURE_PROB": "1.0",
+     "MUMT_POLICY_ANCHOR_COEF": "0.0",
+     "MUMT_BID_ONLY_PPO": "0",
+     "MUMT_PPO_LR": "1e-05",
+     "MUMT_PPO_EPOCHS": "2",
+     "MUMT_EPISODES_PER_ITER": "8",
+     "MUMT_VALIDATION_EVERY": "2",
+     "MUMT_VALIDATION_SEEDS": "230,231,232,233,234,235,236,237,238,239",
+     "MUMT_TRAIN_SEED_START": "30000",
+     "MUMT_CURR_PATIENCE": "0",
+     "MUMT_POLICY_ANCHOR_MONITOR": "1"
+    }
+   },
+   {
+    "name": "natural_full_penalty",
+    "source": {
+     "source_run": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k4_w8a10",
+     "source_log": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k4_w8a10\\pilot_log.json",
+     "source_log_sha256": "a320efd38c2ea83b217c838fa3bfc8984cc681e1c8236fd271b38bef00aecf94",
+     "source_best_iter": 24,
+     "checkpoint": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k4_w8a10\\curr_k4_best.pt",
+     "checkpoint_sha256": "386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797"
+    },
+    "output": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\natural_full_penalty",
+    "task_numeric_config": {
+     "stable_window": 8,
+     "age_std_track": 10.0,
+     "c04_range": 80.0,
+     "sector_axis_max_deg": 60.0,
+     "arb_bid_weight": 0.35,
+     "arb_hysteresis": 0.2
+    },
+    "training_controls": {
+     "conflict_exposure": 0.0,
+     "penalty_scale": 1.0,
+     "policy_anchor_coef": 0.0
+    },
+    "mode": "joint",
+    "command": [
+     "D:\\Desktop\\Aircraft_mumt_cc\\Aircraft_mumt\\.venv\\Scripts\\python.exe",
+     "D:\\Desktop\\Aircraft_mumt_cc\\_p3_pilot.py",
+     "curr",
+     "4",
+     "0",
+     "8"
+    ],
+    "cwd": "D:\\Desktop\\Aircraft_mumt_cc",
+    "training_environment": {
+     "MUMT_PILOT_OUT": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\natural_full_penalty",
+     "MUMT_CURR_INIT": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k4_w8a10\\curr_k4_best.pt",
+     "MUMT_CURR_START_MODE": "best",
+     "MUMT_CURR_EXPECTED_SHA256": "386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797",
+     "MUMT_W8_FIXED": "1.0",
+     "MUMT_STABLE_WINDOW": "8",
+     "MUMT_AGE_STD_TRACK": "10",
+     "MUMT_C04_RANGE": "80",
+     "MUMT_SECTOR_AXIS_MAX_DEG": "60",
+     "MUMT_ARB_BID_WEIGHT": "0.35",
+     "MUMT_ARB_HYSTERESIS": "0.2",
+     "MUMT_RL_DIRECT_ARBITRATION": "1",
+     "MUMT_CONFLICT_EXPOSURE_PROB": "0.0",
+     "MUMT_POLICY_ANCHOR_COEF": "0.0",
+     "MUMT_BID_ONLY_PPO": "0",
+     "MUMT_PPO_LR": "1e-05",
+     "MUMT_PPO_EPOCHS": "2",
+     "MUMT_EPISODES_PER_ITER": "8",
+     "MUMT_VALIDATION_EVERY": "2",
+     "MUMT_VALIDATION_SEEDS": "230,231,232,233,234,235,236,237,238,239",
+     "MUMT_TRAIN_SEED_START": "30000",
+     "MUMT_CURR_PATIENCE": "0",
+     "MUMT_POLICY_ANCHOR_MONITOR": "1"
+    }
+   },
+   {
+    "name": "natural_full_penalty_anchor",
+    "source": {
+     "source_run": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k4_w8a10",
+     "source_log": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k4_w8a10\\pilot_log.json",
+     "source_log_sha256": "a320efd38c2ea83b217c838fa3bfc8984cc681e1c8236fd271b38bef00aecf94",
+     "source_best_iter": 24,
+     "checkpoint": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k4_w8a10\\curr_k4_best.pt",
+     "checkpoint_sha256": "386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797"
+    },
+    "output": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\natural_full_penalty_anchor",
+    "task_numeric_config": {
+     "stable_window": 8,
+     "age_std_track": 10.0,
+     "c04_range": 80.0,
+     "sector_axis_max_deg": 60.0,
+     "arb_bid_weight": 0.35,
+     "arb_hysteresis": 0.2
+    },
+    "training_controls": {
+     "conflict_exposure": 0.0,
+     "penalty_scale": 1.0,
+     "policy_anchor_coef": 1.0
+    },
+    "mode": "joint",
+    "command": [
+     "D:\\Desktop\\Aircraft_mumt_cc\\Aircraft_mumt\\.venv\\Scripts\\python.exe",
+     "D:\\Desktop\\Aircraft_mumt_cc\\_p3_pilot.py",
+     "curr",
+     "4",
+     "0",
+     "8"
+    ],
+    "cwd": "D:\\Desktop\\Aircraft_mumt_cc",
+    "training_environment": {
+     "MUMT_PILOT_OUT": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\natural_full_penalty_anchor",
+     "MUMT_CURR_INIT": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k4_w8a10\\curr_k4_best.pt",
+     "MUMT_CURR_START_MODE": "best",
+     "MUMT_CURR_EXPECTED_SHA256": "386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797",
+     "MUMT_W8_FIXED": "1.0",
+     "MUMT_STABLE_WINDOW": "8",
+     "MUMT_AGE_STD_TRACK": "10",
+     "MUMT_C04_RANGE": "80",
+     "MUMT_SECTOR_AXIS_MAX_DEG": "60",
+     "MUMT_ARB_BID_WEIGHT": "0.35",
+     "MUMT_ARB_HYSTERESIS": "0.2",
+     "MUMT_RL_DIRECT_ARBITRATION": "1",
+     "MUMT_CONFLICT_EXPOSURE_PROB": "0.0",
+     "MUMT_POLICY_ANCHOR_COEF": "1.0",
+     "MUMT_BID_ONLY_PPO": "0",
+     "MUMT_PPO_LR": "1e-05",
+     "MUMT_PPO_EPOCHS": "2",
+     "MUMT_EPISODES_PER_ITER": "8",
+     "MUMT_VALIDATION_EVERY": "2",
+     "MUMT_VALIDATION_SEEDS": "230,231,232,233,234,235,236,237,238,239",
+     "MUMT_TRAIN_SEED_START": "30000",
+     "MUMT_CURR_PATIENCE": "0",
+     "MUMT_POLICY_ANCHOR_MONITOR": "1"
+    }
+   }
+  ],
+  "source_code_sha256": {
+   "_curriculum_guard.py": "11c849efa30ce9463e828aa8426c1f2ff2cd7afaef9ec1316ce5ecbec00d4593",
+   "_experiment_provenance.py": "b3c5af46679cd5656da95c2836f95efd7d0c9dd7d497f09b74d0bece942ae870",
+   "_p3_pilot.py": "7e5fb7b3437c01667598756bf9a177a9c9e5e6236c7d60223ca646edc515aaa8",
+   "_run_best_refine.py": "bd357d7771f25f8fc8a112273e2ffba63aa18ab23bd53add7ea0f0a946c49bb6",
+   "_run_k4_diagnostics.py": "3d08ab465274f517695c25665e87df357fc89b9c03f559f1d61ce2b154d65308",
+   "Aircraft_mumt/aircraft_sim/__init__.py": "1c30dea3f76fb8c840ff26a2318b3a7354e4475237d38ec1f5feef9e148d82e2",
+   "Aircraft_mumt/aircraft_sim/baselines.py": "9af6e9136b654926c93eb2ff791d748d7b7cb77171eb53c08818e61d508f478b",
+   "Aircraft_mumt/aircraft_sim/belief.py": "d3616e05ceddd1d6b489727ae581d3783896549d075828fcf55d2f2c3fccde88",
+   "Aircraft_mumt/aircraft_sim/config.py": "6fc19d45e7989c0f69598cae129448419879be0c1c9f6abd8c3f309188e8d5c6",
+   "Aircraft_mumt/aircraft_sim/detect_baselines.py": "bf916952de3e7413e2d09add2fa50cf7cc797c7161be0e6bacea9f59f889e9b7",
+   "Aircraft_mumt/aircraft_sim/detect_config.py": "7c98eeb5fe61bf261ca6bb4d9ca5f187e2744d92f8a9a2d51b62e9d470c8453e",
+   "Aircraft_mumt/aircraft_sim/detect_encoder.py": "8a1cbb6558521cf5d56aec884d00cb5c4b88c98e577b8804b07e2482a630b4b8",
+   "Aircraft_mumt/aircraft_sim/detect_env.py": "5a5bf6b8fed4b423c49c3a08afca765b2b089026aae9b9e363c56d66293db1bd",
+   "Aircraft_mumt/aircraft_sim/detect_mappo.py": "e5e730fc8ffdb8bbce16281a5f2e3b8266b09bf110ea20daab3666c9c8cd0576",
+   "Aircraft_mumt/aircraft_sim/detect_models.py": "67e16d8116f16bf67e43818a5426b8447e72ab14fd8330d3f67e604c2e901e1b",
+   "Aircraft_mumt/aircraft_sim/detect_rules.py": "b28d3eff3bd35758650c2b971e316e85bb1a3532aaabc4ba962e1faa13d040fc",
+   "Aircraft_mumt/aircraft_sim/detect_shield.py": "a89b1be63d86643060280cc745d7eb7f08961fd70e37f9c1809a992a4d77196b",
+   "Aircraft_mumt/aircraft_sim/env.py": "37d7577017f42790fe5c90b15369128141de175b6d37e1a0ae4c051ee377a4eb",
+   "Aircraft_mumt/aircraft_sim/evaluation.py": "ea0265dcce06af5de53e49d8f0d5fb6089372d59621abec8f66aa8ed3f70de4e",
+   "Aircraft_mumt/aircraft_sim/high_fidelity.py": "f236e48282ca5e31d9b703d195c647d885a367a736dee2c047e1147913328374",
+   "Aircraft_mumt/aircraft_sim/jsbsim_env.py": "e419d4b6f1ff958087ea83bbefb8d99f0d10797bb6d2703508d1ca07834ad576",
+   "Aircraft_mumt/aircraft_sim/mappo.py": "f076ef2dd8742cf277a40e11881f710cfa725244b56689db67b99c9386c07b8f",
+   "Aircraft_mumt/aircraft_sim/metrics.py": "7189025f91ee205a4fa8353f29565a02221ff50806b3c252fc8bb4b3fc4e4d39",
+   "Aircraft_mumt/aircraft_sim/models.py": "19588887f064934e50f6b5e5dc75054070b18d6f8849dadd7e5daf0b1be45be5",
+   "Aircraft_mumt/aircraft_sim/policies.py": "b676b830d1470b8b27d2bdc575f10700de4c979314e443ef968ceec994c1f8a0",
+   "Aircraft_mumt/aircraft_sim/qp_shield.py": "4a1b41548477b851772158efc3f3a4354e67f4292ce4288b47381a9b6599555e",
+   "Aircraft_mumt/aircraft_sim/radar.py": "fdeb7b31f23af73cd297325396a38b0bd0f6f6cd289c512a113760d21d0e790e",
+   "Aircraft_mumt/aircraft_sim/red_agent.py": "14d7a81377c805c77c2fd5bca9eda8cdcace9cf9b76b08bd3e636a2c8e2bf5cc",
+   "Aircraft_mumt/aircraft_sim/risk_calibration.py": "8d2a3a09f4ad82a93eac2d803317a20d9b06e1d6649ad0ceaf9a68fab658d7fd",
+   "Aircraft_mumt/aircraft_sim/rl_api.py": "2a5db9f46e847ef2d099483a8188bee437eae728d6880c6fcd0bb89af93e245c",
+   "Aircraft_mumt/aircraft_sim/rule_graph.py": "ccba638cc81e7873c899afe58d00094e57a1402ad05109fa45120995768e010e",
+   "Aircraft_mumt/aircraft_sim/rules.py": "13cd3567db92eac41885ecd10574dcf8f0149e5ff05544bb6ff40de09e56f036",
+   "Aircraft_mumt/aircraft_sim/scenarios.py": "9e1dee4a3b9406420577e9fab41eed1f07a47c5c608087af0e9bb8810c2b60cb",
+   "Aircraft_mumt/aircraft_sim/shield.py": "70fd21bd78a95be534b93131c7662941996de23f5c53aad86d104b43fe1e9483",
+   "Aircraft_mumt/aircraft_sim/stl.py": "0e1d0087e896d554650a87d8613482563e0f1e9a0065c528979c52abbf77c450",
+   "Aircraft_mumt/aircraft_sim/track.py": "6d392274e4fde68b3c92a2a6e98b2c9fee23d7ce4e84d253d1a5d371325befa2"
+  },
+  "budget": {
+   "iterations": 8,
+   "episodes_per_iter": 8,
+   "validation_every": 2,
+   "training_seed_start": 30000,
+   "validation_seeds": [
+    230,
+    231,
+    232,
+    233,
+    234,
+    235,
+    236,
+    237,
+    238,
+    239
+   ],
+   "early_stopping_patience": 0
+  }
+ },
+ "results": [
+  {
+   "name": "control",
+   "status": "completed",
+   "stdout": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\control.stdout.txt",
+   "returncode": 0,
+   "summary": {
+    "best_iter": -1,
+    "best_checkpoint_sha256": "95b281905510a99bb1859bbc5666da2f454fc486f460dd8e3499a3fab178f1a6",
+    "baseline": {
+     "rl": {
+      "success_rate": 0.7,
+      "mean_return": -4891.3,
+      "violations_per_step": 6.8201
+     },
+     "heur": {
+      "success_rate": 0.8,
+      "mean_return": -4032.2,
+      "violations_per_step": 7.6631
+     }
+    },
+    "baseline_by_seed_sha256": "e813cfb11229ba752b0b92a5cceb4fac44d03fe858268c4cb968a03bb983eefa",
+    "best": {
+     "rl": {
+      "success_rate": 0.7,
+      "mean_return": -4891.3,
+      "violations_per_step": 6.8201
+     },
+     "heur": {
+      "success_rate": 0.8,
+      "mean_return": -4032.2,
+      "violations_per_step": 7.6631
+     },
+     "natural_arbitration": {
+      "rl_multi_candidate_events": 9,
+      "rl_winner_changes_vs_fixed_score": 3,
+      "forced_probe_enabled": false
+     }
+    },
+    "last": {
+     "rl": {
+      "success_rate": 0.4,
+      "mean_return": -8479.8,
+      "violations_per_step": 8.2382
+     },
+     "heur": {
+      "success_rate": 0.8,
+      "mean_return": -4032.2,
+      "violations_per_step": 7.6631
+     }
+    },
+    "total_environment_steps": 42958,
+    "total_agent_steps": 128874,
+    "total_exposed_agent_steps": 608,
+    "last_post_update_policy_anchor_kl": 0.04062955
+   }
+  },
+  {
+   "name": "natural_requests",
+   "status": "completed",
+   "stdout": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\natural_requests.stdout.txt",
+   "returncode": 0,
+   "summary": {
+    "best_iter": -1,
+    "best_checkpoint_sha256": "8821f4b3de214570e0c31691254c5c14fd9aebb82fc1a20fa541f0af8fc2f89a",
+    "baseline": {
+     "rl": {
+      "success_rate": 0.7,
+      "mean_return": -4891.3,
+      "violations_per_step": 6.8201
+     },
+     "heur": {
+      "success_rate": 0.8,
+      "mean_return": -4032.2,
+      "violations_per_step": 7.6631
+     }
+    },
+    "baseline_by_seed_sha256": "e813cfb11229ba752b0b92a5cceb4fac44d03fe858268c4cb968a03bb983eefa",
+    "best": {
+     "rl": {
+      "success_rate": 0.7,
+      "mean_return": -4891.3,
+      "violations_per_step": 6.8201
+     },
+     "heur": {
+      "success_rate": 0.8,
+      "mean_return": -4032.2,
+      "violations_per_step": 7.6631
+     },
+     "natural_arbitration": {
+      "rl_multi_candidate_events": 9,
+      "rl_winner_changes_vs_fixed_score": 3,
+      "forced_probe_enabled": false
+     }
+    },
+    "last": {
+     "rl": {
+      "success_rate": 0.4,
+      "mean_return": -8541.9,
+      "violations_per_step": 8.5415
+     },
+     "heur": {
+      "success_rate": 0.8,
+      "mean_return": -4032.2,
+      "violations_per_step": 7.6631
+     }
+    },
+    "total_environment_steps": 41499,
+    "total_agent_steps": 124497,
+    "total_exposed_agent_steps": 0,
+    "last_post_update_policy_anchor_kl": 0.03612377
+   }
+  },
+  {
+   "name": "full_penalty",
+   "status": "completed",
+   "stdout": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty.stdout.txt",
+   "returncode": 0,
+   "summary": {
+    "best_iter": -1,
+    "best_checkpoint_sha256": "95b281905510a99bb1859bbc5666da2f454fc486f460dd8e3499a3fab178f1a6",
+    "baseline": {
+     "rl": {
+      "success_rate": 0.7,
+      "mean_return": -4891.3,
+      "violations_per_step": 6.8201
+     },
+     "heur": {
+      "success_rate": 0.8,
+      "mean_return": -4032.2,
+      "violations_per_step": 7.6631
+     }
+    },
+    "baseline_by_seed_sha256": "e813cfb11229ba752b0b92a5cceb4fac44d03fe858268c4cb968a03bb983eefa",
+    "best": {
+     "rl": {
+      "success_rate": 0.7,
+      "mean_return": -4891.3,
+      "violations_per_step": 6.8201
+     },
+     "heur": {
+      "success_rate": 0.8,
+      "mean_return": -4032.2,
+      "violations_per_step": 7.6631
+     },
+     "natural_arbitration": {
+      "rl_multi_candidate_events": 9,
+      "rl_winner_changes_vs_fixed_score": 3,
+      "forced_probe_enabled": false
+     }
+    },
+    "last": {
+     "rl": {
+      "success_rate": 0.4,
+      "mean_return": -7515.2,
+      "violations_per_step": 7.4985
+     },
+     "heur": {
+      "success_rate": 0.8,
+      "mean_return": -4032.2,
+      "violations_per_step": 7.6631
+     }
+    },
+    "total_environment_steps": 43057,
+    "total_agent_steps": 129171,
+    "total_exposed_agent_steps": 500,
+    "last_post_update_policy_anchor_kl": 0.05374234
+   }
+  },
+  {
+   "name": "natural_full_penalty",
+   "status": "completed",
+   "stdout": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\natural_full_penalty.stdout.txt",
+   "returncode": 0,
+   "summary": {
+    "best_iter": -1,
+    "best_checkpoint_sha256": "8821f4b3de214570e0c31691254c5c14fd9aebb82fc1a20fa541f0af8fc2f89a",
+    "baseline": {
+     "rl": {
+      "success_rate": 0.7,
+      "mean_return": -4891.3,
+      "violations_per_step": 6.8201
+     },
+     "heur": {
+      "success_rate": 0.8,
+      "mean_return": -4032.2,
+      "violations_per_step": 7.6631
+     }
+    },
+    "baseline_by_seed_sha256": "e813cfb11229ba752b0b92a5cceb4fac44d03fe858268c4cb968a03bb983eefa",
+    "best": {
+     "rl": {
+      "success_rate": 0.7,
+      "mean_return": -4891.3,
+      "violations_per_step": 6.8201
+     },
+     "heur": {
+      "success_rate": 0.8,
+      "mean_return": -4032.2,
+      "violations_per_step": 7.6631
+     },
+     "natural_arbitration": {
+      "rl_multi_candidate_events": 9,
+      "rl_winner_changes_vs_fixed_score": 3,
+      "forced_probe_enabled": false
+     }
+    },
+    "last": {
+     "rl": {
+      "success_rate": 0.7,
+      "mean_return": -7607.6,
+      "violations_per_step": 8.0607
+     },
+     "heur": {
+      "success_rate": 0.8,
+      "mean_return": -4032.2,
+      "violations_per_step": 7.6631
+     }
+    },
+    "total_environment_steps": 41544,
+    "total_agent_steps": 124632,
+    "total_exposed_agent_steps": 0,
+    "last_post_update_policy_anchor_kl": 0.04793329
+   }
+  },
+  {
+   "name": "natural_full_penalty_anchor",
+   "status": "completed",
+   "stdout": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\natural_full_penalty_anchor.stdout.txt",
+   "returncode": 0,
+   "summary": {
+    "best_iter": -1,
+    "best_checkpoint_sha256": "13877dcd097bbe5e2e3e2dee210b882637ad9690da3e0b7b739a143d2a354229",
+    "baseline": {
+     "rl": {
+      "success_rate": 0.7,
+      "mean_return": -4891.3,
+      "violations_per_step": 6.8201
+     },
+     "heur": {
+      "success_rate": 0.8,
+      "mean_return": -4032.2,
+      "violations_per_step": 7.6631
+     }
+    },
+    "baseline_by_seed_sha256": "e813cfb11229ba752b0b92a5cceb4fac44d03fe858268c4cb968a03bb983eefa",
+    "best": {
+     "rl": {
+      "success_rate": 0.7,
+      "mean_return": -4891.3,
+      "violations_per_step": 6.8201
+     },
+     "heur": {
+      "success_rate": 0.8,
+      "mean_return": -4032.2,
+      "violations_per_step": 7.6631
+     },
+     "natural_arbitration": {
+      "rl_multi_candidate_events": 9,
+      "rl_winner_changes_vs_fixed_score": 3,
+      "forced_probe_enabled": false
+     }
+    },
+    "last": {
+     "rl": {
+      "success_rate": 0.5,
+      "mean_return": -6527.3,
+      "violations_per_step": 7.4315
+     },
+     "heur": {
+      "success_rate": 0.8,
+      "mean_return": -4032.2,
+      "violations_per_step": 7.6631
+     }
+    },
+    "total_environment_steps": 40886,
+    "total_agent_steps": 122658,
+    "total_exposed_agent_steps": 0,
+    "last_post_update_policy_anchor_kl": 0.00051911
+   }
+  }
+ ]
+}

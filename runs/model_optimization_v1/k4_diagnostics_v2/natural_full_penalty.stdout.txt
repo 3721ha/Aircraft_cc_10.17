@@ -1,0 +1,18 @@
+[PPO] lr=1e-05 epochs=2 shield_aware=False cf_request_credit=0.25 conflict_exposure=0 bid_only=False policy_anchor_coef=0 direct_rl_arbitration=True
+[curr K=4] mode=best source=D:\Desktop\Aircraft_mumt_cc\runs\model_optimization_v1\curriculum_k4_w8a10\curr_k4_best.pt sha256=386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797
+[initial baseline K=4] RL={'success_rate': 0.7, 'mean_return': -4891.3, 'violations_per_step': 6.8201} HEUR={'success_rate': 0.8, 'mean_return': -4032.2, 'violations_per_step': 7.6631}; preserved before PPO
+D:\Desktop\Aircraft_mumt_cc\Aircraft_mumt\aircraft_sim\detect_mappo.py:774: UserWarning: Creating a tensor from a list of numpy.ndarrays is extremely slow. Please consider converting the list to a single numpy.ndarray with numpy.array() before converting to a tensor. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\torch\csrc\utils\tensor_new.cpp:256.)
+  torch.tensor([team], dtype=torch.float32)).item())
+[curr_k4 00] episodes=8 ret= -8851.4 succ=62% vio/step=8.57 req=1449 C04=609/840 assign=247+17 bid_cf=11/19 bid_info=0.83 bid_grad=2.52e+00 bid_delta=2.37e-04 bid_kl=1.00e-06 anchor_kl=1.27e-03 stable=841 qp=1.00 kl=0.000
+[curr_k4 01] episodes=8 ret= -7097.1 succ=62% vio/step=7.76 req=1669 C04=859/810 assign=392+10 bid_cf=1/7 bid_info=0.47 bid_grad=4.73e+00 bid_delta=1.50e-04 bid_kl=2.00e-06 anchor_kl=3.60e-03 stable=815 qp=1.00 kl=0.000
+  [paired validation K=4] RL=50%/-9479/8.6038 vs HEUR=80%/-4032/7.6631; best=kept (curr_k4_best.pt)
+[curr_k4 02] episodes=8 ret= -9363.0 succ=50% vio/step=8.71 req=1387 C04=603/784 assign=252+10 bid_cf=5/7 bid_info=0.57 bid_grad=7.28e+00 bid_delta=1.67e-04 bid_kl=3.00e-06 anchor_kl=6.31e-03 stable=841 qp=1.00 kl=0.000
+[curr_k4 03] episodes=8 ret= -9537.1 succ=75% vio/step=8.40 req=1273 C04=594/679 assign=206+10 bid_cf=3/7 bid_info=0.85 bid_grad=1.12e+01 bid_delta=9.56e-05 bid_kl=0.00e+00 anchor_kl=1.05e-02 stable=930 qp=1.00 kl=0.000
+  [paired validation K=4] RL=30%/-8252/7.9542 vs HEUR=80%/-4032/7.6631; best=kept (curr_k4_best.pt)
+[curr_k4 04] episodes=8 ret= -9499.9 succ=38% vio/step=8.77 req=1212 C04=552/660 assign=210+8 bid_cf=8/9 bid_info=0.58 bid_grad=4.37e+00 bid_delta=5.06e-05 bid_kl=0.00e+00 anchor_kl=1.74e-02 stable=722 qp=1.00 kl=0.000
+[curr_k4 05] episodes=8 ret= -6999.4 succ=62% vio/step=7.32 req=1482 C04=792/690 assign=301+11 bid_cf=6/14 bid_info=1.00 bid_grad=2.18e+00 bid_delta=7.42e-05 bid_kl=0.00e+00 anchor_kl=2.49e-02 stable=858 qp=1.00 kl=0.000
+  [paired validation K=4] RL=30%/-8344/8.0112 vs HEUR=80%/-4032/7.6631; best=kept (curr_k4_best.pt)
+[curr_k4 06] episodes=8 ret= -7505.1 succ=50% vio/step=7.83 req=1553 C04=857/696 assign=378+15 bid_cf=5/14 bid_info=1.00 bid_grad=1.92e+00 bid_delta=7.64e-05 bid_kl=0.00e+00 anchor_kl=3.53e-02 stable=822 qp=1.00 kl=0.000
+[curr_k4 07] episodes=8 ret= -8778.4 succ=50% vio/step=8.49 req=1433 C04=624/809 assign=247+8 bid_cf=2/2 bid_info=0.67 bid_grad=5.30e+00 bid_delta=9.38e-05 bid_kl=0.00e+00 anchor_kl=4.79e-02 stable=799 qp=1.00 kl=0.000
+  [paired validation K=4] RL=70%/-7608/8.0607 vs HEUR=80%/-4032/7.6631; best=kept (curr_k4_best.pt)
+[best paired validation K=4 iter=-1] RL success=70% vs HEUR=80%; return=-4891.3 vs HEUR -4032.2; violations/step=6.8201 vs HEUR=7.6631; acceptance=FAIL

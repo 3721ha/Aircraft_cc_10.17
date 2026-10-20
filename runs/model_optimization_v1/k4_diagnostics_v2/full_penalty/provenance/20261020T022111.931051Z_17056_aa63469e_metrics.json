@@ -1,0 +1,4734 @@
+{
+ "run_id": "20261020T022111.931051Z_17056_aa63469e",
+ "phase": "curr",
+ "task_config_sha256": "87e5fcd38254e5c1c06f98b7f8a379a9d101cfe7f70dcd78c3c2b2157516e248",
+ "algorithm_config_sha256": "bb27081be4fd6b0d72790ec23859a3487a529f97994bba4c1163c83923b5d452",
+ "source_manifest_sha256": "ff0dab7e66fa2d15ef78d44d21287450788cc4d0e69fd7db5e012c29f71aaa96",
+ "records": {
+  "curr_k4": [
+   {
+    "iter": 0,
+    "run_id": "20261020T022111.931051Z_17056_aa63469e",
+    "mean_return": -9781.8,
+    "mean_environment_return": -9779.4,
+    "episode_seeds": [
+     30000,
+     30001,
+     30002,
+     30003,
+     30004,
+     30005,
+     30006,
+     30007
+    ],
+    "success": 0.75,
+    "vio_per_step": 9.053,
+    "qp_share": 1.0,
+    "approx_kl": 0.0005,
+    "bid_approx_kl": 0.0,
+    "bid_post_update_kl": 2e-06,
+    "policy_anchor_kl": 0.0,
+    "post_update_policy_anchor_kl": 0.00183083,
+    "bid_active_slot_count": 63,
+    "bid_active_slot_count_by_index": [
+     48,
+     15,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "cf_bid_informative_fraction": 0.969231,
+    "bid_gradient_norm": 1.55842566,
+    "bid_parameter_delta_l2": 0.00023751,
+    "w8_scale": 1.0,
+    "k": 4,
+    "agent_steps": 16059,
+    "environment_steps": 5353,
+    "exposed_agent_steps": 66,
+    "nonexposed_agent_fraction": 0.99589,
+    "track_actions": 2613,
+    "track_action_rate": 0.1627,
+    "nonzero_pointer": 1517,
+    "nonzero_pointer_rate": 0.0945,
+    "valid_requests": 1517,
+    "valid_request_rate": 0.0945,
+    "requests": 1517,
+    "c04_pass_requests": 748,
+    "c04_rejected_requests": 769,
+    "request_winners": 716,
+    "new_assignments": 312,
+    "handoffs": 32,
+    "mean_owned_targets": 0.8864,
+    "stable_target_steps": 227,
+    "stable_progress_ticks": 873,
+    "interventions": 5535,
+    "intervention_rate": 0.3447,
+    "mean_correction": 0.539265,
+    "max_stable_progress": 7,
+    "intervention_loss": 0.883989,
+    "intervention_fraction": 0.344667,
+    "cf_nonzero_frac": 0.006165,
+    "gear_gate_active_frac": 0.008718,
+    "gear_gate_credit_mean": -0.008718,
+    "bid_event_frac": 0.004234,
+    "bid_action_mean": -0.011896,
+    "bid_action_std": 0.364131,
+    "bid_events": 34,
+    "bid_events_per_episode": 4.25,
+    "bid_participants": 68,
+    "bid_participation_rate": 0.004234,
+    "bid_event_step_rate": 0.006352,
+    "forced_overlap_pairs": 33,
+    "pointer_exposed_agents": 66,
+    "exposed_multi_candidate_events": 30,
+    "unexposed_multi_candidate_events": 4,
+    "bid_changed_winner": 20,
+    "cf_bid_events": 33,
+    "cf_bid_changed_winner": 15,
+    "cf_bid_directional_slots": 48,
+    "cf_bid_mean_abs_advantage": 0.03559,
+    "rule_conflict_feature_mean": [
+     0.002339,
+     0.028686,
+     0.036864,
+     0.394311,
+     0.021658,
+     0.050509,
+     3e-06,
+     0.293172,
+     0.001494,
+     0.028426,
+     0.500709,
+     0.003471,
+     0.011866
+    ],
+    "rule_conflict_feature_nonzero_rate": [
+     0.010897,
+     0.034124,
+     0.260539,
+     0.592004,
+     0.239865,
+     0.328974,
+     0.000747,
+     0.658136,
+     0.001494,
+     0.076281,
+     0.584906,
+     0.031073,
+     0.097453
+    ],
+    "rule_conflict_any_rate": 0.970671,
+    "checkpoint": {
+     "role": "curriculum_iteration_checkpoint",
+     "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4.pt",
+     "exists": true,
+     "size_bytes": 1613004,
+     "sha256": "d07b64ced3778b7cd64d8584f3f2ed89726833dfc4e59babbe1803d9c8be7ad2",
+     "run_id": "20261020T022111.931051Z_17056_aa63469e",
+     "archive": {
+      "role": "curriculum_iteration_checkpoint_archive",
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\provenance\\20261020T022111.931051Z_17056_aa63469e_curr_k4_iter_000000.pt",
+      "exists": true,
+      "size_bytes": 1613004,
+      "sha256": "d07b64ced3778b7cd64d8584f3f2ed89726833dfc4e59babbe1803d9c8be7ad2",
+      "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4.pt"
+     }
+    }
+   },
+   {
+    "iter": 1,
+    "run_id": "20261020T022111.931051Z_17056_aa63469e",
+    "mean_return": -7613.6,
+    "mean_environment_return": -7611.2,
+    "episode_seeds": [
+     30008,
+     30009,
+     30010,
+     30011,
+     30012,
+     30013,
+     30014,
+     30015
+    ],
+    "success": 0.5,
+    "vio_per_step": 8.041,
+    "qp_share": 1.0,
+    "approx_kl": 0.0004,
+    "bid_approx_kl": 0.0,
+    "bid_post_update_kl": 1e-06,
+    "policy_anchor_kl": 0.0,
+    "post_update_policy_anchor_kl": 0.00674535,
+    "bid_active_slot_count": 87,
+    "bid_active_slot_count_by_index": [
+     34,
+     53,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "cf_bid_informative_fraction": 0.915789,
+    "bid_gradient_norm": 0.83144122,
+    "bid_parameter_delta_l2": 0.00018702,
+    "w8_scale": 1.0,
+    "k": 4,
+    "agent_steps": 16074,
+    "environment_steps": 5358,
+    "exposed_agent_steps": 92,
+    "nonexposed_agent_fraction": 0.994276,
+    "track_actions": 2689,
+    "track_action_rate": 0.1673,
+    "nonzero_pointer": 1603,
+    "nonzero_pointer_rate": 0.0997,
+    "valid_requests": 1597,
+    "valid_request_rate": 0.0994,
+    "requests": 1597,
+    "c04_pass_requests": 773,
+    "c04_rejected_requests": 824,
+    "request_winners": 727,
+    "new_assignments": 328,
+    "handoffs": 22,
+    "mean_owned_targets": 0.743,
+    "stable_target_steps": 211,
+    "stable_progress_ticks": 833,
+    "interventions": 5325,
+    "intervention_rate": 0.3313,
+    "mean_correction": 0.48719,
+    "max_stable_progress": 7,
+    "intervention_loss": 0.802424,
+    "intervention_fraction": 0.33128,
+    "cf_nonzero_frac": 0.006221,
+    "gear_gate_active_frac": 0.009207,
+    "gear_gate_credit_mean": -0.009207,
+    "bid_event_frac": 0.005972,
+    "bid_action_mean": -0.073379,
+    "bid_action_std": 0.387052,
+    "bid_events": 48,
+    "bid_events_per_episode": 6.0,
+    "bid_participants": 96,
+    "bid_participation_rate": 0.005972,
+    "bid_event_step_rate": 0.008959,
+    "forced_overlap_pairs": 46,
+    "pointer_exposed_agents": 92,
+    "exposed_multi_candidate_events": 42,
+    "unexposed_multi_candidate_events": 6,
+    "bid_changed_winner": 19,
+    "cf_bid_events": 44,
+    "cf_bid_changed_winner": 18,
+    "cf_bid_directional_slots": 69,
+    "cf_bid_mean_abs_advantage": 0.05314,
+    "rule_conflict_feature_mean": [
+     0.001656,
+     0.030391,
+     0.030912,
+     0.39792,
+     0.020321,
+     0.054039,
+     0.001316,
+     0.277488,
+     0.001244,
+     0.028314,
+     0.495287,
+     0.003229,
+     0.007126
+    ],
+    "rule_conflict_feature_nonzero_rate": [
+     0.007839,
+     0.035896,
+     0.21401,
+     0.595434,
+     0.250778,
+     0.338186,
+     0.01294,
+     0.663369,
+     0.001244,
+     0.077952,
+     0.581747,
+     0.031044,
+     0.058915
+    ],
+    "rule_conflict_any_rate": 0.959998,
+    "checkpoint": {
+     "role": "curriculum_iteration_checkpoint",
+     "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4.pt",
+     "exists": true,
+     "size_bytes": 1613004,
+     "sha256": "2d719e2553148411eda55f484deee5d2e8d34ece9b117ed51bdbb6366028708f",
+     "run_id": "20261020T022111.931051Z_17056_aa63469e",
+     "archive": {
+      "role": "curriculum_iteration_checkpoint_archive",
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\provenance\\20261020T022111.931051Z_17056_aa63469e_curr_k4_iter_000001.pt",
+      "exists": true,
+      "size_bytes": 1613004,
+      "sha256": "2d719e2553148411eda55f484deee5d2e8d34ece9b117ed51bdbb6366028708f",
+      "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4.pt"
+     }
+    },
+    "validation": {
+     "k": 4,
+     "seeds": [
+      230,
+      231,
+      232,
+      233,
+      234,
+      235,
+      236,
+      237,
+      238,
+      239
+     ],
+     "stable_window": 8,
+     "task_config": {
+      "dt": 1.0,
+      "horizon": 900,
+      "L_X": 160.0,
+      "L_Y": 120.0,
+      "X_CUTOFF": 40.0,
+      "X_TRACK": 110.0,
+      "AGE_STD_TRACK": 10.0,
+      "AGE_STD_DETECT": 5.0,
+      "STABLE_WINDOW": 8,
+      "N_WINGMEN": 3,
+      "BLUE_V_MIN_MA": 0.4,
+      "BLUE_V_MAX_MA": 0.95,
+      "OMEGA_CRUISE_DEG": 3.0,
+      "OMEGA_MANEUVER_DEG": 6.0,
+      "ACCEL_MAX_MA_S": 0.1,
+      "K_PSI": 1.0,
+      "K_V_MS": 30.0,
+      "MANNED_V_MIN_MA": 0.5,
+      "MANNED_V_MAX_MA": 0.9,
+      "MANNED_OMEGA_DEG": 3.0,
+      "K_RED": 4,
+      "RED_CRUISE_MA": 0.75,
+      "RED_MANEUVER_MA_RANGE": [
+       0.6,
+       0.9
+      ],
+      "RED_OMEGA_DEG": 8.0,
+      "RED_DUTY_MIN": 0.7,
+      "RED_DUTY_MAX": 0.8,
+      "RED_STAGGER_KM": 8.0,
+      "RED_X0": 158.0,
+      "RED_MANEUVER_RESAMPLE": [
+       20,
+       40
+      ],
+      "RED_TURN_POISSON_MEAN": 30.0,
+      "RED_SNAKE_HALF_ANGLE_DEG": 30.0,
+      "RED_SNAKE_PERIOD": 20.0,
+      "RED_EDGE_SUPPRESS_KM": 5.0,
+      "RED_REGAIN_T": [
+       12.0,
+       20.0
+      ],
+      "RED_REGAIN_SPREAD_DEG": 30.0,
+      "RED_SEP_WARN_KM": 18.0,
+      "RED_SEP_HARD_KM": 2.0,
+      "RED_SEP_BIAS_DEG": 45.0,
+      "RED_PAIR_SUBLANE_KM": 4.0,
+      "R_MAX": 80.0,
+      "FOV_HALF_DEG": 7.5,
+      "BEAM_DWELL": 0.5,
+      "GEAR_FRAME": {
+       "7.5": 0.5,
+       "15.0": 1.0,
+       "30.0": 2.0,
+       "45.0": 3.0,
+       "60.0": 4.0
+      },
+      "GEARS_SEARCH": [
+       45.0,
+       60.0
+      ],
+      "GEARS_TRACK": [
+       7.5,
+       15.0,
+       30.0,
+       45.0
+      ],
+      "PD_TIERS": [
+       [
+        0.5,
+        0.9
+       ],
+       [
+        0.8,
+        0.6
+       ],
+       [
+        1.0,
+        0.3
+       ]
+      ],
+      "SECTOR_AXIS_MAX_DEG": 60.0,
+      "AXIS_TRIM_SCALE_DEG": 15.0,
+      "TRACK_INIT_HITS": 2,
+      "TRACK_INIT_WINDOW": 6.5,
+      "TRACK_CONFIRM_TIME": 5.0,
+      "TRACK_CONFIRM_GAP_MAX": 1.6,
+      "AGE_DEGRADE": 8.0,
+      "AGE_DROP": 13.0,
+      "COV_SHRINK": 0.8,
+      "COV_Q_KM2_S": 0.25,
+      "SIGMA_REF": 4.0,
+      "MAR": 40.0,
+      "MOR": 60.0,
+      "MAR_MOR_VARIANTS": [
+       [
+        40.0,
+        60.0
+       ],
+       [
+        30.0,
+        50.0
+       ],
+       [
+        20.0,
+        40.0
+       ]
+      ],
+      "K_SIGMA": 3.0,
+      "MOR_GRADIENT_SPAN": 20.0,
+      "D_SAFE": 2.0,
+      "D_SAFE_LOOKAHEAD": 3.0,
+      "BOUNDARY_PREDICT": 5.0,
+      "LINK_RATE_HZ": 1.0,
+      "LINK_DELAY_S": 1.0,
+      "T_SCAN_REQ": 120.0,
+      "HANDOFF_MIN_INTERVAL": 30.0,
+      "HANDOFF_INTERVAL_SWEEP": [
+       10.0,
+       20.0,
+       30.0
+      ],
+      "C04_RANGE": 80.0,
+      "C04_RESPONSE": 5.0,
+      "T_DWELL": 5.0,
+      "APPROVAL_DELAY_INIT": 0.0,
+      "LINK_DROP_RATE": 0.3,
+      "LINK_DROP_WINDOW": 10.0,
+      "UPLINK_LOSS_P": 0.05,
+      "E03_AREA_PER_KM": 5.0,
+      "N_SUBZONES": 3,
+      "TRACK_SWEET_DIST": 62.0,
+      "TRACK_K_D": 0.0025,
+      "CAP_X": 15.0,
+      "CAP_Y": 60.0,
+      "CAP_LEG_Y": 10.0,
+      "CAP_LEG_X": 5.0,
+      "ARB_WEIGHTS": [
+       1.0,
+       1.0,
+       0.5,
+       0.5,
+       0.3
+      ],
+      "ARB_HYSTERESIS": 0.2,
+      "ARB_BID_WEIGHT": 0.35,
+      "W1_TRACK_TICK": 0.02,
+      "W2_DETECT_TICK": 0.005,
+      "W3_STABLE": 10.0,
+      "W4_SUCCESS": 50.0,
+      "W5_MOR_GRAD": 0.02,
+      "W6_MAR": 0.1,
+      "W7_HANDOFF": 0.5,
+      "W8_LAYER": [
+       10.0,
+       7.5,
+       10.0,
+       5.0,
+       2.5,
+       1.25
+      ],
+      "W8_SCALE": 1.0,
+      "M05_GRACE": 5.0,
+      "W9_FAILURE": 50.0,
+      "STEP_COST": 0.005,
+      "OBS_DIM": 169,
+      "TRACK_SLOTS": 8,
+      "NET_HIDDEN": 128,
+      "TOTAL_STEPS": 1500000,
+      "N_ENVS": 16,
+      "N_SEEDS": 10,
+      "BC_EPOCHS": [
+       50,
+       100
+      ],
+      "CONVERGE_WINDOW": 100,
+      "seed": 7
+     },
+     "task_config_sha256": "87e5fcd38254e5c1c06f98b7f8a379a9d101cfe7f70dcd78c3c2b2157516e248",
+     "rl": {
+      "success_rate": 0.4,
+      "mean_return": -8245.9,
+      "violations_per_step": 7.7415
+     },
+     "heur": {
+      "success_rate": 0.8,
+      "mean_return": -4032.2,
+      "violations_per_step": 7.6631
+     },
+     "natural_arbitration": {
+      "rl_multi_candidate_events": 0,
+      "rl_winner_changes_vs_fixed_score": 0,
+      "forced_probe_enabled": false
+     },
+     "by_seed": [
+      {
+       "seed": 230,
+       "rl": {
+        "seed": 230,
+        "terminal": "failure",
+        "return": -8944.5,
+        "steps": 697,
+        "violations": 6038,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 230,
+        "terminal": "failure",
+        "return": -8114.4,
+        "steps": 771,
+        "violations": 7506
+       }
+      },
+      {
+       "seed": 231,
+       "rl": {
+        "seed": 231,
+        "terminal": "success",
+        "return": -10732.1,
+        "steps": 716,
+        "violations": 6241,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 231,
+        "terminal": "success",
+        "return": -2397.5,
+        "steps": 587,
+        "violations": 4105
+       }
+      },
+      {
+       "seed": 232,
+       "rl": {
+        "seed": 232,
+        "terminal": "failure",
+        "return": -5684.5,
+        "steps": 680,
+        "violations": 4763,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 232,
+        "terminal": "failure",
+        "return": -10074.8,
+        "steps": 691,
+        "violations": 6661
+       }
+      },
+      {
+       "seed": 233,
+       "rl": {
+        "seed": 233,
+        "terminal": "failure",
+        "return": -6140.8,
+        "steps": 670,
+        "violations": 4228,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 233,
+        "terminal": "success",
+        "return": -1381.6,
+        "steps": 379,
+        "violations": 1913
+       }
+      },
+      {
+       "seed": 234,
+       "rl": {
+        "seed": 234,
+        "terminal": "failure",
+        "return": -7270.1,
+        "steps": 632,
+        "violations": 4775,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 234,
+        "terminal": "success",
+        "return": -2945.6,
+        "steps": 600,
+        "violations": 4532
+       }
+      },
+      {
+       "seed": 235,
+       "rl": {
+        "seed": 235,
+        "terminal": "success",
+        "return": -6895.7,
+        "steps": 637,
+        "violations": 4822,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 235,
+        "terminal": "success",
+        "return": -7979.4,
+        "steps": 753,
+        "violations": 6928
+       }
+      },
+      {
+       "seed": 236,
+       "rl": {
+        "seed": 236,
+        "terminal": "success",
+        "return": -7800.0,
+        "steps": 728,
+        "violations": 5989,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 236,
+        "terminal": "success",
+        "return": -3761.9,
+        "steps": 671,
+        "violations": 5612
+       }
+      },
+      {
+       "seed": 237,
+       "rl": {
+        "seed": 237,
+        "terminal": "success",
+        "return": -2635.8,
+        "steps": 540,
+        "violations": 2975,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 237,
+        "terminal": "success",
+        "return": -1137.3,
+        "steps": 363,
+        "violations": 1595
+       }
+      },
+      {
+       "seed": 238,
+       "rl": {
+        "seed": 238,
+        "terminal": "failure",
+        "return": -19304.3,
+        "steps": 735,
+        "violations": 7005,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 238,
+        "terminal": "success",
+        "return": -1410.0,
+        "steps": 455,
+        "violations": 2412
+       }
+      },
+      {
+       "seed": 239,
+       "rl": {
+        "seed": 239,
+        "terminal": "failure",
+        "return": -7051.0,
+        "steps": 732,
+        "violations": 5551,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 239,
+        "terminal": "success",
+        "return": -1119.9,
+        "steps": 391,
+        "violations": 2117
+       }
+      }
+     ],
+     "run_id": "20261020T022111.931051Z_17056_aa63469e",
+     "source_manifest_sha256": "ff0dab7e66fa2d15ef78d44d21287450788cc4d0e69fd7db5e012c29f71aaa96",
+     "checkpoint": {
+      "role": "curriculum_validation_checkpoint",
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4.pt",
+      "exists": true,
+      "size_bytes": 1613004,
+      "sha256": "2d719e2553148411eda55f484deee5d2e8d34ece9b117ed51bdbb6366028708f"
+     },
+     "stage": "ppo_update",
+     "iter": 1
+    }
+   },
+   {
+    "iter": 2,
+    "run_id": "20261020T022111.931051Z_17056_aa63469e",
+    "mean_return": -10006.3,
+    "mean_environment_return": -10004.2,
+    "episode_seeds": [
+     30016,
+     30017,
+     30018,
+     30019,
+     30020,
+     30021,
+     30022,
+     30023
+    ],
+    "success": 0.25,
+    "vio_per_step": 9.216,
+    "qp_share": 1.0,
+    "approx_kl": 0.0004,
+    "bid_approx_kl": 0.0,
+    "bid_post_update_kl": 2e-06,
+    "policy_anchor_kl": 0.0,
+    "post_update_policy_anchor_kl": 0.01403477,
+    "bid_active_slot_count": 52,
+    "bid_active_slot_count_by_index": [
+     21,
+     22,
+     9,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "cf_bid_informative_fraction": 1.0,
+    "bid_gradient_norm": 3.43454838,
+    "bid_parameter_delta_l2": 0.00018221,
+    "w8_scale": 1.0,
+    "k": 4,
+    "agent_steps": 16833,
+    "environment_steps": 5611,
+    "exposed_agent_steps": 52,
+    "nonexposed_agent_fraction": 0.996911,
+    "track_actions": 2638,
+    "track_action_rate": 0.1567,
+    "nonzero_pointer": 1418,
+    "nonzero_pointer_rate": 0.0842,
+    "valid_requests": 1416,
+    "valid_request_rate": 0.0841,
+    "requests": 1416,
+    "c04_pass_requests": 682,
+    "c04_rejected_requests": 734,
+    "request_winners": 657,
+    "new_assignments": 284,
+    "handoffs": 18,
+    "mean_owned_targets": 0.7036,
+    "stable_target_steps": 202,
+    "stable_progress_ticks": 781,
+    "interventions": 5691,
+    "intervention_rate": 0.3381,
+    "mean_correction": 0.559087,
+    "max_stable_progress": 7,
+    "intervention_loss": 0.964434,
+    "intervention_fraction": 0.338086,
+    "cf_nonzero_frac": 0.005287,
+    "gear_gate_active_frac": 0.005465,
+    "gear_gate_credit_mean": -0.005465,
+    "bid_event_frac": 0.003208,
+    "bid_action_mean": 0.044772,
+    "bid_action_std": 0.379237,
+    "bid_events": 27,
+    "bid_events_per_episode": 3.375,
+    "bid_participants": 54,
+    "bid_participation_rate": 0.003208,
+    "bid_event_step_rate": 0.004812,
+    "forced_overlap_pairs": 26,
+    "pointer_exposed_agents": 52,
+    "exposed_multi_candidate_events": 23,
+    "unexposed_multi_candidate_events": 4,
+    "bid_changed_winner": 8,
+    "cf_bid_events": 27,
+    "cf_bid_changed_winner": 16,
+    "cf_bid_directional_slots": 36,
+    "cf_bid_mean_abs_advantage": 0.079228,
+    "rule_conflict_feature_mean": [
+     0.002262,
+     0.028634,
+     0.029295,
+     0.399891,
+     0.021101,
+     0.049226,
+     0.002389,
+     0.288211,
+     0.002139,
+     0.024425,
+     0.485431,
+     0.002547,
+     0.011269
+    ],
+    "rule_conflict_feature_nonzero_rate": [
+     0.00998,
+     0.033387,
+     0.210123,
+     0.593774,
+     0.230915,
+     0.317234,
+     0.014733,
+     0.648488,
+     0.002139,
+     0.066001,
+     0.556585,
+     0.022694,
+     0.092081
+    ],
+    "rule_conflict_any_rate": 0.961326,
+    "checkpoint": {
+     "role": "curriculum_iteration_checkpoint",
+     "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4.pt",
+     "exists": true,
+     "size_bytes": 1613004,
+     "sha256": "e5678bc831cc7d493b8f2722e1dc07d770eed6bdd6045d16135bec3d2f29ca91",
+     "run_id": "20261020T022111.931051Z_17056_aa63469e",
+     "archive": {
+      "role": "curriculum_iteration_checkpoint_archive",
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\provenance\\20261020T022111.931051Z_17056_aa63469e_curr_k4_iter_000002.pt",
+      "exists": true,
+      "size_bytes": 1613004,
+      "sha256": "e5678bc831cc7d493b8f2722e1dc07d770eed6bdd6045d16135bec3d2f29ca91",
+      "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4.pt"
+     }
+    }
+   },
+   {
+    "iter": 3,
+    "run_id": "20261020T022111.931051Z_17056_aa63469e",
+    "mean_return": -8546.7,
+    "mean_environment_return": -8544.9,
+    "episode_seeds": [
+     30024,
+     30025,
+     30026,
+     30027,
+     30028,
+     30029,
+     30030,
+     30031
+    ],
+    "success": 0.625,
+    "vio_per_step": 8.829,
+    "qp_share": 1.0,
+    "approx_kl": 0.0002,
+    "bid_approx_kl": 0.0,
+    "bid_post_update_kl": 0.0,
+    "policy_anchor_kl": 0.0,
+    "post_update_policy_anchor_kl": 0.02172477,
+    "bid_active_slot_count": 61,
+    "bid_active_slot_count_by_index": [
+     53,
+     7,
+     1,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "cf_bid_informative_fraction": 0.910448,
+    "bid_gradient_norm": 1.49607277,
+    "bid_parameter_delta_l2": 0.00012118,
+    "w8_scale": 1.0,
+    "k": 4,
+    "agent_steps": 16011,
+    "environment_steps": 5337,
+    "exposed_agent_steps": 58,
+    "nonexposed_agent_fraction": 0.996377,
+    "track_actions": 2615,
+    "track_action_rate": 0.1633,
+    "nonzero_pointer": 1417,
+    "nonzero_pointer_rate": 0.0885,
+    "valid_requests": 1414,
+    "valid_request_rate": 0.0883,
+    "requests": 1414,
+    "c04_pass_requests": 713,
+    "c04_rejected_requests": 701,
+    "request_winners": 681,
+    "new_assignments": 194,
+    "handoffs": 24,
+    "mean_owned_targets": 0.8861,
+    "stable_target_steps": 223,
+    "stable_progress_ticks": 877,
+    "interventions": 5134,
+    "intervention_rate": 0.3207,
+    "mean_correction": 0.418954,
+    "max_stable_progress": 7,
+    "intervention_loss": 0.68012,
+    "intervention_fraction": 0.320655,
+    "cf_nonzero_frac": 0.005746,
+    "gear_gate_active_frac": 0.007245,
+    "gear_gate_credit_mean": -0.007245,
+    "bid_event_frac": 0.004247,
+    "bid_action_mean": -0.158732,
+    "bid_action_std": 0.404135,
+    "bid_events": 34,
+    "bid_events_per_episode": 4.25,
+    "bid_participants": 68,
+    "bid_participation_rate": 0.004247,
+    "bid_event_step_rate": 0.006371,
+    "forced_overlap_pairs": 29,
+    "pointer_exposed_agents": 58,
+    "exposed_multi_candidate_events": 27,
+    "unexposed_multi_candidate_events": 7,
+    "bid_changed_winner": 16,
+    "cf_bid_events": 31,
+    "cf_bid_changed_winner": 19,
+    "cf_bid_directional_slots": 42,
+    "cf_bid_mean_abs_advantage": 0.062378,
+    "rule_conflict_feature_mean": [
+     0.001591,
+     0.026763,
+     0.036881,
+     0.3972,
+     0.022145,
+     0.053401,
+     0.01095,
+     0.249968,
+     0.000999,
+     0.029891,
+     0.490008,
+     0.001583,
+     0.011758
+    ],
+    "rule_conflict_feature_nonzero_rate": [
+     0.008119,
+     0.029979,
+     0.275623,
+     0.598089,
+     0.248017,
+     0.337268,
+     0.029105,
+     0.620636,
+     0.000999,
+     0.077697,
+     0.579726,
+     0.015989,
+     0.098058
+    ],
+    "rule_conflict_any_rate": 0.961027,
+    "checkpoint": {
+     "role": "curriculum_iteration_checkpoint",
+     "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4.pt",
+     "exists": true,
+     "size_bytes": 1613004,
+     "sha256": "b4562b8833f46aac9e1870f2945cbe7d8f53e825da946294e4df1f49b27902d6",
+     "run_id": "20261020T022111.931051Z_17056_aa63469e",
+     "archive": {
+      "role": "curriculum_iteration_checkpoint_archive",
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\provenance\\20261020T022111.931051Z_17056_aa63469e_curr_k4_iter_000003.pt",
+      "exists": true,
+      "size_bytes": 1613004,
+      "sha256": "b4562b8833f46aac9e1870f2945cbe7d8f53e825da946294e4df1f49b27902d6",
+      "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4.pt"
+     }
+    },
+    "validation": {
+     "k": 4,
+     "seeds": [
+      230,
+      231,
+      232,
+      233,
+      234,
+      235,
+      236,
+      237,
+      238,
+      239
+     ],
+     "stable_window": 8,
+     "task_config": {
+      "dt": 1.0,
+      "horizon": 900,
+      "L_X": 160.0,
+      "L_Y": 120.0,
+      "X_CUTOFF": 40.0,
+      "X_TRACK": 110.0,
+      "AGE_STD_TRACK": 10.0,
+      "AGE_STD_DETECT": 5.0,
+      "STABLE_WINDOW": 8,
+      "N_WINGMEN": 3,
+      "BLUE_V_MIN_MA": 0.4,
+      "BLUE_V_MAX_MA": 0.95,
+      "OMEGA_CRUISE_DEG": 3.0,
+      "OMEGA_MANEUVER_DEG": 6.0,
+      "ACCEL_MAX_MA_S": 0.1,
+      "K_PSI": 1.0,
+      "K_V_MS": 30.0,
+      "MANNED_V_MIN_MA": 0.5,
+      "MANNED_V_MAX_MA": 0.9,
+      "MANNED_OMEGA_DEG": 3.0,
+      "K_RED": 4,
+      "RED_CRUISE_MA": 0.75,
+      "RED_MANEUVER_MA_RANGE": [
+       0.6,
+       0.9
+      ],
+      "RED_OMEGA_DEG": 8.0,
+      "RED_DUTY_MIN": 0.7,
+      "RED_DUTY_MAX": 0.8,
+      "RED_STAGGER_KM": 8.0,
+      "RED_X0": 158.0,
+      "RED_MANEUVER_RESAMPLE": [
+       20,
+       40
+      ],
+      "RED_TURN_POISSON_MEAN": 30.0,
+      "RED_SNAKE_HALF_ANGLE_DEG": 30.0,
+      "RED_SNAKE_PERIOD": 20.0,
+      "RED_EDGE_SUPPRESS_KM": 5.0,
+      "RED_REGAIN_T": [
+       12.0,
+       20.0
+      ],
+      "RED_REGAIN_SPREAD_DEG": 30.0,
+      "RED_SEP_WARN_KM": 18.0,
+      "RED_SEP_HARD_KM": 2.0,
+      "RED_SEP_BIAS_DEG": 45.0,
+      "RED_PAIR_SUBLANE_KM": 4.0,
+      "R_MAX": 80.0,
+      "FOV_HALF_DEG": 7.5,
+      "BEAM_DWELL": 0.5,
+      "GEAR_FRAME": {
+       "7.5": 0.5,
+       "15.0": 1.0,
+       "30.0": 2.0,
+       "45.0": 3.0,
+       "60.0": 4.0
+      },
+      "GEARS_SEARCH": [
+       45.0,
+       60.0
+      ],
+      "GEARS_TRACK": [
+       7.5,
+       15.0,
+       30.0,
+       45.0
+      ],
+      "PD_TIERS": [
+       [
+        0.5,
+        0.9
+       ],
+       [
+        0.8,
+        0.6
+       ],
+       [
+        1.0,
+        0.3
+       ]
+      ],
+      "SECTOR_AXIS_MAX_DEG": 60.0,
+      "AXIS_TRIM_SCALE_DEG": 15.0,
+      "TRACK_INIT_HITS": 2,
+      "TRACK_INIT_WINDOW": 6.5,
+      "TRACK_CONFIRM_TIME": 5.0,
+      "TRACK_CONFIRM_GAP_MAX": 1.6,
+      "AGE_DEGRADE": 8.0,
+      "AGE_DROP": 13.0,
+      "COV_SHRINK": 0.8,
+      "COV_Q_KM2_S": 0.25,
+      "SIGMA_REF": 4.0,
+      "MAR": 40.0,
+      "MOR": 60.0,
+      "MAR_MOR_VARIANTS": [
+       [
+        40.0,
+        60.0
+       ],
+       [
+        30.0,
+        50.0
+       ],
+       [
+        20.0,
+        40.0
+       ]
+      ],
+      "K_SIGMA": 3.0,
+      "MOR_GRADIENT_SPAN": 20.0,
+      "D_SAFE": 2.0,
+      "D_SAFE_LOOKAHEAD": 3.0,
+      "BOUNDARY_PREDICT": 5.0,
+      "LINK_RATE_HZ": 1.0,
+      "LINK_DELAY_S": 1.0,
+      "T_SCAN_REQ": 120.0,
+      "HANDOFF_MIN_INTERVAL": 30.0,
+      "HANDOFF_INTERVAL_SWEEP": [
+       10.0,
+       20.0,
+       30.0
+      ],
+      "C04_RANGE": 80.0,
+      "C04_RESPONSE": 5.0,
+      "T_DWELL": 5.0,
+      "APPROVAL_DELAY_INIT": 0.0,
+      "LINK_DROP_RATE": 0.3,
+      "LINK_DROP_WINDOW": 10.0,
+      "UPLINK_LOSS_P": 0.05,
+      "E03_AREA_PER_KM": 5.0,
+      "N_SUBZONES": 3,
+      "TRACK_SWEET_DIST": 62.0,
+      "TRACK_K_D": 0.0025,
+      "CAP_X": 15.0,
+      "CAP_Y": 60.0,
+      "CAP_LEG_Y": 10.0,
+      "CAP_LEG_X": 5.0,
+      "ARB_WEIGHTS": [
+       1.0,
+       1.0,
+       0.5,
+       0.5,
+       0.3
+      ],
+      "ARB_HYSTERESIS": 0.2,
+      "ARB_BID_WEIGHT": 0.35,
+      "W1_TRACK_TICK": 0.02,
+      "W2_DETECT_TICK": 0.005,
+      "W3_STABLE": 10.0,
+      "W4_SUCCESS": 50.0,
+      "W5_MOR_GRAD": 0.02,
+      "W6_MAR": 0.1,
+      "W7_HANDOFF": 0.5,
+      "W8_LAYER": [
+       10.0,
+       7.5,
+       10.0,
+       5.0,
+       2.5,
+       1.25
+      ],
+      "W8_SCALE": 1.0,
+      "M05_GRACE": 5.0,
+      "W9_FAILURE": 50.0,
+      "STEP_COST": 0.005,
+      "OBS_DIM": 169,
+      "TRACK_SLOTS": 8,
+      "NET_HIDDEN": 128,
+      "TOTAL_STEPS": 1500000,
+      "N_ENVS": 16,
+      "N_SEEDS": 10,
+      "BC_EPOCHS": [
+       50,
+       100
+      ],
+      "CONVERGE_WINDOW": 100,
+      "seed": 7
+     },
+     "task_config_sha256": "87e5fcd38254e5c1c06f98b7f8a379a9d101cfe7f70dcd78c3c2b2157516e248",
+     "rl": {
+      "success_rate": 0.4,
+      "mean_return": -8092.8,
+      "violations_per_step": 8.2036
+     },
+     "heur": {
+      "success_rate": 0.8,
+      "mean_return": -4032.2,
+      "violations_per_step": 7.6631
+     },
+     "natural_arbitration": {
+      "rl_multi_candidate_events": 6,
+      "rl_winner_changes_vs_fixed_score": 1,
+      "forced_probe_enabled": false
+     },
+     "by_seed": [
+      {
+       "seed": 230,
+       "rl": {
+        "seed": 230,
+        "terminal": "failure",
+        "return": -8312.3,
+        "steps": 697,
+        "violations": 5464,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 230,
+        "terminal": "failure",
+        "return": -8114.4,
+        "steps": 771,
+        "violations": 7506
+       }
+      },
+      {
+       "seed": 231,
+       "rl": {
+        "seed": 231,
+        "terminal": "success",
+        "return": -5906.6,
+        "steps": 619,
+        "violations": 4691,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 231,
+        "terminal": "success",
+        "return": -2397.5,
+        "steps": 587,
+        "violations": 4105
+       }
+      },
+      {
+       "seed": 232,
+       "rl": {
+        "seed": 232,
+        "terminal": "success",
+        "return": -9636.8,
+        "steps": 666,
+        "violations": 5542,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 232,
+        "terminal": "failure",
+        "return": -10074.8,
+        "steps": 691,
+        "violations": 6661
+       }
+      },
+      {
+       "seed": 233,
+       "rl": {
+        "seed": 233,
+        "terminal": "failure",
+        "return": -8515.8,
+        "steps": 670,
+        "violations": 6354,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 233,
+        "terminal": "success",
+        "return": -1381.6,
+        "steps": 379,
+        "violations": 1913
+       }
+      },
+      {
+       "seed": 234,
+       "rl": {
+        "seed": 234,
+        "terminal": "success",
+        "return": -4930.9,
+        "steps": 556,
+        "violations": 3814,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 234,
+        "terminal": "success",
+        "return": -2945.6,
+        "steps": 600,
+        "violations": 4532
+       }
+      },
+      {
+       "seed": 235,
+       "rl": {
+        "seed": 235,
+        "terminal": "failure",
+        "return": -6192.8,
+        "steps": 762,
+        "violations": 6805,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 235,
+        "terminal": "success",
+        "return": -7979.4,
+        "steps": 753,
+        "violations": 6928
+       }
+      },
+      {
+       "seed": 236,
+       "rl": {
+        "seed": 236,
+        "terminal": "success",
+        "return": -6944.8,
+        "steps": 626,
+        "violations": 5026,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 236,
+        "terminal": "success",
+        "return": -3761.9,
+        "steps": 671,
+        "violations": 5612
+       }
+      },
+      {
+       "seed": 237,
+       "rl": {
+        "seed": 237,
+        "terminal": "failure",
+        "return": -7764.9,
+        "steps": 706,
+        "violations": 6114,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 237,
+        "terminal": "success",
+        "return": -1137.3,
+        "steps": 363,
+        "violations": 1595
+       }
+      },
+      {
+       "seed": 238,
+       "rl": {
+        "seed": 238,
+        "terminal": "failure",
+        "return": -15389.1,
+        "steps": 735,
+        "violations": 6103,
+        "multi_candidate_events": 6,
+        "winner_changes_vs_fixed_score": 1
+       },
+       "heur": {
+        "seed": 238,
+        "terminal": "success",
+        "return": -1410.0,
+        "steps": 455,
+        "violations": 2412
+       }
+      },
+      {
+       "seed": 239,
+       "rl": {
+        "seed": 239,
+        "terminal": "failure",
+        "return": -7333.9,
+        "steps": 732,
+        "violations": 5617,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 239,
+        "terminal": "success",
+        "return": -1119.9,
+        "steps": 391,
+        "violations": 2117
+       }
+      }
+     ],
+     "run_id": "20261020T022111.931051Z_17056_aa63469e",
+     "source_manifest_sha256": "ff0dab7e66fa2d15ef78d44d21287450788cc4d0e69fd7db5e012c29f71aaa96",
+     "checkpoint": {
+      "role": "curriculum_validation_checkpoint",
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4.pt",
+      "exists": true,
+      "size_bytes": 1613004,
+      "sha256": "b4562b8833f46aac9e1870f2945cbe7d8f53e825da946294e4df1f49b27902d6"
+     },
+     "stage": "ppo_update",
+     "iter": 3
+    }
+   },
+   {
+    "iter": 4,
+    "run_id": "20261020T022111.931051Z_17056_aa63469e",
+    "mean_return": -8175.8,
+    "mean_environment_return": -8173.7,
+    "episode_seeds": [
+     30032,
+     30033,
+     30034,
+     30035,
+     30036,
+     30037,
+     30038,
+     30039
+    ],
+    "success": 0.5,
+    "vio_per_step": 8.275,
+    "qp_share": 1.0,
+    "approx_kl": 0.0002,
+    "bid_approx_kl": 0.0,
+    "bid_post_update_kl": 0.0,
+    "policy_anchor_kl": 0.0,
+    "post_update_policy_anchor_kl": 0.03027445,
+    "bid_active_slot_count": 52,
+    "bid_active_slot_count_by_index": [
+     32,
+     20,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "cf_bid_informative_fraction": 0.962963,
+    "bid_gradient_norm": 3.55630231,
+    "bid_parameter_delta_l2": 0.00010982,
+    "w8_scale": 1.0,
+    "k": 4,
+    "agent_steps": 16755,
+    "environment_steps": 5585,
+    "exposed_agent_steps": 52,
+    "nonexposed_agent_fraction": 0.996896,
+    "track_actions": 2667,
+    "track_action_rate": 0.1592,
+    "nonzero_pointer": 1559,
+    "nonzero_pointer_rate": 0.093,
+    "valid_requests": 1554,
+    "valid_request_rate": 0.0927,
+    "requests": 1554,
+    "c04_pass_requests": 654,
+    "c04_rejected_requests": 900,
+    "request_winners": 628,
+    "new_assignments": 323,
+    "handoffs": 19,
+    "mean_owned_targets": 0.5006,
+    "stable_target_steps": 199,
+    "stable_progress_ticks": 787,
+    "interventions": 5720,
+    "intervention_rate": 0.3414,
+    "mean_correction": 0.536672,
+    "max_stable_progress": 7,
+    "intervention_loss": 0.905587,
+    "intervention_fraction": 0.341391,
+    "cf_nonzero_frac": 0.005551,
+    "gear_gate_active_frac": 0.007819,
+    "gear_gate_credit_mean": -0.007819,
+    "bid_event_frac": 0.003342,
+    "bid_action_mean": -0.025661,
+    "bid_action_std": 0.432651,
+    "bid_events": 28,
+    "bid_events_per_episode": 3.5,
+    "bid_participants": 56,
+    "bid_participation_rate": 0.003342,
+    "bid_event_step_rate": 0.005013,
+    "forced_overlap_pairs": 26,
+    "pointer_exposed_agents": 52,
+    "exposed_multi_candidate_events": 24,
+    "unexposed_multi_candidate_events": 4,
+    "bid_changed_winner": 13,
+    "cf_bid_events": 28,
+    "cf_bid_changed_winner": 10,
+    "cf_bid_directional_slots": 42,
+    "cf_bid_mean_abs_advantage": 0.047561,
+    "rule_conflict_feature_mean": [
+     0.002282,
+     0.025873,
+     0.02083,
+     0.402473,
+     0.021947,
+     0.050261,
+     0.008079,
+     0.284371,
+     0.002745,
+     0.019838,
+     0.517653,
+     0.000931,
+     0.005252
+    ],
+    "rule_conflict_feature_nonzero_rate": [
+     0.009669,
+     0.02823,
+     0.157087,
+     0.600358,
+     0.239869,
+     0.325515,
+     0.024351,
+     0.657535,
+     0.002745,
+     0.059027,
+     0.605372,
+     0.008415,
+     0.044703
+    ],
+    "rule_conflict_any_rate": 0.971113,
+    "checkpoint": {
+     "role": "curriculum_iteration_checkpoint",
+     "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4.pt",
+     "exists": true,
+     "size_bytes": 1613004,
+     "sha256": "9aae6f6a032063398afec5be26c5762333da4c134f94197ab96e3dc8a94139fa",
+     "run_id": "20261020T022111.931051Z_17056_aa63469e",
+     "archive": {
+      "role": "curriculum_iteration_checkpoint_archive",
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\provenance\\20261020T022111.931051Z_17056_aa63469e_curr_k4_iter_000004.pt",
+      "exists": true,
+      "size_bytes": 1613004,
+      "sha256": "9aae6f6a032063398afec5be26c5762333da4c134f94197ab96e3dc8a94139fa",
+      "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4.pt"
+     }
+    }
+   },
+   {
+    "iter": 5,
+    "run_id": "20261020T022111.931051Z_17056_aa63469e",
+    "mean_return": -8179.8,
+    "mean_environment_return": -8176.7,
+    "episode_seeds": [
+     30040,
+     30041,
+     30042,
+     30043,
+     30044,
+     30045,
+     30046,
+     30047
+    ],
+    "success": 0.25,
+    "vio_per_step": 7.934,
+    "qp_share": 1.0,
+    "approx_kl": 0.0001,
+    "bid_approx_kl": 0.0,
+    "bid_post_update_kl": 1e-06,
+    "policy_anchor_kl": 0.0,
+    "post_update_policy_anchor_kl": 0.03952078,
+    "bid_active_slot_count": 40,
+    "bid_active_slot_count_by_index": [
+     20,
+     20,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "cf_bid_informative_fraction": 0.769231,
+    "bid_gradient_norm": 4.58920813,
+    "bid_parameter_delta_l2": 0.0001288,
+    "w8_scale": 1.0,
+    "k": 4,
+    "agent_steps": 16707,
+    "environment_steps": 5569,
+    "exposed_agent_steps": 38,
+    "nonexposed_agent_fraction": 0.997726,
+    "track_actions": 2578,
+    "track_action_rate": 0.1543,
+    "nonzero_pointer": 1494,
+    "nonzero_pointer_rate": 0.0894,
+    "valid_requests": 1494,
+    "valid_request_rate": 0.0894,
+    "requests": 1494,
+    "c04_pass_requests": 784,
+    "c04_rejected_requests": 710,
+    "request_winners": 759,
+    "new_assignments": 400,
+    "handoffs": 15,
+    "mean_owned_targets": 0.4442,
+    "stable_target_steps": 196,
+    "stable_progress_ticks": 764,
+    "interventions": 6078,
+    "intervention_rate": 0.3638,
+    "mean_correction": 0.605389,
+    "max_stable_progress": 7,
+    "intervention_loss": 1.002183,
+    "intervention_fraction": 0.3638,
+    "cf_nonzero_frac": 0.006644,
+    "gear_gate_active_frac": 0.008978,
+    "gear_gate_credit_mean": -0.008978,
+    "bid_event_frac": 0.003112,
+    "bid_action_mean": -0.08417,
+    "bid_action_std": 0.454687,
+    "bid_events": 26,
+    "bid_events_per_episode": 3.25,
+    "bid_participants": 52,
+    "bid_participation_rate": 0.003112,
+    "bid_event_step_rate": 0.004669,
+    "forced_overlap_pairs": 19,
+    "pointer_exposed_agents": 38,
+    "exposed_multi_candidate_events": 18,
+    "unexposed_multi_candidate_events": 8,
+    "bid_changed_winner": 8,
+    "cf_bid_events": 20,
+    "cf_bid_changed_winner": 9,
+    "cf_bid_directional_slots": 31,
+    "cf_bid_mean_abs_advantage": 0.057658,
+    "rule_conflict_feature_mean": [
+     0.002302,
+     0.034955,
+     0.018488,
+     0.373087,
+     0.021383,
+     0.050136,
+     0.008376,
+     0.311854,
+     0.002095,
+     0.023297,
+     0.521564,
+     0.001096,
+     0.005229
+    ],
+    "rule_conflict_feature_nonzero_rate": [
+     0.010774,
+     0.035793,
+     0.137906,
+     0.560484,
+     0.234333,
+     0.318789,
+     0.017717,
+     0.671395,
+     0.002095,
+     0.069432,
+     0.601006,
+     0.009457,
+     0.043994
+    ],
+    "rule_conflict_any_rate": 0.970432,
+    "checkpoint": {
+     "role": "curriculum_iteration_checkpoint",
+     "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4.pt",
+     "exists": true,
+     "size_bytes": 1613004,
+     "sha256": "e67ffb9c4cd2263e982397709b8be2db7a34cc8da05f453e8a63c1a7916a9aec",
+     "run_id": "20261020T022111.931051Z_17056_aa63469e",
+     "archive": {
+      "role": "curriculum_iteration_checkpoint_archive",
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\provenance\\20261020T022111.931051Z_17056_aa63469e_curr_k4_iter_000005.pt",
+      "exists": true,
+      "size_bytes": 1613004,
+      "sha256": "e67ffb9c4cd2263e982397709b8be2db7a34cc8da05f453e8a63c1a7916a9aec",
+      "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4.pt"
+     }
+    },
+    "validation": {
+     "k": 4,
+     "seeds": [
+      230,
+      231,
+      232,
+      233,
+      234,
+      235,
+      236,
+      237,
+      238,
+      239
+     ],
+     "stable_window": 8,
+     "task_config": {
+      "dt": 1.0,
+      "horizon": 900,
+      "L_X": 160.0,
+      "L_Y": 120.0,
+      "X_CUTOFF": 40.0,
+      "X_TRACK": 110.0,
+      "AGE_STD_TRACK": 10.0,
+      "AGE_STD_DETECT": 5.0,
+      "STABLE_WINDOW": 8,
+      "N_WINGMEN": 3,
+      "BLUE_V_MIN_MA": 0.4,
+      "BLUE_V_MAX_MA": 0.95,
+      "OMEGA_CRUISE_DEG": 3.0,
+      "OMEGA_MANEUVER_DEG": 6.0,
+      "ACCEL_MAX_MA_S": 0.1,
+      "K_PSI": 1.0,
+      "K_V_MS": 30.0,
+      "MANNED_V_MIN_MA": 0.5,
+      "MANNED_V_MAX_MA": 0.9,
+      "MANNED_OMEGA_DEG": 3.0,
+      "K_RED": 4,
+      "RED_CRUISE_MA": 0.75,
+      "RED_MANEUVER_MA_RANGE": [
+       0.6,
+       0.9
+      ],
+      "RED_OMEGA_DEG": 8.0,
+      "RED_DUTY_MIN": 0.7,
+      "RED_DUTY_MAX": 0.8,
+      "RED_STAGGER_KM": 8.0,
+      "RED_X0": 158.0,
+      "RED_MANEUVER_RESAMPLE": [
+       20,
+       40
+      ],
+      "RED_TURN_POISSON_MEAN": 30.0,
+      "RED_SNAKE_HALF_ANGLE_DEG": 30.0,
+      "RED_SNAKE_PERIOD": 20.0,
+      "RED_EDGE_SUPPRESS_KM": 5.0,
+      "RED_REGAIN_T": [
+       12.0,
+       20.0
+      ],
+      "RED_REGAIN_SPREAD_DEG": 30.0,
+      "RED_SEP_WARN_KM": 18.0,
+      "RED_SEP_HARD_KM": 2.0,
+      "RED_SEP_BIAS_DEG": 45.0,
+      "RED_PAIR_SUBLANE_KM": 4.0,
+      "R_MAX": 80.0,
+      "FOV_HALF_DEG": 7.5,
+      "BEAM_DWELL": 0.5,
+      "GEAR_FRAME": {
+       "7.5": 0.5,
+       "15.0": 1.0,
+       "30.0": 2.0,
+       "45.0": 3.0,
+       "60.0": 4.0
+      },
+      "GEARS_SEARCH": [
+       45.0,
+       60.0
+      ],
+      "GEARS_TRACK": [
+       7.5,
+       15.0,
+       30.0,
+       45.0
+      ],
+      "PD_TIERS": [
+       [
+        0.5,
+        0.9
+       ],
+       [
+        0.8,
+        0.6
+       ],
+       [
+        1.0,
+        0.3
+       ]
+      ],
+      "SECTOR_AXIS_MAX_DEG": 60.0,
+      "AXIS_TRIM_SCALE_DEG": 15.0,
+      "TRACK_INIT_HITS": 2,
+      "TRACK_INIT_WINDOW": 6.5,
+      "TRACK_CONFIRM_TIME": 5.0,
+      "TRACK_CONFIRM_GAP_MAX": 1.6,
+      "AGE_DEGRADE": 8.0,
+      "AGE_DROP": 13.0,
+      "COV_SHRINK": 0.8,
+      "COV_Q_KM2_S": 0.25,
+      "SIGMA_REF": 4.0,
+      "MAR": 40.0,
+      "MOR": 60.0,
+      "MAR_MOR_VARIANTS": [
+       [
+        40.0,
+        60.0
+       ],
+       [
+        30.0,
+        50.0
+       ],
+       [
+        20.0,
+        40.0
+       ]
+      ],
+      "K_SIGMA": 3.0,
+      "MOR_GRADIENT_SPAN": 20.0,
+      "D_SAFE": 2.0,
+      "D_SAFE_LOOKAHEAD": 3.0,
+      "BOUNDARY_PREDICT": 5.0,
+      "LINK_RATE_HZ": 1.0,
+      "LINK_DELAY_S": 1.0,
+      "T_SCAN_REQ": 120.0,
+      "HANDOFF_MIN_INTERVAL": 30.0,
+      "HANDOFF_INTERVAL_SWEEP": [
+       10.0,
+       20.0,
+       30.0
+      ],
+      "C04_RANGE": 80.0,
+      "C04_RESPONSE": 5.0,
+      "T_DWELL": 5.0,
+      "APPROVAL_DELAY_INIT": 0.0,
+      "LINK_DROP_RATE": 0.3,
+      "LINK_DROP_WINDOW": 10.0,
+      "UPLINK_LOSS_P": 0.05,
+      "E03_AREA_PER_KM": 5.0,
+      "N_SUBZONES": 3,
+      "TRACK_SWEET_DIST": 62.0,
+      "TRACK_K_D": 0.0025,
+      "CAP_X": 15.0,
+      "CAP_Y": 60.0,
+      "CAP_LEG_Y": 10.0,
+      "CAP_LEG_X": 5.0,
+      "ARB_WEIGHTS": [
+       1.0,
+       1.0,
+       0.5,
+       0.5,
+       0.3
+      ],
+      "ARB_HYSTERESIS": 0.2,
+      "ARB_BID_WEIGHT": 0.35,
+      "W1_TRACK_TICK": 0.02,
+      "W2_DETECT_TICK": 0.005,
+      "W3_STABLE": 10.0,
+      "W4_SUCCESS": 50.0,
+      "W5_MOR_GRAD": 0.02,
+      "W6_MAR": 0.1,
+      "W7_HANDOFF": 0.5,
+      "W8_LAYER": [
+       10.0,
+       7.5,
+       10.0,
+       5.0,
+       2.5,
+       1.25
+      ],
+      "W8_SCALE": 1.0,
+      "M05_GRACE": 5.0,
+      "W9_FAILURE": 50.0,
+      "STEP_COST": 0.005,
+      "OBS_DIM": 169,
+      "TRACK_SLOTS": 8,
+      "NET_HIDDEN": 128,
+      "TOTAL_STEPS": 1500000,
+      "N_ENVS": 16,
+      "N_SEEDS": 10,
+      "BC_EPOCHS": [
+       50,
+       100
+      ],
+      "CONVERGE_WINDOW": 100,
+      "seed": 7
+     },
+     "task_config_sha256": "87e5fcd38254e5c1c06f98b7f8a379a9d101cfe7f70dcd78c3c2b2157516e248",
+     "rl": {
+      "success_rate": 0.4,
+      "mean_return": -7655.2,
+      "violations_per_step": 7.731
+     },
+     "heur": {
+      "success_rate": 0.8,
+      "mean_return": -4032.2,
+      "violations_per_step": 7.6631
+     },
+     "natural_arbitration": {
+      "rl_multi_candidate_events": 18,
+      "rl_winner_changes_vs_fixed_score": 6,
+      "forced_probe_enabled": false
+     },
+     "by_seed": [
+      {
+       "seed": 230,
+       "rl": {
+        "seed": 230,
+        "terminal": "failure",
+        "return": -4215.5,
+        "steps": 698,
+        "violations": 4813,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 230,
+        "terminal": "failure",
+        "return": -8114.4,
+        "steps": 771,
+        "violations": 7506
+       }
+      },
+      {
+       "seed": 231,
+       "rl": {
+        "seed": 231,
+        "terminal": "success",
+        "return": -5125.2,
+        "steps": 575,
+        "violations": 4085,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 231,
+        "terminal": "success",
+        "return": -2397.5,
+        "steps": 587,
+        "violations": 4105
+       }
+      },
+      {
+       "seed": 232,
+       "rl": {
+        "seed": 232,
+        "terminal": "failure",
+        "return": -7545.8,
+        "steps": 680,
+        "violations": 5380,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 232,
+        "terminal": "failure",
+        "return": -10074.8,
+        "steps": 691,
+        "violations": 6661
+       }
+      },
+      {
+       "seed": 233,
+       "rl": {
+        "seed": 233,
+        "terminal": "success",
+        "return": -6103.3,
+        "steps": 604,
+        "violations": 4923,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 233,
+        "terminal": "success",
+        "return": -1381.6,
+        "steps": 379,
+        "violations": 1913
+       }
+      },
+      {
+       "seed": 234,
+       "rl": {
+        "seed": 234,
+        "terminal": "failure",
+        "return": -4741.7,
+        "steps": 632,
+        "violations": 3980,
+        "multi_candidate_events": 14,
+        "winner_changes_vs_fixed_score": 5
+       },
+       "heur": {
+        "seed": 234,
+        "terminal": "success",
+        "return": -2945.6,
+        "steps": 600,
+        "violations": 4532
+       }
+      },
+      {
+       "seed": 235,
+       "rl": {
+        "seed": 235,
+        "terminal": "failure",
+        "return": -11784.2,
+        "steps": 762,
+        "violations": 6968,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 235,
+        "terminal": "success",
+        "return": -7979.4,
+        "steps": 753,
+        "violations": 6928
+       }
+      },
+      {
+       "seed": 236,
+       "rl": {
+        "seed": 236,
+        "terminal": "success",
+        "return": -6281.4,
+        "steps": 699,
+        "violations": 5401,
+        "multi_candidate_events": 4,
+        "winner_changes_vs_fixed_score": 1
+       },
+       "heur": {
+        "seed": 236,
+        "terminal": "success",
+        "return": -3761.9,
+        "steps": 671,
+        "violations": 5612
+       }
+      },
+      {
+       "seed": 237,
+       "rl": {
+        "seed": 237,
+        "terminal": "failure",
+        "return": -9063.7,
+        "steps": 696,
+        "violations": 6246,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 237,
+        "terminal": "success",
+        "return": -1137.3,
+        "steps": 363,
+        "violations": 1595
+       }
+      },
+      {
+       "seed": 238,
+       "rl": {
+        "seed": 238,
+        "terminal": "failure",
+        "return": -17115.2,
+        "steps": 735,
+        "violations": 6402,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 238,
+        "terminal": "success",
+        "return": -1410.0,
+        "steps": 455,
+        "violations": 2412
+       }
+      },
+      {
+       "seed": 239,
+       "rl": {
+        "seed": 239,
+        "terminal": "success",
+        "return": -4576.4,
+        "steps": 643,
+        "violations": 3785,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 239,
+        "terminal": "success",
+        "return": -1119.9,
+        "steps": 391,
+        "violations": 2117
+       }
+      }
+     ],
+     "run_id": "20261020T022111.931051Z_17056_aa63469e",
+     "source_manifest_sha256": "ff0dab7e66fa2d15ef78d44d21287450788cc4d0e69fd7db5e012c29f71aaa96",
+     "checkpoint": {
+      "role": "curriculum_validation_checkpoint",
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4.pt",
+      "exists": true,
+      "size_bytes": 1613004,
+      "sha256": "e67ffb9c4cd2263e982397709b8be2db7a34cc8da05f453e8a63c1a7916a9aec"
+     },
+     "stage": "ppo_update",
+     "iter": 5
+    }
+   },
+   {
+    "iter": 6,
+    "run_id": "20261020T022111.931051Z_17056_aa63469e",
+    "mean_return": -6865.4,
+    "mean_environment_return": -6863.0,
+    "episode_seeds": [
+     30048,
+     30049,
+     30050,
+     30051,
+     30052,
+     30053,
+     30054,
+     30055
+    ],
+    "success": 0.75,
+    "vio_per_step": 8.083,
+    "qp_share": 1.0,
+    "approx_kl": 0.0001,
+    "bid_approx_kl": 0.0,
+    "bid_post_update_kl": 0.0,
+    "policy_anchor_kl": 0.0,
+    "post_update_policy_anchor_kl": 0.04760351,
+    "bid_active_slot_count": 56,
+    "bid_active_slot_count_by_index": [
+     35,
+     18,
+     3,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "cf_bid_informative_fraction": 0.965517,
+    "bid_gradient_norm": 2.35954595,
+    "bid_parameter_delta_l2": 0.00011232,
+    "w8_scale": 1.0,
+    "k": 4,
+    "agent_steps": 14283,
+    "environment_steps": 4761,
+    "exposed_agent_steps": 56,
+    "nonexposed_agent_fraction": 0.996079,
+    "track_actions": 2440,
+    "track_action_rate": 0.1708,
+    "nonzero_pointer": 1397,
+    "nonzero_pointer_rate": 0.0978,
+    "valid_requests": 1397,
+    "valid_request_rate": 0.0978,
+    "requests": 1397,
+    "c04_pass_requests": 708,
+    "c04_rejected_requests": 689,
+    "request_winners": 679,
+    "new_assignments": 277,
+    "handoffs": 23,
+    "mean_owned_targets": 0.7858,
+    "stable_target_steps": 218,
+    "stable_progress_ticks": 857,
+    "interventions": 4492,
+    "intervention_rate": 0.3145,
+    "mean_correction": 0.432482,
+    "max_stable_progress": 7,
+    "intervention_loss": 0.80679,
+    "intervention_fraction": 0.3145,
+    "cf_nonzero_frac": 0.006301,
+    "gear_gate_active_frac": 0.010152,
+    "gear_gate_credit_mean": -0.010152,
+    "bid_event_frac": 0.004201,
+    "bid_action_mean": -0.053221,
+    "bid_action_std": 0.448675,
+    "bid_events": 30,
+    "bid_events_per_episode": 3.75,
+    "bid_participants": 60,
+    "bid_participation_rate": 0.004201,
+    "bid_event_step_rate": 0.006301,
+    "forced_overlap_pairs": 28,
+    "pointer_exposed_agents": 56,
+    "exposed_multi_candidate_events": 26,
+    "unexposed_multi_candidate_events": 4,
+    "bid_changed_winner": 18,
+    "cf_bid_events": 29,
+    "cf_bid_changed_winner": 12,
+    "cf_bid_directional_slots": 44,
+    "cf_bid_mean_abs_advantage": 0.024162,
+    "rule_conflict_feature_mean": [
+     0.001386,
+     0.031401,
+     0.032679,
+     0.424572,
+     0.022457,
+     0.055039,
+     0.014788,
+     0.239407,
+     0.00112,
+     0.025773,
+     0.428043,
+     0.002373,
+     0.009488
+    ],
+    "rule_conflict_feature_nonzero_rate": [
+     0.009522,
+     0.036197,
+     0.237345,
+     0.635511,
+     0.241826,
+     0.339495,
+     0.042568,
+     0.641252,
+     0.00112,
+     0.075264,
+     0.512707,
+     0.021634,
+     0.077295
+    ],
+    "rule_conflict_any_rate": 0.966534,
+    "checkpoint": {
+     "role": "curriculum_iteration_checkpoint",
+     "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4.pt",
+     "exists": true,
+     "size_bytes": 1613004,
+     "sha256": "f7bbc0cb3a0b3fc2f314be5a23e2c4f65c00a622d5ff179cccb586cf24836cf6",
+     "run_id": "20261020T022111.931051Z_17056_aa63469e",
+     "archive": {
+      "role": "curriculum_iteration_checkpoint_archive",
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\provenance\\20261020T022111.931051Z_17056_aa63469e_curr_k4_iter_000006.pt",
+      "exists": true,
+      "size_bytes": 1613004,
+      "sha256": "f7bbc0cb3a0b3fc2f314be5a23e2c4f65c00a622d5ff179cccb586cf24836cf6",
+      "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4.pt"
+     }
+    }
+   },
+   {
+    "iter": 7,
+    "run_id": "20261020T022111.931051Z_17056_aa63469e",
+    "mean_return": -9721.7,
+    "mean_environment_return": -9720.0,
+    "episode_seeds": [
+     30056,
+     30057,
+     30058,
+     30059,
+     30060,
+     30061,
+     30062,
+     30063
+    ],
+    "success": 0.375,
+    "vio_per_step": 8.917,
+    "qp_share": 1.0,
+    "approx_kl": 0.0001,
+    "bid_approx_kl": 0.0,
+    "bid_post_update_kl": 0.0,
+    "policy_anchor_kl": 0.0,
+    "post_update_policy_anchor_kl": 0.05374234,
+    "bid_active_slot_count": 91,
+    "bid_active_slot_count_by_index": [
+     47,
+     30,
+     14,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "cf_bid_informative_fraction": 0.834862,
+    "bid_gradient_norm": 1.04140806,
+    "bid_parameter_delta_l2": 9.354e-05,
+    "w8_scale": 1.0,
+    "k": 4,
+    "agent_steps": 16449,
+    "environment_steps": 5483,
+    "exposed_agent_steps": 86,
+    "nonexposed_agent_fraction": 0.994772,
+    "track_actions": 2722,
+    "track_action_rate": 0.1655,
+    "nonzero_pointer": 1521,
+    "nonzero_pointer_rate": 0.0925,
+    "valid_requests": 1517,
+    "valid_request_rate": 0.0922,
+    "requests": 1517,
+    "c04_pass_requests": 693,
+    "c04_rejected_requests": 824,
+    "request_winners": 639,
+    "new_assignments": 249,
+    "handoffs": 28,
+    "mean_owned_targets": 0.7788,
+    "stable_target_steps": 191,
+    "stable_progress_ticks": 740,
+    "interventions": 5505,
+    "intervention_rate": 0.3347,
+    "mean_correction": 0.516436,
+    "max_stable_progress": 7,
+    "intervention_loss": 0.840959,
+    "intervention_fraction": 0.334671,
+    "cf_nonzero_frac": 0.005411,
+    "gear_gate_active_frac": 0.009058,
+    "gear_gate_credit_mean": -0.009058,
+    "bid_event_frac": 0.006748,
+    "bid_action_mean": -0.036878,
+    "bid_action_std": 0.357665,
+    "bid_events": 56,
+    "bid_events_per_episode": 7.0,
+    "bid_participants": 111,
+    "bid_participation_rate": 0.006748,
+    "bid_event_step_rate": 0.010213,
+    "forced_overlap_pairs": 43,
+    "pointer_exposed_agents": 86,
+    "exposed_multi_candidate_events": 42,
+    "unexposed_multi_candidate_events": 14,
+    "bid_changed_winner": 27,
+    "cf_bid_events": 47,
+    "cf_bid_changed_winner": 19,
+    "cf_bid_directional_slots": 72,
+    "cf_bid_mean_abs_advantage": 0.075758,
+    "rule_conflict_feature_mean": [
+     0.002072,
+     0.02753,
+     0.032411,
+     0.40012,
+     0.019683,
+     0.049517,
+     0.012869,
+     0.301899,
+     0.002493,
+     0.024799,
+     0.481504,
+     0.003443,
+     0.010676
+    ],
+    "rule_conflict_feature_nonzero_rate": [
+     0.008754,
+     0.031309,
+     0.225059,
+     0.590005,
+     0.225546,
+     0.3185,
+     0.038665,
+     0.679433,
+     0.002493,
+     0.067117,
+     0.560824,
+     0.031795,
+     0.086023
+    ],
+    "rule_conflict_any_rate": 0.969846,
+    "checkpoint": {
+     "role": "curriculum_iteration_checkpoint",
+     "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4.pt",
+     "exists": true,
+     "size_bytes": 1613004,
+     "sha256": "b606ebc24b412480dfc849467b7306335869718ecb4c3dadd261e78e36ccb669",
+     "run_id": "20261020T022111.931051Z_17056_aa63469e",
+     "archive": {
+      "role": "curriculum_iteration_checkpoint_archive",
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\provenance\\20261020T022111.931051Z_17056_aa63469e_curr_k4_iter_000007.pt",
+      "exists": true,
+      "size_bytes": 1613004,
+      "sha256": "b606ebc24b412480dfc849467b7306335869718ecb4c3dadd261e78e36ccb669",
+      "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4.pt"
+     }
+    },
+    "validation": {
+     "k": 4,
+     "seeds": [
+      230,
+      231,
+      232,
+      233,
+      234,
+      235,
+      236,
+      237,
+      238,
+      239
+     ],
+     "stable_window": 8,
+     "task_config": {
+      "dt": 1.0,
+      "horizon": 900,
+      "L_X": 160.0,
+      "L_Y": 120.0,
+      "X_CUTOFF": 40.0,
+      "X_TRACK": 110.0,
+      "AGE_STD_TRACK": 10.0,
+      "AGE_STD_DETECT": 5.0,
+      "STABLE_WINDOW": 8,
+      "N_WINGMEN": 3,
+      "BLUE_V_MIN_MA": 0.4,
+      "BLUE_V_MAX_MA": 0.95,
+      "OMEGA_CRUISE_DEG": 3.0,
+      "OMEGA_MANEUVER_DEG": 6.0,
+      "ACCEL_MAX_MA_S": 0.1,
+      "K_PSI": 1.0,
+      "K_V_MS": 30.0,
+      "MANNED_V_MIN_MA": 0.5,
+      "MANNED_V_MAX_MA": 0.9,
+      "MANNED_OMEGA_DEG": 3.0,
+      "K_RED": 4,
+      "RED_CRUISE_MA": 0.75,
+      "RED_MANEUVER_MA_RANGE": [
+       0.6,
+       0.9
+      ],
+      "RED_OMEGA_DEG": 8.0,
+      "RED_DUTY_MIN": 0.7,
+      "RED_DUTY_MAX": 0.8,
+      "RED_STAGGER_KM": 8.0,
+      "RED_X0": 158.0,
+      "RED_MANEUVER_RESAMPLE": [
+       20,
+       40
+      ],
+      "RED_TURN_POISSON_MEAN": 30.0,
+      "RED_SNAKE_HALF_ANGLE_DEG": 30.0,
+      "RED_SNAKE_PERIOD": 20.0,
+      "RED_EDGE_SUPPRESS_KM": 5.0,
+      "RED_REGAIN_T": [
+       12.0,
+       20.0
+      ],
+      "RED_REGAIN_SPREAD_DEG": 30.0,
+      "RED_SEP_WARN_KM": 18.0,
+      "RED_SEP_HARD_KM": 2.0,
+      "RED_SEP_BIAS_DEG": 45.0,
+      "RED_PAIR_SUBLANE_KM": 4.0,
+      "R_MAX": 80.0,
+      "FOV_HALF_DEG": 7.5,
+      "BEAM_DWELL": 0.5,
+      "GEAR_FRAME": {
+       "7.5": 0.5,
+       "15.0": 1.0,
+       "30.0": 2.0,
+       "45.0": 3.0,
+       "60.0": 4.0
+      },
+      "GEARS_SEARCH": [
+       45.0,
+       60.0
+      ],
+      "GEARS_TRACK": [
+       7.5,
+       15.0,
+       30.0,
+       45.0
+      ],
+      "PD_TIERS": [
+       [
+        0.5,
+        0.9
+       ],
+       [
+        0.8,
+        0.6
+       ],
+       [
+        1.0,
+        0.3
+       ]
+      ],
+      "SECTOR_AXIS_MAX_DEG": 60.0,
+      "AXIS_TRIM_SCALE_DEG": 15.0,
+      "TRACK_INIT_HITS": 2,
+      "TRACK_INIT_WINDOW": 6.5,
+      "TRACK_CONFIRM_TIME": 5.0,
+      "TRACK_CONFIRM_GAP_MAX": 1.6,
+      "AGE_DEGRADE": 8.0,
+      "AGE_DROP": 13.0,
+      "COV_SHRINK": 0.8,
+      "COV_Q_KM2_S": 0.25,
+      "SIGMA_REF": 4.0,
+      "MAR": 40.0,
+      "MOR": 60.0,
+      "MAR_MOR_VARIANTS": [
+       [
+        40.0,
+        60.0
+       ],
+       [
+        30.0,
+        50.0
+       ],
+       [
+        20.0,
+        40.0
+       ]
+      ],
+      "K_SIGMA": 3.0,
+      "MOR_GRADIENT_SPAN": 20.0,
+      "D_SAFE": 2.0,
+      "D_SAFE_LOOKAHEAD": 3.0,
+      "BOUNDARY_PREDICT": 5.0,
+      "LINK_RATE_HZ": 1.0,
+      "LINK_DELAY_S": 1.0,
+      "T_SCAN_REQ": 120.0,
+      "HANDOFF_MIN_INTERVAL": 30.0,
+      "HANDOFF_INTERVAL_SWEEP": [
+       10.0,
+       20.0,
+       30.0
+      ],
+      "C04_RANGE": 80.0,
+      "C04_RESPONSE": 5.0,
+      "T_DWELL": 5.0,
+      "APPROVAL_DELAY_INIT": 0.0,
+      "LINK_DROP_RATE": 0.3,
+      "LINK_DROP_WINDOW": 10.0,
+      "UPLINK_LOSS_P": 0.05,
+      "E03_AREA_PER_KM": 5.0,
+      "N_SUBZONES": 3,
+      "TRACK_SWEET_DIST": 62.0,
+      "TRACK_K_D": 0.0025,
+      "CAP_X": 15.0,
+      "CAP_Y": 60.0,
+      "CAP_LEG_Y": 10.0,
+      "CAP_LEG_X": 5.0,
+      "ARB_WEIGHTS": [
+       1.0,
+       1.0,
+       0.5,
+       0.5,
+       0.3
+      ],
+      "ARB_HYSTERESIS": 0.2,
+      "ARB_BID_WEIGHT": 0.35,
+      "W1_TRACK_TICK": 0.02,
+      "W2_DETECT_TICK": 0.005,
+      "W3_STABLE": 10.0,
+      "W4_SUCCESS": 50.0,
+      "W5_MOR_GRAD": 0.02,
+      "W6_MAR": 0.1,
+      "W7_HANDOFF": 0.5,
+      "W8_LAYER": [
+       10.0,
+       7.5,
+       10.0,
+       5.0,
+       2.5,
+       1.25
+      ],
+      "W8_SCALE": 1.0,
+      "M05_GRACE": 5.0,
+      "W9_FAILURE": 50.0,
+      "STEP_COST": 0.005,
+      "OBS_DIM": 169,
+      "TRACK_SLOTS": 8,
+      "NET_HIDDEN": 128,
+      "TOTAL_STEPS": 1500000,
+      "N_ENVS": 16,
+      "N_SEEDS": 10,
+      "BC_EPOCHS": [
+       50,
+       100
+      ],
+      "CONVERGE_WINDOW": 100,
+      "seed": 7
+     },
+     "task_config_sha256": "87e5fcd38254e5c1c06f98b7f8a379a9d101cfe7f70dcd78c3c2b2157516e248",
+     "rl": {
+      "success_rate": 0.4,
+      "mean_return": -7515.2,
+      "violations_per_step": 7.4985
+     },
+     "heur": {
+      "success_rate": 0.8,
+      "mean_return": -4032.2,
+      "violations_per_step": 7.6631
+     },
+     "natural_arbitration": {
+      "rl_multi_candidate_events": 5,
+      "rl_winner_changes_vs_fixed_score": 1,
+      "forced_probe_enabled": false
+     },
+     "by_seed": [
+      {
+       "seed": 230,
+       "rl": {
+        "seed": 230,
+        "terminal": "failure",
+        "return": -4522.4,
+        "steps": 698,
+        "violations": 4653,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 230,
+        "terminal": "failure",
+        "return": -8114.4,
+        "steps": 771,
+        "violations": 7506
+       }
+      },
+      {
+       "seed": 231,
+       "rl": {
+        "seed": 231,
+        "terminal": "success",
+        "return": -5701.4,
+        "steps": 624,
+        "violations": 4631,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 231,
+        "terminal": "success",
+        "return": -2397.5,
+        "steps": 587,
+        "violations": 4105
+       }
+      },
+      {
+       "seed": 232,
+       "rl": {
+        "seed": 232,
+        "terminal": "failure",
+        "return": -17921.0,
+        "steps": 791,
+        "violations": 6472,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 232,
+        "terminal": "failure",
+        "return": -10074.8,
+        "steps": 691,
+        "violations": 6661
+       }
+      },
+      {
+       "seed": 233,
+       "rl": {
+        "seed": 233,
+        "terminal": "failure",
+        "return": -8154.4,
+        "steps": 670,
+        "violations": 6098,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 233,
+        "terminal": "success",
+        "return": -1381.6,
+        "steps": 379,
+        "violations": 1913
+       }
+      },
+      {
+       "seed": 234,
+       "rl": {
+        "seed": 234,
+        "terminal": "success",
+        "return": -6008.8,
+        "steps": 714,
+        "violations": 5783,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 234,
+        "terminal": "success",
+        "return": -2945.6,
+        "steps": 600,
+        "violations": 4532
+       }
+      },
+      {
+       "seed": 235,
+       "rl": {
+        "seed": 235,
+        "terminal": "failure",
+        "return": -12872.1,
+        "steps": 763,
+        "violations": 4976,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 235,
+        "terminal": "success",
+        "return": -7979.4,
+        "steps": 753,
+        "violations": 6928
+       }
+      },
+      {
+       "seed": 236,
+       "rl": {
+        "seed": 236,
+        "terminal": "failure",
+        "return": -6840.9,
+        "steps": 634,
+        "violations": 4927,
+        "multi_candidate_events": 1,
+        "winner_changes_vs_fixed_score": 1
+       },
+       "heur": {
+        "seed": 236,
+        "terminal": "success",
+        "return": -3761.9,
+        "steps": 671,
+        "violations": 5612
+       }
+      },
+      {
+       "seed": 237,
+       "rl": {
+        "seed": 237,
+        "terminal": "success",
+        "return": -1933.8,
+        "steps": 383,
+        "violations": 1403,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 237,
+        "terminal": "success",
+        "return": -1137.3,
+        "steps": 363,
+        "violations": 1595
+       }
+      },
+      {
+       "seed": 238,
+       "rl": {
+        "seed": 238,
+        "terminal": "success",
+        "return": -1662.8,
+        "steps": 408,
+        "violations": 1307,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 238,
+        "terminal": "success",
+        "return": -1410.0,
+        "steps": 455,
+        "violations": 2412
+       }
+      },
+      {
+       "seed": 239,
+       "rl": {
+        "seed": 239,
+        "terminal": "failure",
+        "return": -9534.6,
+        "steps": 732,
+        "violations": 7868,
+        "multi_candidate_events": 4,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 239,
+        "terminal": "success",
+        "return": -1119.9,
+        "steps": 391,
+        "violations": 2117
+       }
+      }
+     ],
+     "run_id": "20261020T022111.931051Z_17056_aa63469e",
+     "source_manifest_sha256": "ff0dab7e66fa2d15ef78d44d21287450788cc4d0e69fd7db5e012c29f71aaa96",
+     "checkpoint": {
+      "role": "curriculum_validation_checkpoint",
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4.pt",
+      "exists": true,
+      "size_bytes": 1613004,
+      "sha256": "b606ebc24b412480dfc849467b7306335869718ecb4c3dadd261e78e36ccb669"
+     },
+     "stage": "ppo_update",
+     "iter": 7
+    }
+   }
+  ],
+  "curr_k4_best": {
+   "iter": -1,
+   "stage": "initial_checkpoint",
+   "checkpoint": "curr_k4_best.pt",
+   "checkpoint_sha256": "95b281905510a99bb1859bbc5666da2f454fc486f460dd8e3499a3fab178f1a6",
+   "rank": [
+    0.7,
+    -4891.3,
+    -6.8201
+   ],
+   "validation": {
+    "k": 4,
+    "seeds": [
+     230,
+     231,
+     232,
+     233,
+     234,
+     235,
+     236,
+     237,
+     238,
+     239
+    ],
+    "stable_window": 8,
+    "task_config": {
+     "dt": 1.0,
+     "horizon": 900,
+     "L_X": 160.0,
+     "L_Y": 120.0,
+     "X_CUTOFF": 40.0,
+     "X_TRACK": 110.0,
+     "AGE_STD_TRACK": 10.0,
+     "AGE_STD_DETECT": 5.0,
+     "STABLE_WINDOW": 8,
+     "N_WINGMEN": 3,
+     "BLUE_V_MIN_MA": 0.4,
+     "BLUE_V_MAX_MA": 0.95,
+     "OMEGA_CRUISE_DEG": 3.0,
+     "OMEGA_MANEUVER_DEG": 6.0,
+     "ACCEL_MAX_MA_S": 0.1,
+     "K_PSI": 1.0,
+     "K_V_MS": 30.0,
+     "MANNED_V_MIN_MA": 0.5,
+     "MANNED_V_MAX_MA": 0.9,
+     "MANNED_OMEGA_DEG": 3.0,
+     "K_RED": 4,
+     "RED_CRUISE_MA": 0.75,
+     "RED_MANEUVER_MA_RANGE": [
+      0.6,
+      0.9
+     ],
+     "RED_OMEGA_DEG": 8.0,
+     "RED_DUTY_MIN": 0.7,
+     "RED_DUTY_MAX": 0.8,
+     "RED_STAGGER_KM": 8.0,
+     "RED_X0": 158.0,
+     "RED_MANEUVER_RESAMPLE": [
+      20,
+      40
+     ],
+     "RED_TURN_POISSON_MEAN": 30.0,
+     "RED_SNAKE_HALF_ANGLE_DEG": 30.0,
+     "RED_SNAKE_PERIOD": 20.0,
+     "RED_EDGE_SUPPRESS_KM": 5.0,
+     "RED_REGAIN_T": [
+      12.0,
+      20.0
+     ],
+     "RED_REGAIN_SPREAD_DEG": 30.0,
+     "RED_SEP_WARN_KM": 18.0,
+     "RED_SEP_HARD_KM": 2.0,
+     "RED_SEP_BIAS_DEG": 45.0,
+     "RED_PAIR_SUBLANE_KM": 4.0,
+     "R_MAX": 80.0,
+     "FOV_HALF_DEG": 7.5,
+     "BEAM_DWELL": 0.5,
+     "GEAR_FRAME": {
+      "7.5": 0.5,
+      "15.0": 1.0,
+      "30.0": 2.0,
+      "45.0": 3.0,
+      "60.0": 4.0
+     },
+     "GEARS_SEARCH": [
+      45.0,
+      60.0
+     ],
+     "GEARS_TRACK": [
+      7.5,
+      15.0,
+      30.0,
+      45.0
+     ],
+     "PD_TIERS": [
+      [
+       0.5,
+       0.9
+      ],
+      [
+       0.8,
+       0.6
+      ],
+      [
+       1.0,
+       0.3
+      ]
+     ],
+     "SECTOR_AXIS_MAX_DEG": 60.0,
+     "AXIS_TRIM_SCALE_DEG": 15.0,
+     "TRACK_INIT_HITS": 2,
+     "TRACK_INIT_WINDOW": 6.5,
+     "TRACK_CONFIRM_TIME": 5.0,
+     "TRACK_CONFIRM_GAP_MAX": 1.6,
+     "AGE_DEGRADE": 8.0,
+     "AGE_DROP": 13.0,
+     "COV_SHRINK": 0.8,
+     "COV_Q_KM2_S": 0.25,
+     "SIGMA_REF": 4.0,
+     "MAR": 40.0,
+     "MOR": 60.0,
+     "MAR_MOR_VARIANTS": [
+      [
+       40.0,
+       60.0
+      ],
+      [
+       30.0,
+       50.0
+      ],
+      [
+       20.0,
+       40.0
+      ]
+     ],
+     "K_SIGMA": 3.0,
+     "MOR_GRADIENT_SPAN": 20.0,
+     "D_SAFE": 2.0,
+     "D_SAFE_LOOKAHEAD": 3.0,
+     "BOUNDARY_PREDICT": 5.0,
+     "LINK_RATE_HZ": 1.0,
+     "LINK_DELAY_S": 1.0,
+     "T_SCAN_REQ": 120.0,
+     "HANDOFF_MIN_INTERVAL": 30.0,
+     "HANDOFF_INTERVAL_SWEEP": [
+      10.0,
+      20.0,
+      30.0
+     ],
+     "C04_RANGE": 80.0,
+     "C04_RESPONSE": 5.0,
+     "T_DWELL": 5.0,
+     "APPROVAL_DELAY_INIT": 0.0,
+     "LINK_DROP_RATE": 0.3,
+     "LINK_DROP_WINDOW": 10.0,
+     "UPLINK_LOSS_P": 0.05,
+     "E03_AREA_PER_KM": 5.0,
+     "N_SUBZONES": 3,
+     "TRACK_SWEET_DIST": 62.0,
+     "TRACK_K_D": 0.0025,
+     "CAP_X": 15.0,
+     "CAP_Y": 60.0,
+     "CAP_LEG_Y": 10.0,
+     "CAP_LEG_X": 5.0,
+     "ARB_WEIGHTS": [
+      1.0,
+      1.0,
+      0.5,
+      0.5,
+      0.3
+     ],
+     "ARB_HYSTERESIS": 0.2,
+     "ARB_BID_WEIGHT": 0.35,
+     "W1_TRACK_TICK": 0.02,
+     "W2_DETECT_TICK": 0.005,
+     "W3_STABLE": 10.0,
+     "W4_SUCCESS": 50.0,
+     "W5_MOR_GRAD": 0.02,
+     "W6_MAR": 0.1,
+     "W7_HANDOFF": 0.5,
+     "W8_LAYER": [
+      10.0,
+      7.5,
+      10.0,
+      5.0,
+      2.5,
+      1.25
+     ],
+     "W8_SCALE": 1.0,
+     "M05_GRACE": 5.0,
+     "W9_FAILURE": 50.0,
+     "STEP_COST": 0.005,
+     "OBS_DIM": 169,
+     "TRACK_SLOTS": 8,
+     "NET_HIDDEN": 128,
+     "TOTAL_STEPS": 1500000,
+     "N_ENVS": 16,
+     "N_SEEDS": 10,
+     "BC_EPOCHS": [
+      50,
+      100
+     ],
+     "CONVERGE_WINDOW": 100,
+     "seed": 7
+    },
+    "task_config_sha256": "87e5fcd38254e5c1c06f98b7f8a379a9d101cfe7f70dcd78c3c2b2157516e248",
+    "rl": {
+     "success_rate": 0.7,
+     "mean_return": -4891.3,
+     "violations_per_step": 6.8201
+    },
+    "heur": {
+     "success_rate": 0.8,
+     "mean_return": -4032.2,
+     "violations_per_step": 7.6631
+    },
+    "natural_arbitration": {
+     "rl_multi_candidate_events": 9,
+     "rl_winner_changes_vs_fixed_score": 3,
+     "forced_probe_enabled": false
+    },
+    "by_seed": [
+     {
+      "seed": 230,
+      "rl": {
+       "seed": 230,
+       "terminal": "failure",
+       "return": -7817.3,
+       "steps": 698,
+       "violations": 6127,
+       "multi_candidate_events": 0,
+       "winner_changes_vs_fixed_score": 0
+      },
+      "heur": {
+       "seed": 230,
+       "terminal": "failure",
+       "return": -8114.4,
+       "steps": 771,
+       "violations": 7506
+      }
+     },
+     {
+      "seed": 231,
+      "rl": {
+       "seed": 231,
+       "terminal": "success",
+       "return": -795.2,
+       "steps": 364,
+       "violations": 951,
+       "multi_candidate_events": 5,
+       "winner_changes_vs_fixed_score": 1
+      },
+      "heur": {
+       "seed": 231,
+       "terminal": "success",
+       "return": -2397.5,
+       "steps": 587,
+       "violations": 4105
+      }
+     },
+     {
+      "seed": 232,
+      "rl": {
+       "seed": 232,
+       "terminal": "success",
+       "return": -8759.1,
+       "steps": 607,
+       "violations": 5239,
+       "multi_candidate_events": 0,
+       "winner_changes_vs_fixed_score": 0
+      },
+      "heur": {
+       "seed": 232,
+       "terminal": "failure",
+       "return": -10074.8,
+       "steps": 691,
+       "violations": 6661
+      }
+     },
+     {
+      "seed": 233,
+      "rl": {
+       "seed": 233,
+       "terminal": "success",
+       "return": -3454.0,
+       "steps": 516,
+       "violations": 2939,
+       "multi_candidate_events": 2,
+       "winner_changes_vs_fixed_score": 0
+      },
+      "heur": {
+       "seed": 233,
+       "terminal": "success",
+       "return": -1381.6,
+       "steps": 379,
+       "violations": 1913
+      }
+     },
+     {
+      "seed": 234,
+      "rl": {
+       "seed": 234,
+       "terminal": "failure",
+       "return": -10473.1,
+       "steps": 700,
+       "violations": 6708,
+       "multi_candidate_events": 1,
+       "winner_changes_vs_fixed_score": 1
+      },
+      "heur": {
+       "seed": 234,
+       "terminal": "success",
+       "return": -2945.6,
+       "steps": 600,
+       "violations": 4532
+      }
+     },
+     {
+      "seed": 235,
+      "rl": {
+       "seed": 235,
+       "terminal": "success",
+       "return": -3615.8,
+       "steps": 694,
+       "violations": 4758,
+       "multi_candidate_events": 0,
+       "winner_changes_vs_fixed_score": 0
+      },
+      "heur": {
+       "seed": 235,
+       "terminal": "success",
+       "return": -7979.4,
+       "steps": 753,
+       "violations": 6928
+      }
+     },
+     {
+      "seed": 236,
+      "rl": {
+       "seed": 236,
+       "terminal": "failure",
+       "return": -4617.0,
+       "steps": 761,
+       "violations": 5315,
+       "multi_candidate_events": 0,
+       "winner_changes_vs_fixed_score": 0
+      },
+      "heur": {
+       "seed": 236,
+       "terminal": "success",
+       "return": -3761.9,
+       "steps": 671,
+       "violations": 5612
+      }
+     },
+     {
+      "seed": 237,
+      "rl": {
+       "seed": 237,
+       "terminal": "success",
+       "return": -3950.5,
+       "steps": 532,
+       "violations": 3240,
+       "multi_candidate_events": 0,
+       "winner_changes_vs_fixed_score": 0
+      },
+      "heur": {
+       "seed": 237,
+       "terminal": "success",
+       "return": -1137.3,
+       "steps": 363,
+       "violations": 1595
+      }
+     },
+     {
+      "seed": 238,
+      "rl": {
+       "seed": 238,
+       "terminal": "success",
+       "return": -3108.2,
+       "steps": 487,
+       "violations": 2423,
+       "multi_candidate_events": 1,
+       "winner_changes_vs_fixed_score": 1
+      },
+      "heur": {
+       "seed": 238,
+       "terminal": "success",
+       "return": -1410.0,
+       "steps": 455,
+       "violations": 2412
+      }
+     },
+     {
+      "seed": 239,
+      "rl": {
+       "seed": 239,
+       "terminal": "success",
+       "return": -2322.4,
+       "steps": 665,
+       "violations": 3384,
+       "multi_candidate_events": 0,
+       "winner_changes_vs_fixed_score": 0
+      },
+      "heur": {
+       "seed": 239,
+       "terminal": "success",
+       "return": -1119.9,
+       "steps": 391,
+       "violations": 2117
+      }
+     }
+    ],
+    "checkpoint": {
+     "role": "curriculum_initial_checkpoint",
+     "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k4_w8a10\\curr_k4_best.pt",
+     "exists": true,
+     "size_bytes": 1076189,
+     "sha256": "386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797",
+     "checkpoint_saved_config": {
+      "hidden_size": 128,
+      "clip_ratio": 0.2,
+      "learning_rate": 1e-05,
+      "bc_learning_rate": 0.001,
+      "value_coef": 0.5,
+      "entropy_coef": 0.01,
+      "intervention_coef": 0.2,
+      "shield_aware_continuous": false,
+      "mask_intervened_continuous": true,
+      "epochs": 2,
+      "gamma": 0.99,
+      "gae_lambda": 0.95,
+      "reward_scale": 0.1,
+      "initial_log_std": -1.2,
+      "target_kl": 0.01,
+      "bid_target_kl": 0.01,
+      "shaping_kappa": 0.05,
+      "shaping_age_cap": 8.0,
+      "role_shaping_kappa": 0.3,
+      "role_adv_coef": 1.5,
+      "geo_shaping_kappa": 0.15,
+      "stable_shaping_kappa": 1.0,
+      "cf_adv_coef": 1.0,
+      "cf_ownership_bonus": 0.5,
+      "cf_request_credit": 0.25,
+      "cf_global_mix": 0.25,
+      "cf_role_coef": 0.5,
+      "cf_bid_coef": 1.0,
+      "cf_bid_margin_coef": 0.25,
+      "cf_bid_margin_temp": 0.25,
+      "bid_only_ppo": false,
+      "direct_rl_arbitration": true,
+      "gear_gate_coef": 0.0,
+      "conflict_exposure_prob": 1.0,
+      "xi_ppo_coef": 0.0,
+      "xi_anchor_coef": 1.0
+     },
+     "checkpoint_config_sha256": "7855af904bd7ba9dc80cf90bb997597b803b28042414b88f2013718a11f0749a",
+     "archived_snapshot": {
+      "role": "curriculum_initial_checkpoint_snapshot",
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\provenance\\20261020T022111.931051Z_17056_aa63469e_input_curriculum_initial_checkpoint_curr_k4_best.pt",
+      "exists": true,
+      "size_bytes": 1076189,
+      "sha256": "386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797"
+     }
+    },
+    "run_id": "20261020T022111.931051Z_17056_aa63469e",
+    "stage": "initial_checkpoint",
+    "iter": -1,
+    "source_manifest_sha256": "ff0dab7e66fa2d15ef78d44d21287450788cc4d0e69fd7db5e012c29f71aaa96",
+    "best_checkpoint": {
+     "role": "curriculum_best_checkpoint",
+     "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4_best.pt",
+     "exists": true,
+     "size_bytes": 1613439,
+     "sha256": "95b281905510a99bb1859bbc5666da2f454fc486f460dd8e3499a3fab178f1a6",
+     "archive": {
+      "role": "curriculum_best_checkpoint_archive",
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\provenance\\20261020T022111.931051Z_17056_aa63469e_curr_k4_best_initial_checkpoint_-00001.pt",
+      "exists": true,
+      "size_bytes": 1613439,
+      "sha256": "95b281905510a99bb1859bbc5666da2f454fc486f460dd8e3499a3fab178f1a6",
+      "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4_best.pt"
+     }
+    },
+    "acceptance": {
+     "success_at_least_heur": false,
+     "mean_return_at_least_heur": false,
+     "violations_below_heur": true,
+     "passed": false
+    }
+   }
+  },
+  "curr_k4_validation": {
+   "k": 4,
+   "seeds": [
+    230,
+    231,
+    232,
+    233,
+    234,
+    235,
+    236,
+    237,
+    238,
+    239
+   ],
+   "stable_window": 8,
+   "task_config": {
+    "dt": 1.0,
+    "horizon": 900,
+    "L_X": 160.0,
+    "L_Y": 120.0,
+    "X_CUTOFF": 40.0,
+    "X_TRACK": 110.0,
+    "AGE_STD_TRACK": 10.0,
+    "AGE_STD_DETECT": 5.0,
+    "STABLE_WINDOW": 8,
+    "N_WINGMEN": 3,
+    "BLUE_V_MIN_MA": 0.4,
+    "BLUE_V_MAX_MA": 0.95,
+    "OMEGA_CRUISE_DEG": 3.0,
+    "OMEGA_MANEUVER_DEG": 6.0,
+    "ACCEL_MAX_MA_S": 0.1,
+    "K_PSI": 1.0,
+    "K_V_MS": 30.0,
+    "MANNED_V_MIN_MA": 0.5,
+    "MANNED_V_MAX_MA": 0.9,
+    "MANNED_OMEGA_DEG": 3.0,
+    "K_RED": 4,
+    "RED_CRUISE_MA": 0.75,
+    "RED_MANEUVER_MA_RANGE": [
+     0.6,
+     0.9
+    ],
+    "RED_OMEGA_DEG": 8.0,
+    "RED_DUTY_MIN": 0.7,
+    "RED_DUTY_MAX": 0.8,
+    "RED_STAGGER_KM": 8.0,
+    "RED_X0": 158.0,
+    "RED_MANEUVER_RESAMPLE": [
+     20,
+     40
+    ],
+    "RED_TURN_POISSON_MEAN": 30.0,
+    "RED_SNAKE_HALF_ANGLE_DEG": 30.0,
+    "RED_SNAKE_PERIOD": 20.0,
+    "RED_EDGE_SUPPRESS_KM": 5.0,
+    "RED_REGAIN_T": [
+     12.0,
+     20.0
+    ],
+    "RED_REGAIN_SPREAD_DEG": 30.0,
+    "RED_SEP_WARN_KM": 18.0,
+    "RED_SEP_HARD_KM": 2.0,
+    "RED_SEP_BIAS_DEG": 45.0,
+    "RED_PAIR_SUBLANE_KM": 4.0,
+    "R_MAX": 80.0,
+    "FOV_HALF_DEG": 7.5,
+    "BEAM_DWELL": 0.5,
+    "GEAR_FRAME": {
+     "7.5": 0.5,
+     "15.0": 1.0,
+     "30.0": 2.0,
+     "45.0": 3.0,
+     "60.0": 4.0
+    },
+    "GEARS_SEARCH": [
+     45.0,
+     60.0
+    ],
+    "GEARS_TRACK": [
+     7.5,
+     15.0,
+     30.0,
+     45.0
+    ],
+    "PD_TIERS": [
+     [
+      0.5,
+      0.9
+     ],
+     [
+      0.8,
+      0.6
+     ],
+     [
+      1.0,
+      0.3
+     ]
+    ],
+    "SECTOR_AXIS_MAX_DEG": 60.0,
+    "AXIS_TRIM_SCALE_DEG": 15.0,
+    "TRACK_INIT_HITS": 2,
+    "TRACK_INIT_WINDOW": 6.5,
+    "TRACK_CONFIRM_TIME": 5.0,
+    "TRACK_CONFIRM_GAP_MAX": 1.6,
+    "AGE_DEGRADE": 8.0,
+    "AGE_DROP": 13.0,
+    "COV_SHRINK": 0.8,
+    "COV_Q_KM2_S": 0.25,
+    "SIGMA_REF": 4.0,
+    "MAR": 40.0,
+    "MOR": 60.0,
+    "MAR_MOR_VARIANTS": [
+     [
+      40.0,
+      60.0
+     ],
+     [
+      30.0,
+      50.0
+     ],
+     [
+      20.0,
+      40.0
+     ]
+    ],
+    "K_SIGMA": 3.0,
+    "MOR_GRADIENT_SPAN": 20.0,
+    "D_SAFE": 2.0,
+    "D_SAFE_LOOKAHEAD": 3.0,
+    "BOUNDARY_PREDICT": 5.0,
+    "LINK_RATE_HZ": 1.0,
+    "LINK_DELAY_S": 1.0,
+    "T_SCAN_REQ": 120.0,
+    "HANDOFF_MIN_INTERVAL": 30.0,
+    "HANDOFF_INTERVAL_SWEEP": [
+     10.0,
+     20.0,
+     30.0
+    ],
+    "C04_RANGE": 80.0,
+    "C04_RESPONSE": 5.0,
+    "T_DWELL": 5.0,
+    "APPROVAL_DELAY_INIT": 0.0,
+    "LINK_DROP_RATE": 0.3,
+    "LINK_DROP_WINDOW": 10.0,
+    "UPLINK_LOSS_P": 0.05,
+    "E03_AREA_PER_KM": 5.0,
+    "N_SUBZONES": 3,
+    "TRACK_SWEET_DIST": 62.0,
+    "TRACK_K_D": 0.0025,
+    "CAP_X": 15.0,
+    "CAP_Y": 60.0,
+    "CAP_LEG_Y": 10.0,
+    "CAP_LEG_X": 5.0,
+    "ARB_WEIGHTS": [
+     1.0,
+     1.0,
+     0.5,
+     0.5,
+     0.3
+    ],
+    "ARB_HYSTERESIS": 0.2,
+    "ARB_BID_WEIGHT": 0.35,
+    "W1_TRACK_TICK": 0.02,
+    "W2_DETECT_TICK": 0.005,
+    "W3_STABLE": 10.0,
+    "W4_SUCCESS": 50.0,
+    "W5_MOR_GRAD": 0.02,
+    "W6_MAR": 0.1,
+    "W7_HANDOFF": 0.5,
+    "W8_LAYER": [
+     10.0,
+     7.5,
+     10.0,
+     5.0,
+     2.5,
+     1.25
+    ],
+    "W8_SCALE": 1.0,
+    "M05_GRACE": 5.0,
+    "W9_FAILURE": 50.0,
+    "STEP_COST": 0.005,
+    "OBS_DIM": 169,
+    "TRACK_SLOTS": 8,
+    "NET_HIDDEN": 128,
+    "TOTAL_STEPS": 1500000,
+    "N_ENVS": 16,
+    "N_SEEDS": 10,
+    "BC_EPOCHS": [
+     50,
+     100
+    ],
+    "CONVERGE_WINDOW": 100,
+    "seed": 7
+   },
+   "task_config_sha256": "87e5fcd38254e5c1c06f98b7f8a379a9d101cfe7f70dcd78c3c2b2157516e248",
+   "rl": {
+    "success_rate": 0.7,
+    "mean_return": -4891.3,
+    "violations_per_step": 6.8201
+   },
+   "heur": {
+    "success_rate": 0.8,
+    "mean_return": -4032.2,
+    "violations_per_step": 7.6631
+   },
+   "natural_arbitration": {
+    "rl_multi_candidate_events": 9,
+    "rl_winner_changes_vs_fixed_score": 3,
+    "forced_probe_enabled": false
+   },
+   "by_seed": [
+    {
+     "seed": 230,
+     "rl": {
+      "seed": 230,
+      "terminal": "failure",
+      "return": -7817.3,
+      "steps": 698,
+      "violations": 6127,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 230,
+      "terminal": "failure",
+      "return": -8114.4,
+      "steps": 771,
+      "violations": 7506
+     }
+    },
+    {
+     "seed": 231,
+     "rl": {
+      "seed": 231,
+      "terminal": "success",
+      "return": -795.2,
+      "steps": 364,
+      "violations": 951,
+      "multi_candidate_events": 5,
+      "winner_changes_vs_fixed_score": 1
+     },
+     "heur": {
+      "seed": 231,
+      "terminal": "success",
+      "return": -2397.5,
+      "steps": 587,
+      "violations": 4105
+     }
+    },
+    {
+     "seed": 232,
+     "rl": {
+      "seed": 232,
+      "terminal": "success",
+      "return": -8759.1,
+      "steps": 607,
+      "violations": 5239,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 232,
+      "terminal": "failure",
+      "return": -10074.8,
+      "steps": 691,
+      "violations": 6661
+     }
+    },
+    {
+     "seed": 233,
+     "rl": {
+      "seed": 233,
+      "terminal": "success",
+      "return": -3454.0,
+      "steps": 516,
+      "violations": 2939,
+      "multi_candidate_events": 2,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 233,
+      "terminal": "success",
+      "return": -1381.6,
+      "steps": 379,
+      "violations": 1913
+     }
+    },
+    {
+     "seed": 234,
+     "rl": {
+      "seed": 234,
+      "terminal": "failure",
+      "return": -10473.1,
+      "steps": 700,
+      "violations": 6708,
+      "multi_candidate_events": 1,
+      "winner_changes_vs_fixed_score": 1
+     },
+     "heur": {
+      "seed": 234,
+      "terminal": "success",
+      "return": -2945.6,
+      "steps": 600,
+      "violations": 4532
+     }
+    },
+    {
+     "seed": 235,
+     "rl": {
+      "seed": 235,
+      "terminal": "success",
+      "return": -3615.8,
+      "steps": 694,
+      "violations": 4758,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 235,
+      "terminal": "success",
+      "return": -7979.4,
+      "steps": 753,
+      "violations": 6928
+     }
+    },
+    {
+     "seed": 236,
+     "rl": {
+      "seed": 236,
+      "terminal": "failure",
+      "return": -4617.0,
+      "steps": 761,
+      "violations": 5315,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 236,
+      "terminal": "success",
+      "return": -3761.9,
+      "steps": 671,
+      "violations": 5612
+     }
+    },
+    {
+     "seed": 237,
+     "rl": {
+      "seed": 237,
+      "terminal": "success",
+      "return": -3950.5,
+      "steps": 532,
+      "violations": 3240,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 237,
+      "terminal": "success",
+      "return": -1137.3,
+      "steps": 363,
+      "violations": 1595
+     }
+    },
+    {
+     "seed": 238,
+     "rl": {
+      "seed": 238,
+      "terminal": "success",
+      "return": -3108.2,
+      "steps": 487,
+      "violations": 2423,
+      "multi_candidate_events": 1,
+      "winner_changes_vs_fixed_score": 1
+     },
+     "heur": {
+      "seed": 238,
+      "terminal": "success",
+      "return": -1410.0,
+      "steps": 455,
+      "violations": 2412
+     }
+    },
+    {
+     "seed": 239,
+     "rl": {
+      "seed": 239,
+      "terminal": "success",
+      "return": -2322.4,
+      "steps": 665,
+      "violations": 3384,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 239,
+      "terminal": "success",
+      "return": -1119.9,
+      "steps": 391,
+      "violations": 2117
+     }
+    }
+   ],
+   "checkpoint": {
+    "role": "curriculum_initial_checkpoint",
+    "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k4_w8a10\\curr_k4_best.pt",
+    "exists": true,
+    "size_bytes": 1076189,
+    "sha256": "386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797",
+    "checkpoint_saved_config": {
+     "hidden_size": 128,
+     "clip_ratio": 0.2,
+     "learning_rate": 1e-05,
+     "bc_learning_rate": 0.001,
+     "value_coef": 0.5,
+     "entropy_coef": 0.01,
+     "intervention_coef": 0.2,
+     "shield_aware_continuous": false,
+     "mask_intervened_continuous": true,
+     "epochs": 2,
+     "gamma": 0.99,
+     "gae_lambda": 0.95,
+     "reward_scale": 0.1,
+     "initial_log_std": -1.2,
+     "target_kl": 0.01,
+     "bid_target_kl": 0.01,
+     "shaping_kappa": 0.05,
+     "shaping_age_cap": 8.0,
+     "role_shaping_kappa": 0.3,
+     "role_adv_coef": 1.5,
+     "geo_shaping_kappa": 0.15,
+     "stable_shaping_kappa": 1.0,
+     "cf_adv_coef": 1.0,
+     "cf_ownership_bonus": 0.5,
+     "cf_request_credit": 0.25,
+     "cf_global_mix": 0.25,
+     "cf_role_coef": 0.5,
+     "cf_bid_coef": 1.0,
+     "cf_bid_margin_coef": 0.25,
+     "cf_bid_margin_temp": 0.25,
+     "bid_only_ppo": false,
+     "direct_rl_arbitration": true,
+     "gear_gate_coef": 0.0,
+     "conflict_exposure_prob": 1.0,
+     "xi_ppo_coef": 0.0,
+     "xi_anchor_coef": 1.0
+    },
+    "checkpoint_config_sha256": "7855af904bd7ba9dc80cf90bb997597b803b28042414b88f2013718a11f0749a",
+    "archived_snapshot": {
+     "role": "curriculum_initial_checkpoint_snapshot",
+     "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\provenance\\20261020T022111.931051Z_17056_aa63469e_input_curriculum_initial_checkpoint_curr_k4_best.pt",
+     "exists": true,
+     "size_bytes": 1076189,
+     "sha256": "386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797"
+    }
+   },
+   "run_id": "20261020T022111.931051Z_17056_aa63469e",
+   "stage": "initial_checkpoint",
+   "iter": -1,
+   "source_manifest_sha256": "ff0dab7e66fa2d15ef78d44d21287450788cc4d0e69fd7db5e012c29f71aaa96",
+   "best_checkpoint": {
+    "role": "curriculum_best_checkpoint",
+    "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4_best.pt",
+    "exists": true,
+    "size_bytes": 1613439,
+    "sha256": "95b281905510a99bb1859bbc5666da2f454fc486f460dd8e3499a3fab178f1a6",
+    "archive": {
+     "role": "curriculum_best_checkpoint_archive",
+     "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\provenance\\20261020T022111.931051Z_17056_aa63469e_curr_k4_best_initial_checkpoint_-00001.pt",
+     "exists": true,
+     "size_bytes": 1613439,
+     "sha256": "95b281905510a99bb1859bbc5666da2f454fc486f460dd8e3499a3fab178f1a6",
+     "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4_best.pt"
+    }
+   },
+   "acceptance": {
+    "success_at_least_heur": false,
+    "mean_return_at_least_heur": false,
+    "violations_below_heur": true,
+    "passed": false
+   }
+  },
+  "curr_k4_baseline": {
+   "k": 4,
+   "seeds": [
+    230,
+    231,
+    232,
+    233,
+    234,
+    235,
+    236,
+    237,
+    238,
+    239
+   ],
+   "stable_window": 8,
+   "task_config": {
+    "dt": 1.0,
+    "horizon": 900,
+    "L_X": 160.0,
+    "L_Y": 120.0,
+    "X_CUTOFF": 40.0,
+    "X_TRACK": 110.0,
+    "AGE_STD_TRACK": 10.0,
+    "AGE_STD_DETECT": 5.0,
+    "STABLE_WINDOW": 8,
+    "N_WINGMEN": 3,
+    "BLUE_V_MIN_MA": 0.4,
+    "BLUE_V_MAX_MA": 0.95,
+    "OMEGA_CRUISE_DEG": 3.0,
+    "OMEGA_MANEUVER_DEG": 6.0,
+    "ACCEL_MAX_MA_S": 0.1,
+    "K_PSI": 1.0,
+    "K_V_MS": 30.0,
+    "MANNED_V_MIN_MA": 0.5,
+    "MANNED_V_MAX_MA": 0.9,
+    "MANNED_OMEGA_DEG": 3.0,
+    "K_RED": 4,
+    "RED_CRUISE_MA": 0.75,
+    "RED_MANEUVER_MA_RANGE": [
+     0.6,
+     0.9
+    ],
+    "RED_OMEGA_DEG": 8.0,
+    "RED_DUTY_MIN": 0.7,
+    "RED_DUTY_MAX": 0.8,
+    "RED_STAGGER_KM": 8.0,
+    "RED_X0": 158.0,
+    "RED_MANEUVER_RESAMPLE": [
+     20,
+     40
+    ],
+    "RED_TURN_POISSON_MEAN": 30.0,
+    "RED_SNAKE_HALF_ANGLE_DEG": 30.0,
+    "RED_SNAKE_PERIOD": 20.0,
+    "RED_EDGE_SUPPRESS_KM": 5.0,
+    "RED_REGAIN_T": [
+     12.0,
+     20.0
+    ],
+    "RED_REGAIN_SPREAD_DEG": 30.0,
+    "RED_SEP_WARN_KM": 18.0,
+    "RED_SEP_HARD_KM": 2.0,
+    "RED_SEP_BIAS_DEG": 45.0,
+    "RED_PAIR_SUBLANE_KM": 4.0,
+    "R_MAX": 80.0,
+    "FOV_HALF_DEG": 7.5,
+    "BEAM_DWELL": 0.5,
+    "GEAR_FRAME": {
+     "7.5": 0.5,
+     "15.0": 1.0,
+     "30.0": 2.0,
+     "45.0": 3.0,
+     "60.0": 4.0
+    },
+    "GEARS_SEARCH": [
+     45.0,
+     60.0
+    ],
+    "GEARS_TRACK": [
+     7.5,
+     15.0,
+     30.0,
+     45.0
+    ],
+    "PD_TIERS": [
+     [
+      0.5,
+      0.9
+     ],
+     [
+      0.8,
+      0.6
+     ],
+     [
+      1.0,
+      0.3
+     ]
+    ],
+    "SECTOR_AXIS_MAX_DEG": 60.0,
+    "AXIS_TRIM_SCALE_DEG": 15.0,
+    "TRACK_INIT_HITS": 2,
+    "TRACK_INIT_WINDOW": 6.5,
+    "TRACK_CONFIRM_TIME": 5.0,
+    "TRACK_CONFIRM_GAP_MAX": 1.6,
+    "AGE_DEGRADE": 8.0,
+    "AGE_DROP": 13.0,
+    "COV_SHRINK": 0.8,
+    "COV_Q_KM2_S": 0.25,
+    "SIGMA_REF": 4.0,
+    "MAR": 40.0,
+    "MOR": 60.0,
+    "MAR_MOR_VARIANTS": [
+     [
+      40.0,
+      60.0
+     ],
+     [
+      30.0,
+      50.0
+     ],
+     [
+      20.0,
+      40.0
+     ]
+    ],
+    "K_SIGMA": 3.0,
+    "MOR_GRADIENT_SPAN": 20.0,
+    "D_SAFE": 2.0,
+    "D_SAFE_LOOKAHEAD": 3.0,
+    "BOUNDARY_PREDICT": 5.0,
+    "LINK_RATE_HZ": 1.0,
+    "LINK_DELAY_S": 1.0,
+    "T_SCAN_REQ": 120.0,
+    "HANDOFF_MIN_INTERVAL": 30.0,
+    "HANDOFF_INTERVAL_SWEEP": [
+     10.0,
+     20.0,
+     30.0
+    ],
+    "C04_RANGE": 80.0,
+    "C04_RESPONSE": 5.0,
+    "T_DWELL": 5.0,
+    "APPROVAL_DELAY_INIT": 0.0,
+    "LINK_DROP_RATE": 0.3,
+    "LINK_DROP_WINDOW": 10.0,
+    "UPLINK_LOSS_P": 0.05,
+    "E03_AREA_PER_KM": 5.0,
+    "N_SUBZONES": 3,
+    "TRACK_SWEET_DIST": 62.0,
+    "TRACK_K_D": 0.0025,
+    "CAP_X": 15.0,
+    "CAP_Y": 60.0,
+    "CAP_LEG_Y": 10.0,
+    "CAP_LEG_X": 5.0,
+    "ARB_WEIGHTS": [
+     1.0,
+     1.0,
+     0.5,
+     0.5,
+     0.3
+    ],
+    "ARB_HYSTERESIS": 0.2,
+    "ARB_BID_WEIGHT": 0.35,
+    "W1_TRACK_TICK": 0.02,
+    "W2_DETECT_TICK": 0.005,
+    "W3_STABLE": 10.0,
+    "W4_SUCCESS": 50.0,
+    "W5_MOR_GRAD": 0.02,
+    "W6_MAR": 0.1,
+    "W7_HANDOFF": 0.5,
+    "W8_LAYER": [
+     10.0,
+     7.5,
+     10.0,
+     5.0,
+     2.5,
+     1.25
+    ],
+    "W8_SCALE": 1.0,
+    "M05_GRACE": 5.0,
+    "W9_FAILURE": 50.0,
+    "STEP_COST": 0.005,
+    "OBS_DIM": 169,
+    "TRACK_SLOTS": 8,
+    "NET_HIDDEN": 128,
+    "TOTAL_STEPS": 1500000,
+    "N_ENVS": 16,
+    "N_SEEDS": 10,
+    "BC_EPOCHS": [
+     50,
+     100
+    ],
+    "CONVERGE_WINDOW": 100,
+    "seed": 7
+   },
+   "task_config_sha256": "87e5fcd38254e5c1c06f98b7f8a379a9d101cfe7f70dcd78c3c2b2157516e248",
+   "rl": {
+    "success_rate": 0.7,
+    "mean_return": -4891.3,
+    "violations_per_step": 6.8201
+   },
+   "heur": {
+    "success_rate": 0.8,
+    "mean_return": -4032.2,
+    "violations_per_step": 7.6631
+   },
+   "natural_arbitration": {
+    "rl_multi_candidate_events": 9,
+    "rl_winner_changes_vs_fixed_score": 3,
+    "forced_probe_enabled": false
+   },
+   "by_seed": [
+    {
+     "seed": 230,
+     "rl": {
+      "seed": 230,
+      "terminal": "failure",
+      "return": -7817.3,
+      "steps": 698,
+      "violations": 6127,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 230,
+      "terminal": "failure",
+      "return": -8114.4,
+      "steps": 771,
+      "violations": 7506
+     }
+    },
+    {
+     "seed": 231,
+     "rl": {
+      "seed": 231,
+      "terminal": "success",
+      "return": -795.2,
+      "steps": 364,
+      "violations": 951,
+      "multi_candidate_events": 5,
+      "winner_changes_vs_fixed_score": 1
+     },
+     "heur": {
+      "seed": 231,
+      "terminal": "success",
+      "return": -2397.5,
+      "steps": 587,
+      "violations": 4105
+     }
+    },
+    {
+     "seed": 232,
+     "rl": {
+      "seed": 232,
+      "terminal": "success",
+      "return": -8759.1,
+      "steps": 607,
+      "violations": 5239,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 232,
+      "terminal": "failure",
+      "return": -10074.8,
+      "steps": 691,
+      "violations": 6661
+     }
+    },
+    {
+     "seed": 233,
+     "rl": {
+      "seed": 233,
+      "terminal": "success",
+      "return": -3454.0,
+      "steps": 516,
+      "violations": 2939,
+      "multi_candidate_events": 2,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 233,
+      "terminal": "success",
+      "return": -1381.6,
+      "steps": 379,
+      "violations": 1913
+     }
+    },
+    {
+     "seed": 234,
+     "rl": {
+      "seed": 234,
+      "terminal": "failure",
+      "return": -10473.1,
+      "steps": 700,
+      "violations": 6708,
+      "multi_candidate_events": 1,
+      "winner_changes_vs_fixed_score": 1
+     },
+     "heur": {
+      "seed": 234,
+      "terminal": "success",
+      "return": -2945.6,
+      "steps": 600,
+      "violations": 4532
+     }
+    },
+    {
+     "seed": 235,
+     "rl": {
+      "seed": 235,
+      "terminal": "success",
+      "return": -3615.8,
+      "steps": 694,
+      "violations": 4758,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 235,
+      "terminal": "success",
+      "return": -7979.4,
+      "steps": 753,
+      "violations": 6928
+     }
+    },
+    {
+     "seed": 236,
+     "rl": {
+      "seed": 236,
+      "terminal": "failure",
+      "return": -4617.0,
+      "steps": 761,
+      "violations": 5315,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 236,
+      "terminal": "success",
+      "return": -3761.9,
+      "steps": 671,
+      "violations": 5612
+     }
+    },
+    {
+     "seed": 237,
+     "rl": {
+      "seed": 237,
+      "terminal": "success",
+      "return": -3950.5,
+      "steps": 532,
+      "violations": 3240,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 237,
+      "terminal": "success",
+      "return": -1137.3,
+      "steps": 363,
+      "violations": 1595
+     }
+    },
+    {
+     "seed": 238,
+     "rl": {
+      "seed": 238,
+      "terminal": "success",
+      "return": -3108.2,
+      "steps": 487,
+      "violations": 2423,
+      "multi_candidate_events": 1,
+      "winner_changes_vs_fixed_score": 1
+     },
+     "heur": {
+      "seed": 238,
+      "terminal": "success",
+      "return": -1410.0,
+      "steps": 455,
+      "violations": 2412
+     }
+    },
+    {
+     "seed": 239,
+     "rl": {
+      "seed": 239,
+      "terminal": "success",
+      "return": -2322.4,
+      "steps": 665,
+      "violations": 3384,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 239,
+      "terminal": "success",
+      "return": -1119.9,
+      "steps": 391,
+      "violations": 2117
+     }
+    }
+   ],
+   "checkpoint": {
+    "role": "curriculum_initial_checkpoint",
+    "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k4_w8a10\\curr_k4_best.pt",
+    "exists": true,
+    "size_bytes": 1076189,
+    "sha256": "386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797",
+    "checkpoint_saved_config": {
+     "hidden_size": 128,
+     "clip_ratio": 0.2,
+     "learning_rate": 1e-05,
+     "bc_learning_rate": 0.001,
+     "value_coef": 0.5,
+     "entropy_coef": 0.01,
+     "intervention_coef": 0.2,
+     "shield_aware_continuous": false,
+     "mask_intervened_continuous": true,
+     "epochs": 2,
+     "gamma": 0.99,
+     "gae_lambda": 0.95,
+     "reward_scale": 0.1,
+     "initial_log_std": -1.2,
+     "target_kl": 0.01,
+     "bid_target_kl": 0.01,
+     "shaping_kappa": 0.05,
+     "shaping_age_cap": 8.0,
+     "role_shaping_kappa": 0.3,
+     "role_adv_coef": 1.5,
+     "geo_shaping_kappa": 0.15,
+     "stable_shaping_kappa": 1.0,
+     "cf_adv_coef": 1.0,
+     "cf_ownership_bonus": 0.5,
+     "cf_request_credit": 0.25,
+     "cf_global_mix": 0.25,
+     "cf_role_coef": 0.5,
+     "cf_bid_coef": 1.0,
+     "cf_bid_margin_coef": 0.25,
+     "cf_bid_margin_temp": 0.25,
+     "bid_only_ppo": false,
+     "direct_rl_arbitration": true,
+     "gear_gate_coef": 0.0,
+     "conflict_exposure_prob": 1.0,
+     "xi_ppo_coef": 0.0,
+     "xi_anchor_coef": 1.0
+    },
+    "checkpoint_config_sha256": "7855af904bd7ba9dc80cf90bb997597b803b28042414b88f2013718a11f0749a",
+    "archived_snapshot": {
+     "role": "curriculum_initial_checkpoint_snapshot",
+     "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\provenance\\20261020T022111.931051Z_17056_aa63469e_input_curriculum_initial_checkpoint_curr_k4_best.pt",
+     "exists": true,
+     "size_bytes": 1076189,
+     "sha256": "386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797"
+    }
+   },
+   "run_id": "20261020T022111.931051Z_17056_aa63469e",
+   "stage": "initial_checkpoint",
+   "iter": -1,
+   "source_manifest_sha256": "ff0dab7e66fa2d15ef78d44d21287450788cc4d0e69fd7db5e012c29f71aaa96",
+   "best_checkpoint": {
+    "role": "curriculum_best_checkpoint",
+    "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4_best.pt",
+    "exists": true,
+    "size_bytes": 1613439,
+    "sha256": "95b281905510a99bb1859bbc5666da2f454fc486f460dd8e3499a3fab178f1a6",
+    "archive": {
+     "role": "curriculum_best_checkpoint_archive",
+     "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\provenance\\20261020T022111.931051Z_17056_aa63469e_curr_k4_best_initial_checkpoint_-00001.pt",
+     "exists": true,
+     "size_bytes": 1613439,
+     "sha256": "95b281905510a99bb1859bbc5666da2f454fc486f460dd8e3499a3fab178f1a6",
+     "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4_best.pt"
+    }
+   },
+   "acceptance": {
+    "success_at_least_heur": false,
+    "mean_return_at_least_heur": false,
+    "violations_below_heur": true,
+    "passed": false
+   }
+  },
+  "curr_k4_last_validation": {
+   "k": 4,
+   "seeds": [
+    230,
+    231,
+    232,
+    233,
+    234,
+    235,
+    236,
+    237,
+    238,
+    239
+   ],
+   "stable_window": 8,
+   "task_config": {
+    "dt": 1.0,
+    "horizon": 900,
+    "L_X": 160.0,
+    "L_Y": 120.0,
+    "X_CUTOFF": 40.0,
+    "X_TRACK": 110.0,
+    "AGE_STD_TRACK": 10.0,
+    "AGE_STD_DETECT": 5.0,
+    "STABLE_WINDOW": 8,
+    "N_WINGMEN": 3,
+    "BLUE_V_MIN_MA": 0.4,
+    "BLUE_V_MAX_MA": 0.95,
+    "OMEGA_CRUISE_DEG": 3.0,
+    "OMEGA_MANEUVER_DEG": 6.0,
+    "ACCEL_MAX_MA_S": 0.1,
+    "K_PSI": 1.0,
+    "K_V_MS": 30.0,
+    "MANNED_V_MIN_MA": 0.5,
+    "MANNED_V_MAX_MA": 0.9,
+    "MANNED_OMEGA_DEG": 3.0,
+    "K_RED": 4,
+    "RED_CRUISE_MA": 0.75,
+    "RED_MANEUVER_MA_RANGE": [
+     0.6,
+     0.9
+    ],
+    "RED_OMEGA_DEG": 8.0,
+    "RED_DUTY_MIN": 0.7,
+    "RED_DUTY_MAX": 0.8,
+    "RED_STAGGER_KM": 8.0,
+    "RED_X0": 158.0,
+    "RED_MANEUVER_RESAMPLE": [
+     20,
+     40
+    ],
+    "RED_TURN_POISSON_MEAN": 30.0,
+    "RED_SNAKE_HALF_ANGLE_DEG": 30.0,
+    "RED_SNAKE_PERIOD": 20.0,
+    "RED_EDGE_SUPPRESS_KM": 5.0,
+    "RED_REGAIN_T": [
+     12.0,
+     20.0
+    ],
+    "RED_REGAIN_SPREAD_DEG": 30.0,
+    "RED_SEP_WARN_KM": 18.0,
+    "RED_SEP_HARD_KM": 2.0,
+    "RED_SEP_BIAS_DEG": 45.0,
+    "RED_PAIR_SUBLANE_KM": 4.0,
+    "R_MAX": 80.0,
+    "FOV_HALF_DEG": 7.5,
+    "BEAM_DWELL": 0.5,
+    "GEAR_FRAME": {
+     "7.5": 0.5,
+     "15.0": 1.0,
+     "30.0": 2.0,
+     "45.0": 3.0,
+     "60.0": 4.0
+    },
+    "GEARS_SEARCH": [
+     45.0,
+     60.0
+    ],
+    "GEARS_TRACK": [
+     7.5,
+     15.0,
+     30.0,
+     45.0
+    ],
+    "PD_TIERS": [
+     [
+      0.5,
+      0.9
+     ],
+     [
+      0.8,
+      0.6
+     ],
+     [
+      1.0,
+      0.3
+     ]
+    ],
+    "SECTOR_AXIS_MAX_DEG": 60.0,
+    "AXIS_TRIM_SCALE_DEG": 15.0,
+    "TRACK_INIT_HITS": 2,
+    "TRACK_INIT_WINDOW": 6.5,
+    "TRACK_CONFIRM_TIME": 5.0,
+    "TRACK_CONFIRM_GAP_MAX": 1.6,
+    "AGE_DEGRADE": 8.0,
+    "AGE_DROP": 13.0,
+    "COV_SHRINK": 0.8,
+    "COV_Q_KM2_S": 0.25,
+    "SIGMA_REF": 4.0,
+    "MAR": 40.0,
+    "MOR": 60.0,
+    "MAR_MOR_VARIANTS": [
+     [
+      40.0,
+      60.0
+     ],
+     [
+      30.0,
+      50.0
+     ],
+     [
+      20.0,
+      40.0
+     ]
+    ],
+    "K_SIGMA": 3.0,
+    "MOR_GRADIENT_SPAN": 20.0,
+    "D_SAFE": 2.0,
+    "D_SAFE_LOOKAHEAD": 3.0,
+    "BOUNDARY_PREDICT": 5.0,
+    "LINK_RATE_HZ": 1.0,
+    "LINK_DELAY_S": 1.0,
+    "T_SCAN_REQ": 120.0,
+    "HANDOFF_MIN_INTERVAL": 30.0,
+    "HANDOFF_INTERVAL_SWEEP": [
+     10.0,
+     20.0,
+     30.0
+    ],
+    "C04_RANGE": 80.0,
+    "C04_RESPONSE": 5.0,
+    "T_DWELL": 5.0,
+    "APPROVAL_DELAY_INIT": 0.0,
+    "LINK_DROP_RATE": 0.3,
+    "LINK_DROP_WINDOW": 10.0,
+    "UPLINK_LOSS_P": 0.05,
+    "E03_AREA_PER_KM": 5.0,
+    "N_SUBZONES": 3,
+    "TRACK_SWEET_DIST": 62.0,
+    "TRACK_K_D": 0.0025,
+    "CAP_X": 15.0,
+    "CAP_Y": 60.0,
+    "CAP_LEG_Y": 10.0,
+    "CAP_LEG_X": 5.0,
+    "ARB_WEIGHTS": [
+     1.0,
+     1.0,
+     0.5,
+     0.5,
+     0.3
+    ],
+    "ARB_HYSTERESIS": 0.2,
+    "ARB_BID_WEIGHT": 0.35,
+    "W1_TRACK_TICK": 0.02,
+    "W2_DETECT_TICK": 0.005,
+    "W3_STABLE": 10.0,
+    "W4_SUCCESS": 50.0,
+    "W5_MOR_GRAD": 0.02,
+    "W6_MAR": 0.1,
+    "W7_HANDOFF": 0.5,
+    "W8_LAYER": [
+     10.0,
+     7.5,
+     10.0,
+     5.0,
+     2.5,
+     1.25
+    ],
+    "W8_SCALE": 1.0,
+    "M05_GRACE": 5.0,
+    "W9_FAILURE": 50.0,
+    "STEP_COST": 0.005,
+    "OBS_DIM": 169,
+    "TRACK_SLOTS": 8,
+    "NET_HIDDEN": 128,
+    "TOTAL_STEPS": 1500000,
+    "N_ENVS": 16,
+    "N_SEEDS": 10,
+    "BC_EPOCHS": [
+     50,
+     100
+    ],
+    "CONVERGE_WINDOW": 100,
+    "seed": 7
+   },
+   "task_config_sha256": "87e5fcd38254e5c1c06f98b7f8a379a9d101cfe7f70dcd78c3c2b2157516e248",
+   "rl": {
+    "success_rate": 0.4,
+    "mean_return": -7515.2,
+    "violations_per_step": 7.4985
+   },
+   "heur": {
+    "success_rate": 0.8,
+    "mean_return": -4032.2,
+    "violations_per_step": 7.6631
+   },
+   "natural_arbitration": {
+    "rl_multi_candidate_events": 5,
+    "rl_winner_changes_vs_fixed_score": 1,
+    "forced_probe_enabled": false
+   },
+   "by_seed": [
+    {
+     "seed": 230,
+     "rl": {
+      "seed": 230,
+      "terminal": "failure",
+      "return": -4522.4,
+      "steps": 698,
+      "violations": 4653,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 230,
+      "terminal": "failure",
+      "return": -8114.4,
+      "steps": 771,
+      "violations": 7506
+     }
+    },
+    {
+     "seed": 231,
+     "rl": {
+      "seed": 231,
+      "terminal": "success",
+      "return": -5701.4,
+      "steps": 624,
+      "violations": 4631,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 231,
+      "terminal": "success",
+      "return": -2397.5,
+      "steps": 587,
+      "violations": 4105
+     }
+    },
+    {
+     "seed": 232,
+     "rl": {
+      "seed": 232,
+      "terminal": "failure",
+      "return": -17921.0,
+      "steps": 791,
+      "violations": 6472,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 232,
+      "terminal": "failure",
+      "return": -10074.8,
+      "steps": 691,
+      "violations": 6661
+     }
+    },
+    {
+     "seed": 233,
+     "rl": {
+      "seed": 233,
+      "terminal": "failure",
+      "return": -8154.4,
+      "steps": 670,
+      "violations": 6098,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 233,
+      "terminal": "success",
+      "return": -1381.6,
+      "steps": 379,
+      "violations": 1913
+     }
+    },
+    {
+     "seed": 234,
+     "rl": {
+      "seed": 234,
+      "terminal": "success",
+      "return": -6008.8,
+      "steps": 714,
+      "violations": 5783,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 234,
+      "terminal": "success",
+      "return": -2945.6,
+      "steps": 600,
+      "violations": 4532
+     }
+    },
+    {
+     "seed": 235,
+     "rl": {
+      "seed": 235,
+      "terminal": "failure",
+      "return": -12872.1,
+      "steps": 763,
+      "violations": 4976,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 235,
+      "terminal": "success",
+      "return": -7979.4,
+      "steps": 753,
+      "violations": 6928
+     }
+    },
+    {
+     "seed": 236,
+     "rl": {
+      "seed": 236,
+      "terminal": "failure",
+      "return": -6840.9,
+      "steps": 634,
+      "violations": 4927,
+      "multi_candidate_events": 1,
+      "winner_changes_vs_fixed_score": 1
+     },
+     "heur": {
+      "seed": 236,
+      "terminal": "success",
+      "return": -3761.9,
+      "steps": 671,
+      "violations": 5612
+     }
+    },
+    {
+     "seed": 237,
+     "rl": {
+      "seed": 237,
+      "terminal": "success",
+      "return": -1933.8,
+      "steps": 383,
+      "violations": 1403,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 237,
+      "terminal": "success",
+      "return": -1137.3,
+      "steps": 363,
+      "violations": 1595
+     }
+    },
+    {
+     "seed": 238,
+     "rl": {
+      "seed": 238,
+      "terminal": "success",
+      "return": -1662.8,
+      "steps": 408,
+      "violations": 1307,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 238,
+      "terminal": "success",
+      "return": -1410.0,
+      "steps": 455,
+      "violations": 2412
+     }
+    },
+    {
+     "seed": 239,
+     "rl": {
+      "seed": 239,
+      "terminal": "failure",
+      "return": -9534.6,
+      "steps": 732,
+      "violations": 7868,
+      "multi_candidate_events": 4,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 239,
+      "terminal": "success",
+      "return": -1119.9,
+      "steps": 391,
+      "violations": 2117
+     }
+    }
+   ],
+   "run_id": "20261020T022111.931051Z_17056_aa63469e",
+   "source_manifest_sha256": "ff0dab7e66fa2d15ef78d44d21287450788cc4d0e69fd7db5e012c29f71aaa96",
+   "checkpoint": {
+    "role": "curriculum_validation_checkpoint",
+    "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4.pt",
+    "exists": true,
+    "size_bytes": 1613004,
+    "sha256": "b606ebc24b412480dfc849467b7306335869718ecb4c3dadd261e78e36ccb669"
+   },
+   "stage": "ppo_update",
+   "iter": 7
+  }
+ },
+ "training_state_semantics": {
+  "mode": "weights_only_warm_start",
+  "optimizer_state_restored": false,
+  "rng_state_restored": false,
+  "note": "Checkpoint loading restores model weights only; optimizer and RNG are initialized for this invocation."
+ },
+ "inputs": [
+  {
+   "role": "curriculum_initial_checkpoint",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\curriculum_k4_w8a10\\curr_k4_best.pt",
+   "exists": true,
+   "size_bytes": 1076189,
+   "sha256": "386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797",
+   "checkpoint_saved_config": {
+    "hidden_size": 128,
+    "clip_ratio": 0.2,
+    "learning_rate": 1e-05,
+    "bc_learning_rate": 0.001,
+    "value_coef": 0.5,
+    "entropy_coef": 0.01,
+    "intervention_coef": 0.2,
+    "shield_aware_continuous": false,
+    "mask_intervened_continuous": true,
+    "epochs": 2,
+    "gamma": 0.99,
+    "gae_lambda": 0.95,
+    "reward_scale": 0.1,
+    "initial_log_std": -1.2,
+    "target_kl": 0.01,
+    "bid_target_kl": 0.01,
+    "shaping_kappa": 0.05,
+    "shaping_age_cap": 8.0,
+    "role_shaping_kappa": 0.3,
+    "role_adv_coef": 1.5,
+    "geo_shaping_kappa": 0.15,
+    "stable_shaping_kappa": 1.0,
+    "cf_adv_coef": 1.0,
+    "cf_ownership_bonus": 0.5,
+    "cf_request_credit": 0.25,
+    "cf_global_mix": 0.25,
+    "cf_role_coef": 0.5,
+    "cf_bid_coef": 1.0,
+    "cf_bid_margin_coef": 0.25,
+    "cf_bid_margin_temp": 0.25,
+    "bid_only_ppo": false,
+    "direct_rl_arbitration": true,
+    "gear_gate_coef": 0.0,
+    "conflict_exposure_prob": 1.0,
+    "xi_ppo_coef": 0.0,
+    "xi_anchor_coef": 1.0
+   },
+   "checkpoint_config_sha256": "7855af904bd7ba9dc80cf90bb997597b803b28042414b88f2013718a11f0749a",
+   "archived_snapshot": {
+    "role": "curriculum_initial_checkpoint_snapshot",
+    "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\provenance\\20261020T022111.931051Z_17056_aa63469e_input_curriculum_initial_checkpoint_curr_k4_best.pt",
+    "exists": true,
+    "size_bytes": 1076189,
+    "sha256": "386a7a8d6eabedd68d1275ae77f4a8d4ce88bcb893eb82d9d3866aaff3f1e797"
+   }
+  }
+ ],
+ "checkpoint_archives": [
+  {
+   "role": "curriculum_best_checkpoint_archive",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\provenance\\20261020T022111.931051Z_17056_aa63469e_curr_k4_best_initial_checkpoint_-00001.pt",
+   "exists": true,
+   "size_bytes": 1613439,
+   "sha256": "95b281905510a99bb1859bbc5666da2f454fc486f460dd8e3499a3fab178f1a6",
+   "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4_best.pt"
+  },
+  {
+   "role": "curriculum_iteration_checkpoint_archive",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\provenance\\20261020T022111.931051Z_17056_aa63469e_curr_k4_iter_000000.pt",
+   "exists": true,
+   "size_bytes": 1613004,
+   "sha256": "d07b64ced3778b7cd64d8584f3f2ed89726833dfc4e59babbe1803d9c8be7ad2",
+   "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4.pt"
+  },
+  {
+   "role": "curriculum_iteration_checkpoint_archive",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\provenance\\20261020T022111.931051Z_17056_aa63469e_curr_k4_iter_000001.pt",
+   "exists": true,
+   "size_bytes": 1613004,
+   "sha256": "2d719e2553148411eda55f484deee5d2e8d34ece9b117ed51bdbb6366028708f",
+   "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4.pt"
+  },
+  {
+   "role": "curriculum_iteration_checkpoint_archive",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\provenance\\20261020T022111.931051Z_17056_aa63469e_curr_k4_iter_000002.pt",
+   "exists": true,
+   "size_bytes": 1613004,
+   "sha256": "e5678bc831cc7d493b8f2722e1dc07d770eed6bdd6045d16135bec3d2f29ca91",
+   "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4.pt"
+  },
+  {
+   "role": "curriculum_iteration_checkpoint_archive",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\provenance\\20261020T022111.931051Z_17056_aa63469e_curr_k4_iter_000003.pt",
+   "exists": true,
+   "size_bytes": 1613004,
+   "sha256": "b4562b8833f46aac9e1870f2945cbe7d8f53e825da946294e4df1f49b27902d6",
+   "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4.pt"
+  },
+  {
+   "role": "curriculum_iteration_checkpoint_archive",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\provenance\\20261020T022111.931051Z_17056_aa63469e_curr_k4_iter_000004.pt",
+   "exists": true,
+   "size_bytes": 1613004,
+   "sha256": "9aae6f6a032063398afec5be26c5762333da4c134f94197ab96e3dc8a94139fa",
+   "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4.pt"
+  },
+  {
+   "role": "curriculum_iteration_checkpoint_archive",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\provenance\\20261020T022111.931051Z_17056_aa63469e_curr_k4_iter_000005.pt",
+   "exists": true,
+   "size_bytes": 1613004,
+   "sha256": "e67ffb9c4cd2263e982397709b8be2db7a34cc8da05f453e8a63c1a7916a9aec",
+   "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4.pt"
+  },
+  {
+   "role": "curriculum_iteration_checkpoint_archive",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\provenance\\20261020T022111.931051Z_17056_aa63469e_curr_k4_iter_000006.pt",
+   "exists": true,
+   "size_bytes": 1613004,
+   "sha256": "f7bbc0cb3a0b3fc2f314be5a23e2c4f65c00a622d5ff179cccb586cf24836cf6",
+   "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4.pt"
+  },
+  {
+   "role": "curriculum_iteration_checkpoint_archive",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\provenance\\20261020T022111.931051Z_17056_aa63469e_curr_k4_iter_000007.pt",
+   "exists": true,
+   "size_bytes": 1613004,
+   "sha256": "b606ebc24b412480dfc849467b7306335869718ecb4c3dadd261e78e36ccb669",
+   "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k4_diagnostics_v2\\full_penalty\\curr_k4.pt"
+  }
+ ]
+}
