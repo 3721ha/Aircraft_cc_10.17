@@ -109,7 +109,8 @@ def configured_policy(monkeypatch):
         config=SimpleNamespace(
             learning_rate=1e-4, epochs=2, shield_aware_continuous=False,
             cf_request_credit=0.25, conflict_exposure_prob=1.0,
-            bid_only_ppo=False, task_residual_only_ppo=False, direct_rl_arbitration=True,
+            bid_only_ppo=False, task_residual_only_ppo=False, train_geometry_adapter=False,
+            cf_bid_horizon=1, direct_rl_arbitration=True,
             policy_anchor_coef=0.0, policy_anchor_monitor=False),
         optimizer=SimpleNamespace(param_groups=[{"lr": 1e-4}]),
     )
@@ -157,6 +158,24 @@ def test_runtime_rejects_invalid_residual_scope(monkeypatch, configured_policy, 
     configure, _ = _functions("_configure_policy", "_apply_bid_std_override")
     monkeypatch.setenv("MUMT_TASK_RESIDUAL_ONLY_PPO", value)
     with pytest.raises(ValueError, match="must be 0 or 1"):
+        configure(configured_policy)
+
+
+def test_runtime_window_and_geometry_controls(monkeypatch, configured_policy):
+    configure, _ = _functions("_configure_policy", "_apply_bid_std_override")
+    monkeypatch.setenv("MUMT_TASK_RESIDUAL_ONLY_PPO", "1")
+    monkeypatch.setenv("MUMT_TRAIN_GEOMETRY_ADAPTER", "1")
+    monkeypatch.setenv("MUMT_CF_BID_HORIZON", "8")
+    configure(configured_policy)
+    assert configured_policy.config.train_geometry_adapter is True
+    assert configured_policy.config.cf_bid_horizon == 8
+
+
+@pytest.mark.parametrize("value", ["0", "33", "8.5", "bad"])
+def test_runtime_rejects_invalid_counterfactual_horizon(monkeypatch, configured_policy, value):
+    configure, _ = _functions("_configure_policy", "_apply_bid_std_override")
+    monkeypatch.setenv("MUMT_CF_BID_HORIZON", value)
+    with pytest.raises(ValueError):
         configure(configured_policy)
 
 

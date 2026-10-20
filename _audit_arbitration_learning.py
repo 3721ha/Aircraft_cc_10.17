@@ -1,8 +1,8 @@
 """Audit bid PPO on frozen conflicts from real simulator trajectories.
 
 The fixed cases retain the local observations, task actions, candidate slots
-and one-step environment-copy utilities that collection actually produced.
-Only bids are resampled during this diagnostic.  Training and held-out cases
+and finite-horizon environment-copy utilities that collection produced.
+Only bids are resampled during this diagnostic. Training and held-out cases
 come from disjoint episode seeds; no HEUR labels or truth fixtures are used.
 This measures conditional arbitration learning, not episode success.
 """
@@ -69,30 +69,66 @@ def _case_template(row: dict, n_agents: int) -> dict:
     })
 
 
-def collect_cases(policy, seeds: list[int], k: int, max_cases: int) -> tuple[list, list]:
+def collect_cases(policy, seeds: list[int], k: int, max_cases: int,
+                  max_per_episode: int | None = None,
+                  min_event_gap: int = 0) -> tuple[list, list]:
     """Collect untouched real rollouts; freeze only validated simulator events."""
     cases, episode_records = [], []
     for seed in seeds:
         rollout = policy.collect(k_red=k, seed=seed, deterministic=False,
                                  w8_scale=1.0)
-        found = 0
+        found, retained = 0, 0
+        last_retained_step = None
         for step_index, row in enumerate(rollout):
             if "bid_cf_event_records" not in row:
                 raise RuntimeError("Collector lacks frozen environment utility records")
             for event in row["bid_cf_event_records"]:
                 _event_values(event)
                 found += 1
-                if len(cases) < max_cases:
+                if (len(cases) < max_cases
+                        and (max_per_episode is None or retained < max_per_episode)
+                        and (last_retained_step is None
+                             or step_index - last_retained_step >= min_event_gap)):
                     cases.append({
                         "episode_seed": seed, "step_index": step_index,
                         "event": _json_ready(event),
                         "template": _case_template(row, policy.env.cfg.N_WINGMEN),
                     })
+                    retained += 1
+                    last_retained_step = step_index
         episode_records.append({"seed": seed, "steps": len(rollout),
-                                "controllable_events": found})
+                                "controllable_events": found,
+                                "retained_events": retained})
         print(json.dumps({"collection_seed": seed, "steps": len(rollout),
                           "events": found, "retained": len(cases)}), flush=True)
     return cases, episode_records
+
+
+def case_coverage(cases: list[dict]) -> dict:
+    counts, informative_counts = {}, {}
+    for case in cases:
+        seed = str(case["episode_seed"])
+        counts[seed] = counts.get(seed, 0) + 1
+        if np.ptp(_event_values(case["event"])[2]) > 1e-8:
+            informative_counts[seed] = informative_counts.get(seed, 0) + 1
+    return {"events": len(cases),
+            "informative_events": sum(informative_counts.values()),
+            "event_episodes": len(counts),
+            "informative_episodes": len(informative_counts),
+            "events_by_episode": counts,
+            "informative_events_by_episode": informative_counts}
+
+
+def sample_training_cases(cases, count, sampler, episode_balanced=False):
+    if not cases:
+        raise ValueError("Cannot sample an empty training event population")
+    if not episode_balanced:
+        return [sampler.choice(cases) for _ in range(count)]
+    groups = {}
+    for case in cases:
+        groups.setdefault(case["episode_seed"], []).append(case)
+    episodes = sorted(groups)
+    return [sampler.choice(groups[sampler.choice(episodes)]) for _ in range(count)]
 
 
 def _obs_tensor(case: dict) -> torch.Tensor:
@@ -142,9 +178,16 @@ def evaluate_cases(model, cases: list[dict], samples: int, noise_seed: int) -> d
                     "expected_regret", "expected_optimal_winner_rate",
                     "deterministic_regret")}
 
+    by_episode = {}
+    for row in informative:
+        by_episode.setdefault(str(row["episode_seed"]), []).append(row)
+    episode_rows = [aggregate(items) for items in by_episode.values()]
     return {"events": len(rows), "informative_events": len(informative),
             "monte_carlo_samples_per_event": samples,
             **aggregate(rows), "informative": aggregate(informative),
+            "informative_episode_balanced": aggregate(episode_rows),
+            "informative_by_episode": {seed: aggregate(items)
+                                        for seed, items in by_episode.items()},
             "rows": rows}
 
 
@@ -218,6 +261,16 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--learning-rate", type=float, default=1e-4)
     parser.add_argument("--epochs", type=int, default=2)
     parser.add_argument("--utility-scale", type=float, default=0.1)
+    parser.add_argument("--cf-bid-horizon", type=int, default=1,
+                        help="Candidate rollout decisions; continuation is frozen deterministic RL.")
+    parser.add_argument("--conflict-exposure", type=float, default=1.0,
+                        help="Existing training-only request exposure; no fixture or truth tracks.")
+    parser.add_argument("--max-events-per-episode", type=int)
+    parser.add_argument("--min-event-gap", type=int, default=0)
+    parser.add_argument("--episode-balanced", action="store_true")
+    parser.add_argument("--min-train-event-episodes", type=int, default=1)
+    parser.add_argument("--min-heldout-event-episodes", type=int, default=1)
+    parser.add_argument("--preflight-only", action="store_true")
     parser.add_argument("--mc-samples", type=int, default=4096)
     parser.add_argument("--training-seed", type=int, default=20261021)
     parser.add_argument("--repair-seed", type=int, default=20261021)
@@ -241,16 +294,38 @@ def main(argv=None) -> int:
         raise ValueError("Learning rate must be finite and positive")
     if not np.isfinite(args.utility_scale) or args.utility_scale <= 0:
         raise ValueError("Utility scale must be finite and positive")
+    if not 1 <= args.cf_bid_horizon <= 32:
+        raise ValueError("Counterfactual horizon must be in [1, 32]")
+    if not np.isfinite(args.conflict_exposure) or not 0 <= args.conflict_exposure <= 1:
+        raise ValueError("Conflict exposure must be in [0, 1]")
+    if (args.min_event_gap < 0
+            or (args.max_events_per_episode is not None and args.max_events_per_episode < 1)
+            or args.min_train_event_episodes < 1 or args.min_heldout_event_episodes < 1):
+        raise ValueError("Event spacing must be nonnegative and coverage budgets positive")
+    if args.mc_samples < 2:
+        raise ValueError("Expected regret requires at least two Monte Carlo samples")
     train_seeds = [int(value) for value in args.train_seeds.split(",")]
     heldout_seeds = [int(value) for value in args.heldout_seeds.split(",")]
-    if (not train_seeds or not heldout_seeds
+    if (not train_seeds or not heldout_seeds or min(train_seeds + heldout_seeds) < 0
             or len(set(train_seeds)) != len(train_seeds)
             or len(set(heldout_seeds)) != len(heldout_seeds)
             or set(train_seeds) & set(heldout_seeds)):
         raise ValueError("Collection splits require distinct, disjoint episode seeds")
+    if (len(train_seeds) < args.min_train_event_episodes
+            or len(heldout_seeds) < args.min_heldout_event_episodes):
+        raise ValueError("Requested coverage exceeds the number of episode seeds")
     output = (ROOT / args.output).resolve()
     if output.exists() and (not output.is_dir() or any(output.iterdir())):
         raise ValueError("Audit output must be new or empty")
+    selection_policy = {"max_events_per_episode": args.max_events_per_episode,
+                        "min_event_gap": args.min_event_gap}
+    if args.preflight_only:
+        print(json.dumps({"status": "preflight_passed", "source_checkpoint": str(checkpoint),
+                          "source_checkpoint_sha256": checkpoint_hash,
+                          "selection_policy": selection_policy,
+                          "arguments": {key: str(value) if isinstance(value, Path) else value
+                                        for key, value in vars(args).items()}}, indent=2))
+        return 0
     output.mkdir(parents=True, exist_ok=True)
     snapshot = capture_source_snapshot(ROOT, output, [
         Path(__file__), ROOT / "_arbitration_training.py"])
@@ -266,8 +341,9 @@ def main(argv=None) -> int:
                       ARB_BID_WEIGHT=0.35, ARB_HYSTERESIS=0.2)
     policy_cfg = DetectMAPPOConfig(
         bid_only_ppo=True, direct_rl_arbitration=True,
-        conflict_exposure_prob=1.0, learning_rate=args.learning_rate,
+        conflict_exposure_prob=args.conflict_exposure, learning_rate=args.learning_rate,
         epochs=args.epochs, cf_bid_utility_scale=args.utility_scale,
+        cf_bid_horizon=args.cf_bid_horizon,
         entropy_coef=0.0, policy_anchor_coef=0.0)
     env = DetectEnv(env_cfg)
     policy = DetectMAPPOPolicy(env, DetectQPShield(env_cfg),
@@ -280,6 +356,11 @@ def main(argv=None) -> int:
     utility_definition = {name: getattr(policy_cfg, name) for name in (
         "gamma", "reward_scale", "shaping_kappa", "shaping_age_cap",
         "geo_shaping_kappa", "stable_shaping_kappa")}
+    if args.cf_bid_horizon != 1:
+        utility_definition.update({
+            "cf_bid_horizon": args.cf_bid_horizon,
+            "continuation": "frozen_deterministic_rl_actor_and_independent_branch_shield",
+        })
     if args.event_bank:
         bank_path = (ROOT / args.event_bank).resolve()
         bank = json.loads(bank_path.read_text(encoding="utf-8"))
@@ -291,17 +372,23 @@ def main(argv=None) -> int:
             raise ValueError("Frozen event bank utility definition mismatch")
         if bank["train_seeds"] != train_seeds or bank["heldout_seeds"] != heldout_seeds:
             raise ValueError("Frozen event bank collection seed mismatch")
+        if bank.get("selection_policy", {"max_events_per_episode": None,
+                                         "min_event_gap": 0}) != selection_policy:
+            raise ValueError("Frozen event bank temporal selection policy mismatch")
         bank_input = {"path": str(bank_path), "sha256": file_sha256(bank_path)}
     else:
         train, train_episodes = collect_cases(policy, train_seeds, args.k,
-                                              args.max_events_per_split)
+                                              args.max_events_per_split,
+                                              args.max_events_per_episode, args.min_event_gap)
         heldout, heldout_episodes = collect_cases(policy, heldout_seeds, args.k,
-                                                  args.max_events_per_split)
+                                                  args.max_events_per_split,
+                                                  args.max_events_per_episode, args.min_event_gap)
         bank = {"schema_version": 1,
                 "source_checkpoint_sha256": checkpoint_hash,
                 "k": args.k, "environment_config": _json_ready(asdict(env_cfg)),
                 "collection_source_snapshot": snapshot,
                 "utility_definition": utility_definition,
+                "selection_policy": selection_policy,
                 "train_seeds": train_seeds, "heldout_seeds": heldout_seeds,
                 "train": train, "heldout": heldout,
                 "collection_episodes": {"train": train_episodes,
@@ -312,12 +399,25 @@ def main(argv=None) -> int:
     train, heldout = bank["train"], bank["heldout"]
     bank_path = output / "event_bank.json"
     write_json_atomic(bank_path, bank)
-    if not train or not heldout:
-        raise RuntimeError("No controllable real events in one collection split")
     informative_train = [case for case in train
                          if np.ptp(_event_values(case["event"])[2]) > 1e-8]
-    if not informative_train:
-        raise RuntimeError("Real training conflicts have no utility differences")
+    coverage = {split: case_coverage(cases)
+                for split, cases in (("train", train), ("heldout", heldout))}
+    if (coverage["train"]["informative_episodes"] < args.min_train_event_episodes
+            or coverage["heldout"]["informative_episodes"] < args.min_heldout_event_episodes):
+        report = {
+            "status": "insufficient_independent_event_coverage", "updates": [],
+            "coverage": coverage, "source_checkpoint_sha256": checkpoint_hash,
+            "source_snapshot": snapshot,
+            "source_changed_during_run": changed_source_files(snapshot),
+            "event_bank_sha256": file_sha256(bank_path), "event_bank_input": bank_input,
+            "arguments": {key: str(value) if isinstance(value, Path) else value
+                          for key, value in vars(args).items()},
+        }
+        report["report_content_sha256"] = canonical_sha256(_json_ready(report))
+        write_json_atomic(output / "learning_audit.json", report)
+        print(json.dumps({"status": report["status"], "coverage": coverage}), flush=True)
+        return 2
     before = {split: evaluate_cases(policy.model, cases, args.mc_samples, 9017)
               for split, cases in (("train", train), ("heldout", heldout))}
     policy.save(str(output / "initial_repaired.pt"))
@@ -327,8 +427,8 @@ def main(argv=None) -> int:
     for iteration in range(args.updates):
         # Cases remain fixed; each PPO call receives fresh actions from the
         # current actor, never stale demonstrations or utility-ranked bids.
-        selected = [sampler.choice(informative_train)
-                    for _ in range(args.events_per_update)]
+        selected = sample_training_cases(informative_train, args.events_per_update,
+                                         sampler, args.episode_balanced)
         rollout = [resample_case_row(policy, case) for case in selected]
         stats = policy.update(rollout)
         updates.append({"iteration": iteration, **stats})
@@ -340,7 +440,8 @@ def main(argv=None) -> int:
     policy.save(str(output / "final.pt"))
     changed = changed_source_files(snapshot)
     report = {
-        "diagnostic_scope": "conditional_one_step_arbitration_not_task_success",
+        "status": "completed_diagnostic", "coverage": coverage,
+        "diagnostic_scope": "conditional_frozen_continuation_arbitration_not_task_success",
         "source_checkpoint": str(checkpoint),
         "source_checkpoint_sha256": checkpoint_hash,
         "source_snapshot": snapshot, "source_changed_during_run": changed,

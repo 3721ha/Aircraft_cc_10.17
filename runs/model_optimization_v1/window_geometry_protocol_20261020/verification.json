@@ -1,0 +1,30 @@
+{
+ "python_compilation": "passed",
+ "related_tests": {
+  "count": 235,
+  "returncode": 0,
+  "stdout_sha256": "b5c4ed2bb9696c6fe86fe117959d709798a234eefc40493047e5e31df024eea8"
+ },
+ "preflight": {
+  "returncode": 0,
+  "status": "preflight_passed"
+ },
+ "smoke_integrity": true,
+ "source_files": {
+  "Aircraft_mumt/aircraft_sim/detect_mappo.py": "395dacc4d9501c6b885a5ccb23f37c7ab89565974cd8a2d3fb6ac02eb2252886",
+  "Aircraft_mumt/aircraft_sim/detect_task_adapter.py": "7c2aa6d55449d1c85c40cf74b0a5a6edde78e48d7c10458689172b98e75ba78b",
+  "_audit_arbitration_learning.py": "27a338d43aeb234af3bfe0602b7c81b0de2d4ce273622d7ecbce3e94a96835d5",
+  "_audit_window_geometry_run.py": "d1ae1f9a72cd45066293e48fd5d78c20fe6eba874c206c4f5bbd4c917e9e2064",
+  "_p3_pilot.py": "fe836a0c74b76005981a0ad6d1c2274625d13eb23f9ae6abaa240b89bbf59c0e",
+  "_run_best_refine.py": "96a348ffb983bcb59bc079971bb0dcf58ffd8a81568a0480aff7797632f43d17",
+  "Aircraft_mumt/tests/test_detect_window_replay.py": "3cc820de0a171e6eccf2b0231d2d4004bee828f133df2b624c727d4d34179422",
+  "Aircraft_mumt/tests/test_detect_task_adapter.py": "d34a16b01c330f5ce1ebcfb21a162d32a60f75e9ab1903ada9a479f36f9cf925",
+  "Aircraft_mumt/tests/test_detect_geometry_wiring.py": "c4036515f616cc1249c6eaa22d3428bed61bee861dc33f2de35f439e6879e7a5",
+  "Aircraft_mumt/tests/test_detect_window_real_isolation.py": "510c26fcd2b4b29c199cb9d477d14cf220d8185e452f1a0d0078220620964942",
+  "Aircraft_mumt/tests/test_arbitration_learning_audit.py": "92d09bd305279bc8d195859f39653ff50418bb94b9ed00a81425bd595082adf4",
+  "Aircraft_mumt/tests/test_best_refine_launcher.py": "5b959ddfe9757638d9387962068e1ec953c550a16717b0aa690872655b9bbf07",
+  "Aircraft_mumt/tests/test_curriculum_anchor_runtime.py": "4b4f68a904bd7090e3ca71c9054cc5da98634fbaa40d0cbe69ed20623c6f23d1"
+ },
+ "long_diagnostic_started_by_agent": false,
+ "code_or_candidate_success_claimed": false
+}

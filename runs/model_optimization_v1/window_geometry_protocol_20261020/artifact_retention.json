@@ -1,0 +1,73 @@
+{
+ "action": "archive useful diagnostics and exclude redundant checkpoint copies",
+ "deleted_files": [],
+ "local_files_removed": false,
+ "runs": [
+  {
+   "run": "window_geometry_smoke_k4_20261020",
+   "retained": [
+    {
+     "path": "runs/model_optimization_v1/window_geometry_smoke_k4_20261020/curr_k4.pt",
+     "sha256": "34298075ae711d2cc0cffd181685dc4d2ddbb6136886e4be9673c60e8cb87380"
+    },
+    {
+     "path": "runs/model_optimization_v1/window_geometry_smoke_k4_20261020/curr_k4_best.pt",
+     "sha256": "c33dd52cfe76953f9fd628172bcbc848f20abe32d0d0c880130843efd9b064ac"
+    },
+    {
+     "path": "runs/model_optimization_v1/window_geometry_smoke_k4_20261020/provenance/20261020T141552.741045Z_34612_625cde7d_effective_initial.pt",
+     "sha256": "82af8b157fcc44160bc5671394041f5686e9aa940b02fa174ebe31f05c1a9a89"
+    },
+    {
+     "path": "runs/model_optimization_v1/window_geometry_smoke_k4_20261020/provenance/20261020T141552.741045Z_34612_625cde7d_input_curriculum_initial_checkpoint_curr_k4_best.pt",
+     "sha256": "38815f375df492ee320d9a0d4a9105efaf3944a6694165b295f646c9917aea18"
+    }
+   ],
+   "excluded": [
+    {
+     "path": "runs/model_optimization_v1/window_geometry_smoke_k4_20261020/provenance/20261020T141552.741045Z_34612_625cde7d_curr_k4_best_initial_checkpoint_-00001.pt",
+     "sha256": "c33dd52cfe76953f9fd628172bcbc848f20abe32d0d0c880130843efd9b064ac",
+     "status": "kept locally, excluded from archive"
+    },
+    {
+     "path": "runs/model_optimization_v1/window_geometry_smoke_k4_20261020/provenance/20261020T141552.741045Z_34612_625cde7d_curr_k4_iter_000000.pt",
+     "sha256": "2b66d1ad15a7cabf61d2e4257116d7b66a03b203e2269511f3a55e08e670cc0e",
+     "status": "kept locally, excluded from archive"
+    },
+    {
+     "path": "runs/model_optimization_v1/window_geometry_smoke_k4_20261020/provenance/20261020T141552.741045Z_34612_625cde7d_curr_k4_iter_000001.pt",
+     "sha256": "34298075ae711d2cc0cffd181685dc4d2ddbb6136886e4be9673c60e8cb87380",
+     "status": "kept locally, excluded from archive"
+    }
+   ]
+  },
+  {
+   "run": "window_geometry_exposure_audit_k4_20261020",
+   "retained": [
+    {
+     "path": "runs/model_optimization_v1/window_geometry_exposure_audit_k4_20261020/final.pt",
+     "sha256": "6a70a2e08032ab0eec89fdd64b8bb73b436b61236f37020ea8d2ad5c323fdaaf"
+    },
+    {
+     "path": "runs/model_optimization_v1/window_geometry_exposure_audit_k4_20261020/initial_repaired.pt",
+     "sha256": "a4f023dc6dd0838baeebedd515dc0d4a3a9e88ce4c339d1f68e389f72b67b042"
+    }
+   ],
+   "excluded": []
+  },
+  {
+   "run": "window_episode_balanced_audit_k4_20261020",
+   "retained": [
+    {
+     "path": "runs/model_optimization_v1/window_episode_balanced_audit_k4_20261020/final.pt",
+     "sha256": "9dc97d2a18b6b26d391136560d8d8f62b239d7dfeacb175846c1caa96a9fbc7a"
+    },
+    {
+     "path": "runs/model_optimization_v1/window_episode_balanced_audit_k4_20261020/initial_repaired.pt",
+     "sha256": "a4f023dc6dd0838baeebedd515dc0d4a3a9e88ce4c339d1f68e389f72b67b042"
+    }
+   ],
+   "excluded": []
+  }
+ ]
+}

@@ -1,0 +1,25 @@
+{"update": 0, "bid_grad_norm": 34.94279098510742, "policy_loss": -4.014494895935059}
+{"update": 1, "bid_grad_norm": 41.676353454589844, "policy_loss": -1.1951279640197754}
+{"update": 2, "bid_grad_norm": 36.72114944458008, "policy_loss": 4.059948921203613}
+{"update": 3, "bid_grad_norm": 110.85873413085938, "policy_loss": 1.2640855312347412}
+{"update": 4, "bid_grad_norm": 45.20785903930664, "policy_loss": 2.8410425186157227}
+{"update": 5, "bid_grad_norm": 54.59006881713867, "policy_loss": -5.636058330535889}
+{"update": 6, "bid_grad_norm": 67.6353530883789, "policy_loss": 5.085186958312988}
+{"update": 7, "bid_grad_norm": 57.03666305541992, "policy_loss": -1.199122428894043}
+{"update": 8, "bid_grad_norm": 37.25577163696289, "policy_loss": 0.3902607560157776}
+{"update": 9, "bid_grad_norm": 37.8061637878418, "policy_loss": 1.905160903930664}
+{"update": 10, "bid_grad_norm": 41.615394592285156, "policy_loss": -2.523416519165039}
+{"update": 11, "bid_grad_norm": 53.98171615600586, "policy_loss": 3.4837188720703125}
+{"update": 12, "bid_grad_norm": 26.828147888183594, "policy_loss": -2.152310848236084}
+{"update": 13, "bid_grad_norm": 38.96809387207031, "policy_loss": -0.18170154094696045}
+{"update": 14, "bid_grad_norm": 49.0361213684082, "policy_loss": -4.151711940765381}
+{"update": 15, "bid_grad_norm": 72.47288513183594, "policy_loss": -4.383268356323242}
+{"update": 16, "bid_grad_norm": 57.36128234863281, "policy_loss": 0.10667586326599121}
+{"update": 17, "bid_grad_norm": 32.46799850463867, "policy_loss": 3.222019672393799}
+{"update": 18, "bid_grad_norm": 24.40775489807129, "policy_loss": -1.1634905338287354}
+{"update": 19, "bid_grad_norm": 47.89039611816406, "policy_loss": 4.851721286773682}
+{"update": 20, "bid_grad_norm": 60.62459182739258, "policy_loss": -5.1359405517578125}
+{"update": 21, "bid_grad_norm": 28.55329704284668, "policy_loss": 0.41347816586494446}
+{"update": 22, "bid_grad_norm": 27.01361656188965, "policy_loss": -2.1891279220581055}
+{"update": 23, "bid_grad_norm": 44.84171676635742, "policy_loss": 1.256483554840088}
+{"output": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\window_episode_balanced_audit_k4_20261020", "before_heldout": {"expected_regret": 1.091717677175521, "expected_optimal_winner_rate": 0.5131244081439394, "deterministic_regret": 0.33376563942544724}, "after_heldout": {"expected_regret": 1.0974581209847918, "expected_optimal_winner_rate": 0.5121330492424242, "deterministic_regret": 0.7744756842459575}, "source_changed_during_run": []}

@@ -1,0 +1,29 @@
+{
+  "command": [
+    ".\\Aircraft_mumt\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "Aircraft_mumt/tests/test_detect_window_replay.py",
+    "Aircraft_mumt/tests/test_detect_task_adapter.py",
+    "Aircraft_mumt/tests/test_detect_geometry_wiring.py",
+    "Aircraft_mumt/tests/test_detect_window_real_isolation.py",
+    "Aircraft_mumt/tests/test_detect_mappo.py",
+    "Aircraft_mumt/tests/test_detect_slot_bids.py",
+    "Aircraft_mumt/tests/test_detect_bid_policy_gradient.py",
+    "Aircraft_mumt/tests/test_detect_bid_conditioning.py",
+    "Aircraft_mumt/tests/test_detect_residual_ppo.py",
+    "Aircraft_mumt/tests/test_detect_policy_anchor.py",
+    "Aircraft_mumt/tests/test_best_refine_launcher.py",
+    "Aircraft_mumt/tests/test_curriculum_anchor_runtime.py",
+    "Aircraft_mumt/tests/test_arbitration_training_migration.py",
+    "Aircraft_mumt/tests/test_arbitration_learning_audit.py",
+    "Aircraft_mumt/tests/test_experiment_provenance.py",
+    "-q",
+    "--basetemp",
+    "Aircraft_mumt/runs/pytest_window_geometry_final_20261020",
+    "--junitxml",
+    "runs/model_optimization_v1/window_geometry_protocol_20261020/pytest.xml"
+  ],
+  "returncode": 0,
+  "stdout": "runs\\model_optimization_v1\\window_geometry_protocol_20261020\\pytest.txt"
+}

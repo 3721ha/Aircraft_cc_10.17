@@ -1,0 +1,46 @@
+{
+  "command": [
+    "powershell",
+    "-NoProfile",
+    "-File",
+    "runs\\model_optimization_v1\\window_geometry_protocol_20261020\\train_diverse_events.ps1",
+    "-PreflightOnly"
+  ],
+  "returncode": 0,
+  "stdout": {
+    "status": "preflight_passed",
+    "source_checkpoint": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\curr_k4_best.pt",
+    "source_checkpoint_sha256": "38815f375df492ee320d9a0d4a9105efaf3944a6694165b295f646c9917aea18",
+    "selection_policy": {
+      "max_events_per_episode": 4,
+      "min_event_gap": 24
+    },
+    "arguments": {
+      "checkpoint": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\curr_k4_best.pt",
+      "expected_sha256": "38815f375df492ee320d9a0d4a9105efaf3944a6694165b295f646c9917aea18",
+      "output": "runs\\model_optimization_v1\\window_diverse_event_learning_k4_w8a10_v1",
+      "k": 4,
+      "train_seeds": "184000,184001,184002,184003,184004,184005,184006,184007,184008,184009,184010,184011,184012,184013,184014,184015,184016,184017,184018,184019,184020,184021,184022,184023,184024,184025,184026,184027,184028,184029,184030,184031,184032,184033,184034,184035,184036,184037,184038,184039,184040,184041,184042,184043,184044,184045,184046,184047,184048,184049,184050,184051,184052,184053,184054,184055,184056,184057,184058,184059,184060,184061,184062,184063",
+      "heldout_seeds": "185000,185001,185002,185003,185004,185005,185006,185007,185008,185009,185010,185011,185012,185013,185014,185015",
+      "max_events_per_split": 256,
+      "event_bank": null,
+      "updates": 48,
+      "events_per_update": 32,
+      "learning_rate": 0.0001,
+      "epochs": 2,
+      "utility_scale": 0.1,
+      "cf_bid_horizon": 8,
+      "conflict_exposure": 1.0,
+      "max_events_per_episode": 4,
+      "min_event_gap": 24,
+      "episode_balanced": true,
+      "min_train_event_episodes": 16,
+      "min_heldout_event_episodes": 8,
+      "preflight_only": true,
+      "mc_samples": 4096,
+      "training_seed": 20261021,
+      "repair_seed": 20261021
+    }
+  },
+  "stderr": ""
+}

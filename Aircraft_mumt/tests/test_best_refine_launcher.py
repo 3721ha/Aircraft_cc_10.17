@@ -127,6 +127,22 @@ def test_explicit_training_scope_replaces_stale_modes(
     assert launch["mode"] == mode
 
 
+def test_window_geometry_controls_are_explicit(source_run, tmp_path):
+    args = parse(source_run, tmp_path / "geometry", "--mode", "conflict-residual",
+                 "--train-geometry-adapter", "--cf-bid-horizon", "8")
+    launch = launcher.prepare_launch(args, {"MUMT_CF_BID_HORIZON": "30"})
+    assert launch["environment"]["MUMT_CF_BID_HORIZON"] == "8"
+    assert launch["environment"]["MUMT_TRAIN_GEOMETRY_ADAPTER"] == "1"
+    with pytest.raises(ValueError, match="requires"):
+        launcher.prepare_launch(parse(source_run, tmp_path / "bad", "--train-geometry-adapter"))
+
+
+@pytest.mark.parametrize("value", ["0", "33", "8.5"])
+def test_replay_horizon_rejected_by_launcher(source_run, tmp_path, value):
+    with pytest.raises(SystemExit):
+        parse(source_run, tmp_path / "bad-horizon", "--cf-bid-horizon", value)
+
+
 @pytest.mark.parametrize("exposure,penalty,anchor", [
     (0.0, 1.0, 0.0), (1.0, 0.0, 2.5), (0.4, 0.7, 0.15),
 ])

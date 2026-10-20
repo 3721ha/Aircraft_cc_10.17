@@ -1,0 +1,98 @@
+{
+ "event_weighted": {
+  "report_sha256": "d01a180098d63227f05986682c1cf2c12c0ef3d283e8b42f88190026e8c18658",
+  "before": {
+   "train": {
+    "expected_regret": 0.6962776462685747,
+    "expected_optimal_winner_rate": 0.49225050403225806,
+    "deterministic_regret": 0.6504019035846988
+   },
+   "heldout": {
+    "expected_regret": 1.091717677175521,
+    "expected_optimal_winner_rate": 0.5131244081439394,
+    "deterministic_regret": 0.33376563942544724
+   }
+  },
+  "after": {
+   "train": {
+    "expected_regret": 0.682208310924198,
+    "expected_optimal_winner_rate": 0.4974562121975806,
+    "deterministic_regret": 0.43147914454133973
+   },
+   "heldout": {
+    "expected_regret": 1.1215505658929157,
+    "expected_optimal_winner_rate": 0.5062144886363636,
+    "deterministic_regret": 0.9437176969435184
+   }
+  },
+  "source_changed_during_run": [],
+  "training_events": 31,
+  "heldout_events": 33
+ },
+ "episode_balanced": {
+  "report_sha256": "1570ccaeb9b17fc2315b42ec68bf4e2c876e1d55c43478fa0505989b7207acc9",
+  "before": {
+   "train": {
+    "expected_regret": 0.6962776462685747,
+    "expected_optimal_winner_rate": 0.49225050403225806,
+    "deterministic_regret": 0.6504019035846988
+   },
+   "heldout": {
+    "expected_regret": 1.091717677175521,
+    "expected_optimal_winner_rate": 0.5131244081439394,
+    "deterministic_regret": 0.33376563942544724
+   }
+  },
+  "after": {
+   "train": {
+    "expected_regret": 0.6735677679672929,
+    "expected_optimal_winner_rate": 0.5007560483870968,
+    "deterministic_regret": 0.6167565236802751
+   },
+   "heldout": {
+    "expected_regret": 1.0974581209847918,
+    "expected_optimal_winner_rate": 0.5121330492424242,
+    "deterministic_regret": 0.7744756842459575
+   }
+  },
+  "source_changed_during_run": [],
+  "training_events": 31,
+  "heldout_events": 33
+ },
+ "task_smoke": {
+  "training_seeds": [
+   181000,
+   181001,
+   181002,
+   181003
+  ],
+  "validation_seeds": [
+   181100,
+   181101
+  ],
+  "initial_rl": {
+   "success_rate": 0.0,
+   "mean_return": -7106.5,
+   "violations_per_step": 7.4687
+  },
+  "latest_rl": {
+   "success_rate": 0.0,
+   "mean_return": -10185.0,
+   "violations_per_step": 9.1061
+  },
+  "heur": {
+   "success_rate": 1.0,
+   "mean_return": -1608.9,
+   "violations_per_step": 5.9311
+  },
+  "best_iteration": -1,
+  "source_integrity": {
+   "verified_at_utc": "2026-10-20T14:17:42.734841+00:00",
+   "unchanged": true,
+   "changed_files": []
+  },
+  "conclusion": "No task improvement; initial model preserved as best; not a candidate promotion"
+ },
+ "protected_paths_diff": [],
+ "conclusion": "No superiority to HEUR and no H8 generalization advantage established"
+}

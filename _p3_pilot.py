@@ -512,6 +512,18 @@ def _configure_policy(pol):
         pol.config.task_residual_only_ppo = residual_text == "1"
     if pol.config.bid_only_ppo and pol.config.task_residual_only_ppo:
         raise ValueError("bid-only and task-residual-only PPO are mutually exclusive")
+    geometry_text = os.environ.get("MUMT_TRAIN_GEOMETRY_ADAPTER")
+    if geometry_text is not None:
+        if geometry_text not in {"0", "1"}:
+            raise ValueError("MUMT_TRAIN_GEOMETRY_ADAPTER must be 0 or 1")
+        pol.config.train_geometry_adapter = geometry_text == "1"
+    if pol.config.train_geometry_adapter and not pol.config.task_residual_only_ppo:
+        raise ValueError("geometry-adapter training requires task-residual-only PPO")
+    horizon_text = os.environ.get("MUMT_CF_BID_HORIZON")
+    if horizon_text is not None:
+        pol.config.cf_bid_horizon = int(horizon_text)
+        if not 1 <= pol.config.cf_bid_horizon <= 32:
+            raise ValueError("MUMT_CF_BID_HORIZON must be in [1, 32]")
     if os.environ.get("MUMT_RL_DIRECT_ARBITRATION"):
         pol.config.direct_rl_arbitration = (
             os.environ["MUMT_RL_DIRECT_ARBITRATION"] != "0")
@@ -533,6 +545,8 @@ def _configure_policy(pol):
           f"conflict_exposure={pol.config.conflict_exposure_prob:g} "
           f"bid_only={pol.config.bid_only_ppo} "
           f"task_residual_only={pol.config.task_residual_only_ppo} "
+          f"geometry_adapter={pol.config.train_geometry_adapter} "
+          f"cf_bid_horizon={pol.config.cf_bid_horizon} "
           f"policy_anchor_coef={pol.config.policy_anchor_coef:g} "
           f"direct_rl_arbitration={pol.config.direct_rl_arbitration}", flush=True)
 
@@ -576,6 +590,7 @@ def _initialize_candidate_training_branch(pol, run_record, start, iteration):
     repair["source_checkpoint_sha256"] = start["sha256"]
     repair["source_checkpoint_path"] = start["path"]
     repair["resume"] = iteration > 0
+    repair["checkpoint_migration"] = getattr(pol, "checkpoint_migration_record", None)
     # Even a healthy head, or disabled repair, can start from different
     # effective weights after the bid-std override and anchor refresh. The
     # baseline must identify this exact serialized state, not the loaded source.
@@ -880,6 +895,8 @@ def main():
                 "bid_only_ppo": pol.config.bid_only_ppo,
                 "task_residual_only_ppo": pol.config.task_residual_only_ppo,
                 "cf_bid_utility_scale": pol.config.cf_bid_utility_scale,
+                "cf_bid_horizon": pol.config.cf_bid_horizon,
+                "train_geometry_adapter": pol.config.train_geometry_adapter,
                 "direct_rl_arbitration": pol.config.direct_rl_arbitration,
                 "policy_anchor_coef": pol.config.policy_anchor_coef,
                 "policy_anchor_monitor": pol.config.policy_anchor_monitor,
@@ -1066,6 +1083,16 @@ def main():
                     stats.get("task_residual_parameter_delta_l2", 0.0), 8),
                 "task_residual_xi_row_unchanged": stats.get(
                     "task_residual_xi_row_unchanged"),
+                "geometry_adapter_gradient_norm": round(
+                    stats.get("geometry_adapter_gradient_norm", 0.0), 8),
+                "geometry_adapter_parameter_delta_l2": round(
+                    stats.get("geometry_adapter_parameter_delta_l2", 0.0), 8),
+                "geometry_adapter_mean_abs_output": round(
+                    stats.get("geometry_adapter_mean_abs_output", 0.0), 8),
+                "geometry_adapter_max_abs_output": round(
+                    stats.get("geometry_adapter_max_abs_output", 0.0), 8),
+                "geometry_pressure_gate_nonzero_fraction": round(
+                    stats.get("geometry_pressure_gate_nonzero_fraction", 0.0), 8),
                 "w8_scale": round(w8_scale, 2),
                 "k": CURR_K,
                 "agent_steps": agent_steps,

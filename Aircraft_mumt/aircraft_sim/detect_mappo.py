@@ -40,6 +40,7 @@ from torch.distributions import Categorical, Normal, kl_divergence
 from .detect_config import DetectSimConfig, ZONE_TRACKING
 from .detect_encoder import DetectObservationEncoder, DetectActionCodec, GEAR_ORDER
 from .detect_models import DetectAction, DetectRole
+from .detect_task_adapter import ObservationalTaskAdapter
 
 ACT_DIM = 7        # [u_psi, u_v, u_xi, role, gear, pointer, arbitration_bid]
 SQUASH_EPS = 1e-5
@@ -240,6 +241,9 @@ class DetectActorCritic(nn.Module):
         self.critic = nn.Sequential(
             nn.Linear(observation_dim * n_agents, hidden), nn.Tanh(),
             nn.Linear(hidden, hidden), nn.Tanh(), nn.Linear(hidden, 1))
+        # Added after all legacy layers; its private RNG and zero output
+        # preserve both inherited behavior and legacy initialization streams.
+        self.task_geometry_adapter = ObservationalTaskAdapter()
 
     def action_parameters(self, obs: torch.Tensor,
                           pointer_idx: torch.Tensor | None = None):
@@ -250,7 +254,8 @@ class DetectActorCritic(nn.Module):
         else:
             conflict_features = obs.new_zeros((*obs.shape[:-1],
                                                 N_CONFLICT_FEATURES))
-        residual = self.conflict_residual(conflict_features)
+        residual = (self.conflict_residual(conflict_features)
+                    + self.task_geometry_adapter(obs))
         bid_residual = self.bid_conflict_residual(conflict_features)
         i = 0
         cont_loc = self.cont_head(h) + residual[..., i:i + 3]
@@ -386,6 +391,9 @@ class DetectMAPPOConfig:
     # A fixed positive scale preserves utility differences across events.
     cf_bid_coef: float = 1.0
     cf_bid_utility_scale: float = 0.1
+    # Local forced-winner evaluation horizon. Continuations use this actor's
+    # deterministic actions, independently in each copied environment.
+    cf_bid_horizon: int = 1
     # Legacy checkpoint configuration fields; the winner-credit loss does
     # not use a neutral-bid margin objective.
     cf_bid_margin_coef: float = 0.25
@@ -396,6 +404,7 @@ class DetectMAPPOConfig:
     # Adapt only conflict-conditioned task residuals and arbitration bids;
     # the inherited task controller remains a fixed deployment backbone.
     task_residual_only_ppo: bool = False
+    train_geometry_adapter: bool = False
     direct_rl_arbitration: bool = False
     # Disabled pending a reliable post-action C04 counterfactual.  The current
     # pre-step local estimate cannot account exactly for the applied axis trim,
@@ -419,8 +428,15 @@ class DetectMAPPOConfig:
     policy_anchor_monitor: bool = False
 
     def validate_training_mode(self) -> None:
+        self.validate_counterfactual_horizon()
         if self.bid_only_ppo and self.task_residual_only_ppo:
             raise ValueError("bid_only_ppo and task_residual_only_ppo are mutually exclusive")
+        if self.train_geometry_adapter and not self.task_residual_only_ppo:
+            raise ValueError("geometry-adapter training requires task_residual_only_ppo")
+
+    def validate_counterfactual_horizon(self) -> None:
+        if type(self.cf_bid_horizon) is not int or not 1 <= self.cf_bid_horizon <= 32:
+            raise ValueError("cf_bid_horizon must be an integer in [1, 32]")
 
     def __post_init__(self) -> None:
         self.validate_training_mode()
@@ -1025,6 +1041,87 @@ class DetectMAPPOPolicy:
                 return True
         return False
 
+    def _rollout_counterfactual_bid_branch(
+        self, env_before, branch_actions: Dict[int, DetectAction],
+        target_id: int, phi_before: float, phi_stable_before: float,
+    ) -> tuple:
+        """Evaluate one forced first-step winner using a local RL continuation.
+
+        The first actions already passed through the live safety shield. Later
+        actions come only from this actor and a copied shield, using observations
+        of this branch. This is a finite-horizon conditional auxiliary target,
+        not a full-episode value or a deployment planner. Each branch starts
+        from a fresh environment copy, including its private simulator RNG.
+        Global RNG streams are restored even if a replay raises.
+        """
+        self.config.validate_counterfactual_horizon()
+        python_rng = random.getstate()
+        numpy_rng = np.random.get_state()
+        torch_rng = torch.random.get_rng_state()
+        cuda_rng = (torch.cuda.get_rng_state_all()
+                    if torch.cuda.is_initialized() else None)
+        try:
+            branch = deepcopy(env_before)
+            shield = (deepcopy(self.shield)
+                      if self.config.cf_bid_horizon > 1 else None)
+            actions = deepcopy(branch_actions)
+            discounted_return = 0.0
+            discount = 1.0
+            matching = None
+            steps = 0
+            terminal = False
+            for offset in range(self.config.cf_bid_horizon):
+                if offset:
+                    nominal, _ = self.act_batch(
+                        branch.observe(), deterministic=True)
+                    actions, _ = shield.filter(branch, nominal)
+                step = branch.step(actions)
+                discounted_return += discount * float(step.reward)
+                discount *= self.config.gamma
+                steps += 1
+                terminal = bool(step.done)
+                if not offset:
+                    matching = next((deepcopy(item) for item in
+                                     step.info.get("arbitration", [])
+                                     if item.get("tid") == target_id), None)
+                    if matching is None:
+                        return None, None, {}
+                if terminal:
+                    break
+            track_after = (0.0 if terminal else
+                           self._potential_in_env(branch, "track"))
+            stable_after = (0.0 if terminal else
+                            self._potential_in_env(branch, "stable"))
+            utility = (
+                discounted_return * self.config.reward_scale
+                + discount * track_after - phi_before
+                + discount * stable_after - phi_stable_before)
+            initial_progress = getattr(env_before, "stable_progress", {})
+            final_progress = getattr(branch, "stable_progress", {})
+            initial_judged = getattr(env_before, "judged", {})
+            final_judged = getattr(branch, "judged", {})
+            diagnostics = {
+                "horizon": self.config.cf_bid_horizon,
+                "steps": steps,
+                "terminal": terminal,
+                "discounted_env_return": float(discounted_return),
+                "stable_progress_before": int(
+                    initial_progress.get(target_id, 0)),
+                "stable_progress_after": int(
+                    final_progress.get(target_id, 0)),
+                "judged_before": bool(initial_judged.get(target_id, False)),
+                "judged_after": bool(final_judged.get(target_id, False)),
+                "track_potential_after": float(track_after),
+                "stable_potential_after": float(stable_after),
+            }
+            return float(utility), matching, diagnostics
+        finally:
+            random.setstate(python_rng)
+            np.random.set_state(numpy_rng)
+            torch.random.set_rng_state(torch_rng)
+            if cuda_rng is not None:
+                torch.cuda.set_rng_state_all(cuda_rng)
+
     def _counterfactual_bid_credit(
         self, env_before, actions: Dict[int, DetectAction],
         arbitration: Sequence[dict],
@@ -1038,6 +1135,7 @@ class DetectMAPPOPolicy:
         sampled bids; a fixed candidate-specific utility is not an advantage
         of that candidate's sampled continuous bid.
         """
+        self.config.validate_counterfactual_horizon()
         stats = {
             "events": 0,
             "informative_events": 0,
@@ -1049,24 +1147,6 @@ class DetectMAPPOPolicy:
         }
         if env_before is None or not arbitration:
             return stats
-
-        def replay_utility(branch_actions, target_id):
-            branch = deepcopy(env_before)
-            step = branch.step(branch_actions)
-            matching = next((item for item in
-                             step.info.get("arbitration", [])
-                             if item.get("tid") == target_id), None)
-            if matching is None:
-                return None, None
-            phi_after = 0.0 if step.done else self._potential_in_env(
-                branch, "track")
-            stable_after = 0.0 if step.done else self._potential_in_env(
-                branch, "stable")
-            utility = (
-                float(step.reward) * self.config.reward_scale
-                + self.config.gamma * phi_after - phi_before
-                + self.config.gamma * stable_after - phi_stable_before)
-            return utility, matching
 
         for event in arbitration:
             candidates = [int(i) for i in event.get("candidates", [])
@@ -1105,6 +1185,7 @@ class DetectMAPPOPolicy:
                 continue
 
             utilities = {}
+            branch_results = {}
             for forced_winner in candidates:
                 branch_actions = dict(actions)
                 for agent_idx in candidates:
@@ -1116,14 +1197,20 @@ class DetectMAPPOPolicy:
                     branch_actions[agent_idx] = replace(
                         action, arbitration_bid=forced_bid,
                         arbitration_bids=tuple(bids))
-                utility, matching = replay_utility(
-                    branch_actions, event.get("tid"))
+                utility, matching, diagnostics = \
+                    self._rollout_counterfactual_bid_branch(
+                        env_before, branch_actions, event.get("tid"),
+                        phi_before, phi_stable_before)
                 stats["candidate_branches"] += 1
                 if (utility is None or matching is None
-                        or int(matching.get("winner", -1)) != forced_winner):
+                        or int(matching.get("winner", -1)) != forced_winner
+                        or ("candidates" in matching and
+                            sorted(int(i) for i in matching["candidates"])
+                            != sorted(candidates))):
                     controllable = False
                     break
                 utilities[forced_winner] = utility
+                branch_results[forced_winner] = diagnostics
             if not controllable or len(utilities) != len(candidates):
                 stats["uncontrollable_events"] += 1
                 continue
@@ -1148,6 +1235,8 @@ class DetectMAPPOPolicy:
                 "utility_spread": float(utility_spread),
                 "actual_regret": float(actual_regret),
                 "event_advantage": advantage,
+                "horizon": self.config.cf_bid_horizon,
+                "branch_results": branch_results,
             })
             if utility_spread <= 1e-8:
                 continue
@@ -1786,6 +1875,8 @@ class DetectMAPPOPolicy:
                              or name.startswith("critic."))
             else:
                 trainable = is_bid_parameter or not cfg.bid_only_ppo
+            if name.startswith("task_geometry_adapter."):
+                trainable = cfg.train_geometry_adapter
             parameter.requires_grad_(trainable)
         bid_parameters = (
             list(self.model.bid_head.parameters())
@@ -1793,8 +1884,13 @@ class DetectMAPPOPolicy:
             + list(self.model.bid_conflict_residual.parameters())
             + [self.model.bid_log_std])
         task_residual_parameters = list(self.model.conflict_residual.parameters())
+        geometry_parameters = list(self.model.task_geometry_adapter.parameters())
+        if cfg.train_geometry_adapter:
+            task_residual_parameters += geometry_parameters
         critic_parameters = list(self.model.critic.parameters())
         bid_parameter_before = [p.detach().clone() for p in bid_parameters]
+        geometry_before = [p.detach().clone() for p in geometry_parameters]
+        geometry_grad_norm = torch.zeros(())
         task_residual_before = (self.model.conflict_residual.weight.detach().clone()
                                 if cfg.task_residual_only_ppo else None)
         for _ in range(cfg.epochs):
@@ -1967,6 +2063,9 @@ class DetectMAPPOPolicy:
                 xi_residual_before = xi_residual[2].detach().clone()
                 if xi_residual.grad is not None:
                     xi_residual.grad[2].zero_()
+                geometry_grad_norm = torch.sqrt(sum(
+                    (p.grad.detach().square().sum() for p in geometry_parameters
+                     if p.grad is not None), torch.zeros(())))
                 nn.utils.clip_grad_norm_(bid_parameters, 0.5)
                 task_residual_grad_norm = nn.utils.clip_grad_norm_(
                     task_residual_parameters, 0.5)
@@ -2039,6 +2138,17 @@ class DetectMAPPOPolicy:
             "task_residual_xi_row_unchanged": (bool(torch.equal(
                 self.model.conflict_residual.weight[2].detach(), task_residual_before[2]))
                 if task_residual_before is not None else True),
+            "geometry_adapter_gradient_norm": float(geometry_grad_norm),
+            "geometry_adapter_parameter_delta_l2": float(torch.sqrt(sum(
+                ((before - after.detach()).square().sum()
+                 for before, after in zip(geometry_before, geometry_parameters)),
+                torch.zeros(())))),
+            "geometry_adapter_mean_abs_output": float(
+                self.model.task_geometry_adapter(obs_t).detach().abs().mean()),
+            "geometry_adapter_max_abs_output": float(
+                self.model.task_geometry_adapter(obs_t).detach().abs().max()),
+            "geometry_pressure_gate_nonzero_fraction": float(
+                (obs_t[:, -13:].clamp(0, 1).amax(-1) > 0).float().mean()),
             "mean_return_scaled": float(returns.mean()),
             "rollout_steps": len(rollout),
             # RDAC diagnostics
@@ -2085,6 +2195,8 @@ class DetectMAPPOPolicy:
         self.model.conflict_residual.weight.requires_grad_(False)
         self.model.bid_conflict_residual.weight.requires_grad_(False)
         for parameter in self.model.bid_candidate_head.parameters():
+            parameter.requires_grad_(False)
+        for parameter in self.model.task_geometry_adapter.parameters():
             parameter.requires_grad_(False)
         obs = torch.tensor(np.asarray([d[0] for d in demos]), dtype=torch.float32)
         act = torch.tensor([self.encode_action(d[1]) for d in demos],
@@ -2180,6 +2292,11 @@ class DetectMAPPOPolicy:
 
     def load(self, path: str) -> None:
         checkpoint = torch.load(path, map_location="cpu")
+        self.checkpoint_migration_record = {
+            "source": str(path), "geometry_adapter": {},
+            "adapter_initialization_seed": 20261022,
+            "legacy_output_preservation": "final geometry weights and bias are zero",
+        }
         allowed_legacy_missing = {
             "conflict_residual.weight", "bid_conflict_residual.weight"}
         legacy_observation_dim = self.encoder.dimension - 18
@@ -2210,6 +2327,13 @@ class DetectMAPPOPolicy:
 
         def compatible_state(state, expected, component):
             state = dict(state)
+            geometry_keys = {key for key in expected
+                             if key.startswith("task_geometry_adapter.")}
+            present_geometry = geometry_keys & set(state)
+            if present_geometry and present_geometry != geometry_keys:
+                raise RuntimeError(f"incomplete {component} geometry adapter checkpoint")
+            self.checkpoint_migration_record["geometry_adapter"][component] = (
+                "restored" if present_geometry else "zero_output_legacy_addition")
             state = expand_legacy_input(
                 state, expected, "actor.0.weight")
             state = expand_legacy_input(
@@ -2236,7 +2360,7 @@ class DetectMAPPOPolicy:
             }
             allowed_missing = allowed_legacy_missing | {
                 key for key in expected
-                if key.startswith("bid_candidate_head.")}
+                if key.startswith("bid_candidate_head.")} | geometry_keys
             unsupported_missing = missing - allowed_missing
             if unsupported_missing or unexpected or mismatched:
                 raise RuntimeError(
@@ -2247,12 +2371,18 @@ class DetectMAPPOPolicy:
                 )
 
             compatible = dict(state)
+            fresh_geometry = (ObservationalTaskAdapter().state_dict()
+                              if not present_geometry else {})
             for key in missing:
                 # Residuals are zero-effect legacy additions. The candidate
                 # head must retain its fresh initialization so PPO can learn it.
-                compatible[key] = (
-                    torch.zeros_like(expected[key])
-                    if key in allowed_legacy_missing else expected[key])
+                if key in geometry_keys:
+                    compatible[key] = fresh_geometry[
+                        key.removeprefix("task_geometry_adapter.")].clone()
+                else:
+                    compatible[key] = (
+                        torch.zeros_like(expected[key])
+                        if key in allowed_legacy_missing else expected[key])
             return compatible
 
         compatible = compatible_state(

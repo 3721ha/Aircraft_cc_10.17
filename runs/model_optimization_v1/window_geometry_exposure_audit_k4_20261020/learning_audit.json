@@ -1,0 +1,3691 @@
+{
+ "diagnostic_scope": "conditional_frozen_continuation_arbitration_not_task_success",
+ "source_checkpoint": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\curr_k4_best.pt",
+ "source_checkpoint_sha256": "38815f375df492ee320d9a0d4a9105efaf3944a6694165b295f646c9917aea18",
+ "source_snapshot": {
+  "files": [
+   {
+    "path": "_arbitration_training.py",
+    "sha256": "44032ef42770caa831af7431a7034ec50281e86f5f34ac3e1bcf375da87545d7",
+    "size_bytes": 5525
+   },
+   {
+    "path": "_audit_arbitration_learning.py",
+    "sha256": "17f5157e49185cd26e4517b8798a22742caeab4225cb1710bfe221d73c40dcc3",
+    "size_bytes": 19813
+   },
+   {
+    "path": "_experiment_provenance.py",
+    "sha256": "b3c5af46679cd5656da95c2836f95efd7d0c9dd7d497f09b74d0bece942ae870",
+    "size_bytes": 12782
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/__init__.py",
+    "sha256": "1c30dea3f76fb8c840ff26a2318b3a7354e4475237d38ec1f5feef9e148d82e2",
+    "size_bytes": 2035
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/baselines.py",
+    "sha256": "9af6e9136b654926c93eb2ff791d748d7b7cb77171eb53c08818e61d508f478b",
+    "size_bytes": 7724
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/belief.py",
+    "sha256": "d3616e05ceddd1d6b489727ae581d3783896549d075828fcf55d2f2c3fccde88",
+    "size_bytes": 23817
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/config.py",
+    "sha256": "6fc19d45e7989c0f69598cae129448419879be0c1c9f6abd8c3f309188e8d5c6",
+    "size_bytes": 1663
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/detect_baselines.py",
+    "sha256": "bf916952de3e7413e2d09add2fa50cf7cc797c7161be0e6bacea9f59f889e9b7",
+    "size_bytes": 12387
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/detect_config.py",
+    "sha256": "7c98eeb5fe61bf261ca6bb4d9ca5f187e2744d92f8a9a2d51b62e9d470c8453e",
+    "size_bytes": 11676
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/detect_encoder.py",
+    "sha256": "8a1cbb6558521cf5d56aec884d00cb5c4b88c98e577b8804b07e2482a630b4b8",
+    "size_bytes": 12244
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/detect_env.py",
+    "sha256": "5a5bf6b8fed4b423c49c3a08afca765b2b089026aae9b9e363c56d66293db1bd",
+    "size_bytes": 40540
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/detect_mappo.py",
+    "sha256": "395dacc4d9501c6b885a5ccb23f37c7ab89565974cd8a2d3fb6ac02eb2252886",
+    "size_bytes": 127585
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/detect_models.py",
+    "sha256": "67e16d8116f16bf67e43818a5426b8447e72ab14fd8330d3f67e604c2e901e1b",
+    "size_bytes": 1953
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/detect_rules.py",
+    "sha256": "b28d3eff3bd35758650c2b971e316e85bb1a3532aaabc4ba962e1faa13d040fc",
+    "size_bytes": 17088
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/detect_shield.py",
+    "sha256": "a89b1be63d86643060280cc745d7eb7f08961fd70e37f9c1809a992a4d77196b",
+    "size_bytes": 23864
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/detect_task_adapter.py",
+    "sha256": "7c2aa6d55449d1c85c40cf74b0a5a6edde78e48d7c10458689172b98e75ba78b",
+    "size_bytes": 4392
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/env.py",
+    "sha256": "37d7577017f42790fe5c90b15369128141de175b6d37e1a0ae4c051ee377a4eb",
+    "size_bytes": 13825
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/evaluation.py",
+    "sha256": "ea0265dcce06af5de53e49d8f0d5fb6089372d59621abec8f66aa8ed3f70de4e",
+    "size_bytes": 16968
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/high_fidelity.py",
+    "sha256": "f236e48282ca5e31d9b703d195c647d885a367a736dee2c047e1147913328374",
+    "size_bytes": 6412
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/jsbsim_env.py",
+    "sha256": "e419d4b6f1ff958087ea83bbefb8d99f0d10797bb6d2703508d1ca07834ad576",
+    "size_bytes": 13196
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/mappo.py",
+    "sha256": "f076ef2dd8742cf277a40e11881f710cfa725244b56689db67b99c9386c07b8f",
+    "size_bytes": 29108
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/metrics.py",
+    "sha256": "7189025f91ee205a4fa8353f29565a02221ff50806b3c252fc8bb4b3fc4e4d39",
+    "size_bytes": 1276
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/models.py",
+    "sha256": "19588887f064934e50f6b5e5dc75054070b18d6f8849dadd7e5daf0b1be45be5",
+    "size_bytes": 2465
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/policies.py",
+    "sha256": "b676b830d1470b8b27d2bdc575f10700de4c979314e443ef968ceec994c1f8a0",
+    "size_bytes": 2628
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/qp_shield.py",
+    "sha256": "4a1b41548477b851772158efc3f3a4354e67f4292ce4288b47381a9b6599555e",
+    "size_bytes": 39137
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/radar.py",
+    "sha256": "fdeb7b31f23af73cd297325396a38b0bd0f6f6cd289c512a113760d21d0e790e",
+    "size_bytes": 8781
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/red_agent.py",
+    "sha256": "14d7a81377c805c77c2fd5bca9eda8cdcace9cf9b76b08bd3e636a2c8e2bf5cc",
+    "size_bytes": 14930
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/risk_calibration.py",
+    "sha256": "8d2a3a09f4ad82a93eac2d803317a20d9b06e1d6649ad0ceaf9a68fab658d7fd",
+    "size_bytes": 1520
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/rl_api.py",
+    "sha256": "2a5db9f46e847ef2d099483a8188bee437eae728d6880c6fcd0bb89af93e245c",
+    "size_bytes": 8698
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/rule_graph.py",
+    "sha256": "ccba638cc81e7873c899afe58d00094e57a1402ad05109fa45120995768e010e",
+    "size_bytes": 10789
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/rules.py",
+    "sha256": "13cd3567db92eac41885ecd10574dcf8f0149e5ff05544bb6ff40de09e56f036",
+    "size_bytes": 11524
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/scenarios.py",
+    "sha256": "9e1dee4a3b9406420577e9fab41eed1f07a47c5c608087af0e9bb8810c2b60cb",
+    "size_bytes": 7658
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/shield.py",
+    "sha256": "70fd21bd78a95be534b93131c7662941996de23f5c53aad86d104b43fe1e9483",
+    "size_bytes": 4800
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/stl.py",
+    "sha256": "0e1d0087e896d554650a87d8613482563e0f1e9a0065c528979c52abbf77c450",
+    "size_bytes": 1448
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/track.py",
+    "sha256": "6d392274e4fde68b3c92a2a6e98b2c9fee23d7ce4e84d253d1a5d371325befa2",
+    "size_bytes": 7468
+   },
+   {
+    "path": "Aircraft_mumt/requirements-inferred.txt",
+    "sha256": "40aebc14ef905e58743d9cfee7d6014b7c5cf2affcc884d235a17d9d3b11568f",
+    "size_bytes": 467
+   },
+   {
+    "path": "Aircraft_mumt/requirements-reproduce.txt",
+    "sha256": "635f9a669910815458f0138229732576be90ac44bde15220bc74f5ad23ae46f6",
+    "size_bytes": 230
+   }
+  ],
+  "manifest_sha256": "5921ca36e1d10d3edad9bc1282f3613b9271f09d1073c3b9a2ed9c5d4c320ce0",
+  "snapshot_path": "runs/model_optimization_v1/window_geometry_exposure_audit_k4_20261020/provenance/20261020T141701.518119Z_16432_3d8f5b18_source.zip",
+  "snapshot_sha256": "9beff14b46043b86092e5cceb5560f8c0b3c0f103a4161b2089c4a19e0f55c69",
+  "captured_at_utc": "2026-10-20T14:17:01.556281+00:00"
+ },
+ "source_changed_during_run": [],
+ "event_bank_sha256": "1e4e7ce12650226d6a84380430a01226ce51a544638703d203694bf3b3c58b47",
+ "event_bank_input": null,
+ "repair": {
+  "method": "zero_output_preserving_hidden_linear_reset_v1",
+  "scope": "explicit initial curriculum training startup only",
+  "seed": 20261021,
+  "dead_detection": "input weight, input bias, output weight are exactly zero",
+  "detected_dead": false,
+  "status": "skipped_healthy",
+  "before": {
+   "bid_candidate_head.0.weight": {
+    "shape": [
+     64,
+     142
+    ],
+    "dtype": "torch.float32",
+    "sha256": "bd31b8734aef0caebb672eef68792f2a6eac23e7d161bd1999886aefa0ca2a92",
+    "nonzero_count": 9088
+   },
+   "bid_candidate_head.0.bias": {
+    "shape": [
+     64
+    ],
+    "dtype": "torch.float32",
+    "sha256": "6e0b4b14cc679bfe337ab247e5405cb46ea8133b448dccb063a22c6c1cb3c925",
+    "nonzero_count": 64
+   },
+   "bid_candidate_head.2.weight": {
+    "shape": [
+     1,
+     64
+    ],
+    "dtype": "torch.float32",
+    "sha256": "33fdce9c3690642b856890222718beb63390ca982dab7c85b90717451bfc0dc9",
+    "nonzero_count": 64
+   },
+   "bid_candidate_head.2.bias": {
+    "shape": [
+     1
+    ],
+    "dtype": "torch.float32",
+    "sha256": "c7cd8aa6f106d4064fdb4c5dbddf5d8b5be7e4e7b06ad4560ed81ff002331379",
+    "nonzero_count": 1
+   }
+  },
+  "global_torch_rng_modified": false,
+  "after": {
+   "bid_candidate_head.0.weight": {
+    "shape": [
+     64,
+     142
+    ],
+    "dtype": "torch.float32",
+    "sha256": "bd31b8734aef0caebb672eef68792f2a6eac23e7d161bd1999886aefa0ca2a92",
+    "nonzero_count": 9088
+   },
+   "bid_candidate_head.0.bias": {
+    "shape": [
+     64
+    ],
+    "dtype": "torch.float32",
+    "sha256": "6e0b4b14cc679bfe337ab247e5405cb46ea8133b448dccb063a22c6c1cb3c925",
+    "nonzero_count": 64
+   },
+   "bid_candidate_head.2.weight": {
+    "shape": [
+     1,
+     64
+    ],
+    "dtype": "torch.float32",
+    "sha256": "33fdce9c3690642b856890222718beb63390ca982dab7c85b90717451bfc0dc9",
+    "nonzero_count": 64
+   },
+   "bid_candidate_head.2.bias": {
+    "shape": [
+     1
+    ],
+    "dtype": "torch.float32",
+    "sha256": "c7cd8aa6f106d4064fdb4c5dbddf5d8b5be7e4e7b06ad4560ed81ff002331379",
+    "nonzero_count": 1
+   }
+  },
+  "changed_tensors": [],
+  "output_preservation": {
+   "verified": false,
+   "guarantee": "Healthy branch left unchanged.",
+   "output_weight_unchanged": true,
+   "output_bias_unchanged": true
+  }
+ },
+ "environment_config": {
+  "dt": 1.0,
+  "horizon": 900,
+  "L_X": 160.0,
+  "L_Y": 120.0,
+  "X_CUTOFF": 40.0,
+  "X_TRACK": 110.0,
+  "AGE_STD_TRACK": 10.0,
+  "AGE_STD_DETECT": 5.0,
+  "STABLE_WINDOW": 8,
+  "N_WINGMEN": 3,
+  "BLUE_V_MIN_MA": 0.4,
+  "BLUE_V_MAX_MA": 0.95,
+  "OMEGA_CRUISE_DEG": 3.0,
+  "OMEGA_MANEUVER_DEG": 6.0,
+  "ACCEL_MAX_MA_S": 0.1,
+  "K_PSI": 1.0,
+  "K_V_MS": 30.0,
+  "MANNED_V_MIN_MA": 0.5,
+  "MANNED_V_MAX_MA": 0.9,
+  "MANNED_OMEGA_DEG": 3.0,
+  "K_RED": 4,
+  "RED_CRUISE_MA": 0.75,
+  "RED_MANEUVER_MA_RANGE": [
+   0.6,
+   0.9
+  ],
+  "RED_OMEGA_DEG": 8.0,
+  "RED_DUTY_MIN": 0.7,
+  "RED_DUTY_MAX": 0.8,
+  "RED_STAGGER_KM": 8.0,
+  "RED_X0": 158.0,
+  "RED_MANEUVER_RESAMPLE": [
+   20,
+   40
+  ],
+  "RED_TURN_POISSON_MEAN": 30.0,
+  "RED_SNAKE_HALF_ANGLE_DEG": 30.0,
+  "RED_SNAKE_PERIOD": 20.0,
+  "RED_EDGE_SUPPRESS_KM": 5.0,
+  "RED_REGAIN_T": [
+   12.0,
+   20.0
+  ],
+  "RED_REGAIN_SPREAD_DEG": 30.0,
+  "RED_SEP_WARN_KM": 18.0,
+  "RED_SEP_HARD_KM": 2.0,
+  "RED_SEP_BIAS_DEG": 45.0,
+  "RED_PAIR_SUBLANE_KM": 4.0,
+  "R_MAX": 80.0,
+  "FOV_HALF_DEG": 7.5,
+  "BEAM_DWELL": 0.5,
+  "GEAR_FRAME": {
+   "7.5": 0.5,
+   "15.0": 1.0,
+   "30.0": 2.0,
+   "45.0": 3.0,
+   "60.0": 4.0
+  },
+  "GEARS_SEARCH": [
+   45.0,
+   60.0
+  ],
+  "GEARS_TRACK": [
+   7.5,
+   15.0,
+   30.0,
+   45.0
+  ],
+  "PD_TIERS": [
+   [
+    0.5,
+    0.9
+   ],
+   [
+    0.8,
+    0.6
+   ],
+   [
+    1.0,
+    0.3
+   ]
+  ],
+  "SECTOR_AXIS_MAX_DEG": 60.0,
+  "AXIS_TRIM_SCALE_DEG": 15.0,
+  "TRACK_INIT_HITS": 2,
+  "TRACK_INIT_WINDOW": 6.5,
+  "TRACK_CONFIRM_TIME": 5.0,
+  "TRACK_CONFIRM_GAP_MAX": 1.6,
+  "AGE_DEGRADE": 8.0,
+  "AGE_DROP": 13.0,
+  "COV_SHRINK": 0.8,
+  "COV_Q_KM2_S": 0.25,
+  "SIGMA_REF": 4.0,
+  "MAR": 40.0,
+  "MOR": 60.0,
+  "MAR_MOR_VARIANTS": [
+   [
+    40.0,
+    60.0
+   ],
+   [
+    30.0,
+    50.0
+   ],
+   [
+    20.0,
+    40.0
+   ]
+  ],
+  "K_SIGMA": 3.0,
+  "MOR_GRADIENT_SPAN": 20.0,
+  "D_SAFE": 2.0,
+  "D_SAFE_LOOKAHEAD": 3.0,
+  "BOUNDARY_PREDICT": 5.0,
+  "LINK_RATE_HZ": 1.0,
+  "LINK_DELAY_S": 1.0,
+  "T_SCAN_REQ": 120.0,
+  "HANDOFF_MIN_INTERVAL": 30.0,
+  "HANDOFF_INTERVAL_SWEEP": [
+   10.0,
+   20.0,
+   30.0
+  ],
+  "C04_RANGE": 80.0,
+  "C04_RESPONSE": 5.0,
+  "T_DWELL": 5.0,
+  "APPROVAL_DELAY_INIT": 0.0,
+  "LINK_DROP_RATE": 0.3,
+  "LINK_DROP_WINDOW": 10.0,
+  "UPLINK_LOSS_P": 0.05,
+  "E03_AREA_PER_KM": 5.0,
+  "N_SUBZONES": 3,
+  "TRACK_SWEET_DIST": 62.0,
+  "TRACK_K_D": 0.0025,
+  "CAP_X": 15.0,
+  "CAP_Y": 60.0,
+  "CAP_LEG_Y": 10.0,
+  "CAP_LEG_X": 5.0,
+  "ARB_WEIGHTS": [
+   1.0,
+   1.0,
+   0.5,
+   0.5,
+   0.3
+  ],
+  "ARB_HYSTERESIS": 0.2,
+  "ARB_BID_WEIGHT": 0.35,
+  "W1_TRACK_TICK": 0.02,
+  "W2_DETECT_TICK": 0.005,
+  "W3_STABLE": 10.0,
+  "W4_SUCCESS": 50.0,
+  "W5_MOR_GRAD": 0.02,
+  "W6_MAR": 0.1,
+  "W7_HANDOFF": 0.5,
+  "W8_LAYER": [
+   10.0,
+   7.5,
+   10.0,
+   5.0,
+   2.5,
+   1.25
+  ],
+  "W8_SCALE": 1.0,
+  "M05_GRACE": 5.0,
+  "W9_FAILURE": 50.0,
+  "STEP_COST": 0.005,
+  "OBS_DIM": 169,
+  "TRACK_SLOTS": 8,
+  "NET_HIDDEN": 128,
+  "TOTAL_STEPS": 1500000,
+  "N_ENVS": 16,
+  "N_SEEDS": 10,
+  "BC_EPOCHS": [
+   50,
+   100
+  ],
+  "CONVERGE_WINDOW": 100,
+  "seed": 7
+ },
+ "policy_config": {
+  "hidden_size": 128,
+  "clip_ratio": 0.2,
+  "learning_rate": 0.0001,
+  "bc_learning_rate": 0.001,
+  "value_coef": 0.5,
+  "entropy_coef": 0.0,
+  "intervention_coef": 0.2,
+  "shield_aware_continuous": false,
+  "mask_intervened_continuous": true,
+  "epochs": 2,
+  "gamma": 0.99,
+  "gae_lambda": 0.95,
+  "reward_scale": 0.1,
+  "initial_log_std": -1.2,
+  "target_kl": 0.01,
+  "bid_target_kl": 0.01,
+  "shaping_kappa": 0.05,
+  "shaping_age_cap": 8.0,
+  "role_shaping_kappa": 0.3,
+  "role_adv_coef": 1.5,
+  "geo_shaping_kappa": 0.15,
+  "stable_shaping_kappa": 1.0,
+  "cf_adv_coef": 1.0,
+  "cf_ownership_bonus": 0.5,
+  "cf_request_credit": 0.25,
+  "cf_global_mix": 0.25,
+  "cf_role_coef": 0.5,
+  "cf_bid_coef": 1.0,
+  "cf_bid_utility_scale": 0.1,
+  "cf_bid_horizon": 8,
+  "cf_bid_margin_coef": 0.25,
+  "cf_bid_margin_temp": 0.25,
+  "bid_only_ppo": true,
+  "task_residual_only_ppo": false,
+  "train_geometry_adapter": false,
+  "direct_rl_arbitration": true,
+  "gear_gate_coef": 0.0,
+  "conflict_exposure_prob": 1.0,
+  "xi_ppo_coef": 0.0,
+  "xi_anchor_coef": 1.0,
+  "policy_anchor_coef": 0.0,
+  "policy_anchor_monitor": false
+ },
+ "arguments": {
+  "checkpoint": "runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\curr_k4_best.pt",
+  "expected_sha256": "38815f375df492ee320d9a0d4a9105efaf3944a6694165b295f646c9917aea18",
+  "output": "runs\\model_optimization_v1\\window_geometry_exposure_audit_k4_20261020",
+  "k": 4,
+  "train_seeds": "182000,182001,182002,182003",
+  "heldout_seeds": "182004,182005,182006,182007",
+  "max_events_per_split": 40,
+  "event_bank": null,
+  "updates": 24,
+  "events_per_update": 32,
+  "learning_rate": 0.0001,
+  "epochs": 2,
+  "utility_scale": 0.1,
+  "cf_bid_horizon": 8,
+  "conflict_exposure": 1.0,
+  "mc_samples": 4096,
+  "training_seed": 20261021,
+  "repair_seed": 20261021
+ },
+ "before": {
+  "train": {
+   "events": 31,
+   "informative_events": 31,
+   "monte_carlo_samples_per_event": 4096,
+   "expected_regret": 0.6962776462685747,
+   "expected_optimal_winner_rate": 0.49225050403225806,
+   "deterministic_regret": 0.6504019035846988,
+   "informative": {
+    "expected_regret": 0.6962776462685747,
+    "expected_optimal_winner_rate": 0.49225050403225806,
+    "deterministic_regret": 0.6504019035846988
+   },
+   "rows": [
+    {
+     "episode_seed": 182001,
+     "step_index": 276,
+     "tid": 3,
+     "utility_spread": 0.8919754763052445,
+     "expected_regret": 0.47233759963527233,
+     "expected_optimal_winner_rate": 0.470458984375,
+     "deterministic_regret": 0.8919754763052445,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.470458984375,
+      "2": 0.529541015625
+     }
+    },
+    {
+     "episode_seed": 182001,
+     "step_index": 282,
+     "tid": 3,
+     "utility_spread": 3.230636502778708,
+     "expected_regret": 1.6689518652050161,
+     "expected_optimal_winner_rate": 0.4833984375,
+     "deterministic_regret": 3.230636502778708,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.4833984375,
+      "2": 0.5166015625
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 237,
+     "tid": 2,
+     "utility_spread": 0.4227151722795548,
+     "expected_regret": 0.21610487567221381,
+     "expected_optimal_winner_rate": 0.48876953125,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.51123046875,
+      "2": 0.48876953125
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 238,
+     "tid": 2,
+     "utility_spread": 2.411213872908443,
+     "expected_regret": 1.2815460452445508,
+     "expected_optimal_winner_rate": 0.468505859375,
+     "deterministic_regret": 2.411213872908443,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.531494140625,
+      "2": 0.468505859375
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 239,
+     "tid": 2,
+     "utility_spread": 0.6892181003789615,
+     "expected_regret": 0.3661471158263233,
+     "expected_optimal_winner_rate": 0.46875,
+     "deterministic_regret": 0.6892181003789615,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.53125,
+      "2": 0.46875
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 240,
+     "tid": 2,
+     "utility_spread": 0.5408355629670472,
+     "expected_regret": 0.2557613489910084,
+     "expected_optimal_winner_rate": 0.527099609375,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.527099609375,
+      "2": 0.472900390625
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 241,
+     "tid": 2,
+     "utility_spread": 5.611642644648667,
+     "expected_regret": 2.6126471004260274,
+     "expected_optimal_winner_rate": 0.534423828125,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.465576171875,
+      "2": 0.534423828125
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 242,
+     "tid": 2,
+     "utility_spread": 0.5034582787344934,
+     "expected_regret": 0.23144822726002223,
+     "expected_optimal_winner_rate": 0.540283203125,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.540283203125,
+      "2": 0.459716796875
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 243,
+     "tid": 2,
+     "utility_spread": 0.5807743725327352,
+     "expected_regret": 0.31179756962878047,
+     "expected_optimal_winner_rate": 0.463134765625,
+     "deterministic_regret": 0.5807743725327352,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.536865234375,
+      "2": 0.463134765625
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 245,
+     "tid": 2,
+     "utility_spread": 0.9828992544246393,
+     "expected_regret": 0.4410568431719939,
+     "expected_optimal_winner_rate": 0.55126953125,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.44873046875,
+      "2": 0.55126953125
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 246,
+     "tid": 2,
+     "utility_spread": 0.25848740803074755,
+     "expected_regret": 0.13744765007103715,
+     "expected_optimal_winner_rate": 0.46826171875,
+     "deterministic_regret": 0.25848740803074755,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.46826171875,
+      "2": 0.53173828125
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 247,
+     "tid": 2,
+     "utility_spread": 0.1776224087955569,
+     "expected_regret": 0.09579294458725225,
+     "expected_optimal_winner_rate": 0.460693359375,
+     "deterministic_regret": 0.1776224087955569,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.460693359375,
+      "2": 0.539306640625
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 248,
+     "tid": 2,
+     "utility_spread": 1.263468719011593,
+     "expected_regret": 0.6119926607712404,
+     "expected_optimal_winner_rate": 0.515625,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.515625,
+      "2": 0.484375
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 283,
+     "tid": 2,
+     "utility_spread": 0.6295639437768514,
+     "expected_regret": 0.34644461163892165,
+     "expected_optimal_winner_rate": 0.44970703125,
+     "deterministic_regret": 0.6295639437768514,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.55029296875,
+      "2": 0.44970703125
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 284,
+     "tid": 2,
+     "utility_spread": 0.08266234421566843,
+     "expected_regret": 0.038142536759671226,
+     "expected_optimal_winner_rate": 0.53857421875,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.53857421875,
+      "2": 0.46142578125
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 285,
+     "tid": 2,
+     "utility_spread": 2.618486090420472,
+     "expected_regret": 1.393627850858552,
+     "expected_optimal_winner_rate": 0.4677734375,
+     "deterministic_regret": 2.618486090420472,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.5322265625,
+      "2": 0.4677734375
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 286,
+     "tid": 2,
+     "utility_spread": 1.4676520517388374,
+     "expected_regret": 0.8155215014056626,
+     "expected_optimal_winner_rate": 0.4443359375,
+     "deterministic_regret": 1.4676520517388374,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.4443359375,
+      "2": 0.5556640625
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 287,
+     "tid": 2,
+     "utility_spread": 0.9776030947824168,
+     "expected_regret": 0.4592061412015063,
+     "expected_optimal_winner_rate": 0.5302734375,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.5302734375,
+      "2": 0.4697265625
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 288,
+     "tid": 2,
+     "utility_spread": 0.4799585743484833,
+     "expected_regret": 0.2542749283047385,
+     "expected_optimal_winner_rate": 0.47021484375,
+     "deterministic_regret": 0.4799585743484833,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.52978515625,
+      "2": 0.47021484375
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 289,
+     "tid": 2,
+     "utility_spread": 1.20382138701647,
+     "expected_regret": 0.6374727999117977,
+     "expected_optimal_winner_rate": 0.470458984375,
+     "deterministic_regret": 1.20382138701647,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.529541015625,
+      "2": 0.470458984375
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 290,
+     "tid": 2,
+     "utility_spread": 0.3659450760021645,
+     "expected_regret": 0.1726088590908647,
+     "expected_optimal_winner_rate": 0.5283203125,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.5283203125,
+      "2": 0.4716796875
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 291,
+     "tid": 2,
+     "utility_spread": 2.7008820942036706,
+     "expected_regret": 1.4038520455467811,
+     "expected_optimal_winner_rate": 0.480224609375,
+     "deterministic_regret": 2.7008820942036706,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.519775390625,
+      "2": 0.480224609375
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 292,
+     "tid": 2,
+     "utility_spread": 0.917216227983845,
+     "expected_regret": 0.5009308354491848,
+     "expected_optimal_winner_rate": 0.453857421875,
+     "deterministic_regret": 0.917216227983845,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.453857421875,
+      "2": 0.546142578125
+     }
+    },
+    {
+     "episode_seed": 182003,
+     "step_index": 210,
+     "tid": 2,
+     "utility_spread": 0.8428883792969986,
+     "expected_regret": 0.3990138104142774,
+     "expected_optimal_winner_rate": 0.526611328125,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.473388671875,
+      "2": 0.526611328125
+     }
+    },
+    {
+     "episode_seed": 182003,
+     "step_index": 211,
+     "tid": 2,
+     "utility_spread": 0.31116287243857066,
+     "expected_regret": 0.15261870379128137,
+     "expected_optimal_winner_rate": 0.509521484375,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.490478515625,
+      "2": 0.509521484375
+     }
+    },
+    {
+     "episode_seed": 182003,
+     "step_index": 212,
+     "tid": 2,
+     "utility_spread": 0.45889168202810104,
+     "expected_regret": 0.23829653507660425,
+     "expected_optimal_winner_rate": 0.480712890625,
+     "deterministic_regret": 0.45889168202810104,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.480712890625,
+      "2": 0.519287109375
+     }
+    },
+    {
+     "episode_seed": 182003,
+     "step_index": 213,
+     "tid": 2,
+     "utility_spread": 3.696294139103557,
+     "expected_regret": 1.877024367513525,
+     "expected_optimal_winner_rate": 0.4921875,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.4921875,
+      "2": 0.5078125
+     }
+    },
+    {
+     "episode_seed": 182003,
+     "step_index": 214,
+     "tid": 2,
+     "utility_spread": 3.921326734893695,
+     "expected_regret": 1.9769384051649124,
+     "expected_optimal_winner_rate": 0.495849609375,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.495849609375,
+      "2": 0.504150390625
+     }
+    },
+    {
+     "episode_seed": 182003,
+     "step_index": 215,
+     "tid": 2,
+     "utility_spread": 1.4460588178785407,
+     "expected_regret": 0.8374149209003658,
+     "expected_optimal_winner_rate": 0.4208984375,
+     "deterministic_regret": 1.4460588178785407,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.4208984375,
+      "2": 0.5791015625
+     }
+    },
+    {
+     "episode_seed": 182003,
+     "step_index": 216,
+     "tid": 2,
+     "utility_spread": 1.2190736860589375,
+     "expected_regret": 0.5345352392973272,
+     "expected_optimal_winner_rate": 0.5615234375,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.4384765625,
+      "2": 0.5615234375
+     }
+    },
+    {
+     "episode_seed": 182003,
+     "step_index": 217,
+     "tid": 2,
+     "utility_spread": 1.6807368128430458,
+     "expected_regret": 0.8436510955091069,
+     "expected_optimal_winner_rate": 0.498046875,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.501953125,
+      "2": 0.498046875
+     }
+    }
+   ]
+  },
+  "heldout": {
+   "events": 33,
+   "informative_events": 33,
+   "monte_carlo_samples_per_event": 4096,
+   "expected_regret": 1.091717677175521,
+   "expected_optimal_winner_rate": 0.5131244081439394,
+   "deterministic_regret": 0.33376563942544724,
+   "informative": {
+    "expected_regret": 1.091717677175521,
+    "expected_optimal_winner_rate": 0.5131244081439394,
+    "deterministic_regret": 0.33376563942544724
+   },
+   "rows": [
+    {
+     "episode_seed": 182004,
+     "step_index": 206,
+     "tid": 2,
+     "utility_spread": 1.5387949340134792,
+     "expected_regret": 0.7141721605370176,
+     "expected_optimal_winner_rate": 0.535888671875,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.464111328125,
+      "2": 0.535888671875
+     }
+    },
+    {
+     "episode_seed": 182004,
+     "step_index": 207,
+     "tid": 2,
+     "utility_spread": 0.1328958352323122,
+     "expected_regret": 0.06394963165109555,
+     "expected_optimal_winner_rate": 0.518798828125,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.481201171875,
+      "2": 0.518798828125
+     }
+    },
+    {
+     "episode_seed": 182004,
+     "step_index": 208,
+     "tid": 2,
+     "utility_spread": 2.0373486886595638,
+     "expected_regret": 1.0564767125763945,
+     "expected_optimal_winner_rate": 0.4814453125,
+     "deterministic_regret": 2.0373486886595638,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.4814453125,
+      "2": 0.5185546875
+     }
+    },
+    {
+     "episode_seed": 182004,
+     "step_index": 209,
+     "tid": 2,
+     "utility_spread": 3.573283369227374,
+     "expected_regret": 1.631357397572068,
+     "expected_optimal_winner_rate": 0.54345703125,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.54345703125,
+      "2": 0.45654296875
+     }
+    },
+    {
+     "episode_seed": 182004,
+     "step_index": 210,
+     "tid": 2,
+     "utility_spread": 2.4428445955966485,
+     "expected_regret": 1.1361374400907263,
+     "expected_optimal_winner_rate": 0.534912109375,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.534912109375,
+      "2": 0.465087890625
+     }
+    },
+    {
+     "episode_seed": 182004,
+     "step_index": 211,
+     "tid": 2,
+     "utility_spread": 3.1950970831216496,
+     "expected_regret": 1.4938014927192282,
+     "expected_optimal_winner_rate": 0.532470703125,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.532470703125,
+      "2": 0.467529296875
+     }
+    },
+    {
+     "episode_seed": 182004,
+     "step_index": 212,
+     "tid": 2,
+     "utility_spread": 1.2183304502723482,
+     "expected_regret": 0.5645486314982707,
+     "expected_optimal_winner_rate": 0.53662109375,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.53662109375,
+      "2": 0.46337890625
+     }
+    },
+    {
+     "episode_seed": 182004,
+     "step_index": 213,
+     "tid": 2,
+     "utility_spread": 1.793695769428358,
+     "expected_regret": 0.8675076462982363,
+     "expected_optimal_winner_rate": 0.516357421875,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.483642578125,
+      "2": 0.516357421875
+     }
+    },
+    {
+     "episode_seed": 182004,
+     "step_index": 214,
+     "tid": 2,
+     "utility_spread": 0.20679229139500777,
+     "expected_regret": 0.11162542877792045,
+     "expected_optimal_winner_rate": 0.460205078125,
+     "deterministic_regret": 0.20679229139500777,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.539794921875,
+      "2": 0.460205078125
+     }
+    },
+    {
+     "episode_seed": 182004,
+     "step_index": 215,
+     "tid": 2,
+     "utility_spread": 2.44133826160187,
+     "expected_regret": 1.305901399211352,
+     "expected_optimal_winner_rate": 0.465087890625,
+     "deterministic_regret": 2.44133826160187,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.534912109375,
+      "2": 0.465087890625
+     }
+    },
+    {
+     "episode_seed": 182004,
+     "step_index": 216,
+     "tid": 2,
+     "utility_spread": 1.9056211788697013,
+     "expected_regret": 1.0416713426487454,
+     "expected_optimal_winner_rate": 0.453369140625,
+     "deterministic_regret": 1.9056211788697013,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.546630859375,
+      "2": 0.453369140625
+     }
+    },
+    {
+     "episode_seed": 182004,
+     "step_index": 217,
+     "tid": 2,
+     "utility_spread": 1.0408187294151796,
+     "expected_regret": 0.4891543100889211,
+     "expected_optimal_winner_rate": 0.530029296875,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.469970703125,
+      "2": 0.530029296875
+     }
+    },
+    {
+     "episode_seed": 182004,
+     "step_index": 218,
+     "tid": 2,
+     "utility_spread": 3.18467663275361,
+     "expected_regret": 1.4974822252645152,
+     "expected_optimal_winner_rate": 0.52978515625,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.47021484375,
+      "2": 0.52978515625
+     }
+    },
+    {
+     "episode_seed": 182004,
+     "step_index": 219,
+     "tid": 2,
+     "utility_spread": 1.3737677178649488,
+     "expected_regret": 0.752285398235127,
+     "expected_optimal_winner_rate": 0.452392578125,
+     "deterministic_regret": 1.3737677178649488,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.547607421875,
+      "2": 0.452392578125
+     }
+    },
+    {
+     "episode_seed": 182004,
+     "step_index": 220,
+     "tid": 2,
+     "utility_spread": 3.439806265179506,
+     "expected_regret": 1.6040112222882947,
+     "expected_optimal_winner_rate": 0.53369140625,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.53369140625,
+      "2": 0.46630859375
+     }
+    },
+    {
+     "episode_seed": 182005,
+     "step_index": 277,
+     "tid": 2,
+     "utility_spread": 0.4337177223199493,
+     "expected_regret": 0.2238474768028254,
+     "expected_optimal_winner_rate": 0.48388671875,
+     "deterministic_regret": 0.4337177223199493,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.51611328125,
+      "2": 0.48388671875
+     }
+    },
+    {
+     "episode_seed": 182005,
+     "step_index": 310,
+     "tid": 2,
+     "utility_spread": 3.995907660509271,
+     "expected_regret": 1.6769934737342376,
+     "expected_optimal_winner_rate": 0.580322265625,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.419677734375,
+      "2": 0.580322265625
+     }
+    },
+    {
+     "episode_seed": 182005,
+     "step_index": 311,
+     "tid": 2,
+     "utility_spread": 1.9155849930079913,
+     "expected_regret": 0.9208463992267418,
+     "expected_optimal_winner_rate": 0.519287109375,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.519287109375,
+      "2": 0.480712890625
+     }
+    },
+    {
+     "episode_seed": 182005,
+     "step_index": 312,
+     "tid": 2,
+     "utility_spread": 1.5135634398472515,
+     "expected_regret": 0.7198294875054799,
+     "expected_optimal_winner_rate": 0.5244140625,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.5244140625,
+      "2": 0.4755859375
+     }
+    },
+    {
+     "episode_seed": 182005,
+     "step_index": 315,
+     "tid": 2,
+     "utility_spread": 3.9321592919613018,
+     "expected_regret": 1.754879684010073,
+     "expected_optimal_winner_rate": 0.5537109375,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.4462890625,
+      "2": 0.5537109375
+     }
+    },
+    {
+     "episode_seed": 182006,
+     "step_index": 223,
+     "tid": 2,
+     "utility_spread": 4.422238299567382,
+     "expected_regret": 2.2089598537389805,
+     "expected_optimal_winner_rate": 0.50048828125,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.49951171875,
+      "2": 0.50048828125
+     }
+    },
+    {
+     "episode_seed": 182006,
+     "step_index": 227,
+     "tid": 2,
+     "utility_spread": 3.953182198632592,
+     "expected_regret": 1.9341252749169227,
+     "expected_optimal_winner_rate": 0.5107421875,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.5107421875,
+      "2": 0.4892578125
+     }
+    },
+    {
+     "episode_seed": 182006,
+     "step_index": 284,
+     "tid": 3,
+     "utility_spread": 1.1470762020508047,
+     "expected_regret": 0.5838998733583809,
+     "expected_optimal_winner_rate": 0.490966796875,
+     "deterministic_regret": 1.1470762020508047,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.509033203125,
+      "2": 0.490966796875
+     }
+    },
+    {
+     "episode_seed": 182006,
+     "step_index": 285,
+     "tid": 3,
+     "utility_spread": 0.9034582423327393,
+     "expected_regret": 0.45393482976581484,
+     "expected_optimal_winner_rate": 0.49755859375,
+     "deterministic_regret": 0.9034582423327393,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.50244140625,
+      "2": 0.49755859375
+     }
+    },
+    {
+     "episode_seed": 182006,
+     "step_index": 286,
+     "tid": 3,
+     "utility_spread": 2.5624481049179693,
+     "expected_regret": 1.1492229415855246,
+     "expected_optimal_winner_rate": 0.551513671875,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.448486328125,
+      "2": 0.551513671875
+     }
+    },
+    {
+     "episode_seed": 182006,
+     "step_index": 287,
+     "tid": 3,
+     "utility_spread": 1.5496708045282368,
+     "expected_regret": 0.7608369111099327,
+     "expected_optimal_winner_rate": 0.509033203125,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.509033203125,
+      "2": 0.490966796875
+     }
+    },
+    {
+     "episode_seed": 182006,
+     "step_index": 288,
+     "tid": 3,
+     "utility_spread": 0.4668265055611691,
+     "expected_regret": 0.25267440498757615,
+     "expected_optimal_winner_rate": 0.458740234375,
+     "deterministic_regret": 0.4668265055611691,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.458740234375,
+      "2": 0.541259765625
+     }
+    },
+    {
+     "episode_seed": 182006,
+     "step_index": 289,
+     "tid": 2,
+     "utility_spread": 1.935183846644989,
+     "expected_regret": 0.891053890325305,
+     "expected_optimal_winner_rate": 0.53955078125,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.46044921875,
+      "2": 0.53955078125
+     }
+    },
+    {
+     "episode_seed": 182006,
+     "step_index": 290,
+     "tid": 2,
+     "utility_spread": 4.849057615926407,
+     "expected_regret": 2.2398479026691307,
+     "expected_optimal_winner_rate": 0.5380859375,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.4619140625,
+      "2": 0.5380859375
+     }
+    },
+    {
+     "episode_seed": 182006,
+     "step_index": 291,
+     "tid": 2,
+     "utility_spread": 5.429751145707758,
+     "expected_regret": 2.584964534699738,
+     "expected_optimal_winner_rate": 0.52392578125,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.47607421875,
+      "2": 0.52392578125
+     }
+    },
+    {
+     "episode_seed": 182006,
+     "step_index": 292,
+     "tid": 2,
+     "utility_spread": 5.525690127278809,
+     "expected_regret": 2.7061851551077365,
+     "expected_optimal_winner_rate": 0.51025390625,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.48974609375,
+      "2": 0.51025390625
+     }
+    },
+    {
+     "episode_seed": 182006,
+     "step_index": 293,
+     "tid": 2,
+     "utility_spread": 1.2625266905086576,
+     "expected_regret": 0.5831788326275342,
+     "expected_optimal_winner_rate": 0.5380859375,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.4619140625,
+      "2": 0.5380859375
+     }
+    },
+    {
+     "episode_seed": 182006,
+     "step_index": 294,
+     "tid": 2,
+     "utility_spread": 0.09831929038400489,
+     "expected_regret": 0.05131998116235411,
+     "expected_optimal_winner_rate": 0.47802734375,
+     "deterministic_regret": 0.09831929038400489,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.47802734375,
+      "2": 0.52197265625
+     }
+    }
+   ]
+  }
+ },
+ "after": {
+  "train": {
+   "events": 31,
+   "informative_events": 31,
+   "monte_carlo_samples_per_event": 4096,
+   "expected_regret": 0.682208310924198,
+   "expected_optimal_winner_rate": 0.4974562121975806,
+   "deterministic_regret": 0.43147914454133973,
+   "informative": {
+    "expected_regret": 0.682208310924198,
+    "expected_optimal_winner_rate": 0.4974562121975806,
+    "deterministic_regret": 0.43147914454133973
+   },
+   "rows": [
+    {
+     "episode_seed": 182001,
+     "step_index": 276,
+     "tid": 3,
+     "utility_spread": 0.8919754763052445,
+     "expected_regret": 0.4668934133785264,
+     "expected_optimal_winner_rate": 0.4765625,
+     "deterministic_regret": 0.8919754763052445,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.4765625,
+      "2": 0.5234375
+     }
+    },
+    {
+     "episode_seed": 182001,
+     "step_index": 282,
+     "tid": 3,
+     "utility_spread": 3.230636502778708,
+     "expected_regret": 1.5624733671886282,
+     "expected_optimal_winner_rate": 0.516357421875,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.516357421875,
+      "2": 0.483642578125
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 237,
+     "tid": 2,
+     "utility_spread": 0.4227151722795548,
+     "expected_regret": 0.2144536445304968,
+     "expected_optimal_winner_rate": 0.49267578125,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.50732421875,
+      "2": 0.49267578125
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 238,
+     "tid": 2,
+     "utility_spread": 2.411213872908443,
+     "expected_regret": 1.2527009574094645,
+     "expected_optimal_winner_rate": 0.48046875,
+     "deterministic_regret": 2.411213872908443,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.51953125,
+      "2": 0.48046875
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 239,
+     "tid": 2,
+     "utility_spread": 0.6892181003789615,
+     "expected_regret": 0.3560511475590533,
+     "expected_optimal_winner_rate": 0.4833984375,
+     "deterministic_regret": 0.6892181003789615,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.5166015625,
+      "2": 0.4833984375
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 240,
+     "tid": 2,
+     "utility_spread": 0.5408355629670472,
+     "expected_regret": 0.2617031459474335,
+     "expected_optimal_winner_rate": 0.51611328125,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.51611328125,
+      "2": 0.48388671875
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 241,
+     "tid": 2,
+     "utility_spread": 5.611642644648667,
+     "expected_regret": 2.61538716031111,
+     "expected_optimal_winner_rate": 0.533935546875,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.466064453125,
+      "2": 0.533935546875
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 242,
+     "tid": 2,
+     "utility_spread": 0.5034582787344934,
+     "expected_regret": 0.23759395820160542,
+     "expected_optimal_winner_rate": 0.528076171875,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.528076171875,
+      "2": 0.471923828125
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 243,
+     "tid": 2,
+     "utility_spread": 0.5807743725327352,
+     "expected_regret": 0.30371550438601536,
+     "expected_optimal_winner_rate": 0.47705078125,
+     "deterministic_regret": 0.5807743725327352,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.52294921875,
+      "2": 0.47705078125
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 245,
+     "tid": 2,
+     "utility_spread": 0.9828992544246393,
+     "expected_regret": 0.442976568278292,
+     "expected_optimal_winner_rate": 0.54931640625,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.45068359375,
+      "2": 0.54931640625
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 246,
+     "tid": 2,
+     "utility_spread": 0.25848740803074755,
+     "expected_regret": 0.13732143551633463,
+     "expected_optimal_winner_rate": 0.46875,
+     "deterministic_regret": 0.25848740803074755,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.46875,
+      "2": 0.53125
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 247,
+     "tid": 2,
+     "utility_spread": 0.1776224087955569,
+     "expected_regret": 0.09587967427904695,
+     "expected_optimal_winner_rate": 0.460205078125,
+     "deterministic_regret": 0.1776224087955569,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.460205078125,
+      "2": 0.539794921875
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 248,
+     "tid": 2,
+     "utility_spread": 1.263468719011593,
+     "expected_regret": 0.5965694586348683,
+     "expected_optimal_winner_rate": 0.52783203125,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.52783203125,
+      "2": 0.47216796875
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 283,
+     "tid": 2,
+     "utility_spread": 0.6295639437768514,
+     "expected_regret": 0.32600222772233933,
+     "expected_optimal_winner_rate": 0.482177734375,
+     "deterministic_regret": 0.6295639437768514,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.517822265625,
+      "2": 0.482177734375
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 284,
+     "tid": 2,
+     "utility_spread": 0.08266234421566843,
+     "expected_regret": 0.04076609748917241,
+     "expected_optimal_winner_rate": 0.5068359375,
+     "deterministic_regret": 0.08266234421566843,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.5068359375,
+      "2": 0.4931640625
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 285,
+     "tid": 2,
+     "utility_spread": 2.618486090420472,
+     "expected_regret": 1.3041288145648835,
+     "expected_optimal_winner_rate": 0.501953125,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.498046875,
+      "2": 0.501953125
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 286,
+     "tid": 2,
+     "utility_spread": 1.4676520517388374,
+     "expected_regret": 0.8094301720893637,
+     "expected_optimal_winner_rate": 0.448486328125,
+     "deterministic_regret": 1.4676520517388374,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.448486328125,
+      "2": 0.551513671875
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 287,
+     "tid": 2,
+     "utility_spread": 0.9776030947824168,
+     "expected_regret": 0.48402809477996617,
+     "expected_optimal_winner_rate": 0.5048828125,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.5048828125,
+      "2": 0.4951171875
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 288,
+     "tid": 2,
+     "utility_spread": 0.4799585743484833,
+     "expected_regret": 0.2425571896731837,
+     "expected_optimal_winner_rate": 0.49462890625,
+     "deterministic_regret": 0.4799585743484833,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.50537109375,
+      "2": 0.49462890625
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 289,
+     "tid": 2,
+     "utility_spread": 1.20382138701647,
+     "expected_regret": 0.6072009242128973,
+     "expected_optimal_winner_rate": 0.49560546875,
+     "deterministic_regret": 1.20382138701647,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.50439453125,
+      "2": 0.49560546875
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 290,
+     "tid": 2,
+     "utility_spread": 0.3659450760021645,
+     "expected_regret": 0.1817217491670905,
+     "expected_optimal_winner_rate": 0.50341796875,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.50341796875,
+      "2": 0.49658203125
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 291,
+     "tid": 2,
+     "utility_spread": 2.7008820942036706,
+     "expected_regret": 1.3346155660811108,
+     "expected_optimal_winner_rate": 0.505859375,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.494140625,
+      "2": 0.505859375
+     }
+    },
+    {
+     "episode_seed": 182002,
+     "step_index": 292,
+     "tid": 2,
+     "utility_spread": 0.917216227983845,
+     "expected_regret": 0.4910779267501396,
+     "expected_optimal_winner_rate": 0.464599609375,
+     "deterministic_regret": 0.917216227983845,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.464599609375,
+      "2": 0.535400390625
+     }
+    },
+    {
+     "episode_seed": 182003,
+     "step_index": 210,
+     "tid": 2,
+     "utility_spread": 0.8428883792969986,
+     "expected_regret": 0.399425377005731,
+     "expected_optimal_winner_rate": 0.526123046875,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.473876953125,
+      "2": 0.526123046875
+     }
+    },
+    {
+     "episode_seed": 182003,
+     "step_index": 211,
+     "tid": 2,
+     "utility_spread": 0.31116287243857066,
+     "expected_regret": 0.15193499630789584,
+     "expected_optimal_winner_rate": 0.51171875,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.48828125,
+      "2": 0.51171875
+     }
+    },
+    {
+     "episode_seed": 182003,
+     "step_index": 212,
+     "tid": 2,
+     "utility_spread": 0.45889168202810104,
+     "expected_regret": 0.23885670558689243,
+     "expected_optimal_winner_rate": 0.4794921875,
+     "deterministic_regret": 0.45889168202810104,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.4794921875,
+      "2": 0.5205078125
+     }
+    },
+    {
+     "episode_seed": 182003,
+     "step_index": 213,
+     "tid": 2,
+     "utility_spread": 3.696294139103557,
+     "expected_regret": 1.838220498377428,
+     "expected_optimal_winner_rate": 0.502685546875,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.502685546875,
+      "2": 0.497314453125
+     }
+    },
+    {
+     "episode_seed": 182003,
+     "step_index": 214,
+     "tid": 2,
+     "utility_spread": 3.921326734893695,
+     "expected_regret": 1.9329000678101493,
+     "expected_optimal_winner_rate": 0.507080078125,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.507080078125,
+      "2": 0.492919921875
+     }
+    },
+    {
+     "episode_seed": 182003,
+     "step_index": 215,
+     "tid": 2,
+     "utility_spread": 1.4460588178785407,
+     "expected_regret": 0.799286416913334,
+     "expected_optimal_winner_rate": 0.447265625,
+     "deterministic_regret": 1.4460588178785407,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.447265625,
+      "2": 0.552734375
+     }
+    },
+    {
+     "episode_seed": 182003,
+     "step_index": 216,
+     "tid": 2,
+     "utility_spread": 1.2190736860589375,
+     "expected_regret": 0.5592381484630722,
+     "expected_optimal_winner_rate": 0.541259765625,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.458740234375,
+      "2": 0.541259765625
+     }
+    },
+    {
+     "episode_seed": 182003,
+     "step_index": 217,
+     "tid": 2,
+     "utility_spread": 1.6807368128430458,
+     "expected_regret": 0.8633472300346113,
+     "expected_optimal_winner_rate": 0.486328125,
+     "deterministic_regret": 1.6807368128430458,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.513671875,
+      "2": 0.486328125
+     }
+    }
+   ]
+  },
+  "heldout": {
+   "events": 33,
+   "informative_events": 33,
+   "monte_carlo_samples_per_event": 4096,
+   "expected_regret": 1.1215505658929157,
+   "expected_optimal_winner_rate": 0.5062144886363636,
+   "deterministic_regret": 0.9437176969435184,
+   "informative": {
+    "expected_regret": 1.1215505658929157,
+    "expected_optimal_winner_rate": 0.5062144886363636,
+    "deterministic_regret": 0.9437176969435184
+   },
+   "rows": [
+    {
+     "episode_seed": 182004,
+     "step_index": 206,
+     "tid": 2,
+     "utility_spread": 1.5387949340134792,
+     "expected_regret": 0.7645135963665601,
+     "expected_optimal_winner_rate": 0.503173828125,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.496826171875,
+      "2": 0.503173828125
+     }
+    },
+    {
+     "episode_seed": 182004,
+     "step_index": 207,
+     "tid": 2,
+     "utility_spread": 0.1328958352323122,
+     "expected_regret": 0.06424163910155715,
+     "expected_optimal_winner_rate": 0.5166015625,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.4833984375,
+      "2": 0.5166015625
+     }
+    },
+    {
+     "episode_seed": 182004,
+     "step_index": 208,
+     "tid": 2,
+     "utility_spread": 2.0373486886595638,
+     "expected_regret": 1.0500105180078951,
+     "expected_optimal_winner_rate": 0.484619140625,
+     "deterministic_regret": 2.0373486886595638,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.484619140625,
+      "2": 0.515380859375
+     }
+    },
+    {
+     "episode_seed": 182004,
+     "step_index": 209,
+     "tid": 2,
+     "utility_spread": 3.573283369227374,
+     "expected_regret": 1.665380359339614,
+     "expected_optimal_winner_rate": 0.533935546875,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.533935546875,
+      "2": 0.466064453125
+     }
+    },
+    {
+     "episode_seed": 182004,
+     "step_index": 210,
+     "tid": 2,
+     "utility_spread": 2.4428445955966485,
+     "expected_regret": 1.1677465132271088,
+     "expected_optimal_winner_rate": 0.52197265625,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.52197265625,
+      "2": 0.47802734375
+     }
+    },
+    {
+     "episode_seed": 182004,
+     "step_index": 211,
+     "tid": 2,
+     "utility_spread": 3.1950970831216496,
+     "expected_regret": 1.530463983663251,
+     "expected_optimal_winner_rate": 0.52099609375,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.52099609375,
+      "2": 0.47900390625
+     }
+    },
+    {
+     "episode_seed": 182004,
+     "step_index": 212,
+     "tid": 2,
+     "utility_spread": 1.2183304502723482,
+     "expected_regret": 0.5779336095896417,
+     "expected_optimal_winner_rate": 0.525634765625,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.525634765625,
+      "2": 0.474365234375
+     }
+    },
+    {
+     "episode_seed": 182004,
+     "step_index": 213,
+     "tid": 2,
+     "utility_spread": 1.793695769428358,
+     "expected_regret": 0.8683834743106525,
+     "expected_optimal_winner_rate": 0.515869140625,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.484130859375,
+      "2": 0.515869140625
+     }
+    },
+    {
+     "episode_seed": 182004,
+     "step_index": 214,
+     "tid": 2,
+     "utility_spread": 0.20679229139500777,
+     "expected_regret": 0.11036326879626146,
+     "expected_optimal_winner_rate": 0.46630859375,
+     "deterministic_regret": 0.20679229139500777,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.53369140625,
+      "2": 0.46630859375
+     }
+    },
+    {
+     "episode_seed": 182004,
+     "step_index": 215,
+     "tid": 2,
+     "utility_spread": 2.44133826160187,
+     "expected_regret": 1.2850403544955156,
+     "expected_optimal_winner_rate": 0.4736328125,
+     "deterministic_regret": 2.44133826160187,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.5263671875,
+      "2": 0.4736328125
+     }
+    },
+    {
+     "episode_seed": 182004,
+     "step_index": 216,
+     "tid": 2,
+     "utility_spread": 1.9056211788697013,
+     "expected_regret": 1.0258531980975807,
+     "expected_optimal_winner_rate": 0.461669921875,
+     "deterministic_regret": 1.9056211788697013,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.538330078125,
+      "2": 0.461669921875
+     }
+    },
+    {
+     "episode_seed": 182004,
+     "step_index": 217,
+     "tid": 2,
+     "utility_spread": 1.0408187294151796,
+     "expected_regret": 0.4919494775751435,
+     "expected_optimal_winner_rate": 0.52734375,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.47265625,
+      "2": 0.52734375
+     }
+    },
+    {
+     "episode_seed": 182004,
+     "step_index": 218,
+     "tid": 2,
+     "utility_spread": 3.18467663275361,
+     "expected_regret": 1.5029247878693188,
+     "expected_optimal_winner_rate": 0.528076171875,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.471923828125,
+      "2": 0.528076171875
+     }
+    },
+    {
+     "episode_seed": 182004,
+     "step_index": 219,
+     "tid": 2,
+     "utility_spread": 1.3737677178649488,
+     "expected_regret": 0.7395404828838409,
+     "expected_optimal_winner_rate": 0.461669921875,
+     "deterministic_regret": 1.3737677178649488,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.538330078125,
+      "2": 0.461669921875
+     }
+    },
+    {
+     "episode_seed": 182004,
+     "step_index": 220,
+     "tid": 2,
+     "utility_spread": 3.439806265179506,
+     "expected_regret": 1.561181603263843,
+     "expected_optimal_winner_rate": 0.546142578125,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.546142578125,
+      "2": 0.453857421875
+     }
+    },
+    {
+     "episode_seed": 182005,
+     "step_index": 277,
+     "tid": 2,
+     "utility_spread": 0.4337177223199493,
+     "expected_regret": 0.22183560260261082,
+     "expected_optimal_winner_rate": 0.488525390625,
+     "deterministic_regret": 0.4337177223199493,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.511474609375,
+      "2": 0.488525390625
+     }
+    },
+    {
+     "episode_seed": 182005,
+     "step_index": 310,
+     "tid": 2,
+     "utility_spread": 3.995907660509271,
+     "expected_regret": 1.8652772087142888,
+     "expected_optimal_winner_rate": 0.533203125,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.466796875,
+      "2": 0.533203125
+     }
+    },
+    {
+     "episode_seed": 182005,
+     "step_index": 311,
+     "tid": 2,
+     "utility_spread": 1.9155849930079913,
+     "expected_regret": 0.9086869241734685,
+     "expected_optimal_winner_rate": 0.525634765625,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.525634765625,
+      "2": 0.474365234375
+     }
+    },
+    {
+     "episode_seed": 182005,
+     "step_index": 312,
+     "tid": 2,
+     "utility_spread": 1.5135634398472515,
+     "expected_regret": 0.7139171303185767,
+     "expected_optimal_winner_rate": 0.5283203125,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.5283203125,
+      "2": 0.4716796875
+     }
+    },
+    {
+     "episode_seed": 182005,
+     "step_index": 315,
+     "tid": 2,
+     "utility_spread": 3.9321592919613018,
+     "expected_regret": 1.9123196556608675,
+     "expected_optimal_winner_rate": 0.513671875,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.486328125,
+      "2": 0.513671875
+     }
+    },
+    {
+     "episode_seed": 182006,
+     "step_index": 223,
+     "tid": 2,
+     "utility_spread": 4.422238299567382,
+     "expected_regret": 2.2262342220966653,
+     "expected_optimal_winner_rate": 0.49658203125,
+     "deterministic_regret": 4.422238299567382,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.50341796875,
+      "2": 0.49658203125
+     }
+    },
+    {
+     "episode_seed": 182006,
+     "step_index": 227,
+     "tid": 2,
+     "utility_spread": 3.953182198632592,
+     "expected_regret": 1.9534279223711835,
+     "expected_optimal_winner_rate": 0.505859375,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.505859375,
+      "2": 0.494140625
+     }
+    },
+    {
+     "episode_seed": 182006,
+     "step_index": 284,
+     "tid": 3,
+     "utility_spread": 1.1470762020508047,
+     "expected_regret": 0.5869804002681852,
+     "expected_optimal_winner_rate": 0.48828125,
+     "deterministic_regret": 1.1470762020508047,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.51171875,
+      "2": 0.48828125
+     }
+    },
+    {
+     "episode_seed": 182006,
+     "step_index": 285,
+     "tid": 3,
+     "utility_spread": 0.9034582423327393,
+     "expected_regret": 0.45834624696470516,
+     "expected_optimal_winner_rate": 0.49267578125,
+     "deterministic_regret": 0.9034582423327393,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.50732421875,
+      "2": 0.49267578125
+     }
+    },
+    {
+     "episode_seed": 182006,
+     "step_index": 286,
+     "tid": 3,
+     "utility_spread": 2.5624481049179693,
+     "expected_regret": 1.2217922726818347,
+     "expected_optimal_winner_rate": 0.523193359375,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.476806640625,
+      "2": 0.523193359375
+     }
+    },
+    {
+     "episode_seed": 182006,
+     "step_index": 287,
+     "tid": 3,
+     "utility_spread": 1.5496708045282368,
+     "expected_regret": 0.7570535351223149,
+     "expected_optimal_winner_rate": 0.511474609375,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.511474609375,
+      "2": 0.488525390625
+     }
+    },
+    {
+     "episode_seed": 182006,
+     "step_index": 288,
+     "tid": 3,
+     "utility_spread": 0.4668265055611691,
+     "expected_regret": 0.24253095796732616,
+     "expected_optimal_winner_rate": 0.48046875,
+     "deterministic_regret": 0.4668265055611691,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.48046875,
+      "2": 0.51953125
+     }
+    },
+    {
+     "episode_seed": 182006,
+     "step_index": 289,
+     "tid": 2,
+     "utility_spread": 1.935183846644989,
+     "expected_regret": 0.9491661005639119,
+     "expected_optimal_winner_rate": 0.509521484375,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.490478515625,
+      "2": 0.509521484375
+     }
+    },
+    {
+     "episode_seed": 182006,
+     "step_index": 290,
+     "tid": 2,
+     "utility_spread": 4.849057615926407,
+     "expected_regret": 2.3534976905424063,
+     "expected_optimal_winner_rate": 0.5146484375,
+     "deterministic_regret": 4.849057615926407,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.4853515625,
+      "2": 0.5146484375
+     }
+    },
+    {
+     "episode_seed": 182006,
+     "step_index": 291,
+     "tid": 2,
+     "utility_spread": 5.429751145707758,
+     "expected_regret": 2.724154932722032,
+     "expected_optimal_winner_rate": 0.498291015625,
+     "deterministic_regret": 5.429751145707758,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.501708984375,
+      "2": 0.498291015625
+     }
+    },
+    {
+     "episode_seed": 182006,
+     "step_index": 292,
+     "tid": 2,
+     "utility_spread": 5.525690127278809,
+     "expected_regret": 2.8437877901132147,
+     "expected_optimal_winner_rate": 0.4853515625,
+     "deterministic_regret": 5.525690127278809,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.5146484375,
+      "2": 0.4853515625
+     }
+    },
+    {
+     "episode_seed": 182006,
+     "step_index": 293,
+     "tid": 2,
+     "utility_spread": 1.2625266905086576,
+     "expected_regret": 0.6186257489870303,
+     "expected_optimal_winner_rate": 0.510009765625,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 2,
+     "winner_probabilities": {
+      "1": 0.489990234375,
+      "2": 0.510009765625
+     }
+    },
+    {
+     "episode_seed": 182006,
+     "step_index": 294,
+     "tid": 2,
+     "utility_spread": 0.09831929038400489,
+     "expected_regret": 0.048007466007814886,
+     "expected_optimal_winner_rate": 0.51171875,
+     "deterministic_regret": 0.0,
+     "deterministic_winner": 1,
+     "winner_probabilities": {
+      "1": 0.51171875,
+      "2": 0.48828125
+     }
+    }
+   ]
+  }
+ },
+ "updates": [
+  {
+   "iteration": 0,
+   "loss": -2.455237627029419,
+   "policy_loss": -2.455237627029419,
+   "xi_ppo_loss": 0.0,
+   "xi_anchor_loss": 0.008123859763145447,
+   "policy_anchor_kl": 0.0,
+   "post_update_policy_anchor_kl": 0.0,
+   "value_loss": 0.0,
+   "intervention_loss": 0.0,
+   "intervention_fraction": 0.7604166865348816,
+   "continuous_intervention_fraction": 0.7604166865348816,
+   "masked_continuous_fraction": 0.7604166865348816,
+   "approx_kl": 0.0,
+   "bid_approx_kl": 0.00012189103290438652,
+   "bid_post_update_kl": 0.0004909643903374672,
+   "bid_active_slot_count": 64,
+   "bid_active_slot_count_by_index": [
+    32,
+    28,
+    4,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "cf_bid_informative_fraction": 1.0,
+   "bid_gradient_norm": 27.450021743774414,
+   "bid_parameter_delta_l2": 0.013588101603090763,
+   "task_residual_gradient_norm": 0.0,
+   "critic_gradient_norm": 0.0,
+   "task_residual_parameter_delta_l2": 0.0,
+   "task_residual_xi_row_unchanged": true,
+   "geometry_adapter_gradient_norm": 0.0,
+   "geometry_adapter_parameter_delta_l2": 0.0,
+   "geometry_adapter_mean_abs_output": 0.0,
+   "geometry_adapter_max_abs_output": 0.0,
+   "geometry_pressure_gate_nonzero_fraction": 1.0,
+   "mean_return_scaled": 0.0,
+   "rollout_steps": 32,
+   "f_role_mean": 0.0,
+   "cf_delta_mean": 0.0,
+   "cf_nonzero_frac": 0.0,
+   "gear_gate_active_frac": 0.0,
+   "gear_gate_credit_mean": 0.0,
+   "bid_event_frac": 0.6666666865348816,
+   "cf_bid_event_frac": 0.0833333358168602,
+   "cf_bid_adv_mean": 0.12117007374763489,
+   "bid_action_mean": -0.13225157558918,
+   "bid_action_std": 0.392698734998703,
+   "pointer_exposure_agent_frac": 1.0,
+   "pointer_exposure_steps": 32
+  },
+  {
+   "iteration": 1,
+   "loss": -6.430359363555908,
+   "policy_loss": -6.430359363555908,
+   "xi_ppo_loss": 0.0,
+   "xi_anchor_loss": 0.009215897880494595,
+   "policy_anchor_kl": 0.0,
+   "post_update_policy_anchor_kl": 0.0,
+   "value_loss": 0.0,
+   "intervention_loss": 0.0,
+   "intervention_fraction": 0.65625,
+   "continuous_intervention_fraction": 0.65625,
+   "masked_continuous_fraction": 0.65625,
+   "approx_kl": 0.0,
+   "bid_approx_kl": 9.175855666399002e-06,
+   "bid_post_update_kl": 7.21542164683342e-06,
+   "bid_active_slot_count": 64,
+   "bid_active_slot_count_by_index": [
+    32,
+    24,
+    8,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "cf_bid_informative_fraction": 1.0,
+   "bid_gradient_norm": 20.16110610961914,
+   "bid_parameter_delta_l2": 0.011250811628997326,
+   "task_residual_gradient_norm": 0.0,
+   "critic_gradient_norm": 0.0,
+   "task_residual_parameter_delta_l2": 0.0,
+   "task_residual_xi_row_unchanged": true,
+   "geometry_adapter_gradient_norm": 0.0,
+   "geometry_adapter_parameter_delta_l2": 0.0,
+   "geometry_adapter_mean_abs_output": 0.0,
+   "geometry_adapter_max_abs_output": 0.0,
+   "geometry_pressure_gate_nonzero_fraction": 1.0,
+   "mean_return_scaled": 0.0,
+   "rollout_steps": 32,
+   "f_role_mean": 0.0,
+   "cf_delta_mean": 0.0,
+   "cf_nonzero_frac": 0.0,
+   "gear_gate_active_frac": 0.0,
+   "gear_gate_credit_mean": 0.0,
+   "bid_event_frac": 0.6666666865348816,
+   "cf_bid_event_frac": 0.0833333358168602,
+   "cf_bid_adv_mean": 0.32148149609565735,
+   "bid_action_mean": -0.06543895602226257,
+   "bid_action_std": 0.3950178325176239,
+   "pointer_exposure_agent_frac": 1.0,
+   "pointer_exposure_steps": 32
+  },
+  {
+   "iteration": 2,
+   "loss": 5.671269416809082,
+   "policy_loss": 5.671269416809082,
+   "xi_ppo_loss": 0.0,
+   "xi_anchor_loss": 0.008947829715907574,
+   "policy_anchor_kl": 0.0,
+   "post_update_policy_anchor_kl": 0.0,
+   "value_loss": 0.0,
+   "intervention_loss": 0.0,
+   "intervention_fraction": 0.7395833134651184,
+   "continuous_intervention_fraction": 0.7395833134651184,
+   "masked_continuous_fraction": 0.7395833134651184,
+   "approx_kl": 0.0,
+   "bid_approx_kl": 9.63779166340828e-06,
+   "bid_post_update_kl": 5.9670303016901016e-05,
+   "bid_active_slot_count": 64,
+   "bid_active_slot_count_by_index": [
+    32,
+    24,
+    8,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "cf_bid_informative_fraction": 1.0,
+   "bid_gradient_norm": 49.042396545410156,
+   "bid_parameter_delta_l2": 0.012587079778313637,
+   "task_residual_gradient_norm": 0.0,
+   "critic_gradient_norm": 0.0,
+   "task_residual_parameter_delta_l2": 0.0,
+   "task_residual_xi_row_unchanged": true,
+   "geometry_adapter_gradient_norm": 0.0,
+   "geometry_adapter_parameter_delta_l2": 0.0,
+   "geometry_adapter_mean_abs_output": 0.0,
+   "geometry_adapter_max_abs_output": 0.0,
+   "geometry_pressure_gate_nonzero_fraction": 1.0,
+   "mean_return_scaled": 0.0,
+   "rollout_steps": 32,
+   "f_role_mean": 0.0,
+   "cf_delta_mean": 0.0,
+   "cf_nonzero_frac": 0.0,
+   "gear_gate_active_frac": 0.0,
+   "gear_gate_credit_mean": 0.0,
+   "bid_event_frac": 0.6666666865348816,
+   "cf_bid_event_frac": 0.0833333358168602,
+   "cf_bid_adv_mean": -0.2844795286655426,
+   "bid_action_mean": -0.03275243192911148,
+   "bid_action_std": 0.4572414457798004,
+   "pointer_exposure_agent_frac": 1.0,
+   "pointer_exposure_steps": 32
+  },
+  {
+   "iteration": 3,
+   "loss": 4.440906524658203,
+   "policy_loss": 4.440906524658203,
+   "xi_ppo_loss": 0.0,
+   "xi_anchor_loss": 0.00993634108453989,
+   "policy_anchor_kl": 0.0,
+   "post_update_policy_anchor_kl": 0.0,
+   "value_loss": 0.0,
+   "intervention_loss": 0.0,
+   "intervention_fraction": 0.7395833134651184,
+   "continuous_intervention_fraction": 0.7395833134651184,
+   "masked_continuous_fraction": 0.7395833134651184,
+   "approx_kl": 0.0,
+   "bid_approx_kl": 1.11432746052742e-06,
+   "bid_post_update_kl": 1.7150305211544037e-06,
+   "bid_active_slot_count": 64,
+   "bid_active_slot_count_by_index": [
+    32,
+    28,
+    4,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "cf_bid_informative_fraction": 1.0,
+   "bid_gradient_norm": 57.93760299682617,
+   "bid_parameter_delta_l2": 0.007106513250619173,
+   "task_residual_gradient_norm": 0.0,
+   "critic_gradient_norm": 0.0,
+   "task_residual_parameter_delta_l2": 0.0,
+   "task_residual_xi_row_unchanged": true,
+   "geometry_adapter_gradient_norm": 0.0,
+   "geometry_adapter_parameter_delta_l2": 0.0,
+   "geometry_adapter_mean_abs_output": 0.0,
+   "geometry_adapter_max_abs_output": 0.0,
+   "geometry_pressure_gate_nonzero_fraction": 1.0,
+   "mean_return_scaled": 0.0,
+   "rollout_steps": 32,
+   "f_role_mean": 0.0,
+   "cf_delta_mean": 0.0,
+   "cf_nonzero_frac": 0.0,
+   "gear_gate_active_frac": 0.0,
+   "gear_gate_credit_mean": 0.0,
+   "bid_event_frac": 0.6666666865348816,
+   "cf_bid_event_frac": 0.0833333358168602,
+   "cf_bid_adv_mean": -0.22183576226234436,
+   "bid_action_mean": -0.09812010824680328,
+   "bid_action_std": 0.3949609100818634,
+   "pointer_exposure_agent_frac": 1.0,
+   "pointer_exposure_steps": 32
+  },
+  {
+   "iteration": 4,
+   "loss": -0.5121564865112305,
+   "policy_loss": -0.5121564865112305,
+   "xi_ppo_loss": 0.0,
+   "xi_anchor_loss": 0.009446289390325546,
+   "policy_anchor_kl": 0.0,
+   "post_update_policy_anchor_kl": 0.0,
+   "value_loss": 0.0,
+   "intervention_loss": 0.0,
+   "intervention_fraction": 0.75,
+   "continuous_intervention_fraction": 0.75,
+   "masked_continuous_fraction": 0.75,
+   "approx_kl": 0.0,
+   "bid_approx_kl": 3.809109330177307e-07,
+   "bid_post_update_kl": 6.531365215778351e-06,
+   "bid_active_slot_count": 64,
+   "bid_active_slot_count_by_index": [
+    32,
+    20,
+    12,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "cf_bid_informative_fraction": 1.0,
+   "bid_gradient_norm": 41.07077407836914,
+   "bid_parameter_delta_l2": 0.006657659076154232,
+   "task_residual_gradient_norm": 0.0,
+   "critic_gradient_norm": 0.0,
+   "task_residual_parameter_delta_l2": 0.0,
+   "task_residual_xi_row_unchanged": true,
+   "geometry_adapter_gradient_norm": 0.0,
+   "geometry_adapter_parameter_delta_l2": 0.0,
+   "geometry_adapter_mean_abs_output": 0.0,
+   "geometry_adapter_max_abs_output": 0.0,
+   "geometry_pressure_gate_nonzero_fraction": 1.0,
+   "mean_return_scaled": 0.0,
+   "rollout_steps": 32,
+   "f_role_mean": 0.0,
+   "cf_delta_mean": 0.0,
+   "cf_nonzero_frac": 0.0,
+   "gear_gate_active_frac": 0.0,
+   "gear_gate_credit_mean": 0.0,
+   "bid_event_frac": 0.6666666865348816,
+   "cf_bid_event_frac": 0.0833333358168602,
+   "cf_bid_adv_mean": 0.025358811020851135,
+   "bid_action_mean": -0.0850091502070427,
+   "bid_action_std": 0.4023561477661133,
+   "pointer_exposure_agent_frac": 1.0,
+   "pointer_exposure_steps": 32
+  },
+  {
+   "iteration": 5,
+   "loss": -3.2165331840515137,
+   "policy_loss": -3.2165331840515137,
+   "xi_ppo_loss": 0.0,
+   "xi_anchor_loss": 0.009222975932061672,
+   "policy_anchor_kl": 0.0,
+   "post_update_policy_anchor_kl": 0.0,
+   "value_loss": 0.0,
+   "intervention_loss": 0.0,
+   "intervention_fraction": 0.7395833134651184,
+   "continuous_intervention_fraction": 0.7395833134651184,
+   "masked_continuous_fraction": 0.7395833134651184,
+   "approx_kl": 0.0,
+   "bid_approx_kl": 4.246830940246582e-07,
+   "bid_post_update_kl": 1.314561814069748e-06,
+   "bid_active_slot_count": 64,
+   "bid_active_slot_count_by_index": [
+    32,
+    28,
+    4,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "cf_bid_informative_fraction": 1.0,
+   "bid_gradient_norm": 8.906344413757324,
+   "bid_parameter_delta_l2": 0.007225767709314823,
+   "task_residual_gradient_norm": 0.0,
+   "critic_gradient_norm": 0.0,
+   "task_residual_parameter_delta_l2": 0.0,
+   "task_residual_xi_row_unchanged": true,
+   "geometry_adapter_gradient_norm": 0.0,
+   "geometry_adapter_parameter_delta_l2": 0.0,
+   "geometry_adapter_mean_abs_output": 0.0,
+   "geometry_adapter_max_abs_output": 0.0,
+   "geometry_pressure_gate_nonzero_fraction": 1.0,
+   "mean_return_scaled": 0.0,
+   "rollout_steps": 32,
+   "f_role_mean": 0.0,
+   "cf_delta_mean": 0.0,
+   "cf_nonzero_frac": 0.0,
+   "gear_gate_active_frac": 0.0,
+   "gear_gate_credit_mean": 0.0,
+   "bid_event_frac": 0.6666666865348816,
+   "cf_bid_event_frac": 0.0833333358168602,
+   "cf_bid_adv_mean": 0.16070625185966492,
+   "bid_action_mean": -0.061057187616825104,
+   "bid_action_std": 0.39150550961494446,
+   "pointer_exposure_agent_frac": 1.0,
+   "pointer_exposure_steps": 32
+  },
+  {
+   "iteration": 6,
+   "loss": -3.65321683883667,
+   "policy_loss": -3.65321683883667,
+   "xi_ppo_loss": 0.0,
+   "xi_anchor_loss": 0.009306519292294979,
+   "policy_anchor_kl": 0.0,
+   "post_update_policy_anchor_kl": 0.0,
+   "value_loss": 0.0,
+   "intervention_loss": 0.0,
+   "intervention_fraction": 0.75,
+   "continuous_intervention_fraction": 0.75,
+   "masked_continuous_fraction": 0.75,
+   "approx_kl": 0.0,
+   "bid_approx_kl": 2.9294751584529877e-06,
+   "bid_post_update_kl": 2.674083225429058e-05,
+   "bid_active_slot_count": 64,
+   "bid_active_slot_count_by_index": [
+    32,
+    23,
+    9,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "cf_bid_informative_fraction": 1.0,
+   "bid_gradient_norm": 49.44253158569336,
+   "bid_parameter_delta_l2": 0.007731219287961721,
+   "task_residual_gradient_norm": 0.0,
+   "critic_gradient_norm": 0.0,
+   "task_residual_parameter_delta_l2": 0.0,
+   "task_residual_xi_row_unchanged": true,
+   "geometry_adapter_gradient_norm": 0.0,
+   "geometry_adapter_parameter_delta_l2": 0.0,
+   "geometry_adapter_mean_abs_output": 0.0,
+   "geometry_adapter_max_abs_output": 0.0,
+   "geometry_pressure_gate_nonzero_fraction": 1.0,
+   "mean_return_scaled": 0.0,
+   "rollout_steps": 32,
+   "f_role_mean": 0.0,
+   "cf_delta_mean": 0.0,
+   "cf_nonzero_frac": 0.0,
+   "gear_gate_active_frac": 0.0,
+   "gear_gate_credit_mean": 0.0,
+   "bid_event_frac": 0.6666666865348816,
+   "cf_bid_event_frac": 0.0833333358168602,
+   "cf_bid_adv_mean": 0.18223148584365845,
+   "bid_action_mean": -0.07053881883621216,
+   "bid_action_std": 0.4478400647640228,
+   "pointer_exposure_agent_frac": 1.0,
+   "pointer_exposure_steps": 32
+  },
+  {
+   "iteration": 7,
+   "loss": -2.391387701034546,
+   "policy_loss": -2.391387701034546,
+   "xi_ppo_loss": 0.0,
+   "xi_anchor_loss": 0.007841703481972218,
+   "policy_anchor_kl": 0.0,
+   "post_update_policy_anchor_kl": 0.0,
+   "value_loss": 0.0,
+   "intervention_loss": 0.0,
+   "intervention_fraction": 0.7291666865348816,
+   "continuous_intervention_fraction": 0.7291666865348816,
+   "masked_continuous_fraction": 0.7291666865348816,
+   "approx_kl": 0.0,
+   "bid_approx_kl": 1.9375933334231377e-05,
+   "bid_post_update_kl": 9.616860188543797e-05,
+   "bid_active_slot_count": 64,
+   "bid_active_slot_count_by_index": [
+    32,
+    21,
+    11,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "cf_bid_informative_fraction": 1.0,
+   "bid_gradient_norm": 51.005001068115234,
+   "bid_parameter_delta_l2": 0.0095536382868886,
+   "task_residual_gradient_norm": 0.0,
+   "critic_gradient_norm": 0.0,
+   "task_residual_parameter_delta_l2": 0.0,
+   "task_residual_xi_row_unchanged": true,
+   "geometry_adapter_gradient_norm": 0.0,
+   "geometry_adapter_parameter_delta_l2": 0.0,
+   "geometry_adapter_mean_abs_output": 0.0,
+   "geometry_adapter_max_abs_output": 0.0,
+   "geometry_pressure_gate_nonzero_fraction": 1.0,
+   "mean_return_scaled": 0.0,
+   "rollout_steps": 32,
+   "f_role_mean": 0.0,
+   "cf_delta_mean": 0.0,
+   "cf_nonzero_frac": 0.0,
+   "gear_gate_active_frac": 0.0,
+   "gear_gate_credit_mean": 0.0,
+   "bid_event_frac": 0.6666666865348816,
+   "cf_bid_event_frac": 0.0833333358168602,
+   "cf_bid_adv_mean": 0.11842098832130432,
+   "bid_action_mean": -0.03154592216014862,
+   "bid_action_std": 0.4312978982925415,
+   "pointer_exposure_agent_frac": 1.0,
+   "pointer_exposure_steps": 32
+  },
+  {
+   "iteration": 8,
+   "loss": 1.0043169260025024,
+   "policy_loss": 1.0043169260025024,
+   "xi_ppo_loss": 0.0,
+   "xi_anchor_loss": 0.00920529942959547,
+   "policy_anchor_kl": 0.0,
+   "post_update_policy_anchor_kl": 0.0,
+   "value_loss": 0.0,
+   "intervention_loss": 0.0,
+   "intervention_fraction": 0.625,
+   "continuous_intervention_fraction": 0.625,
+   "masked_continuous_fraction": 0.625,
+   "approx_kl": 0.0,
+   "bid_approx_kl": 1.337192952632904e-05,
+   "bid_post_update_kl": 2.4285633116960526e-05,
+   "bid_active_slot_count": 64,
+   "bid_active_slot_count_by_index": [
+    32,
+    27,
+    5,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "cf_bid_informative_fraction": 1.0,
+   "bid_gradient_norm": 91.47468566894531,
+   "bid_parameter_delta_l2": 0.006756627932190895,
+   "task_residual_gradient_norm": 0.0,
+   "critic_gradient_norm": 0.0,
+   "task_residual_parameter_delta_l2": 0.0,
+   "task_residual_xi_row_unchanged": true,
+   "geometry_adapter_gradient_norm": 0.0,
+   "geometry_adapter_parameter_delta_l2": 0.0,
+   "geometry_adapter_mean_abs_output": 0.0,
+   "geometry_adapter_max_abs_output": 0.0,
+   "geometry_pressure_gate_nonzero_fraction": 1.0,
+   "mean_return_scaled": 0.0,
+   "rollout_steps": 32,
+   "f_role_mean": 0.0,
+   "cf_delta_mean": 0.0,
+   "cf_nonzero_frac": 0.0,
+   "gear_gate_active_frac": 0.0,
+   "gear_gate_credit_mean": 0.0,
+   "bid_event_frac": 0.6666666865348816,
+   "cf_bid_event_frac": 0.0833333358168602,
+   "cf_bid_adv_mean": -0.0492536760866642,
+   "bid_action_mean": -0.1006087064743042,
+   "bid_action_std": 0.44932079315185547,
+   "pointer_exposure_agent_frac": 1.0,
+   "pointer_exposure_steps": 32
+  },
+  {
+   "iteration": 9,
+   "loss": 1.2077637910842896,
+   "policy_loss": 1.2077637910842896,
+   "xi_ppo_loss": 0.0,
+   "xi_anchor_loss": 0.010016805492341518,
+   "policy_anchor_kl": 0.0,
+   "post_update_policy_anchor_kl": 0.0,
+   "value_loss": 0.0,
+   "intervention_loss": 0.0,
+   "intervention_fraction": 0.7083333134651184,
+   "continuous_intervention_fraction": 0.7083333134651184,
+   "masked_continuous_fraction": 0.7083333134651184,
+   "approx_kl": 0.0,
+   "bid_approx_kl": 3.700144588947296e-06,
+   "bid_post_update_kl": 2.1787360310554504e-05,
+   "bid_active_slot_count": 64,
+   "bid_active_slot_count_by_index": [
+    32,
+    28,
+    4,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "cf_bid_informative_fraction": 1.0,
+   "bid_gradient_norm": 14.386848449707031,
+   "bid_parameter_delta_l2": 0.006667483597993851,
+   "task_residual_gradient_norm": 0.0,
+   "critic_gradient_norm": 0.0,
+   "task_residual_parameter_delta_l2": 0.0,
+   "task_residual_xi_row_unchanged": true,
+   "geometry_adapter_gradient_norm": 0.0,
+   "geometry_adapter_parameter_delta_l2": 0.0,
+   "geometry_adapter_mean_abs_output": 0.0,
+   "geometry_adapter_max_abs_output": 0.0,
+   "geometry_pressure_gate_nonzero_fraction": 1.0,
+   "mean_return_scaled": 0.0,
+   "rollout_steps": 32,
+   "f_role_mean": 0.0,
+   "cf_delta_mean": 0.0,
+   "cf_nonzero_frac": 0.0,
+   "gear_gate_active_frac": 0.0,
+   "gear_gate_credit_mean": 0.0,
+   "bid_event_frac": 0.6666666865348816,
+   "cf_bid_event_frac": 0.0833333358168602,
+   "cf_bid_adv_mean": -0.06056364253163338,
+   "bid_action_mean": -0.003980427049100399,
+   "bid_action_std": 0.43590426445007324,
+   "pointer_exposure_agent_frac": 1.0,
+   "pointer_exposure_steps": 32
+  },
+  {
+   "iteration": 10,
+   "loss": -4.8047027587890625,
+   "policy_loss": -4.8047027587890625,
+   "xi_ppo_loss": 0.0,
+   "xi_anchor_loss": 0.008924429304897785,
+   "policy_anchor_kl": 0.0,
+   "post_update_policy_anchor_kl": 0.0,
+   "value_loss": 0.0,
+   "intervention_loss": 0.0,
+   "intervention_fraction": 0.75,
+   "continuous_intervention_fraction": 0.75,
+   "masked_continuous_fraction": 0.75,
+   "approx_kl": 0.0,
+   "bid_approx_kl": 1.0670162737369537e-05,
+   "bid_post_update_kl": 5.6348275393247604e-05,
+   "bid_active_slot_count": 64,
+   "bid_active_slot_count_by_index": [
+    32,
+    24,
+    8,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "cf_bid_informative_fraction": 1.0,
+   "bid_gradient_norm": 35.84833908081055,
+   "bid_parameter_delta_l2": 0.008461251854896545,
+   "task_residual_gradient_norm": 0.0,
+   "critic_gradient_norm": 0.0,
+   "task_residual_parameter_delta_l2": 0.0,
+   "task_residual_xi_row_unchanged": true,
+   "geometry_adapter_gradient_norm": 0.0,
+   "geometry_adapter_parameter_delta_l2": 0.0,
+   "geometry_adapter_mean_abs_output": 0.0,
+   "geometry_adapter_max_abs_output": 0.0,
+   "geometry_pressure_gate_nonzero_fraction": 1.0,
+   "mean_return_scaled": 0.0,
+   "rollout_steps": 32,
+   "f_role_mean": 0.0,
+   "cf_delta_mean": 0.0,
+   "cf_nonzero_frac": 0.0,
+   "gear_gate_active_frac": 0.0,
+   "gear_gate_credit_mean": 0.0,
+   "bid_event_frac": 0.6666666865348816,
+   "cf_bid_event_frac": 0.0833333358168602,
+   "cf_bid_adv_mean": 0.23946405947208405,
+   "bid_action_mean": -0.02188860811293125,
+   "bid_action_std": 0.3849951922893524,
+   "pointer_exposure_agent_frac": 1.0,
+   "pointer_exposure_steps": 32
+  },
+  {
+   "iteration": 11,
+   "loss": 2.239367961883545,
+   "policy_loss": 2.239367961883545,
+   "xi_ppo_loss": 0.0,
+   "xi_anchor_loss": 0.009413447231054306,
+   "policy_anchor_kl": 0.0,
+   "post_update_policy_anchor_kl": 0.0,
+   "value_loss": 0.0,
+   "intervention_loss": 0.0,
+   "intervention_fraction": 0.7395833134651184,
+   "continuous_intervention_fraction": 0.7395833134651184,
+   "masked_continuous_fraction": 0.7395833134651184,
+   "approx_kl": 0.0,
+   "bid_approx_kl": 4.0448736399412155e-05,
+   "bid_post_update_kl": 0.00018607242964208126,
+   "bid_active_slot_count": 64,
+   "bid_active_slot_count_by_index": [
+    32,
+    23,
+    9,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "cf_bid_informative_fraction": 1.0,
+   "bid_gradient_norm": 19.830568313598633,
+   "bid_parameter_delta_l2": 0.009988081641495228,
+   "task_residual_gradient_norm": 0.0,
+   "critic_gradient_norm": 0.0,
+   "task_residual_parameter_delta_l2": 0.0,
+   "task_residual_xi_row_unchanged": true,
+   "geometry_adapter_gradient_norm": 0.0,
+   "geometry_adapter_parameter_delta_l2": 0.0,
+   "geometry_adapter_mean_abs_output": 0.0,
+   "geometry_adapter_max_abs_output": 0.0,
+   "geometry_pressure_gate_nonzero_fraction": 1.0,
+   "mean_return_scaled": 0.0,
+   "rollout_steps": 32,
+   "f_role_mean": 0.0,
+   "cf_delta_mean": 0.0,
+   "cf_nonzero_frac": 0.0,
+   "gear_gate_active_frac": 0.0,
+   "gear_gate_credit_mean": 0.0,
+   "bid_event_frac": 0.6666666865348816,
+   "cf_bid_event_frac": 0.0833333358168602,
+   "cf_bid_adv_mean": -0.11245721578598022,
+   "bid_action_mean": -0.09478756040334702,
+   "bid_action_std": 0.44879597425460815,
+   "pointer_exposure_agent_frac": 1.0,
+   "pointer_exposure_steps": 32
+  },
+  {
+   "iteration": 12,
+   "loss": -1.6596941947937012,
+   "policy_loss": -1.6596941947937012,
+   "xi_ppo_loss": 0.0,
+   "xi_anchor_loss": 0.009782839566469193,
+   "policy_anchor_kl": 0.0,
+   "post_update_policy_anchor_kl": 0.0,
+   "value_loss": 0.0,
+   "intervention_loss": 0.0,
+   "intervention_fraction": 0.7604166865348816,
+   "continuous_intervention_fraction": 0.7604166865348816,
+   "masked_continuous_fraction": 0.7604166865348816,
+   "approx_kl": 0.0,
+   "bid_approx_kl": 2.5355489924550056e-05,
+   "bid_post_update_kl": 8.309935219585896e-05,
+   "bid_active_slot_count": 64,
+   "bid_active_slot_count_by_index": [
+    32,
+    24,
+    8,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "cf_bid_informative_fraction": 1.0,
+   "bid_gradient_norm": 30.393753051757812,
+   "bid_parameter_delta_l2": 0.008596202358603477,
+   "task_residual_gradient_norm": 0.0,
+   "critic_gradient_norm": 0.0,
+   "task_residual_parameter_delta_l2": 0.0,
+   "task_residual_xi_row_unchanged": true,
+   "geometry_adapter_gradient_norm": 0.0,
+   "geometry_adapter_parameter_delta_l2": 0.0,
+   "geometry_adapter_mean_abs_output": 0.0,
+   "geometry_adapter_max_abs_output": 0.0,
+   "geometry_pressure_gate_nonzero_fraction": 1.0,
+   "mean_return_scaled": 0.0,
+   "rollout_steps": 32,
+   "f_role_mean": 0.0,
+   "cf_delta_mean": 0.0,
+   "cf_nonzero_frac": 0.0,
+   "gear_gate_active_frac": 0.0,
+   "gear_gate_credit_mean": 0.0,
+   "bid_event_frac": 0.6666666865348816,
+   "cf_bid_event_frac": 0.0833333358168602,
+   "cf_bid_adv_mean": 0.08306021988391876,
+   "bid_action_mean": -0.021808836609125137,
+   "bid_action_std": 0.4209347665309906,
+   "pointer_exposure_agent_frac": 1.0,
+   "pointer_exposure_steps": 32
+  },
+  {
+   "iteration": 13,
+   "loss": -2.811903476715088,
+   "policy_loss": -2.811903476715088,
+   "xi_ppo_loss": 0.0,
+   "xi_anchor_loss": 0.008636287413537502,
+   "policy_anchor_kl": 0.0,
+   "post_update_policy_anchor_kl": 0.0,
+   "value_loss": 0.0,
+   "intervention_loss": 0.0,
+   "intervention_fraction": 0.6666666865348816,
+   "continuous_intervention_fraction": 0.6666666865348816,
+   "masked_continuous_fraction": 0.6666666865348816,
+   "approx_kl": 0.0,
+   "bid_approx_kl": 7.449649274349213e-06,
+   "bid_post_update_kl": 1.6470439732074738e-05,
+   "bid_active_slot_count": 64,
+   "bid_active_slot_count_by_index": [
+    32,
+    26,
+    6,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "cf_bid_informative_fraction": 1.0,
+   "bid_gradient_norm": 15.04947566986084,
+   "bid_parameter_delta_l2": 0.006255478598177433,
+   "task_residual_gradient_norm": 0.0,
+   "critic_gradient_norm": 0.0,
+   "task_residual_parameter_delta_l2": 0.0,
+   "task_residual_xi_row_unchanged": true,
+   "geometry_adapter_gradient_norm": 0.0,
+   "geometry_adapter_parameter_delta_l2": 0.0,
+   "geometry_adapter_mean_abs_output": 0.0,
+   "geometry_adapter_max_abs_output": 0.0,
+   "geometry_pressure_gate_nonzero_fraction": 1.0,
+   "mean_return_scaled": 0.0,
+   "rollout_steps": 32,
+   "f_role_mean": 0.0,
+   "cf_delta_mean": 0.0,
+   "cf_nonzero_frac": 0.0,
+   "gear_gate_active_frac": 0.0,
+   "gear_gate_credit_mean": 0.0,
+   "bid_event_frac": 0.6666666865348816,
+   "cf_bid_event_frac": 0.0833333358168602,
+   "cf_bid_adv_mean": 0.14069220423698425,
+   "bid_action_mean": -0.008119340986013412,
+   "bid_action_std": 0.4093455374240875,
+   "pointer_exposure_agent_frac": 1.0,
+   "pointer_exposure_steps": 32
+  },
+  {
+   "iteration": 14,
+   "loss": 3.9929845333099365,
+   "policy_loss": 3.9929845333099365,
+   "xi_ppo_loss": 0.0,
+   "xi_anchor_loss": 0.008984189480543137,
+   "policy_anchor_kl": 0.0,
+   "post_update_policy_anchor_kl": 0.0,
+   "value_loss": 0.0,
+   "intervention_loss": 0.0,
+   "intervention_fraction": 0.78125,
+   "continuous_intervention_fraction": 0.78125,
+   "masked_continuous_fraction": 0.78125,
+   "approx_kl": 0.0,
+   "bid_approx_kl": 5.912501364946365e-06,
+   "bid_post_update_kl": 3.538629971444607e-05,
+   "bid_active_slot_count": 64,
+   "bid_active_slot_count_by_index": [
+    32,
+    23,
+    9,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "cf_bid_informative_fraction": 1.0,
+   "bid_gradient_norm": 38.52621078491211,
+   "bid_parameter_delta_l2": 0.00595503207296133,
+   "task_residual_gradient_norm": 0.0,
+   "critic_gradient_norm": 0.0,
+   "task_residual_parameter_delta_l2": 0.0,
+   "task_residual_xi_row_unchanged": true,
+   "geometry_adapter_gradient_norm": 0.0,
+   "geometry_adapter_parameter_delta_l2": 0.0,
+   "geometry_adapter_mean_abs_output": 0.0,
+   "geometry_adapter_max_abs_output": 0.0,
+   "geometry_pressure_gate_nonzero_fraction": 1.0,
+   "mean_return_scaled": 0.0,
+   "rollout_steps": 32,
+   "f_role_mean": 0.0,
+   "cf_delta_mean": 0.0,
+   "cf_nonzero_frac": 0.0,
+   "gear_gate_active_frac": 0.0,
+   "gear_gate_credit_mean": 0.0,
+   "bid_event_frac": 0.6666666865348816,
+   "cf_bid_event_frac": 0.0833333358168602,
+   "cf_bid_adv_mean": -0.20007744431495667,
+   "bid_action_mean": -0.02522541582584381,
+   "bid_action_std": 0.3919422924518585,
+   "pointer_exposure_agent_frac": 1.0,
+   "pointer_exposure_steps": 32
+  },
+  {
+   "iteration": 15,
+   "loss": -4.236856937408447,
+   "policy_loss": -4.236856937408447,
+   "xi_ppo_loss": 0.0,
+   "xi_anchor_loss": 0.009592845104634762,
+   "policy_anchor_kl": 0.0,
+   "post_update_policy_anchor_kl": 0.0,
+   "value_loss": 0.0,
+   "intervention_loss": 0.0,
+   "intervention_fraction": 0.7291666865348816,
+   "continuous_intervention_fraction": 0.7291666865348816,
+   "masked_continuous_fraction": 0.7291666865348816,
+   "approx_kl": 0.0,
+   "bid_approx_kl": 3.980472683906555e-06,
+   "bid_post_update_kl": 6.888527423143387e-06,
+   "bid_active_slot_count": 64,
+   "bid_active_slot_count_by_index": [
+    32,
+    25,
+    7,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "cf_bid_informative_fraction": 1.0,
+   "bid_gradient_norm": 36.43516540527344,
+   "bid_parameter_delta_l2": 0.005688008852303028,
+   "task_residual_gradient_norm": 0.0,
+   "critic_gradient_norm": 0.0,
+   "task_residual_parameter_delta_l2": 0.0,
+   "task_residual_xi_row_unchanged": true,
+   "geometry_adapter_gradient_norm": 0.0,
+   "geometry_adapter_parameter_delta_l2": 0.0,
+   "geometry_adapter_mean_abs_output": 0.0,
+   "geometry_adapter_max_abs_output": 0.0,
+   "geometry_pressure_gate_nonzero_fraction": 1.0,
+   "mean_return_scaled": 0.0,
+   "rollout_steps": 32,
+   "f_role_mean": 0.0,
+   "cf_delta_mean": 0.0,
+   "cf_nonzero_frac": 0.0,
+   "gear_gate_active_frac": 0.0,
+   "gear_gate_credit_mean": 0.0,
+   "bid_event_frac": 0.6666666865348816,
+   "cf_bid_event_frac": 0.0833333358168602,
+   "cf_bid_adv_mean": 0.21196281909942627,
+   "bid_action_mean": -0.04054298996925354,
+   "bid_action_std": 0.41779300570487976,
+   "pointer_exposure_agent_frac": 1.0,
+   "pointer_exposure_steps": 32
+  },
+  {
+   "iteration": 16,
+   "loss": 1.1787899732589722,
+   "policy_loss": 1.1787899732589722,
+   "xi_ppo_loss": 0.0,
+   "xi_anchor_loss": 0.008594403974711895,
+   "policy_anchor_kl": 0.0,
+   "post_update_policy_anchor_kl": 0.0,
+   "value_loss": 0.0,
+   "intervention_loss": 0.0,
+   "intervention_fraction": 0.6770833134651184,
+   "continuous_intervention_fraction": 0.6770833134651184,
+   "masked_continuous_fraction": 0.6770833134651184,
+   "approx_kl": 0.0,
+   "bid_approx_kl": 3.406079486012459e-06,
+   "bid_post_update_kl": 2.1976185962557793e-05,
+   "bid_active_slot_count": 64,
+   "bid_active_slot_count_by_index": [
+    32,
+    22,
+    10,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "cf_bid_informative_fraction": 1.0,
+   "bid_gradient_norm": 32.671512603759766,
+   "bid_parameter_delta_l2": 0.006141956429928541,
+   "task_residual_gradient_norm": 0.0,
+   "critic_gradient_norm": 0.0,
+   "task_residual_parameter_delta_l2": 0.0,
+   "task_residual_xi_row_unchanged": true,
+   "geometry_adapter_gradient_norm": 0.0,
+   "geometry_adapter_parameter_delta_l2": 0.0,
+   "geometry_adapter_mean_abs_output": 0.0,
+   "geometry_adapter_max_abs_output": 0.0,
+   "geometry_pressure_gate_nonzero_fraction": 1.0,
+   "mean_return_scaled": 0.0,
+   "rollout_steps": 32,
+   "f_role_mean": 0.0,
+   "cf_delta_mean": 0.0,
+   "cf_nonzero_frac": 0.0,
+   "gear_gate_active_frac": 0.0,
+   "gear_gate_credit_mean": 0.0,
+   "bid_event_frac": 0.6666666865348816,
+   "cf_bid_event_frac": 0.0833333358168602,
+   "cf_bid_adv_mean": -0.059298187494277954,
+   "bid_action_mean": -0.11425311863422394,
+   "bid_action_std": 0.39820367097854614,
+   "pointer_exposure_agent_frac": 1.0,
+   "pointer_exposure_steps": 32
+  },
+  {
+   "iteration": 17,
+   "loss": 1.7061673402786255,
+   "policy_loss": 1.7061673402786255,
+   "xi_ppo_loss": 0.0,
+   "xi_anchor_loss": 0.008091810159385204,
+   "policy_anchor_kl": 0.0,
+   "post_update_policy_anchor_kl": 0.0,
+   "value_loss": 0.0,
+   "intervention_loss": 0.0,
+   "intervention_fraction": 0.71875,
+   "continuous_intervention_fraction": 0.71875,
+   "masked_continuous_fraction": 0.71875,
+   "approx_kl": 0.0,
+   "bid_approx_kl": 1.0716728866100311e-05,
+   "bid_post_update_kl": 4.0618469938635826e-05,
+   "bid_active_slot_count": 64,
+   "bid_active_slot_count_by_index": [
+    32,
+    22,
+    10,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "cf_bid_informative_fraction": 1.0,
+   "bid_gradient_norm": 30.994291305541992,
+   "bid_parameter_delta_l2": 0.007782303728163242,
+   "task_residual_gradient_norm": 0.0,
+   "critic_gradient_norm": 0.0,
+   "task_residual_parameter_delta_l2": 0.0,
+   "task_residual_xi_row_unchanged": true,
+   "geometry_adapter_gradient_norm": 0.0,
+   "geometry_adapter_parameter_delta_l2": 0.0,
+   "geometry_adapter_mean_abs_output": 0.0,
+   "geometry_adapter_max_abs_output": 0.0,
+   "geometry_pressure_gate_nonzero_fraction": 1.0,
+   "mean_return_scaled": 0.0,
+   "rollout_steps": 32,
+   "f_role_mean": 0.0,
+   "cf_delta_mean": 0.0,
+   "cf_nonzero_frac": 0.0,
+   "gear_gate_active_frac": 0.0,
+   "gear_gate_credit_mean": 0.0,
+   "bid_event_frac": 0.6666666865348816,
+   "cf_bid_event_frac": 0.0833333358168602,
+   "cf_bid_adv_mean": -0.08578112721443176,
+   "bid_action_mean": -0.05243336409330368,
+   "bid_action_std": 0.49136969447135925,
+   "pointer_exposure_agent_frac": 1.0,
+   "pointer_exposure_steps": 32
+  },
+  {
+   "iteration": 18,
+   "loss": 0.44332313537597656,
+   "policy_loss": 0.44332313537597656,
+   "xi_ppo_loss": 0.0,
+   "xi_anchor_loss": 0.011155861429870129,
+   "policy_anchor_kl": 0.0,
+   "post_update_policy_anchor_kl": 0.0,
+   "value_loss": 0.0,
+   "intervention_loss": 0.0,
+   "intervention_fraction": 0.7708333134651184,
+   "continuous_intervention_fraction": 0.7708333134651184,
+   "masked_continuous_fraction": 0.7708333134651184,
+   "approx_kl": 0.0,
+   "bid_approx_kl": 9.881332516670227e-07,
+   "bid_post_update_kl": 4.188157618045807e-06,
+   "bid_active_slot_count": 64,
+   "bid_active_slot_count_by_index": [
+    32,
+    25,
+    7,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "cf_bid_informative_fraction": 1.0,
+   "bid_gradient_norm": 54.459136962890625,
+   "bid_parameter_delta_l2": 0.007430607918649912,
+   "task_residual_gradient_norm": 0.0,
+   "critic_gradient_norm": 0.0,
+   "task_residual_parameter_delta_l2": 0.0,
+   "task_residual_xi_row_unchanged": true,
+   "geometry_adapter_gradient_norm": 0.0,
+   "geometry_adapter_parameter_delta_l2": 0.0,
+   "geometry_adapter_mean_abs_output": 0.0,
+   "geometry_adapter_max_abs_output": 0.0,
+   "geometry_pressure_gate_nonzero_fraction": 1.0,
+   "mean_return_scaled": 0.0,
+   "rollout_steps": 32,
+   "f_role_mean": 0.0,
+   "cf_delta_mean": 0.0,
+   "cf_nonzero_frac": 0.0,
+   "gear_gate_active_frac": 0.0,
+   "gear_gate_credit_mean": 0.0,
+   "bid_event_frac": 0.6666666865348816,
+   "cf_bid_event_frac": 0.0833333358168602,
+   "cf_bid_adv_mean": -0.02207990735769272,
+   "bid_action_mean": 0.03267868235707283,
+   "bid_action_std": 0.4380045533180237,
+   "pointer_exposure_agent_frac": 1.0,
+   "pointer_exposure_steps": 32
+  },
+  {
+   "iteration": 19,
+   "loss": -4.903531074523926,
+   "policy_loss": -4.903531074523926,
+   "xi_ppo_loss": 0.0,
+   "xi_anchor_loss": 0.008849727921187878,
+   "policy_anchor_kl": 0.0,
+   "post_update_policy_anchor_kl": 0.0,
+   "value_loss": 0.0,
+   "intervention_loss": 0.0,
+   "intervention_fraction": 0.7708333134651184,
+   "continuous_intervention_fraction": 0.7708333134651184,
+   "masked_continuous_fraction": 0.7708333134651184,
+   "approx_kl": 0.0,
+   "bid_approx_kl": 7.413327693939209e-07,
+   "bid_post_update_kl": 4.62215393781662e-06,
+   "bid_active_slot_count": 64,
+   "bid_active_slot_count_by_index": [
+    32,
+    24,
+    8,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "cf_bid_informative_fraction": 1.0,
+   "bid_gradient_norm": 42.347843170166016,
+   "bid_parameter_delta_l2": 0.007538843434303999,
+   "task_residual_gradient_norm": 0.0,
+   "critic_gradient_norm": 0.0,
+   "task_residual_parameter_delta_l2": 0.0,
+   "task_residual_xi_row_unchanged": true,
+   "geometry_adapter_gradient_norm": 0.0,
+   "geometry_adapter_parameter_delta_l2": 0.0,
+   "geometry_adapter_mean_abs_output": 0.0,
+   "geometry_adapter_max_abs_output": 0.0,
+   "geometry_pressure_gate_nonzero_fraction": 1.0,
+   "mean_return_scaled": 0.0,
+   "rollout_steps": 32,
+   "f_role_mean": 0.0,
+   "cf_delta_mean": 0.0,
+   "cf_nonzero_frac": 0.0,
+   "gear_gate_active_frac": 0.0,
+   "gear_gate_credit_mean": 0.0,
+   "bid_event_frac": 0.6666666865348816,
+   "cf_bid_event_frac": 0.0833333358168602,
+   "cf_bid_adv_mean": 0.24472033977508545,
+   "bid_action_mean": 0.028333622962236404,
+   "bid_action_std": 0.3748839199542999,
+   "pointer_exposure_agent_frac": 1.0,
+   "pointer_exposure_steps": 32
+  },
+  {
+   "iteration": 20,
+   "loss": 0.4170551896095276,
+   "policy_loss": 0.4170551896095276,
+   "xi_ppo_loss": 0.0,
+   "xi_anchor_loss": 0.011895586736500263,
+   "policy_anchor_kl": 0.0,
+   "post_update_policy_anchor_kl": 0.0,
+   "value_loss": 0.0,
+   "intervention_loss": 0.0,
+   "intervention_fraction": 0.7708333134651184,
+   "continuous_intervention_fraction": 0.7708333134651184,
+   "masked_continuous_fraction": 0.7708333134651184,
+   "approx_kl": 0.0,
+   "bid_approx_kl": 1.996289938688278e-06,
+   "bid_post_update_kl": 1.0343268513679504e-05,
+   "bid_active_slot_count": 64,
+   "bid_active_slot_count_by_index": [
+    32,
+    28,
+    4,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "cf_bid_informative_fraction": 1.0,
+   "bid_gradient_norm": 38.416473388671875,
+   "bid_parameter_delta_l2": 0.00917842611670494,
+   "task_residual_gradient_norm": 0.0,
+   "critic_gradient_norm": 0.0,
+   "task_residual_parameter_delta_l2": 0.0,
+   "task_residual_xi_row_unchanged": true,
+   "geometry_adapter_gradient_norm": 0.0,
+   "geometry_adapter_parameter_delta_l2": 0.0,
+   "geometry_adapter_mean_abs_output": 0.0,
+   "geometry_adapter_max_abs_output": 0.0,
+   "geometry_pressure_gate_nonzero_fraction": 1.0,
+   "mean_return_scaled": 0.0,
+   "rollout_steps": 32,
+   "f_role_mean": 0.0,
+   "cf_delta_mean": 0.0,
+   "cf_nonzero_frac": 0.0,
+   "gear_gate_active_frac": 0.0,
+   "gear_gate_credit_mean": 0.0,
+   "bid_event_frac": 0.6666666865348816,
+   "cf_bid_event_frac": 0.0833333358168602,
+   "cf_bid_adv_mean": -0.02147659845650196,
+   "bid_action_mean": 0.01852632872760296,
+   "bid_action_std": 0.40360507369041443,
+   "pointer_exposure_agent_frac": 1.0,
+   "pointer_exposure_steps": 32
+  },
+  {
+   "iteration": 21,
+   "loss": -2.302093982696533,
+   "policy_loss": -2.302093982696533,
+   "xi_ppo_loss": 0.0,
+   "xi_anchor_loss": 0.008731269277632236,
+   "policy_anchor_kl": 0.0,
+   "post_update_policy_anchor_kl": 0.0,
+   "value_loss": 0.0,
+   "intervention_loss": 0.0,
+   "intervention_fraction": 0.65625,
+   "continuous_intervention_fraction": 0.65625,
+   "masked_continuous_fraction": 0.65625,
+   "approx_kl": 0.0,
+   "bid_approx_kl": 6.35441392660141e-06,
+   "bid_post_update_kl": 3.680447116494179e-05,
+   "bid_active_slot_count": 64,
+   "bid_active_slot_count_by_index": [
+    32,
+    25,
+    7,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "cf_bid_informative_fraction": 1.0,
+   "bid_gradient_norm": 52.17685317993164,
+   "bid_parameter_delta_l2": 0.010396945290267467,
+   "task_residual_gradient_norm": 0.0,
+   "critic_gradient_norm": 0.0,
+   "task_residual_parameter_delta_l2": 0.0,
+   "task_residual_xi_row_unchanged": true,
+   "geometry_adapter_gradient_norm": 0.0,
+   "geometry_adapter_parameter_delta_l2": 0.0,
+   "geometry_adapter_mean_abs_output": 0.0,
+   "geometry_adapter_max_abs_output": 0.0,
+   "geometry_pressure_gate_nonzero_fraction": 1.0,
+   "mean_return_scaled": 0.0,
+   "rollout_steps": 32,
+   "f_role_mean": 0.0,
+   "cf_delta_mean": 0.0,
+   "cf_nonzero_frac": 0.0,
+   "gear_gate_active_frac": 0.0,
+   "gear_gate_credit_mean": 0.0,
+   "bid_event_frac": 0.6666666865348816,
+   "cf_bid_event_frac": 0.0833333358168602,
+   "cf_bid_adv_mean": 0.1144166812300682,
+   "bid_action_mean": -0.013840830884873867,
+   "bid_action_std": 0.3913232386112213,
+   "pointer_exposure_agent_frac": 1.0,
+   "pointer_exposure_steps": 32
+  },
+  {
+   "iteration": 22,
+   "loss": -0.5208276510238647,
+   "policy_loss": -0.5208276510238647,
+   "xi_ppo_loss": 0.0,
+   "xi_anchor_loss": 0.009363365359604359,
+   "policy_anchor_kl": 0.0,
+   "post_update_policy_anchor_kl": 0.0,
+   "value_loss": 0.0,
+   "intervention_loss": 0.0,
+   "intervention_fraction": 0.7395833134651184,
+   "continuous_intervention_fraction": 0.7395833134651184,
+   "masked_continuous_fraction": 0.7395833134651184,
+   "approx_kl": 0.0,
+   "bid_approx_kl": 5.200272426009178e-06,
+   "bid_post_update_kl": 1.3544922694563866e-05,
+   "bid_active_slot_count": 64,
+   "bid_active_slot_count_by_index": [
+    32,
+    22,
+    10,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "cf_bid_informative_fraction": 1.0,
+   "bid_gradient_norm": 33.0069694519043,
+   "bid_parameter_delta_l2": 0.00899530854076147,
+   "task_residual_gradient_norm": 0.0,
+   "critic_gradient_norm": 0.0,
+   "task_residual_parameter_delta_l2": 0.0,
+   "task_residual_xi_row_unchanged": true,
+   "geometry_adapter_gradient_norm": 0.0,
+   "geometry_adapter_parameter_delta_l2": 0.0,
+   "geometry_adapter_mean_abs_output": 0.0,
+   "geometry_adapter_max_abs_output": 0.0,
+   "geometry_pressure_gate_nonzero_fraction": 1.0,
+   "mean_return_scaled": 0.0,
+   "rollout_steps": 32,
+   "f_role_mean": 0.0,
+   "cf_delta_mean": 0.0,
+   "cf_nonzero_frac": 0.0,
+   "gear_gate_active_frac": 0.0,
+   "gear_gate_credit_mean": 0.0,
+   "bid_event_frac": 0.6666666865348816,
+   "cf_bid_event_frac": 0.0833333358168602,
+   "cf_bid_adv_mean": 0.025952288880944252,
+   "bid_action_mean": 0.008148759603500366,
+   "bid_action_std": 0.45848792791366577,
+   "pointer_exposure_agent_frac": 1.0,
+   "pointer_exposure_steps": 32
+  },
+  {
+   "iteration": 23,
+   "loss": -4.0871357917785645,
+   "policy_loss": -4.0871357917785645,
+   "xi_ppo_loss": 0.0,
+   "xi_anchor_loss": 0.00900217518210411,
+   "policy_anchor_kl": 0.0,
+   "post_update_policy_anchor_kl": 0.0,
+   "value_loss": 0.0,
+   "intervention_loss": 0.0,
+   "intervention_fraction": 0.6979166865348816,
+   "continuous_intervention_fraction": 0.6979166865348816,
+   "masked_continuous_fraction": 0.6979166865348816,
+   "approx_kl": 0.0,
+   "bid_approx_kl": 1.6745179891586304e-06,
+   "bid_post_update_kl": 1.1634547263383865e-05,
+   "bid_active_slot_count": 64,
+   "bid_active_slot_count_by_index": [
+    32,
+    21,
+    11,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "cf_bid_informative_fraction": 1.0,
+   "bid_gradient_norm": 21.691917419433594,
+   "bid_parameter_delta_l2": 0.009266757406294346,
+   "task_residual_gradient_norm": 0.0,
+   "critic_gradient_norm": 0.0,
+   "task_residual_parameter_delta_l2": 0.0,
+   "task_residual_xi_row_unchanged": true,
+   "geometry_adapter_gradient_norm": 0.0,
+   "geometry_adapter_parameter_delta_l2": 0.0,
+   "geometry_adapter_mean_abs_output": 0.0,
+   "geometry_adapter_max_abs_output": 0.0,
+   "geometry_pressure_gate_nonzero_fraction": 1.0,
+   "mean_return_scaled": 0.0,
+   "rollout_steps": 32,
+   "f_role_mean": 0.0,
+   "cf_delta_mean": 0.0,
+   "cf_nonzero_frac": 0.0,
+   "gear_gate_active_frac": 0.0,
+   "gear_gate_credit_mean": 0.0,
+   "bid_event_frac": 0.6666666865348816,
+   "cf_bid_event_frac": 0.0833333358168602,
+   "cf_bid_adv_mean": 0.20409758388996124,
+   "bid_action_mean": -0.012086328119039536,
+   "bid_action_std": 0.404003769159317,
+   "pointer_exposure_agent_frac": 1.0,
+   "pointer_exposure_steps": 32
+  }
+ ],
+ "final_checkpoint_sha256": "6a70a2e08032ab0eec89fdd64b8bb73b436b61236f37020ea8d2ad5c323fdaaf",
+ "fixed_updates_no_heldout_selection": true,
+ "environment_utility_source": "collector_same_snapshot_forced_candidate_winner",
+ "report_content_sha256": "cc44cd6c332889af71d2aec9c25cf0676ddcc2c6f0cec97fb5162e4dcc73d183"
+}

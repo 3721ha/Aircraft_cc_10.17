@@ -70,6 +70,13 @@ def _bid_log_std(value: str) -> float:
     return parsed
 
 
+def _replay_horizon(value: str) -> int:
+    parsed = int(value)
+    if not 1 <= parsed <= 32:
+        raise argparse.ArgumentTypeError("must be an integer between 1 and 32")
+    return parsed
+
+
 def _seeds(value: str) -> list[int]:
     try:
         seeds = [int(item.strip()) for item in value.split(",")]
@@ -109,6 +116,10 @@ def build_parser() -> argparse.ArgumentParser:
                         default=20261021)
     parser.add_argument("--bid-log-std", type=_bid_log_std,
                         help="Explicit bid exploration override; omit to retain checkpoint.")
+    parser.add_argument("--cf-bid-horizon", type=_replay_horizon, default=1,
+                        help="Training-only candidate rollout length in decisions.")
+    parser.add_argument("--train-geometry-adapter", action="store_true",
+                        help="Train a zero-output local-observation task adapter.")
     parser.add_argument("--preflight-only", action="store_true")
     return parser
 
@@ -212,6 +223,8 @@ def verify_source(source_run: Path, k: int) -> dict[str, Any]:
 
 
 def prepare_launch(args: argparse.Namespace, environment: Mapping[str, str] | None = None) -> dict[str, Any]:
+    if args.train_geometry_adapter and args.mode != "conflict-residual":
+        raise ValueError("geometry-adapter training requires --mode conflict-residual")
     source_run = _project_path(args.source_run)
     output = _project_path(args.output)
     if source_run == output or source_run in output.parents or output in source_run.parents:
@@ -245,6 +258,8 @@ def prepare_launch(args: argparse.Namespace, environment: Mapping[str, str] | No
         "MUMT_POLICY_ANCHOR_COEF": str(args.policy_anchor_coef),
         "MUMT_BID_ONLY_PPO": "1" if args.mode == "bid-only" else "0",
         "MUMT_TASK_RESIDUAL_ONLY_PPO": "1" if args.mode == "conflict-residual" else "0",
+        "MUMT_TRAIN_GEOMETRY_ADAPTER": "1" if args.train_geometry_adapter else "0",
+        "MUMT_CF_BID_HORIZON": str(args.cf_bid_horizon),
         "MUMT_PPO_LR": str(args.learning_rate),
         "MUMT_PPO_EPOCHS": "2",
         "MUMT_EPISODES_PER_ITER": str(args.episodes_per_iter),

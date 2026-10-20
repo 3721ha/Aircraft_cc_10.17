@@ -1,0 +1,66 @@
+{
+ "scope": "implementation_integrity_not_success_improvement",
+ "pilot_log": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\window_geometry_smoke_k4_20261020\\pilot_log.json",
+ "pilot_log_sha256": "f4a431796ddafc889946d97c2a44f700d1e7b54de2067738c95f15a84cdf5fde",
+ "source_checkpoint": {
+  "mode": "best",
+  "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\curr_k4_best.pt",
+  "sha256": "38815f375df492ee320d9a0d4a9105efaf3944a6694165b295f646c9917aea18",
+  "iter_start": 0,
+  "weights_only": true
+ },
+ "effective_initial_checkpoint": {
+  "role": "curriculum_effective_initial_checkpoint",
+  "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\window_geometry_smoke_k4_20261020\\provenance\\20261020T141552.741045Z_34612_625cde7d_effective_initial.pt",
+  "exists": true,
+  "size_bytes": 1771347,
+  "sha256": "82af8b157fcc44160bc5671394041f5686e9aa940b02fa174ebe31f05c1a9a89"
+ },
+ "latest_checkpoint": {
+  "role": "curriculum_latest_checkpoint",
+  "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\window_geometry_smoke_k4_20261020\\curr_k4.pt",
+  "exists": true,
+  "size_bytes": 1765470,
+  "sha256": "34298075ae711d2cc0cffd181685dc4d2ddbb6136886e4be9673c60e8cb87380"
+ },
+ "checks": {
+  "completed": true,
+  "source_unchanged_during_run": true,
+  "source_checkpoint_hash": true,
+  "effective_initial_hash": true,
+  "latest_hash": true,
+  "source_tensors_preserved_at_initialization": true,
+  "all_initial_action_heads_identical": true,
+  "only_allowed_tensors_changed": true,
+  "both_anchors_fixed": true,
+  "protected_axis_row_fixed": true,
+  "geometry_learned": true
+ },
+ "all_passed": true,
+ "changed_tensors": [
+  "bid_log_std",
+  "bid_head.weight",
+  "bid_head.bias",
+  "bid_candidate_head.0.weight",
+  "bid_candidate_head.0.bias",
+  "bid_candidate_head.2.weight",
+  "bid_candidate_head.2.bias",
+  "conflict_residual.weight",
+  "bid_conflict_residual.weight",
+  "critic.0.weight",
+  "critic.0.bias",
+  "critic.2.weight",
+  "critic.2.bias",
+  "critic.4.weight",
+  "critic.4.bias",
+  "task_geometry_adapter.input_layer.weight",
+  "task_geometry_adapter.input_layer.bias",
+  "task_geometry_adapter.output_layer.weight",
+  "task_geometry_adapter.output_layer.bias"
+ ],
+ "unexpected_changed_tensors": [],
+ "anchor_checks": {
+  "xi_anchor_model": true,
+  "policy_anchor_model": true
+ }
+}

@@ -1,0 +1,11 @@
+........................................................................ [ 30%]
+........................................................................ [ 61%]
+........................................................................ [ 91%]
+...................                                                      [100%]
+============================== warnings summary ===============================
+tests/test_detect_geometry_wiring.py::test_enabled_adapter_learns_in_real_ppo_with_base_and_axis_preserved
+  D:\Desktop\Aircraft_mumt_cc\Aircraft_mumt\aircraft_sim\detect_mappo.py:827: UserWarning: Creating a tensor from a list of numpy.ndarrays is extremely slow. Please consider converting the list to a single numpy.ndarray with numpy.array() before converting to a tensor. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\torch\csrc\utils\tensor_new.cpp:256.)
+    torch.tensor([team], dtype=torch.float32)).item())
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+235 passed, 1 warning in 57.12s
