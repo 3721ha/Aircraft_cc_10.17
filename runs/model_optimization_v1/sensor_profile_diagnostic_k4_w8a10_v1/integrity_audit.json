@@ -1,0 +1,433 @@
+{
+  "status": "passed",
+  "audited_at_utc": "2026-10-21T03:40:08.307514+00:00",
+  "method": "Independent Python standard-library JSON aggregation, canonical SHA256, artifact SHA256 and ZIP member verification. No environment execution, checkpoint tensor deserialization or training.",
+  "run_directory": "runs/model_optimization_v1/sensor_profile_diagnostic_k4_w8a10_v1",
+  "run_git_head": "c2640a991ae461b9f91d3435741d9bc092201209",
+  "run_git_branch": "experiments/bid-entropy-normalized-20261019",
+  "checks": {
+    "completed": true,
+    "120_unique_condition_records": true,
+    "same_30_expected_seeds_in_all_four_conditions": true,
+    "k4_w8_a10": true,
+    "only_config_difference_is_RADAR_HIT_MODEL": true,
+    "configuration_hashes": true,
+    "per_episode_configuration_hashes": true,
+    "source_zip_hash": true,
+    "source_manifest_hash": true,
+    "37_exact_source_zip_members": true,
+    "all_source_member_hashes_and_sizes": true,
+    "execution_provenance_reports_no_source_drift": true,
+    "all_input_output_hashes_and_sizes": true,
+    "original_and_snapshot_checkpoint_hashes_identical": true,
+    "60_rl_no_update_records": true,
+    "60_equal_loaded_tensor_fingerprint_records": true,
+    "equal_effective_rl_algorithm_config": true,
+    "rl_direct_arbitration_and_no_forced_exposure": true,
+    "rl_multi_candidate_events_all_recorded_as_rl_direct": true,
+    "episode_violation_rates": true,
+    "episode_violation_family_totals": true,
+    "radar_opportunities_equal_hits_plus_misses": true,
+    "deterministic_zero_misses": true,
+    "all_summary_fields_independently_recomputed": true,
+    "all_paired_sensor_differences_recomputed": true,
+    "all_paired_policy_differences_recomputed": true
+  },
+  "working_source_differences_at_audit": [],
+  "source_snapshot_files": 37,
+  "seed_role": "Consumed diagnostic seeds 205000-205029; do not reuse for new model selection or held-out final test.",
+  "artifacts": [
+    {
+      "path": "runs/model_optimization_v1/sensor_profile_diagnostic_k4_w8a10_v1/sensor_diagnostic.json",
+      "size_bytes": 511108,
+      "sha256": "f46670fd0a30c5abff5f593cc2394ffedf83da4aa18d1a1a0c91222c288a219f"
+    },
+    {
+      "path": "runs/model_optimization_v1/sensor_profile_diagnostic_k4_w8a10_v1/diagnostic.provenance.json",
+      "size_bytes": 374038,
+      "sha256": "1ce247b24bfba643f578493cc0b92130039a0561f3da6b45a1dcb15236a12716"
+    },
+    {
+      "path": "runs/model_optimization_v1/sensor_profile_diagnostic_k4_w8a10_v1/provenance/20261021T031016.056756Z_31528_fb803726_source.zip",
+      "size_bytes": 154958,
+      "sha256": "7cab5b8934103c7063e80810ee075f7d982f035bb07149856cdac99a91009fb6"
+    },
+    {
+      "path": "D:/Desktop/Aircraft_mumt_cc/runs/model_optimization_v1/residual_pg_k4_w8a10_v1/curr_k4_best.pt",
+      "size_bytes": 1614417,
+      "sha256": "38815f375df492ee320d9a0d4a9105efaf3944a6694165b295f646c9917aea18"
+    },
+    {
+      "path": "D:/Desktop/Aircraft_mumt_cc/runs/model_optimization_v1/sensor_profile_diagnostic_k4_w8a10_v1/provenance/frozen_policy.pt",
+      "size_bytes": 1614417,
+      "sha256": "38815f375df492ee320d9a0d4a9105efaf3944a6694165b295f646c9917aea18"
+    }
+  ],
+  "recomputed_summaries": {
+    "bernoulli": {
+      "rl": {
+        "episodes": 30,
+        "successes": 10,
+        "success_rate": 0.3333333333333333,
+        "success_rate_wilson_95": [
+          0.19230498083676134,
+          0.5121994835545616
+        ],
+        "mean_return": -7810.484253959093,
+        "total_steps": 19766,
+        "total_violations": 158249,
+        "violations_per_step": 8.006121622988971,
+        "mean_episode_violations_per_step": 7.662121890000108,
+        "mean_judged_targets": 3.1,
+        "radar_target_dwell_counts": {
+          "all_targets": {
+            "opportunities": 6717,
+            "hits": 2814,
+            "misses": 3903,
+            "hit_fraction_per_opportunity": 0.41893702545779365
+          },
+          "unfinished_targets": {
+            "opportunities": 4184,
+            "hits": 1526,
+            "misses": 2658,
+            "hit_fraction_per_opportunity": 0.3647227533460803
+          }
+        },
+        "stable_progress_resets": 9,
+        "stable_reset_causes": {
+          "outside_tracking_zone": 0,
+          "missing_owner_track": 0,
+          "stale_owner_track": 9
+        },
+        "owner_gate_failure_target_step_causes": {
+          "outside_tracking_zone": 4931,
+          "missing_owner_track": 6619,
+          "stale_owner_track": 41
+        },
+        "unowned_tracking_target_steps": 10079,
+        "violations_by_family": {
+          "M01": 2395,
+          "I03": 382,
+          "M03": 17487,
+          "E01": 1136,
+          "C04": 8114,
+          "M02": 6660,
+          "S05": 43407,
+          "E03": 13763,
+          "S04": 37232,
+          "E02": 53,
+          "C02": 17204,
+          "M05": 6605,
+          "M04": 20,
+          "S03": 3764,
+          "S02": 27
+        },
+        "active_agent_steps_by_conflict_pair": {
+          "S04-M02": 343,
+          "S05-M02": 1805,
+          "C01-M02": 12113,
+          "C03-M02": 15039,
+          "C02-M01": 6346,
+          "M01-M02": 18608,
+          "S02-M02": 690,
+          "S03-M02": 38267,
+          "I02-M02": 67,
+          "I03-M02": 3287,
+          "M04-S04": 33978,
+          "C01-C03": 475,
+          "M05-E03": 3774
+        },
+        "conflict_pairs_observed": 13,
+        "multi_candidate_events": 37,
+        "winners_different_from_fixed_score": 4
+      },
+      "heur": {
+        "episodes": 30,
+        "successes": 25,
+        "success_rate": 0.8333333333333334,
+        "success_rate_wilson_95": [
+          0.6643564949358398,
+          0.9266345762815145
+        ],
+        "mean_return": -4812.274654507013,
+        "total_steps": 16928,
+        "total_violations": 141551,
+        "violations_per_step": 8.36194470699433,
+        "mean_episode_violations_per_step": 7.900900139047023,
+        "mean_judged_targets": 3.8,
+        "radar_target_dwell_counts": {
+          "all_targets": {
+            "opportunities": 15124,
+            "hits": 8972,
+            "misses": 6152,
+            "hit_fraction_per_opportunity": 0.593229304416821
+          },
+          "unfinished_targets": {
+            "opportunities": 12497,
+            "hits": 7504,
+            "misses": 4993,
+            "hit_fraction_per_opportunity": 0.6004641113867328
+          }
+        },
+        "stable_progress_resets": 3,
+        "stable_reset_causes": {
+          "outside_tracking_zone": 1,
+          "missing_owner_track": 0,
+          "stale_owner_track": 2
+        },
+        "owner_gate_failure_target_step_causes": {
+          "outside_tracking_zone": 5057,
+          "missing_owner_track": 5487,
+          "stale_owner_track": 18
+        },
+        "unowned_tracking_target_steps": 4224,
+        "violations_by_family": {
+          "M01": 3409,
+          "S05": 39421,
+          "I03": 253,
+          "M03": 9783,
+          "S04": 49108,
+          "E03": 9395,
+          "C04": 6355,
+          "I02": 167,
+          "E01": 94,
+          "M02": 5505,
+          "C02": 13964,
+          "M05": 3410,
+          "E02": 11,
+          "S03": 671,
+          "M04": 5
+        },
+        "active_agent_steps_by_conflict_pair": {
+          "S04-M02": 2280,
+          "S05-M02": 2699,
+          "C01-M02": 11461,
+          "C03-M02": 6054,
+          "C02-M01": 8563,
+          "M01-M02": 23051,
+          "S02-M02": 504,
+          "S03-M02": 29740,
+          "I02-M02": 75,
+          "I03-M02": 1313,
+          "M04-S04": 26079,
+          "C01-C03": 0,
+          "M05-E03": 2311
+        },
+        "conflict_pairs_observed": 12,
+        "multi_candidate_events": 5,
+        "winners_different_from_fixed_score": 0
+      }
+    },
+    "deterministic_beam": {
+      "rl": {
+        "episodes": 30,
+        "successes": 10,
+        "success_rate": 0.3333333333333333,
+        "success_rate_wilson_95": [
+          0.19230498083676134,
+          0.5121994835545616
+        ],
+        "mean_return": -8358.014813212492,
+        "total_steps": 18694,
+        "total_violations": 151900,
+        "violations_per_step": 8.12560179736814,
+        "mean_episode_violations_per_step": 7.565383282652349,
+        "mean_judged_targets": 3.066666666666667,
+        "radar_target_dwell_counts": {
+          "all_targets": {
+            "opportunities": 6013,
+            "hits": 6013,
+            "misses": 0,
+            "hit_fraction_per_opportunity": 1.0
+          },
+          "unfinished_targets": {
+            "opportunities": 4258,
+            "hits": 4258,
+            "misses": 0,
+            "hit_fraction_per_opportunity": 1.0
+          }
+        },
+        "stable_progress_resets": 16,
+        "stable_reset_causes": {
+          "outside_tracking_zone": 1,
+          "missing_owner_track": 0,
+          "stale_owner_track": 15
+        },
+        "owner_gate_failure_target_step_causes": {
+          "outside_tracking_zone": 8039,
+          "missing_owner_track": 8230,
+          "stale_owner_track": 55
+        },
+        "unowned_tracking_target_steps": 7549,
+        "violations_by_family": {
+          "M01": 1091,
+          "M03": 19216,
+          "S05": 41204,
+          "I03": 371,
+          "M02": 8285,
+          "C04": 10321,
+          "E01": 1199,
+          "E03": 14620,
+          "C02": 16625,
+          "M05": 5310,
+          "E02": 30,
+          "S04": 29252,
+          "S03": 4318,
+          "M04": 20,
+          "S02": 38
+        },
+        "active_agent_steps_by_conflict_pair": {
+          "S04-M02": 211,
+          "S05-M02": 2953,
+          "C01-M02": 16228,
+          "C03-M02": 14515,
+          "C02-M01": 6197,
+          "M01-M02": 19808,
+          "S02-M02": 894,
+          "S03-M02": 36709,
+          "I02-M02": 79,
+          "I03-M02": 4725,
+          "M04-S04": 30600,
+          "C01-C03": 730,
+          "M05-E03": 4358
+        },
+        "conflict_pairs_observed": 13,
+        "multi_candidate_events": 193,
+        "winners_different_from_fixed_score": 6
+      },
+      "heur": {
+        "episodes": 30,
+        "successes": 25,
+        "success_rate": 0.8333333333333334,
+        "success_rate_wilson_95": [
+          0.6643564949358398,
+          0.9266345762815145
+        ],
+        "mean_return": -4232.06492569476,
+        "total_steps": 15978,
+        "total_violations": 126750,
+        "violations_per_step": 7.932782576042058,
+        "mean_episode_violations_per_step": 7.261310684265734,
+        "mean_judged_targets": 3.8333333333333335,
+        "radar_target_dwell_counts": {
+          "all_targets": {
+            "opportunities": 16733,
+            "hits": 16733,
+            "misses": 0,
+            "hit_fraction_per_opportunity": 1.0
+          },
+          "unfinished_targets": {
+            "opportunities": 14516,
+            "hits": 14516,
+            "misses": 0,
+            "hit_fraction_per_opportunity": 1.0
+          }
+        },
+        "stable_progress_resets": 2,
+        "stable_reset_causes": {
+          "outside_tracking_zone": 0,
+          "missing_owner_track": 0,
+          "stale_owner_track": 2
+        },
+        "owner_gate_failure_target_step_causes": {
+          "outside_tracking_zone": 5663,
+          "missing_owner_track": 5618,
+          "stale_owner_track": 12
+        },
+        "unowned_tracking_target_steps": 2220,
+        "violations_by_family": {
+          "S05": 37825,
+          "M01": 1068,
+          "M03": 10428,
+          "S04": 42694,
+          "E03": 7541,
+          "E01": 107,
+          "C04": 6740,
+          "I03": 256,
+          "I02": 143,
+          "E02": 18,
+          "M02": 5630,
+          "C02": 12011,
+          "M05": 1926,
+          "S02": 20,
+          "M04": 5,
+          "S03": 338
+        },
+        "active_agent_steps_by_conflict_pair": {
+          "S04-M02": 2234,
+          "S05-M02": 2842,
+          "C01-M02": 12193,
+          "C03-M02": 6564,
+          "C02-M01": 8118,
+          "M01-M02": 23827,
+          "S02-M02": 172,
+          "S03-M02": 28062,
+          "I02-M02": 78,
+          "I03-M02": 648,
+          "M04-S04": 23337,
+          "C01-C03": 0,
+          "M05-E03": 2670
+        },
+        "conflict_pairs_observed": 12,
+        "multi_candidate_events": 15,
+        "winners_different_from_fixed_score": 0
+      }
+    }
+  },
+  "recomputed_sensor_effect_deterministic_minus_bernoulli": {
+    "rl": {
+      "direction": "right_minus_left",
+      "episodes": 30,
+      "success_rate_delta": 0.0,
+      "mean_return_delta": -547.5305592533996,
+      "violations_per_step_delta": 0.11948017437916825,
+      "right_only_successes": 5,
+      "left_only_successes": 5
+    },
+    "heur": {
+      "direction": "right_minus_left",
+      "episodes": 30,
+      "success_rate_delta": 0.0,
+      "mean_return_delta": 580.2097288122532,
+      "violations_per_step_delta": -0.42916213095227107,
+      "right_only_successes": 2,
+      "left_only_successes": 2
+    }
+  },
+  "recomputed_rl_minus_heur": {
+    "bernoulli": {
+      "direction": "right_minus_left",
+      "episodes": 30,
+      "success_rate_delta": -0.5,
+      "mean_return_delta": -2998.2095994520796,
+      "violations_per_step_delta": -0.3558230840053582,
+      "right_only_successes": 3,
+      "left_only_successes": 18
+    },
+    "deterministic_beam": {
+      "direction": "right_minus_left",
+      "episodes": 30,
+      "success_rate_delta": -0.5,
+      "mean_return_delta": -4125.949887517732,
+      "violations_per_step_delta": 0.1928192213260811,
+      "right_only_successes": 2,
+      "left_only_successes": 17
+    }
+  },
+  "unfinished_target_illumination_opportunities_per_environment_step": {
+    "bernoulli": {
+      "rl": 0.21167661641202065,
+      "heur": 0.7382443289224953
+    },
+    "deterministic_beam": {
+      "rl": 0.22777361720338077,
+      "heur": 0.9084991863812742
+    }
+  },
+  "limitations": [
+    "Equal runtime tensor fingerprint records and no-update flags are checked across all RL episodes; runtime tensors are not independently deserialized in this standard-library audit.",
+    "No execution source drift is verified against completed provenance; all 37 ZIP members are independently checked against the manifest.",
+    "Shared radar/link RNG may diverge after changed closed-loop actions despite paired seeds and preserved eligible-target draws.",
+    "Frozen-policy diagnosis does not measure retraining benefit, prove learned arbitration utility, or causally decompose all task failure modes."
+  ]
+}

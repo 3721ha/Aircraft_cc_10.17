@@ -1,0 +1,64 @@
+{
+ "status": "passed",
+ "distinct_related_tests_passed_this_iteration": 175,
+ "groups": [
+  {
+   "tests": [
+    "test_sensor_adaptation_gradients.py"
+   ],
+   "passed": 7,
+   "seconds": 13.9,
+   "scope": "new opt-in xi gradient/default preservation"
+  },
+  {
+   "tests": [
+    "test_detect_residual_ppo.py",
+    "test_detect_policy_anchor.py",
+    "test_detect_mappo.py"
+   ],
+   "passed": 60,
+   "scope": "existing training regressions; 3 Windows system-TEMP setup errors rerun successfully with workspace basetemp"
+  },
+  {
+   "tests": [
+    "test_sensor_adaptation_runner.py"
+   ],
+   "passed": 39,
+   "seconds": 8.84,
+   "scope": "preflight, configuration, seed isolation, RNG and best-vs-latest fake-main checks"
+  },
+  {
+   "tests": [
+    "test_sensor_profile.py",
+    "test_sensor_diagnostics.py",
+    "test_sensor_profile_runner.py",
+    "test_radar.py",
+    "test_detect_config.py"
+   ],
+   "passed": 69,
+   "seconds": 8.85,
+   "junit": "sensor_regression.xml"
+  }
+ ],
+ "smoke": {
+  "updates": 2,
+  "training_episodes": 4,
+  "validation_episodes": 2,
+  "duration_seconds": 55.609,
+  "initial_successes": 1,
+  "best_successes": 1,
+  "initial_mean_return": -2354.373610664853,
+  "best_mean_return": -2271.450688798795,
+  "selected_update": 2,
+  "natural_informative_events": 5,
+  "integrity_audit": {
+   "role": "smoke_audit",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_smoke_k4_w8a10_20261021\\integrity_audit.json",
+   "exists": true,
+   "size_bytes": 1254,
+   "sha256": "bc8d92cb7654035b713efcb06e1dedce628ce14104c4498b11390547af5c5e8b"
+  }
+ },
+ "scope": "Implementation verification only; 2-seed validation does not establish task or arbitration improvement.",
+ "fixture_retention": "Only relevant implementation, protocol, useful results and checkpoints are staged. Unrelated and temporary local files remain unstaged."
+}

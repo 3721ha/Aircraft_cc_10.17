@@ -1,0 +1,2889 @@
+{
+ "status": "completed_short_adaptation",
+ "protocol": {
+  "source_checkpoint": {
+   "role": "source_best_checkpoint",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\curr_k4_best.pt",
+   "exists": true,
+   "size_bytes": 1614417,
+   "sha256": "38815f375df492ee320d9a0d4a9105efaf3944a6694165b295f646c9917aea18"
+  },
+  "training_seeds": [
+   209900,
+   209901,
+   209902,
+   209903
+  ],
+  "validation_seeds": [
+   209990,
+   209991
+  ],
+  "reserved_test_seeds_not_run": [
+   208000,
+   208001,
+   208002,
+   208003,
+   208004,
+   208005,
+   208006,
+   208007,
+   208008,
+   208009,
+   208010,
+   208011,
+   208012,
+   208013,
+   208014,
+   208015,
+   208016,
+   208017,
+   208018,
+   208019,
+   208020,
+   208021,
+   208022,
+   208023,
+   208024,
+   208025,
+   208026,
+   208027,
+   208028,
+   208029
+  ],
+  "task": {
+   "K_RED": 4,
+   "STABLE_WINDOW": 8,
+   "AGE_STD_TRACK": 10.0,
+   "RADAR_HIT_MODEL": "deterministic_beam",
+   "W8_SCALE": 1.0
+  },
+  "training": {
+   "mode": "joint",
+   "learning_rate": 1e-05,
+   "epochs": 2,
+   "iterations": 2,
+   "episodes_per_iter": 2,
+   "xi_ppo_coef": 1.0,
+   "xi_anchor_coef": 0.0,
+   "policy_anchor_coef": 0.5,
+   "mask_intervened_continuous": true,
+   "mask_intervened_radar_axis": false,
+   "direct_rl_arbitration": true,
+   "conflict_exposure_prob": 0.0,
+   "cf_bid_horizon": 1,
+   "train_geometry_adapter": false
+  },
+  "selection": "validation successes, then mean raw return, then lower total violations/steps; strict improvement only",
+  "no_training_teacher": true,
+  "no_conflict_injection": true,
+  "no_final_test": true
+ },
+ "task_config": {
+  "dt": 1.0,
+  "horizon": 900,
+  "L_X": 160.0,
+  "L_Y": 120.0,
+  "X_CUTOFF": 40.0,
+  "X_TRACK": 110.0,
+  "AGE_STD_TRACK": 10.0,
+  "AGE_STD_DETECT": 5.0,
+  "STABLE_WINDOW": 8,
+  "N_WINGMEN": 3,
+  "BLUE_V_MIN_MA": 0.4,
+  "BLUE_V_MAX_MA": 0.95,
+  "OMEGA_CRUISE_DEG": 3.0,
+  "OMEGA_MANEUVER_DEG": 6.0,
+  "ACCEL_MAX_MA_S": 0.1,
+  "K_PSI": 1.0,
+  "K_V_MS": 30.0,
+  "MANNED_V_MIN_MA": 0.5,
+  "MANNED_V_MAX_MA": 0.9,
+  "MANNED_OMEGA_DEG": 3.0,
+  "K_RED": 4,
+  "RED_CRUISE_MA": 0.75,
+  "RED_MANEUVER_MA_RANGE": [
+   0.6,
+   0.9
+  ],
+  "RED_OMEGA_DEG": 8.0,
+  "RED_DUTY_MIN": 0.7,
+  "RED_DUTY_MAX": 0.8,
+  "RED_STAGGER_KM": 8.0,
+  "RED_X0": 158.0,
+  "RED_MANEUVER_RESAMPLE": [
+   20,
+   40
+  ],
+  "RED_TURN_POISSON_MEAN": 30.0,
+  "RED_SNAKE_HALF_ANGLE_DEG": 30.0,
+  "RED_SNAKE_PERIOD": 20.0,
+  "RED_EDGE_SUPPRESS_KM": 5.0,
+  "RED_REGAIN_T": [
+   12.0,
+   20.0
+  ],
+  "RED_REGAIN_SPREAD_DEG": 30.0,
+  "RED_SEP_WARN_KM": 18.0,
+  "RED_SEP_HARD_KM": 2.0,
+  "RED_SEP_BIAS_DEG": 45.0,
+  "RED_PAIR_SUBLANE_KM": 4.0,
+  "R_MAX": 80.0,
+  "FOV_HALF_DEG": 7.5,
+  "BEAM_DWELL": 0.5,
+  "GEAR_FRAME": {
+   "7.5": 0.5,
+   "15.0": 1.0,
+   "30.0": 2.0,
+   "45.0": 3.0,
+   "60.0": 4.0
+  },
+  "GEARS_SEARCH": [
+   45.0,
+   60.0
+  ],
+  "GEARS_TRACK": [
+   7.5,
+   15.0,
+   30.0,
+   45.0
+  ],
+  "PD_TIERS": [
+   [
+    0.5,
+    0.9
+   ],
+   [
+    0.8,
+    0.6
+   ],
+   [
+    1.0,
+    0.3
+   ]
+  ],
+  "RADAR_HIT_MODEL": "deterministic_beam",
+  "SECTOR_AXIS_MAX_DEG": 60.0,
+  "AXIS_TRIM_SCALE_DEG": 15.0,
+  "TRACK_INIT_HITS": 2,
+  "TRACK_INIT_WINDOW": 6.5,
+  "TRACK_CONFIRM_TIME": 5.0,
+  "TRACK_CONFIRM_GAP_MAX": 1.6,
+  "AGE_DEGRADE": 8.0,
+  "AGE_DROP": 13.0,
+  "COV_SHRINK": 0.8,
+  "COV_Q_KM2_S": 0.25,
+  "SIGMA_REF": 4.0,
+  "MAR": 40.0,
+  "MOR": 60.0,
+  "MAR_MOR_VARIANTS": [
+   [
+    40.0,
+    60.0
+   ],
+   [
+    30.0,
+    50.0
+   ],
+   [
+    20.0,
+    40.0
+   ]
+  ],
+  "K_SIGMA": 3.0,
+  "MOR_GRADIENT_SPAN": 20.0,
+  "D_SAFE": 2.0,
+  "D_SAFE_LOOKAHEAD": 3.0,
+  "BOUNDARY_PREDICT": 5.0,
+  "LINK_RATE_HZ": 1.0,
+  "LINK_DELAY_S": 1.0,
+  "T_SCAN_REQ": 120.0,
+  "HANDOFF_MIN_INTERVAL": 30.0,
+  "HANDOFF_INTERVAL_SWEEP": [
+   10.0,
+   20.0,
+   30.0
+  ],
+  "C04_RANGE": 80.0,
+  "C04_RESPONSE": 5.0,
+  "T_DWELL": 5.0,
+  "APPROVAL_DELAY_INIT": 0.0,
+  "LINK_DROP_RATE": 0.3,
+  "LINK_DROP_WINDOW": 10.0,
+  "UPLINK_LOSS_P": 0.05,
+  "E03_AREA_PER_KM": 5.0,
+  "N_SUBZONES": 3,
+  "TRACK_SWEET_DIST": 62.0,
+  "TRACK_K_D": 0.0025,
+  "CAP_X": 15.0,
+  "CAP_Y": 60.0,
+  "CAP_LEG_Y": 10.0,
+  "CAP_LEG_X": 5.0,
+  "ARB_WEIGHTS": [
+   1.0,
+   1.0,
+   0.5,
+   0.5,
+   0.3
+  ],
+  "ARB_HYSTERESIS": 0.2,
+  "ARB_BID_WEIGHT": 0.35,
+  "W1_TRACK_TICK": 0.02,
+  "W2_DETECT_TICK": 0.005,
+  "W3_STABLE": 10.0,
+  "W4_SUCCESS": 50.0,
+  "W5_MOR_GRAD": 0.02,
+  "W6_MAR": 0.1,
+  "W7_HANDOFF": 0.5,
+  "W8_LAYER": [
+   10.0,
+   7.5,
+   10.0,
+   5.0,
+   2.5,
+   1.25
+  ],
+  "W8_SCALE": 1.0,
+  "M05_GRACE": 5.0,
+  "W9_FAILURE": 50.0,
+  "STEP_COST": 0.005,
+  "OBS_DIM": 169,
+  "TRACK_SLOTS": 8,
+  "NET_HIDDEN": 128,
+  "TOTAL_STEPS": 1500000,
+  "N_ENVS": 16,
+  "N_SEEDS": 10,
+  "BC_EPOCHS": [
+   50,
+   100
+  ],
+  "CONVERGE_WINDOW": 100,
+  "seed": 7
+ },
+ "task_config_sha256": "256d20dadddbf0b400462a23a5f7c846156732131a7ef1b542f2235555cf2f3d",
+ "policy_config": {
+  "hidden_size": 128,
+  "clip_ratio": 0.2,
+  "learning_rate": 1e-05,
+  "bc_learning_rate": 0.001,
+  "value_coef": 0.5,
+  "entropy_coef": 0.01,
+  "intervention_coef": 0.2,
+  "shield_aware_continuous": false,
+  "mask_intervened_continuous": true,
+  "mask_intervened_radar_axis": false,
+  "epochs": 2,
+  "gamma": 0.99,
+  "gae_lambda": 0.95,
+  "reward_scale": 0.1,
+  "initial_log_std": -1.2,
+  "target_kl": 0.01,
+  "bid_target_kl": 0.01,
+  "shaping_kappa": 0.05,
+  "shaping_age_cap": 8.0,
+  "role_shaping_kappa": 0.3,
+  "role_adv_coef": 1.5,
+  "geo_shaping_kappa": 0.15,
+  "stable_shaping_kappa": 1.0,
+  "cf_adv_coef": 1.0,
+  "cf_ownership_bonus": 0.5,
+  "cf_request_credit": 0.25,
+  "cf_global_mix": 0.25,
+  "cf_role_coef": 0.5,
+  "cf_bid_coef": 1.0,
+  "cf_bid_utility_scale": 0.1,
+  "cf_bid_horizon": 1,
+  "cf_bid_margin_coef": 0.25,
+  "cf_bid_margin_temp": 0.25,
+  "bid_only_ppo": false,
+  "task_residual_only_ppo": false,
+  "train_geometry_adapter": false,
+  "direct_rl_arbitration": true,
+  "gear_gate_coef": 0.0,
+  "conflict_exposure_prob": 0.0,
+  "xi_ppo_coef": 1.0,
+  "xi_anchor_coef": 0.0,
+  "policy_anchor_coef": 0.5,
+  "policy_anchor_monitor": true
+ },
+ "source_checkpoint": {
+  "role": "source_best_checkpoint",
+  "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\curr_k4_best.pt",
+  "exists": true,
+  "size_bytes": 1614417,
+  "sha256": "38815f375df492ee320d9a0d4a9105efaf3944a6694165b295f646c9917aea18"
+ },
+ "initial_checkpoint": {
+  "role": "adaptation_checkpoint",
+  "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_smoke_k4_w8a10_20261021\\initial.pt",
+  "exists": true,
+  "size_bytes": 1764730,
+  "sha256": "ef86e5734d2a6466694371a0931386d7f1937355f279eed28f1560dcae27499b"
+ },
+ "checkpoint_migration": {
+  "source": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_smoke_k4_w8a10_20261021\\provenance\\source_best.pt",
+  "geometry_adapter": {
+   "policy": "zero_output_legacy_addition",
+   "xi-anchor": "zero_output_legacy_addition",
+   "policy-anchor": "zero_output_legacy_addition"
+  },
+  "adapter_initialization_seed": 20261022,
+  "legacy_output_preservation": "final geometry weights and bias are zero"
+ },
+ "anchor_reference": "explicit chosen RL source; refreshed before initial validation",
+ "fixed_module_sha256": {
+  "xi_anchor": "89556ac72cf4be0d9980a9767fc834427da5385761c809384de62d5b6f00609e",
+  "policy_anchor": "44dd50e1777ed89dc6e53b6cfff0126bd5f49ef9a2b946d6ef855aca7eb4bc3a",
+  "geometry_adapter": "269e78351f7920d90cdce8312ab6765ecf7b635995bb8f49e9900ae61d6cb721"
+ },
+ "training": [
+  {
+   "update": 1,
+   "checkpoint": {
+    "role": "adaptation_checkpoint",
+    "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_smoke_k4_w8a10_20261021\\checkpoints\\update_0001.pt",
+    "exists": true,
+    "size_bytes": 1765534,
+    "sha256": "362804a8cea1d769e9cb17376b49c9a217c66de2875ee96fb42f1cd0fd7f8476"
+   },
+   "episodes": [
+    {
+     "seed": 209900,
+     "terminal": "success",
+     "steps": 646,
+     "environment_return": -9495.601142283887,
+     "shaped_return_scaled": -949.7134478514567,
+     "violations": 5704,
+     "judged_targets": 4,
+     "multi_candidate_events": 4,
+     "cf_informative_events": 4,
+     "cf_candidate_branches": 8,
+     "cf_actual_regrets": [
+      0.07784375000000043,
+      0.5159687499999999,
+      0.0,
+      0.059281250000000174
+     ],
+     "requests": 204,
+     "c04_rejected_requests": 109,
+     "sensor_diagnostics": {
+      "units": {
+       "radar": "target-dwell; each platform counts separately",
+       "verdict": "target-verdict-update; once per decision step",
+       "reset_causes": "exclusive: zone, missing track, then age"
+      },
+      "radar": {
+       "dwell_calls": 3876,
+       "active_dwell_calls": 3876,
+       "all_targets": {
+        "opportunities": 134,
+        "hits": 134,
+        "misses": 0
+       },
+       "unfinished_targets": {
+        "opportunities": 88,
+        "hits": 88,
+        "misses": 0
+       },
+       "per_wingman": {
+        "0": {
+         "dwell_calls": 1292,
+         "active_dwell_calls": 1292,
+         "all_targets": {
+          "opportunities": 40,
+          "hits": 40,
+          "misses": 0
+         },
+         "unfinished_targets": {
+          "opportunities": 22,
+          "hits": 22,
+          "misses": 0
+         }
+        },
+        "1": {
+         "dwell_calls": 1292,
+         "active_dwell_calls": 1292,
+         "all_targets": {
+          "opportunities": 22,
+          "hits": 22,
+          "misses": 0
+         },
+         "unfinished_targets": {
+          "opportunities": 10,
+          "hits": 10,
+          "misses": 0
+         }
+        },
+        "2": {
+         "dwell_calls": 1292,
+         "active_dwell_calls": 1292,
+         "all_targets": {
+          "opportunities": 72,
+          "hits": 72,
+          "misses": 0
+         },
+         "unfinished_targets": {
+          "opportunities": 56,
+          "hits": 56,
+          "misses": 0
+         }
+        }
+       }
+      },
+      "verdict": {
+       "unfinished_target_steps": 1626,
+       "owned_unfinished_target_steps": 733,
+       "unowned_tracking_target_steps": 0,
+       "owner_gate_failed_target_steps": 697,
+       "stable_progress_resets": 3,
+       "newly_judged_targets": 4,
+       "owner_gate_failure_causes": {
+        "outside_tracking_zone": 323,
+        "missing_owner_track": 362,
+        "stale_owner_track": 12
+       },
+       "reset_causes": {
+        "outside_tracking_zone": 0,
+        "missing_owner_track": 0,
+        "stale_owner_track": 3
+       },
+       "max_stable_progress_by_target": {
+        "2": 8,
+        "0": 8,
+        "1": 8,
+        "3": 8
+       }
+      }
+     }
+    },
+    {
+     "seed": 209901,
+     "terminal": "success",
+     "steps": 347,
+     "environment_return": -1903.901226418402,
+     "shaped_return_scaled": -190.96505622145358,
+     "violations": 1056,
+     "judged_targets": 4,
+     "multi_candidate_events": 2,
+     "cf_informative_events": 0,
+     "cf_candidate_branches": 0,
+     "cf_actual_regrets": [],
+     "requests": 275,
+     "c04_rejected_requests": 77,
+     "sensor_diagnostics": {
+      "units": {
+       "radar": "target-dwell; each platform counts separately",
+       "verdict": "target-verdict-update; once per decision step",
+       "reset_causes": "exclusive: zone, missing track, then age"
+      },
+      "radar": {
+       "dwell_calls": 2082,
+       "active_dwell_calls": 2082,
+       "all_targets": {
+        "opportunities": 240,
+        "hits": 240,
+        "misses": 0
+       },
+       "unfinished_targets": {
+        "opportunities": 187,
+        "hits": 187,
+        "misses": 0
+       },
+       "per_wingman": {
+        "0": {
+         "dwell_calls": 694,
+         "active_dwell_calls": 694,
+         "all_targets": {
+          "opportunities": 45,
+          "hits": 45,
+          "misses": 0
+         },
+         "unfinished_targets": {
+          "opportunities": 45,
+          "hits": 45,
+          "misses": 0
+         }
+        },
+        "1": {
+         "dwell_calls": 694,
+         "active_dwell_calls": 694,
+         "all_targets": {
+          "opportunities": 89,
+          "hits": 89,
+          "misses": 0
+         },
+         "unfinished_targets": {
+          "opportunities": 71,
+          "hits": 71,
+          "misses": 0
+         }
+        },
+        "2": {
+         "dwell_calls": 694,
+         "active_dwell_calls": 694,
+         "all_targets": {
+          "opportunities": 106,
+          "hits": 106,
+          "misses": 0
+         },
+         "unfinished_targets": {
+          "opportunities": 71,
+          "hits": 71,
+          "misses": 0
+         }
+        }
+       }
+      },
+      "verdict": {
+       "unfinished_target_steps": 1243,
+       "owned_unfinished_target_steps": 341,
+       "unowned_tracking_target_steps": 0,
+       "owner_gate_failed_target_steps": 309,
+       "stable_progress_resets": 0,
+       "newly_judged_targets": 4,
+       "owner_gate_failure_causes": {
+        "outside_tracking_zone": 298,
+        "missing_owner_track": 11,
+        "stale_owner_track": 0
+       },
+       "reset_causes": {
+        "outside_tracking_zone": 0,
+        "missing_owner_track": 0,
+        "stale_owner_track": 0
+       },
+       "max_stable_progress_by_target": {
+        "0": 8,
+        "2": 8,
+        "3": 8,
+        "1": 8
+       }
+      }
+     }
+    }
+   ],
+   "mean_environment_return": -5699.751184351145,
+   "success_rate": 1.0,
+   "violations_per_step": 6.807653575025176,
+   "environment_steps": 993,
+   "ppo_stats": {
+    "loss": 2.420811891555786,
+    "policy_loss": 1.1135681867599487,
+    "xi_ppo_loss": -0.00048280414193868637,
+    "xi_anchor_loss": 0.0057021258398890495,
+    "policy_anchor_kl": 0.0003141187480650842,
+    "post_update_policy_anchor_kl": 0.0009989060927182436,
+    "value_loss": 2.421267032623291,
+    "intervention_loss": 0.5340855121612549,
+    "intervention_fraction": 0.2762672007083893,
+    "continuous_intervention_fraction": 0.2762672007083893,
+    "masked_continuous_fraction": 0.2762672007083893,
+    "flight_ppo_active_fraction": 0.7237327694892883,
+    "radar_axis_ppo_active_fraction": 1.0,
+    "approx_kl": 0.00030582689214497805,
+    "bid_approx_kl": 2.8312206268310547e-07,
+    "bid_post_update_kl": 1.0952353477478027e-06,
+    "bid_active_slot_count": 8,
+    "bid_active_slot_count_by_index": [
+     8,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "cf_bid_informative_fraction": 0.6666666865348816,
+    "bid_gradient_norm": 4.904341220855713,
+    "bid_parameter_delta_l2": 0.001777862780727446,
+    "task_residual_gradient_norm": 0.0,
+    "critic_gradient_norm": 0.0,
+    "task_residual_parameter_delta_l2": 0.0,
+    "task_residual_xi_row_unchanged": true,
+    "geometry_adapter_gradient_norm": 0.0,
+    "geometry_adapter_parameter_delta_l2": 0.0,
+    "geometry_adapter_mean_abs_output": 0.0,
+    "geometry_adapter_max_abs_output": 0.0,
+    "geometry_pressure_gate_nonzero_fraction": 0.939912736415863,
+    "mean_return_scaled": -21.437353134155273,
+    "rollout_steps": 993,
+    "f_role_mean": -0.00042900326661765575,
+    "cf_delta_mean": 0.00031973820296116173,
+    "cf_nonzero_frac": 0.007049345411360264,
+    "gear_gate_active_frac": 0.026518967002630234,
+    "gear_gate_credit_mean": -0.026518967002630234,
+    "bid_event_frac": 0.004028197377920151,
+    "cf_bid_event_frac": 0.00033568311482667923,
+    "cf_bid_adv_mean": -0.07422655820846558,
+    "bid_action_mean": 0.07551609724760056,
+    "bid_action_std": 0.16938020288944244,
+    "pointer_exposure_agent_frac": 0.0,
+    "pointer_exposure_steps": 0
+   },
+   "parameter_delta_l2": {
+    "actor": 0.0032220479270264396,
+    "flight_controls": 0.00028934873653651075,
+    "radar_axis": 0.00022443980047319706,
+    "role": 0.0003212199458784462,
+    "gear": 0.0005505934942221001,
+    "pointer": 0.00039345488161714697,
+    "bid": 0.0017778627438388846,
+    "task_conflict_residual": 0.00024228499958080875,
+    "critic": 0.004329563195734305,
+    "geometry_adapter": 0.0
+   },
+   "frozen_modules_unchanged": true
+  },
+  {
+   "update": 2,
+   "checkpoint": {
+    "role": "adaptation_checkpoint",
+    "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_smoke_k4_w8a10_20261021\\checkpoints\\update_0002.pt",
+    "exists": true,
+    "size_bytes": 1765534,
+    "sha256": "bf088913f62a43a805263f98d445a87476b4d0654fa780fa1165553ed0c4cf6e"
+   },
+   "episodes": [
+    {
+     "seed": 209902,
+     "terminal": "success",
+     "steps": 680,
+     "environment_return": -11845.466658180118,
+     "shaped_return_scaled": -1184.7014750350697,
+     "violations": 7106,
+     "judged_targets": 4,
+     "multi_candidate_events": 1,
+     "cf_informative_events": 1,
+     "cf_candidate_branches": 2,
+     "cf_actual_regrets": [
+      0.04690624999999993
+     ],
+     "requests": 290,
+     "c04_rejected_requests": 130,
+     "sensor_diagnostics": {
+      "units": {
+       "radar": "target-dwell; each platform counts separately",
+       "verdict": "target-verdict-update; once per decision step",
+       "reset_causes": "exclusive: zone, missing track, then age"
+      },
+      "radar": {
+       "dwell_calls": 4080,
+       "active_dwell_calls": 4080,
+       "all_targets": {
+        "opportunities": 203,
+        "hits": 203,
+        "misses": 0
+       },
+       "unfinished_targets": {
+        "opportunities": 145,
+        "hits": 145,
+        "misses": 0
+       },
+       "per_wingman": {
+        "0": {
+         "dwell_calls": 1360,
+         "active_dwell_calls": 1360,
+         "all_targets": {
+          "opportunities": 59,
+          "hits": 59,
+          "misses": 0
+         },
+         "unfinished_targets": {
+          "opportunities": 33,
+          "hits": 33,
+          "misses": 0
+         }
+        },
+        "1": {
+         "dwell_calls": 1360,
+         "active_dwell_calls": 1360,
+         "all_targets": {
+          "opportunities": 52,
+          "hits": 52,
+          "misses": 0
+         },
+         "unfinished_targets": {
+          "opportunities": 43,
+          "hits": 43,
+          "misses": 0
+         }
+        },
+        "2": {
+         "dwell_calls": 1360,
+         "active_dwell_calls": 1360,
+         "all_targets": {
+          "opportunities": 92,
+          "hits": 92,
+          "misses": 0
+         },
+         "unfinished_targets": {
+          "opportunities": 69,
+          "hits": 69,
+          "misses": 0
+         }
+        }
+       }
+      },
+      "verdict": {
+       "unfinished_target_steps": 1644,
+       "owned_unfinished_target_steps": 811,
+       "unowned_tracking_target_steps": 0,
+       "owner_gate_failed_target_steps": 774,
+       "stable_progress_resets": 2,
+       "newly_judged_targets": 4,
+       "owner_gate_failure_causes": {
+        "outside_tracking_zone": 397,
+        "missing_owner_track": 370,
+        "stale_owner_track": 7
+       },
+       "reset_causes": {
+        "outside_tracking_zone": 0,
+        "missing_owner_track": 0,
+        "stale_owner_track": 2
+       },
+       "max_stable_progress_by_target": {
+        "0": 8,
+        "3": 8,
+        "2": 8,
+        "1": 8
+       }
+      }
+     }
+    },
+    {
+     "seed": 209903,
+     "terminal": "success",
+     "steps": 690,
+     "environment_return": -9019.30435089421,
+     "shaped_return_scaled": -902.3344078378101,
+     "violations": 6301,
+     "judged_targets": 4,
+     "multi_candidate_events": 0,
+     "cf_informative_events": 0,
+     "cf_candidate_branches": 0,
+     "cf_actual_regrets": [],
+     "requests": 388,
+     "c04_rejected_requests": 180,
+     "sensor_diagnostics": {
+      "units": {
+       "radar": "target-dwell; each platform counts separately",
+       "verdict": "target-verdict-update; once per decision step",
+       "reset_causes": "exclusive: zone, missing track, then age"
+      },
+      "radar": {
+       "dwell_calls": 4140,
+       "active_dwell_calls": 4140,
+       "all_targets": {
+        "opportunities": 243,
+        "hits": 243,
+        "misses": 0
+       },
+       "unfinished_targets": {
+        "opportunities": 153,
+        "hits": 153,
+        "misses": 0
+       },
+       "per_wingman": {
+        "0": {
+         "dwell_calls": 1380,
+         "active_dwell_calls": 1380,
+         "all_targets": {
+          "opportunities": 73,
+          "hits": 73,
+          "misses": 0
+         },
+         "unfinished_targets": {
+          "opportunities": 44,
+          "hits": 44,
+          "misses": 0
+         }
+        },
+        "1": {
+         "dwell_calls": 1380,
+         "active_dwell_calls": 1380,
+         "all_targets": {
+          "opportunities": 42,
+          "hits": 42,
+          "misses": 0
+         },
+         "unfinished_targets": {
+          "opportunities": 13,
+          "hits": 13,
+          "misses": 0
+         }
+        },
+        "2": {
+         "dwell_calls": 1380,
+         "active_dwell_calls": 1380,
+         "all_targets": {
+          "opportunities": 128,
+          "hits": 128,
+          "misses": 0
+         },
+         "unfinished_targets": {
+          "opportunities": 96,
+          "hits": 96,
+          "misses": 0
+         }
+        }
+       }
+      },
+      "verdict": {
+       "unfinished_target_steps": 1614,
+       "owned_unfinished_target_steps": 582,
+       "unowned_tracking_target_steps": 41,
+       "owner_gate_failed_target_steps": 550,
+       "stable_progress_resets": 0,
+       "newly_judged_targets": 4,
+       "owner_gate_failure_causes": {
+        "outside_tracking_zone": 218,
+        "missing_owner_track": 332,
+        "stale_owner_track": 0
+       },
+       "reset_causes": {
+        "outside_tracking_zone": 0,
+        "missing_owner_track": 0,
+        "stale_owner_track": 0
+       },
+       "max_stable_progress_by_target": {
+        "0": 8,
+        "2": 8,
+        "1": 8,
+        "3": 8
+       }
+      }
+     }
+    }
+   ],
+   "mean_environment_return": -10432.385504537164,
+   "success_rate": 1.0,
+   "violations_per_step": 9.786131386861314,
+   "environment_steps": 1370,
+   "ppo_stats": {
+    "loss": 1.8270790576934814,
+    "policy_loss": 0.09398221969604492,
+    "xi_ppo_loss": -0.0003109447716269642,
+    "xi_anchor_loss": 0.005319213028997183,
+    "policy_anchor_kl": 0.001205512322485447,
+    "post_update_policy_anchor_kl": 0.0014373557642102242,
+    "value_loss": 3.213655471801758,
+    "intervention_loss": 0.6819472312927246,
+    "intervention_fraction": 0.3175182342529297,
+    "continuous_intervention_fraction": 0.3175182342529297,
+    "masked_continuous_fraction": 0.3175182342529297,
+    "flight_ppo_active_fraction": 0.6824817657470703,
+    "radar_axis_ppo_active_fraction": 1.0,
+    "approx_kl": 7.520232611568645e-05,
+    "bid_approx_kl": 0.0,
+    "bid_post_update_kl": 2.9802322387695312e-08,
+    "bid_active_slot_count": 2,
+    "bid_active_slot_count_by_index": [
+     2,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "cf_bid_informative_fraction": 1.0,
+    "bid_gradient_norm": 7.371242523193359,
+    "bid_parameter_delta_l2": 0.0009584120707586408,
+    "task_residual_gradient_norm": 0.0,
+    "critic_gradient_norm": 0.0,
+    "task_residual_parameter_delta_l2": 0.0,
+    "task_residual_xi_row_unchanged": true,
+    "geometry_adapter_gradient_norm": 0.0,
+    "geometry_adapter_parameter_delta_l2": 0.0,
+    "geometry_adapter_mean_abs_output": 0.0,
+    "geometry_adapter_max_abs_output": 0.0,
+    "geometry_pressure_gate_nonzero_fraction": 0.954501211643219,
+    "mean_return_scaled": -27.641298294067383,
+    "rollout_steps": 1370,
+    "f_role_mean": -0.00036569382064044476,
+    "cf_delta_mean": 0.0003652067971415818,
+    "cf_nonzero_frac": 0.008029197342693806,
+    "gear_gate_active_frac": 0.02530413679778576,
+    "gear_gate_credit_mean": -0.02530413679778576,
+    "bid_event_frac": 0.0004866179951932281,
+    "cf_bid_event_frac": 6.0827249399153516e-05,
+    "cf_bid_adv_mean": -0.0234531257301569,
+    "bid_action_mean": -0.4897729754447937,
+    "bid_action_std": 0.2238803654909134,
+    "pointer_exposure_agent_frac": 0.0,
+    "pointer_exposure_steps": 0
+   },
+   "parameter_delta_l2": {
+    "actor": 0.002303745245651105,
+    "flight_controls": 0.0002351905661341308,
+    "radar_axis": 0.00014005437970368359,
+    "role": 0.00027747908738910124,
+    "gear": 0.0003926183524114277,
+    "pointer": 0.000355054467729123,
+    "bid": 0.0009584120248846978,
+    "task_conflict_residual": 0.00019417816531015213,
+    "critic": 0.0041347920074751,
+    "geometry_adapter": 0.0
+   },
+   "frozen_modules_unchanged": true
+  }
+ ],
+ "validations": [
+  {
+   "update": 0,
+   "checkpoint": {
+    "role": "adaptation_checkpoint",
+    "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_smoke_k4_w8a10_20261021\\initial.pt",
+    "exists": true,
+    "size_bytes": 1764730,
+    "sha256": "ef86e5734d2a6466694371a0931386d7f1937355f279eed28f1560dcae27499b"
+   },
+   "summary": {
+    "episodes": 2,
+    "successes": 1,
+    "success_rate": 0.5,
+    "success_rate_wilson_95": [
+     0.09453120573423074,
+     0.9054687942657693
+    ],
+    "mean_return": -2354.373610664853,
+    "total_steps": 1016,
+    "total_violations": 5283,
+    "violations_per_step": 5.199803149606299,
+    "mean_episode_violations_per_step": 4.430077745383867,
+    "mean_judged_targets": 3.5,
+    "radar_target_dwell_counts": {
+     "all_targets": {
+      "opportunities": 400,
+      "hits": 400,
+      "misses": 0,
+      "hit_fraction_per_opportunity": 1.0
+     },
+     "unfinished_targets": {
+      "opportunities": 289,
+      "hits": 289,
+      "misses": 0,
+      "hit_fraction_per_opportunity": 1.0
+     }
+    },
+    "stable_progress_resets": 1,
+    "stable_reset_causes": {
+     "outside_tracking_zone": 0,
+     "missing_owner_track": 0,
+     "stale_owner_track": 1
+    },
+    "owner_gate_failure_target_step_causes": {
+     "outside_tracking_zone": 306,
+     "missing_owner_track": 2,
+     "stale_owner_track": 1
+    },
+    "unowned_tracking_target_steps": 654,
+    "violations_by_family": {
+     "M01": 50,
+     "M03": 260,
+     "C04": 36,
+     "S05": 2104,
+     "I03": 20,
+     "E01": 60,
+     "M02": 3,
+     "M05": 367,
+     "S04": 1331,
+     "E03": 486,
+     "C02": 545,
+     "S02": 20,
+     "M04": 1
+    },
+    "active_agent_steps_by_conflict_pair": {
+     "S04-M02": 35,
+     "S05-M02": 172,
+     "C01-M02": 450,
+     "C03-M02": 740,
+     "C02-M01": 245,
+     "M01-M02": 1110,
+     "S02-M02": 272,
+     "S03-M02": 2022,
+     "I02-M02": 8,
+     "I03-M02": 215,
+     "M04-S04": 1482,
+     "C01-C03": 0,
+     "M05-E03": 7
+    },
+    "conflict_pairs_observed": 12,
+    "multi_candidate_events": 0,
+    "winners_different_from_fixed_score": 0
+   },
+   "episodes": [
+    {
+     "sensor_profile": "deterministic_beam",
+     "controller": "rl",
+     "seed": 209990,
+     "k": 4,
+     "terminal": "failure",
+     "return": -4203.797712045228,
+     "steps": 686,
+     "violations": 4546,
+     "violations_per_step": 6.626822157434402,
+     "judged_targets": 3,
+     "shield_interventions": 615,
+     "violations_by_family": {
+      "M01": 16,
+      "M03": 103,
+      "C04": 16,
+      "S05": 1694,
+      "I03": 16,
+      "E01": 56,
+      "M02": 2,
+      "M05": 367,
+      "S04": 1224,
+      "E03": 486,
+      "C02": 545,
+      "S02": 20,
+      "M04": 1
+     },
+     "active_agent_steps_by_conflict_pair": {
+      "S04-M02": 1,
+      "S05-M02": 17,
+      "C01-M02": 161,
+      "C03-M02": 659,
+      "C02-M01": 245,
+      "M01-M02": 700,
+      "S02-M02": 272,
+      "S03-M02": 1320,
+      "I02-M02": 2,
+      "I03-M02": 94,
+      "M04-S04": 1278,
+      "C01-C03": 0,
+      "M05-E03": 7
+     },
+     "multi_candidate_events": 0,
+     "arbitration_modes": {},
+     "winners_different_from_fixed_score": 0,
+     "request_outcomes": {
+      "selected": 112,
+      "c04_rejected": 160
+     },
+     "sensor_diagnostics": {
+      "units": {
+       "radar": "target-dwell; each platform counts separately",
+       "verdict": "target-verdict-update; once per decision step",
+       "reset_causes": "exclusive: zone, missing track, then age"
+      },
+      "radar": {
+       "dwell_calls": 4116,
+       "active_dwell_calls": 4116,
+       "all_targets": {
+        "opportunities": 121,
+        "hits": 121,
+        "misses": 0
+       },
+       "unfinished_targets": {
+        "opportunities": 70,
+        "hits": 70,
+        "misses": 0
+       },
+       "per_wingman": {
+        "0": {
+         "dwell_calls": 1372,
+         "active_dwell_calls": 1372,
+         "all_targets": {
+          "opportunities": 39,
+          "hits": 39,
+          "misses": 0
+         },
+         "unfinished_targets": {
+          "opportunities": 19,
+          "hits": 19,
+          "misses": 0
+         }
+        },
+        "1": {
+         "dwell_calls": 1372,
+         "active_dwell_calls": 1372,
+         "all_targets": {
+          "opportunities": 41,
+          "hits": 41,
+          "misses": 0
+         },
+         "unfinished_targets": {
+          "opportunities": 24,
+          "hits": 24,
+          "misses": 0
+         }
+        },
+        "2": {
+         "dwell_calls": 1372,
+         "active_dwell_calls": 1372,
+         "all_targets": {
+          "opportunities": 41,
+          "hits": 41,
+          "misses": 0
+         },
+         "unfinished_targets": {
+          "opportunities": 27,
+          "hits": 27,
+          "misses": 0
+         }
+        }
+       }
+      },
+      "verdict": {
+       "unfinished_target_steps": 1844,
+       "owned_unfinished_target_steps": 143,
+       "unowned_tracking_target_steps": 654,
+       "owner_gate_failed_target_steps": 119,
+       "stable_progress_resets": 0,
+       "newly_judged_targets": 3,
+       "owner_gate_failure_causes": {
+        "outside_tracking_zone": 117,
+        "missing_owner_track": 2,
+        "stale_owner_track": 0
+       },
+       "reset_causes": {
+        "outside_tracking_zone": 0,
+        "missing_owner_track": 0,
+        "stale_owner_track": 0
+       },
+       "max_stable_progress_by_target": {
+        "2": 8,
+        "0": 8,
+        "1": 8
+       }
+      }
+     },
+     "effective_task_config_sha256": "256d20dadddbf0b400462a23a5f7c846156732131a7ef1b542f2235555cf2f3d",
+     "effective_policy_config": {
+      "hidden_size": 128,
+      "clip_ratio": 0.2,
+      "learning_rate": 1e-05,
+      "bc_learning_rate": 0.001,
+      "value_coef": 0.5,
+      "entropy_coef": 0.01,
+      "intervention_coef": 0.2,
+      "shield_aware_continuous": false,
+      "mask_intervened_continuous": true,
+      "mask_intervened_radar_axis": false,
+      "epochs": 2,
+      "gamma": 0.99,
+      "gae_lambda": 0.95,
+      "reward_scale": 0.1,
+      "initial_log_std": -1.2,
+      "target_kl": 0.01,
+      "bid_target_kl": 0.01,
+      "shaping_kappa": 0.05,
+      "shaping_age_cap": 8.0,
+      "role_shaping_kappa": 0.3,
+      "role_adv_coef": 1.5,
+      "geo_shaping_kappa": 0.15,
+      "stable_shaping_kappa": 1.0,
+      "cf_adv_coef": 1.0,
+      "cf_ownership_bonus": 0.5,
+      "cf_request_credit": 0.25,
+      "cf_global_mix": 0.25,
+      "cf_role_coef": 0.5,
+      "cf_bid_coef": 1.0,
+      "cf_bid_utility_scale": 0.1,
+      "cf_bid_horizon": 1,
+      "cf_bid_margin_coef": 0.25,
+      "cf_bid_margin_temp": 0.25,
+      "bid_only_ppo": false,
+      "task_residual_only_ppo": false,
+      "train_geometry_adapter": false,
+      "direct_rl_arbitration": true,
+      "gear_gate_coef": 0.0,
+      "conflict_exposure_prob": 0.0,
+      "xi_ppo_coef": 1.0,
+      "xi_anchor_coef": 0.0,
+      "policy_anchor_coef": 0.5,
+      "policy_anchor_monitor": true
+     },
+     "checkpoint_migration": {
+      "source": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_smoke_k4_w8a10_20261021\\initial.pt",
+      "geometry_adapter": {
+       "policy": "restored",
+       "xi-anchor": "restored",
+       "policy-anchor": "restored"
+      },
+      "adapter_initialization_seed": 20261022,
+      "legacy_output_preservation": "final geometry weights and bias are zero"
+     },
+     "loaded_tensor_sha256": "1dd33c54495c10fdbf10f7e8111ba71797ca31d7c0f3ad2683357b14b91acf9d",
+     "weights_unchanged": true
+    },
+    {
+     "sensor_profile": "deterministic_beam",
+     "controller": "rl",
+     "seed": 209991,
+     "k": 4,
+     "terminal": "success",
+     "return": -504.94950928447844,
+     "steps": 330,
+     "violations": 737,
+     "violations_per_step": 2.2333333333333334,
+     "judged_targets": 4,
+     "shield_interventions": 295,
+     "violations_by_family": {
+      "M03": 157,
+      "M01": 34,
+      "S05": 410,
+      "I03": 4,
+      "S04": 107,
+      "E01": 4,
+      "C04": 20,
+      "M02": 1
+     },
+     "active_agent_steps_by_conflict_pair": {
+      "S04-M02": 34,
+      "S05-M02": 155,
+      "C01-M02": 289,
+      "C03-M02": 81,
+      "C02-M01": 0,
+      "M01-M02": 410,
+      "S02-M02": 0,
+      "S03-M02": 702,
+      "I02-M02": 6,
+      "I03-M02": 121,
+      "M04-S04": 204,
+      "C01-C03": 0,
+      "M05-E03": 0
+     },
+     "multi_candidate_events": 0,
+     "arbitration_modes": {},
+     "winners_different_from_fixed_score": 0,
+     "request_outcomes": {
+      "selected": 250,
+      "c04_rejected": 62
+     },
+     "sensor_diagnostics": {
+      "units": {
+       "radar": "target-dwell; each platform counts separately",
+       "verdict": "target-verdict-update; once per decision step",
+       "reset_causes": "exclusive: zone, missing track, then age"
+      },
+      "radar": {
+       "dwell_calls": 1980,
+       "active_dwell_calls": 1980,
+       "all_targets": {
+        "opportunities": 279,
+        "hits": 279,
+        "misses": 0
+       },
+       "unfinished_targets": {
+        "opportunities": 219,
+        "hits": 219,
+        "misses": 0
+       },
+       "per_wingman": {
+        "0": {
+         "dwell_calls": 660,
+         "active_dwell_calls": 660,
+         "all_targets": {
+          "opportunities": 85,
+          "hits": 85,
+          "misses": 0
+         },
+         "unfinished_targets": {
+          "opportunities": 56,
+          "hits": 56,
+          "misses": 0
+         }
+        },
+        "1": {
+         "dwell_calls": 660,
+         "active_dwell_calls": 660,
+         "all_targets": {
+          "opportunities": 142,
+          "hits": 142,
+          "misses": 0
+         },
+         "unfinished_targets": {
+          "opportunities": 129,
+          "hits": 129,
+          "misses": 0
+         }
+        },
+        "2": {
+         "dwell_calls": 660,
+         "active_dwell_calls": 660,
+         "all_targets": {
+          "opportunities": 52,
+          "hits": 52,
+          "misses": 0
+         },
+         "unfinished_targets": {
+          "opportunities": 34,
+          "hits": 34,
+          "misses": 0
+         }
+        }
+       }
+      },
+      "verdict": {
+       "unfinished_target_steps": 1189,
+       "owned_unfinished_target_steps": 224,
+       "unowned_tracking_target_steps": 0,
+       "owner_gate_failed_target_steps": 190,
+       "stable_progress_resets": 1,
+       "newly_judged_targets": 4,
+       "owner_gate_failure_causes": {
+        "outside_tracking_zone": 189,
+        "missing_owner_track": 0,
+        "stale_owner_track": 1
+       },
+       "reset_causes": {
+        "outside_tracking_zone": 0,
+        "missing_owner_track": 0,
+        "stale_owner_track": 1
+       },
+       "max_stable_progress_by_target": {
+        "2": 8,
+        "0": 8,
+        "3": 8,
+        "1": 8
+       }
+      }
+     },
+     "effective_task_config_sha256": "256d20dadddbf0b400462a23a5f7c846156732131a7ef1b542f2235555cf2f3d",
+     "effective_policy_config": {
+      "hidden_size": 128,
+      "clip_ratio": 0.2,
+      "learning_rate": 1e-05,
+      "bc_learning_rate": 0.001,
+      "value_coef": 0.5,
+      "entropy_coef": 0.01,
+      "intervention_coef": 0.2,
+      "shield_aware_continuous": false,
+      "mask_intervened_continuous": true,
+      "mask_intervened_radar_axis": false,
+      "epochs": 2,
+      "gamma": 0.99,
+      "gae_lambda": 0.95,
+      "reward_scale": 0.1,
+      "initial_log_std": -1.2,
+      "target_kl": 0.01,
+      "bid_target_kl": 0.01,
+      "shaping_kappa": 0.05,
+      "shaping_age_cap": 8.0,
+      "role_shaping_kappa": 0.3,
+      "role_adv_coef": 1.5,
+      "geo_shaping_kappa": 0.15,
+      "stable_shaping_kappa": 1.0,
+      "cf_adv_coef": 1.0,
+      "cf_ownership_bonus": 0.5,
+      "cf_request_credit": 0.25,
+      "cf_global_mix": 0.25,
+      "cf_role_coef": 0.5,
+      "cf_bid_coef": 1.0,
+      "cf_bid_utility_scale": 0.1,
+      "cf_bid_horizon": 1,
+      "cf_bid_margin_coef": 0.25,
+      "cf_bid_margin_temp": 0.25,
+      "bid_only_ppo": false,
+      "task_residual_only_ppo": false,
+      "train_geometry_adapter": false,
+      "direct_rl_arbitration": true,
+      "gear_gate_coef": 0.0,
+      "conflict_exposure_prob": 0.0,
+      "xi_ppo_coef": 1.0,
+      "xi_anchor_coef": 0.0,
+      "policy_anchor_coef": 0.5,
+      "policy_anchor_monitor": true
+     },
+     "checkpoint_migration": {
+      "source": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_smoke_k4_w8a10_20261021\\initial.pt",
+      "geometry_adapter": {
+       "policy": "restored",
+       "xi-anchor": "restored",
+       "policy-anchor": "restored"
+      },
+      "adapter_initialization_seed": 20261022,
+      "legacy_output_preservation": "final geometry weights and bias are zero"
+     },
+     "loaded_tensor_sha256": "1dd33c54495c10fdbf10f7e8111ba71797ca31d7c0f3ad2683357b14b91acf9d",
+     "weights_unchanged": true
+    }
+   ],
+   "rl_minus_heur": {
+    "direction": "right_minus_left",
+    "episodes": 2,
+    "success_rate_delta": 0.0,
+    "mean_return_delta": 5676.636454741489,
+    "violations_per_step_delta": -5.087311696332077,
+    "right_only_successes": 1,
+    "left_only_successes": 1
+   }
+  },
+  {
+   "update": 1,
+   "checkpoint": {
+    "role": "adaptation_checkpoint",
+    "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_smoke_k4_w8a10_20261021\\checkpoints\\update_0001.pt",
+    "exists": true,
+    "size_bytes": 1765534,
+    "sha256": "362804a8cea1d769e9cb17376b49c9a217c66de2875ee96fb42f1cd0fd7f8476"
+   },
+   "summary": {
+    "episodes": 2,
+    "successes": 1,
+    "success_rate": 0.5,
+    "success_rate_wilson_95": [
+     0.09453120573423074,
+     0.9054687942657693
+    ],
+    "mean_return": -6046.4228573875425,
+    "total_steps": 1431,
+    "total_violations": 9745,
+    "violations_per_step": 6.809923130677848,
+    "mean_episode_violations_per_step": 6.799457255178079,
+    "mean_judged_targets": 3.5,
+    "radar_target_dwell_counts": {
+     "all_targets": {
+      "opportunities": 384,
+      "hits": 384,
+      "misses": 0,
+      "hit_fraction_per_opportunity": 1.0
+     },
+     "unfinished_targets": {
+      "opportunities": 247,
+      "hits": 247,
+      "misses": 0,
+      "hit_fraction_per_opportunity": 1.0
+     }
+    },
+    "stable_progress_resets": 0,
+    "stable_reset_causes": {
+     "outside_tracking_zone": 0,
+     "missing_owner_track": 0,
+     "stale_owner_track": 0
+    },
+    "owner_gate_failure_target_step_causes": {
+     "outside_tracking_zone": 317,
+     "missing_owner_track": 34,
+     "stale_owner_track": 0
+    },
+    "unowned_tracking_target_steps": 1018,
+    "violations_by_family": {
+     "M01": 59,
+     "M03": 720,
+     "C04": 112,
+     "S05": 3340,
+     "I03": 23,
+     "E01": 86,
+     "M02": 34,
+     "E03": 948,
+     "S04": 2322,
+     "M05": 679,
+     "C02": 1134,
+     "E02": 2,
+     "S03": 285,
+     "M04": 1
+    },
+    "active_agent_steps_by_conflict_pair": {
+     "S04-M02": 17,
+     "S05-M02": 139,
+     "C01-M02": 479,
+     "C03-M02": 1009,
+     "C02-M01": 362,
+     "M01-M02": 1440,
+     "S02-M02": 192,
+     "S03-M02": 3019,
+     "I02-M02": 9,
+     "I03-M02": 232,
+     "M04-S04": 2727,
+     "C01-C03": 3,
+     "M05-E03": 10
+    },
+    "conflict_pairs_observed": 13,
+    "multi_candidate_events": 2,
+    "winners_different_from_fixed_score": 1
+   },
+   "episodes": [
+    {
+     "sensor_profile": "deterministic_beam",
+     "controller": "rl",
+     "seed": 209990,
+     "k": 4,
+     "terminal": "success",
+     "return": -3686.8643392070508,
+     "steps": 690,
+     "violations": 4489,
+     "violations_per_step": 6.505797101449275,
+     "judged_targets": 4,
+     "shield_interventions": 560,
+     "violations_by_family": {
+      "M01": 16,
+      "M03": 106,
+      "C04": 14,
+      "S05": 1709,
+      "I03": 14,
+      "E01": 52,
+      "M02": 5,
+      "E03": 468,
+      "S04": 1254,
+      "M05": 292,
+      "C02": 559
+     },
+     "active_agent_steps_by_conflict_pair": {
+      "S04-M02": 11,
+      "S05-M02": 20,
+      "C01-M02": 161,
+      "C03-M02": 583,
+      "C02-M01": 231,
+      "M01-M02": 693,
+      "S02-M02": 192,
+      "S03-M02": 1331,
+      "I02-M02": 2,
+      "I03-M02": 96,
+      "M04-S04": 1290,
+      "C01-C03": 0,
+      "M05-E03": 10
+     },
+     "multi_candidate_events": 0,
+     "arbitration_modes": {},
+     "winners_different_from_fixed_score": 0,
+     "request_outcomes": {
+      "selected": 109,
+      "c04_rejected": 136
+     },
+     "sensor_diagnostics": {
+      "units": {
+       "radar": "target-dwell; each platform counts separately",
+       "verdict": "target-verdict-update; once per decision step",
+       "reset_causes": "exclusive: zone, missing track, then age"
+      },
+      "radar": {
+       "dwell_calls": 4140,
+       "active_dwell_calls": 4140,
+       "all_targets": {
+        "opportunities": 118,
+        "hits": 118,
+        "misses": 0
+       },
+       "unfinished_targets": {
+        "opportunities": 74,
+        "hits": 74,
+        "misses": 0
+       },
+       "per_wingman": {
+        "0": {
+         "dwell_calls": 1380,
+         "active_dwell_calls": 1380,
+         "all_targets": {
+          "opportunities": 37,
+          "hits": 37,
+          "misses": 0
+         },
+         "unfinished_targets": {
+          "opportunities": 18,
+          "hits": 18,
+          "misses": 0
+         }
+        },
+        "1": {
+         "dwell_calls": 1380,
+         "active_dwell_calls": 1380,
+         "all_targets": {
+          "opportunities": 42,
+          "hits": 42,
+          "misses": 0
+         },
+         "unfinished_targets": {
+          "opportunities": 27,
+          "hits": 27,
+          "misses": 0
+         }
+        },
+        "2": {
+         "dwell_calls": 1380,
+         "active_dwell_calls": 1380,
+         "all_targets": {
+          "opportunities": 39,
+          "hits": 39,
+          "misses": 0
+         },
+         "unfinished_targets": {
+          "opportunities": 29,
+          "hits": 29,
+          "misses": 0
+         }
+        }
+       }
+      },
+      "verdict": {
+       "unfinished_target_steps": 1800,
+       "owned_unfinished_target_steps": 154,
+       "unowned_tracking_target_steps": 600,
+       "owner_gate_failed_target_steps": 122,
+       "stable_progress_resets": 0,
+       "newly_judged_targets": 4,
+       "owner_gate_failure_causes": {
+        "outside_tracking_zone": 117,
+        "missing_owner_track": 5,
+        "stale_owner_track": 0
+       },
+       "reset_causes": {
+        "outside_tracking_zone": 0,
+        "missing_owner_track": 0,
+        "stale_owner_track": 0
+       },
+       "max_stable_progress_by_target": {
+        "2": 8,
+        "0": 8,
+        "3": 8,
+        "1": 8
+       }
+      }
+     },
+     "effective_task_config_sha256": "256d20dadddbf0b400462a23a5f7c846156732131a7ef1b542f2235555cf2f3d",
+     "effective_policy_config": {
+      "hidden_size": 128,
+      "clip_ratio": 0.2,
+      "learning_rate": 1e-05,
+      "bc_learning_rate": 0.001,
+      "value_coef": 0.5,
+      "entropy_coef": 0.01,
+      "intervention_coef": 0.2,
+      "shield_aware_continuous": false,
+      "mask_intervened_continuous": true,
+      "mask_intervened_radar_axis": false,
+      "epochs": 2,
+      "gamma": 0.99,
+      "gae_lambda": 0.95,
+      "reward_scale": 0.1,
+      "initial_log_std": -1.2,
+      "target_kl": 0.01,
+      "bid_target_kl": 0.01,
+      "shaping_kappa": 0.05,
+      "shaping_age_cap": 8.0,
+      "role_shaping_kappa": 0.3,
+      "role_adv_coef": 1.5,
+      "geo_shaping_kappa": 0.15,
+      "stable_shaping_kappa": 1.0,
+      "cf_adv_coef": 1.0,
+      "cf_ownership_bonus": 0.5,
+      "cf_request_credit": 0.25,
+      "cf_global_mix": 0.25,
+      "cf_role_coef": 0.5,
+      "cf_bid_coef": 1.0,
+      "cf_bid_utility_scale": 0.1,
+      "cf_bid_horizon": 1,
+      "cf_bid_margin_coef": 0.25,
+      "cf_bid_margin_temp": 0.25,
+      "bid_only_ppo": false,
+      "task_residual_only_ppo": false,
+      "train_geometry_adapter": false,
+      "direct_rl_arbitration": true,
+      "gear_gate_coef": 0.0,
+      "conflict_exposure_prob": 0.0,
+      "xi_ppo_coef": 1.0,
+      "xi_anchor_coef": 0.0,
+      "policy_anchor_coef": 0.5,
+      "policy_anchor_monitor": true
+     },
+     "checkpoint_migration": {
+      "source": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_smoke_k4_w8a10_20261021\\checkpoints\\update_0001.pt",
+      "geometry_adapter": {
+       "policy": "restored",
+       "xi-anchor": "restored",
+       "policy-anchor": "restored"
+      },
+      "adapter_initialization_seed": 20261022,
+      "legacy_output_preservation": "final geometry weights and bias are zero"
+     },
+     "loaded_tensor_sha256": "958a87fa426e9322b3fa641c727c0635bc4f43ec2545c136c93a975b9e93d93f",
+     "weights_unchanged": true
+    },
+    {
+     "sensor_profile": "deterministic_beam",
+     "controller": "rl",
+     "seed": 209991,
+     "k": 4,
+     "terminal": "failure",
+     "return": -8405.981375568035,
+     "steps": 741,
+     "violations": 5256,
+     "violations_per_step": 7.093117408906883,
+     "judged_targets": 3,
+     "shield_interventions": 927,
+     "violations_by_family": {
+      "M03": 614,
+      "M01": 43,
+      "S05": 1631,
+      "C04": 98,
+      "I03": 9,
+      "E01": 34,
+      "M02": 29,
+      "E02": 2,
+      "S04": 1068,
+      "M05": 387,
+      "E03": 480,
+      "C02": 575,
+      "S03": 285,
+      "M04": 1
+     },
+     "active_agent_steps_by_conflict_pair": {
+      "S04-M02": 6,
+      "S05-M02": 119,
+      "C01-M02": 318,
+      "C03-M02": 426,
+      "C02-M01": 131,
+      "M01-M02": 747,
+      "S02-M02": 0,
+      "S03-M02": 1688,
+      "I02-M02": 7,
+      "I03-M02": 136,
+      "M04-S04": 1437,
+      "C01-C03": 3,
+      "M05-E03": 0
+     },
+     "multi_candidate_events": 2,
+     "arbitration_modes": {
+      "rl_direct": 2
+     },
+     "winners_different_from_fixed_score": 1,
+     "request_outcomes": {
+      "selected": 239,
+      "c04_rejected": 122,
+      "lost_arbitration": 2
+     },
+     "sensor_diagnostics": {
+      "units": {
+       "radar": "target-dwell; each platform counts separately",
+       "verdict": "target-verdict-update; once per decision step",
+       "reset_causes": "exclusive: zone, missing track, then age"
+      },
+      "radar": {
+       "dwell_calls": 4446,
+       "active_dwell_calls": 4446,
+       "all_targets": {
+        "opportunities": 266,
+        "hits": 266,
+        "misses": 0
+       },
+       "unfinished_targets": {
+        "opportunities": 173,
+        "hits": 173,
+        "misses": 0
+       },
+       "per_wingman": {
+        "0": {
+         "dwell_calls": 1482,
+         "active_dwell_calls": 1482,
+         "all_targets": {
+          "opportunities": 105,
+          "hits": 105,
+          "misses": 0
+         },
+         "unfinished_targets": {
+          "opportunities": 72,
+          "hits": 72,
+          "misses": 0
+         }
+        },
+        "1": {
+         "dwell_calls": 1482,
+         "active_dwell_calls": 1482,
+         "all_targets": {
+          "opportunities": 135,
+          "hits": 135,
+          "misses": 0
+         },
+         "unfinished_targets": {
+          "opportunities": 89,
+          "hits": 89,
+          "misses": 0
+         }
+        },
+        "2": {
+         "dwell_calls": 1482,
+         "active_dwell_calls": 1482,
+         "all_targets": {
+          "opportunities": 26,
+          "hits": 26,
+          "misses": 0
+         },
+         "unfinished_targets": {
+          "opportunities": 12,
+          "hits": 12,
+          "misses": 0
+         }
+        }
+       }
+      },
+      "verdict": {
+       "unfinished_target_steps": 1626,
+       "owned_unfinished_target_steps": 253,
+       "unowned_tracking_target_steps": 418,
+       "owner_gate_failed_target_steps": 229,
+       "stable_progress_resets": 0,
+       "newly_judged_targets": 3,
+       "owner_gate_failure_causes": {
+        "outside_tracking_zone": 200,
+        "missing_owner_track": 29,
+        "stale_owner_track": 0
+       },
+       "reset_causes": {
+        "outside_tracking_zone": 0,
+        "missing_owner_track": 0,
+        "stale_owner_track": 0
+       },
+       "max_stable_progress_by_target": {
+        "2": 8,
+        "0": 8,
+        "1": 8
+       }
+      }
+     },
+     "effective_task_config_sha256": "256d20dadddbf0b400462a23a5f7c846156732131a7ef1b542f2235555cf2f3d",
+     "effective_policy_config": {
+      "hidden_size": 128,
+      "clip_ratio": 0.2,
+      "learning_rate": 1e-05,
+      "bc_learning_rate": 0.001,
+      "value_coef": 0.5,
+      "entropy_coef": 0.01,
+      "intervention_coef": 0.2,
+      "shield_aware_continuous": false,
+      "mask_intervened_continuous": true,
+      "mask_intervened_radar_axis": false,
+      "epochs": 2,
+      "gamma": 0.99,
+      "gae_lambda": 0.95,
+      "reward_scale": 0.1,
+      "initial_log_std": -1.2,
+      "target_kl": 0.01,
+      "bid_target_kl": 0.01,
+      "shaping_kappa": 0.05,
+      "shaping_age_cap": 8.0,
+      "role_shaping_kappa": 0.3,
+      "role_adv_coef": 1.5,
+      "geo_shaping_kappa": 0.15,
+      "stable_shaping_kappa": 1.0,
+      "cf_adv_coef": 1.0,
+      "cf_ownership_bonus": 0.5,
+      "cf_request_credit": 0.25,
+      "cf_global_mix": 0.25,
+      "cf_role_coef": 0.5,
+      "cf_bid_coef": 1.0,
+      "cf_bid_utility_scale": 0.1,
+      "cf_bid_horizon": 1,
+      "cf_bid_margin_coef": 0.25,
+      "cf_bid_margin_temp": 0.25,
+      "bid_only_ppo": false,
+      "task_residual_only_ppo": false,
+      "train_geometry_adapter": false,
+      "direct_rl_arbitration": true,
+      "gear_gate_coef": 0.0,
+      "conflict_exposure_prob": 0.0,
+      "xi_ppo_coef": 1.0,
+      "xi_anchor_coef": 0.0,
+      "policy_anchor_coef": 0.5,
+      "policy_anchor_monitor": true
+     },
+     "checkpoint_migration": {
+      "source": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_smoke_k4_w8a10_20261021\\checkpoints\\update_0001.pt",
+      "geometry_adapter": {
+       "policy": "restored",
+       "xi-anchor": "restored",
+       "policy-anchor": "restored"
+      },
+      "adapter_initialization_seed": 20261022,
+      "legacy_output_preservation": "final geometry weights and bias are zero"
+     },
+     "loaded_tensor_sha256": "958a87fa426e9322b3fa641c727c0635bc4f43ec2545c136c93a975b9e93d93f",
+     "weights_unchanged": true
+    }
+   ],
+   "rl_minus_heur": {
+    "direction": "right_minus_left",
+    "episodes": 2,
+    "success_rate_delta": 0.0,
+    "mean_return_delta": 1984.5872080187992,
+    "violations_per_step_delta": -3.4771917152605285,
+    "right_only_successes": 0,
+    "left_only_successes": 0
+   },
+   "selected_as_best": false
+  },
+  {
+   "update": 2,
+   "checkpoint": {
+    "role": "adaptation_checkpoint",
+    "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_smoke_k4_w8a10_20261021\\checkpoints\\update_0002.pt",
+    "exists": true,
+    "size_bytes": 1765534,
+    "sha256": "bf088913f62a43a805263f98d445a87476b4d0654fa780fa1165553ed0c4cf6e"
+   },
+   "summary": {
+    "episodes": 2,
+    "successes": 1,
+    "success_rate": 0.5,
+    "success_rate_wilson_95": [
+     0.09453120573423074,
+     0.9054687942657693
+    ],
+    "mean_return": -2271.450688798795,
+    "total_steps": 1016,
+    "total_violations": 5177,
+    "violations_per_step": 5.0954724409448815,
+    "mean_episode_violations_per_step": 4.3418102305857404,
+    "mean_judged_targets": 3.5,
+    "radar_target_dwell_counts": {
+     "all_targets": {
+      "opportunities": 399,
+      "hits": 399,
+      "misses": 0,
+      "hit_fraction_per_opportunity": 1.0
+     },
+     "unfinished_targets": {
+      "opportunities": 292,
+      "hits": 292,
+      "misses": 0,
+      "hit_fraction_per_opportunity": 1.0
+     }
+    },
+    "stable_progress_resets": 0,
+    "stable_reset_causes": {
+     "outside_tracking_zone": 0,
+     "missing_owner_track": 0,
+     "stale_owner_track": 0
+    },
+    "owner_gate_failure_target_step_causes": {
+     "outside_tracking_zone": 306,
+     "missing_owner_track": 5,
+     "stale_owner_track": 0
+    },
+    "unowned_tracking_target_steps": 658,
+    "violations_by_family": {
+     "M01": 49,
+     "M03": 263,
+     "C04": 30,
+     "S05": 2081,
+     "I03": 18,
+     "E01": 51,
+     "M02": 5,
+     "E03": 430,
+     "S04": 1348,
+     "M05": 354,
+     "C02": 517,
+     "S02": 30,
+     "M04": 1
+    },
+    "active_agent_steps_by_conflict_pair": {
+     "S04-M02": 34,
+     "S05-M02": 164,
+     "C01-M02": 437,
+     "C03-M02": 697,
+     "C02-M01": 216,
+     "M01-M02": 1116,
+     "S02-M02": 284,
+     "S03-M02": 2019,
+     "I02-M02": 8,
+     "I03-M02": 200,
+     "M04-S04": 1482,
+     "C01-C03": 0,
+     "M05-E03": 1
+    },
+    "conflict_pairs_observed": 12,
+    "multi_candidate_events": 0,
+    "winners_different_from_fixed_score": 0
+   },
+   "episodes": [
+    {
+     "sensor_profile": "deterministic_beam",
+     "controller": "rl",
+     "seed": 209990,
+     "k": 4,
+     "terminal": "failure",
+     "return": -4088.0511052253173,
+     "steps": 686,
+     "violations": 4454,
+     "violations_per_step": 6.49271137026239,
+     "judged_targets": 3,
+     "shield_interventions": 608,
+     "violations_by_family": {
+      "M01": 16,
+      "M03": 106,
+      "C04": 15,
+      "S05": 1672,
+      "I03": 14,
+      "E01": 50,
+      "M02": 5,
+      "E03": 430,
+      "S04": 1244,
+      "M05": 354,
+      "C02": 517,
+      "S02": 30,
+      "M04": 1
+     },
+     "active_agent_steps_by_conflict_pair": {
+      "S04-M02": 2,
+      "S05-M02": 18,
+      "C01-M02": 155,
+      "C03-M02": 616,
+      "C02-M01": 216,
+      "M01-M02": 706,
+      "S02-M02": 284,
+      "S03-M02": 1317,
+      "I02-M02": 2,
+      "I03-M02": 91,
+      "M04-S04": 1278,
+      "C01-C03": 0,
+      "M05-E03": 1
+     },
+     "multi_candidate_events": 0,
+     "arbitration_modes": {},
+     "winners_different_from_fixed_score": 0,
+     "request_outcomes": {
+      "selected": 106,
+      "c04_rejected": 140
+     },
+     "sensor_diagnostics": {
+      "units": {
+       "radar": "target-dwell; each platform counts separately",
+       "verdict": "target-verdict-update; once per decision step",
+       "reset_causes": "exclusive: zone, missing track, then age"
+      },
+      "radar": {
+       "dwell_calls": 4116,
+       "active_dwell_calls": 4116,
+       "all_targets": {
+        "opportunities": 116,
+        "hits": 116,
+        "misses": 0
+       },
+       "unfinished_targets": {
+        "opportunities": 69,
+        "hits": 69,
+        "misses": 0
+       },
+       "per_wingman": {
+        "0": {
+         "dwell_calls": 1372,
+         "active_dwell_calls": 1372,
+         "all_targets": {
+          "opportunities": 38,
+          "hits": 38,
+          "misses": 0
+         },
+         "unfinished_targets": {
+          "opportunities": 18,
+          "hits": 18,
+          "misses": 0
+         }
+        },
+        "1": {
+         "dwell_calls": 1372,
+         "active_dwell_calls": 1372,
+         "all_targets": {
+          "opportunities": 41,
+          "hits": 41,
+          "misses": 0
+         },
+         "unfinished_targets": {
+          "opportunities": 26,
+          "hits": 26,
+          "misses": 0
+         }
+        },
+        "2": {
+         "dwell_calls": 1372,
+         "active_dwell_calls": 1372,
+         "all_targets": {
+          "opportunities": 37,
+          "hits": 37,
+          "misses": 0
+         },
+         "unfinished_targets": {
+          "opportunities": 25,
+          "hits": 25,
+          "misses": 0
+         }
+        }
+       }
+      },
+      "verdict": {
+       "unfinished_target_steps": 1851,
+       "owned_unfinished_target_steps": 146,
+       "unowned_tracking_target_steps": 658,
+       "owner_gate_failed_target_steps": 122,
+       "stable_progress_resets": 0,
+       "newly_judged_targets": 3,
+       "owner_gate_failure_causes": {
+        "outside_tracking_zone": 117,
+        "missing_owner_track": 5,
+        "stale_owner_track": 0
+       },
+       "reset_causes": {
+        "outside_tracking_zone": 0,
+        "missing_owner_track": 0,
+        "stale_owner_track": 0
+       },
+       "max_stable_progress_by_target": {
+        "2": 8,
+        "0": 8,
+        "1": 8
+       }
+      }
+     },
+     "effective_task_config_sha256": "256d20dadddbf0b400462a23a5f7c846156732131a7ef1b542f2235555cf2f3d",
+     "effective_policy_config": {
+      "hidden_size": 128,
+      "clip_ratio": 0.2,
+      "learning_rate": 1e-05,
+      "bc_learning_rate": 0.001,
+      "value_coef": 0.5,
+      "entropy_coef": 0.01,
+      "intervention_coef": 0.2,
+      "shield_aware_continuous": false,
+      "mask_intervened_continuous": true,
+      "mask_intervened_radar_axis": false,
+      "epochs": 2,
+      "gamma": 0.99,
+      "gae_lambda": 0.95,
+      "reward_scale": 0.1,
+      "initial_log_std": -1.2,
+      "target_kl": 0.01,
+      "bid_target_kl": 0.01,
+      "shaping_kappa": 0.05,
+      "shaping_age_cap": 8.0,
+      "role_shaping_kappa": 0.3,
+      "role_adv_coef": 1.5,
+      "geo_shaping_kappa": 0.15,
+      "stable_shaping_kappa": 1.0,
+      "cf_adv_coef": 1.0,
+      "cf_ownership_bonus": 0.5,
+      "cf_request_credit": 0.25,
+      "cf_global_mix": 0.25,
+      "cf_role_coef": 0.5,
+      "cf_bid_coef": 1.0,
+      "cf_bid_utility_scale": 0.1,
+      "cf_bid_horizon": 1,
+      "cf_bid_margin_coef": 0.25,
+      "cf_bid_margin_temp": 0.25,
+      "bid_only_ppo": false,
+      "task_residual_only_ppo": false,
+      "train_geometry_adapter": false,
+      "direct_rl_arbitration": true,
+      "gear_gate_coef": 0.0,
+      "conflict_exposure_prob": 0.0,
+      "xi_ppo_coef": 1.0,
+      "xi_anchor_coef": 0.0,
+      "policy_anchor_coef": 0.5,
+      "policy_anchor_monitor": true
+     },
+     "checkpoint_migration": {
+      "source": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_smoke_k4_w8a10_20261021\\checkpoints\\update_0002.pt",
+      "geometry_adapter": {
+       "policy": "restored",
+       "xi-anchor": "restored",
+       "policy-anchor": "restored"
+      },
+      "adapter_initialization_seed": 20261022,
+      "legacy_output_preservation": "final geometry weights and bias are zero"
+     },
+     "loaded_tensor_sha256": "e2f1f0e4363e0a1839f7cd6f299b524f31785af6317b611815dd6b98832a904f",
+     "weights_unchanged": true
+    },
+    {
+     "sensor_profile": "deterministic_beam",
+     "controller": "rl",
+     "seed": 209991,
+     "k": 4,
+     "terminal": "success",
+     "return": -454.85027237227274,
+     "steps": 330,
+     "violations": 723,
+     "violations_per_step": 2.190909090909091,
+     "judged_targets": 4,
+     "shield_interventions": 292,
+     "violations_by_family": {
+      "M03": 157,
+      "M01": 33,
+      "S05": 409,
+      "I03": 4,
+      "S04": 104,
+      "E01": 1,
+      "C04": 15
+     },
+     "active_agent_steps_by_conflict_pair": {
+      "S04-M02": 32,
+      "S05-M02": 146,
+      "C01-M02": 282,
+      "C03-M02": 81,
+      "C02-M01": 0,
+      "M01-M02": 410,
+      "S02-M02": 0,
+      "S03-M02": 702,
+      "I02-M02": 6,
+      "I03-M02": 109,
+      "M04-S04": 204,
+      "C01-C03": 0,
+      "M05-E03": 0
+     },
+     "multi_candidate_events": 0,
+     "arbitration_modes": {},
+     "winners_different_from_fixed_score": 0,
+     "request_outcomes": {
+      "selected": 251,
+      "c04_rejected": 56
+     },
+     "sensor_diagnostics": {
+      "units": {
+       "radar": "target-dwell; each platform counts separately",
+       "verdict": "target-verdict-update; once per decision step",
+       "reset_causes": "exclusive: zone, missing track, then age"
+      },
+      "radar": {
+       "dwell_calls": 1980,
+       "active_dwell_calls": 1980,
+       "all_targets": {
+        "opportunities": 283,
+        "hits": 283,
+        "misses": 0
+       },
+       "unfinished_targets": {
+        "opportunities": 223,
+        "hits": 223,
+        "misses": 0
+       },
+       "per_wingman": {
+        "0": {
+         "dwell_calls": 660,
+         "active_dwell_calls": 660,
+         "all_targets": {
+          "opportunities": 84,
+          "hits": 84,
+          "misses": 0
+         },
+         "unfinished_targets": {
+          "opportunities": 54,
+          "hits": 54,
+          "misses": 0
+         }
+        },
+        "1": {
+         "dwell_calls": 660,
+         "active_dwell_calls": 660,
+         "all_targets": {
+          "opportunities": 149,
+          "hits": 149,
+          "misses": 0
+         },
+         "unfinished_targets": {
+          "opportunities": 136,
+          "hits": 136,
+          "misses": 0
+         }
+        },
+        "2": {
+         "dwell_calls": 660,
+         "active_dwell_calls": 660,
+         "all_targets": {
+          "opportunities": 50,
+          "hits": 50,
+          "misses": 0
+         },
+         "unfinished_targets": {
+          "opportunities": 33,
+          "hits": 33,
+          "misses": 0
+         }
+        }
+       }
+      },
+      "verdict": {
+       "unfinished_target_steps": 1186,
+       "owned_unfinished_target_steps": 221,
+       "unowned_tracking_target_steps": 0,
+       "owner_gate_failed_target_steps": 189,
+       "stable_progress_resets": 0,
+       "newly_judged_targets": 4,
+       "owner_gate_failure_causes": {
+        "outside_tracking_zone": 189,
+        "missing_owner_track": 0,
+        "stale_owner_track": 0
+       },
+       "reset_causes": {
+        "outside_tracking_zone": 0,
+        "missing_owner_track": 0,
+        "stale_owner_track": 0
+       },
+       "max_stable_progress_by_target": {
+        "2": 8,
+        "0": 8,
+        "3": 8,
+        "1": 8
+       }
+      }
+     },
+     "effective_task_config_sha256": "256d20dadddbf0b400462a23a5f7c846156732131a7ef1b542f2235555cf2f3d",
+     "effective_policy_config": {
+      "hidden_size": 128,
+      "clip_ratio": 0.2,
+      "learning_rate": 1e-05,
+      "bc_learning_rate": 0.001,
+      "value_coef": 0.5,
+      "entropy_coef": 0.01,
+      "intervention_coef": 0.2,
+      "shield_aware_continuous": false,
+      "mask_intervened_continuous": true,
+      "mask_intervened_radar_axis": false,
+      "epochs": 2,
+      "gamma": 0.99,
+      "gae_lambda": 0.95,
+      "reward_scale": 0.1,
+      "initial_log_std": -1.2,
+      "target_kl": 0.01,
+      "bid_target_kl": 0.01,
+      "shaping_kappa": 0.05,
+      "shaping_age_cap": 8.0,
+      "role_shaping_kappa": 0.3,
+      "role_adv_coef": 1.5,
+      "geo_shaping_kappa": 0.15,
+      "stable_shaping_kappa": 1.0,
+      "cf_adv_coef": 1.0,
+      "cf_ownership_bonus": 0.5,
+      "cf_request_credit": 0.25,
+      "cf_global_mix": 0.25,
+      "cf_role_coef": 0.5,
+      "cf_bid_coef": 1.0,
+      "cf_bid_utility_scale": 0.1,
+      "cf_bid_horizon": 1,
+      "cf_bid_margin_coef": 0.25,
+      "cf_bid_margin_temp": 0.25,
+      "bid_only_ppo": false,
+      "task_residual_only_ppo": false,
+      "train_geometry_adapter": false,
+      "direct_rl_arbitration": true,
+      "gear_gate_coef": 0.0,
+      "conflict_exposure_prob": 0.0,
+      "xi_ppo_coef": 1.0,
+      "xi_anchor_coef": 0.0,
+      "policy_anchor_coef": 0.5,
+      "policy_anchor_monitor": true
+     },
+     "checkpoint_migration": {
+      "source": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_smoke_k4_w8a10_20261021\\checkpoints\\update_0002.pt",
+      "geometry_adapter": {
+       "policy": "restored",
+       "xi-anchor": "restored",
+       "policy-anchor": "restored"
+      },
+      "adapter_initialization_seed": 20261022,
+      "legacy_output_preservation": "final geometry weights and bias are zero"
+     },
+     "loaded_tensor_sha256": "e2f1f0e4363e0a1839f7cd6f299b524f31785af6317b611815dd6b98832a904f",
+     "weights_unchanged": true
+    }
+   ],
+   "rl_minus_heur": {
+    "direction": "right_minus_left",
+    "episodes": 2,
+    "success_rate_delta": 0.0,
+    "mean_return_delta": 5759.559376607547,
+    "violations_per_step_delta": -5.191642404993495,
+    "right_only_successes": 1,
+    "left_only_successes": 1
+   },
+   "selected_as_best": true
+  }
+ ],
+ "reserved_test_seeds_not_run": [
+  208000,
+  208001,
+  208002,
+  208003,
+  208004,
+  208005,
+  208006,
+  208007,
+  208008,
+  208009,
+  208010,
+  208011,
+  208012,
+  208013,
+  208014,
+  208015,
+  208016,
+  208017,
+  208018,
+  208019,
+  208020,
+  208021,
+  208022,
+  208023,
+  208024,
+  208025,
+  208026,
+  208027,
+  208028,
+  208029
+ ],
+ "selection_limitations": "Validation is used repeatedly for selection; it is not a final test. No arbitration-benefit claim follows from task success alone.",
+ "heur_validation": {
+  "summary": {
+   "episodes": 2,
+   "successes": 1,
+   "success_rate": 0.5,
+   "success_rate_wilson_95": [
+    0.09453120573423074,
+    0.9054687942657693
+   ],
+   "mean_return": -8031.010065406342,
+   "total_steps": 1428,
+   "total_violations": 14690,
+   "violations_per_step": 10.287114845938376,
+   "mean_episode_violations_per_step": 10.287472965248188,
+   "mean_judged_targets": 3.5,
+   "radar_target_dwell_counts": {
+    "all_targets": {
+     "opportunities": 1171,
+     "hits": 1171,
+     "misses": 0,
+     "hit_fraction_per_opportunity": 1.0
+    },
+    "unfinished_targets": {
+     "opportunities": 924,
+     "hits": 924,
+     "misses": 0,
+     "hit_fraction_per_opportunity": 1.0
+    }
+   },
+   "stable_progress_resets": 0,
+   "stable_reset_causes": {
+    "outside_tracking_zone": 0,
+    "missing_owner_track": 0,
+    "stale_owner_track": 0
+   },
+   "owner_gate_failure_target_step_causes": {
+    "outside_tracking_zone": 448,
+    "missing_owner_track": 826,
+    "stale_owner_track": 0
+   },
+   "unowned_tracking_target_steps": 0,
+   "violations_by_family": {
+    "S05": 3761,
+    "M01": 54,
+    "M03": 1210,
+    "S04": 4984,
+    "E03": 1182,
+    "E01": 8,
+    "E02": 2,
+    "I03": 22,
+    "I02": 16,
+    "C04": 956,
+    "M02": 826,
+    "C02": 1668,
+    "M04": 1
+   },
+   "active_agent_steps_by_conflict_pair": {
+    "S04-M02": 126,
+    "S05-M02": 238,
+    "C01-M02": 1328,
+    "C03-M02": 527,
+    "C02-M01": 983,
+    "M01-M02": 2069,
+    "S02-M02": 0,
+    "S03-M02": 2187,
+    "I02-M02": 8,
+    "I03-M02": 65,
+    "M04-S04": 2724,
+    "C01-C03": 0,
+    "M05-E03": 475
+   },
+   "conflict_pairs_observed": 11,
+   "multi_candidate_events": 2,
+   "winners_different_from_fixed_score": 0
+  },
+  "episodes": [
+   {
+    "sensor_profile": "deterministic_beam",
+    "controller": "heur",
+    "seed": 209990,
+    "k": 4,
+    "terminal": "success",
+    "return": -7586.244358519518,
+    "steps": 687,
+    "violations": 7074,
+    "violations_per_step": 10.296943231441048,
+    "judged_targets": 4,
+    "shield_interventions": 960,
+    "violations_by_family": {
+     "S05": 1763,
+     "M01": 25,
+     "M03": 568,
+     "S04": 2440,
+     "E03": 619,
+     "E01": 6,
+     "E02": 2,
+     "I03": 12,
+     "I02": 11,
+     "C04": 434,
+     "M02": 364,
+     "C02": 830
+    },
+    "active_agent_steps_by_conflict_pair": {
+     "S04-M02": 23,
+     "S05-M02": 165,
+     "C01-M02": 631,
+     "C03-M02": 272,
+     "C02-M01": 529,
+     "M01-M02": 1024,
+     "S02-M02": 0,
+     "S03-M02": 826,
+     "I02-M02": 2,
+     "I03-M02": 35,
+     "M04-S04": 1287,
+     "C01-C03": 0,
+     "M05-E03": 255
+    },
+    "multi_candidate_events": 1,
+    "arbitration_modes": {
+     "fixed_score_plus_bid": 1
+    },
+    "winners_different_from_fixed_score": 0,
+    "request_outcomes": {
+     "lost_arbitration": 1,
+     "selected": 170,
+     "c04_rejected": 45
+    },
+    "sensor_diagnostics": {
+     "units": {
+      "radar": "target-dwell; each platform counts separately",
+      "verdict": "target-verdict-update; once per decision step",
+      "reset_causes": "exclusive: zone, missing track, then age"
+     },
+     "radar": {
+      "dwell_calls": 4122,
+      "active_dwell_calls": 4122,
+      "all_targets": {
+       "opportunities": 567,
+       "hits": 567,
+       "misses": 0
+      },
+      "unfinished_targets": {
+       "opportunities": 446,
+       "hits": 446,
+       "misses": 0
+      },
+      "per_wingman": {
+       "0": {
+        "dwell_calls": 1374,
+        "active_dwell_calls": 1374,
+        "all_targets": {
+         "opportunities": 107,
+         "hits": 107,
+         "misses": 0
+        },
+        "unfinished_targets": {
+         "opportunities": 50,
+         "hits": 50,
+         "misses": 0
+        }
+       },
+       "1": {
+        "dwell_calls": 1374,
+        "active_dwell_calls": 1374,
+        "all_targets": {
+         "opportunities": 254,
+         "hits": 254,
+         "misses": 0
+        },
+        "unfinished_targets": {
+         "opportunities": 229,
+         "hits": 229,
+         "misses": 0
+        }
+       },
+       "2": {
+        "dwell_calls": 1374,
+        "active_dwell_calls": 1374,
+        "all_targets": {
+         "opportunities": 206,
+         "hits": 206,
+         "misses": 0
+        },
+        "unfinished_targets": {
+         "opportunities": 167,
+         "hits": 167,
+         "misses": 0
+        }
+       }
+      }
+     },
+     "verdict": {
+      "unfinished_target_steps": 1559,
+      "owned_unfinished_target_steps": 632,
+      "unowned_tracking_target_steps": 0,
+      "owner_gate_failed_target_steps": 600,
+      "stable_progress_resets": 0,
+      "newly_judged_targets": 4,
+      "owner_gate_failure_causes": {
+       "outside_tracking_zone": 236,
+       "missing_owner_track": 364,
+       "stale_owner_track": 0
+      },
+      "reset_causes": {
+       "outside_tracking_zone": 0,
+       "missing_owner_track": 0,
+       "stale_owner_track": 0
+      },
+      "max_stable_progress_by_target": {
+       "0": 8,
+       "2": 8,
+       "3": 8,
+       "1": 8
+      }
+     }
+    },
+    "effective_task_config_sha256": "256d20dadddbf0b400462a23a5f7c846156732131a7ef1b542f2235555cf2f3d"
+   },
+   {
+    "sensor_profile": "deterministic_beam",
+    "controller": "heur",
+    "seed": 209991,
+    "k": 4,
+    "terminal": "failure",
+    "return": -8475.775772293166,
+    "steps": 741,
+    "violations": 7616,
+    "violations_per_step": 10.27800269905533,
+    "judged_targets": 3,
+    "shield_interventions": 957,
+    "violations_by_family": {
+     "S05": 1998,
+     "M01": 29,
+     "M03": 642,
+     "S04": 2544,
+     "E01": 2,
+     "C04": 522,
+     "I03": 10,
+     "I02": 5,
+     "M02": 462,
+     "E03": 563,
+     "C02": 838,
+     "M04": 1
+    },
+    "active_agent_steps_by_conflict_pair": {
+     "S04-M02": 103,
+     "S05-M02": 73,
+     "C01-M02": 697,
+     "C03-M02": 255,
+     "C02-M01": 454,
+     "M01-M02": 1045,
+     "S02-M02": 0,
+     "S03-M02": 1361,
+     "I02-M02": 6,
+     "I03-M02": 30,
+     "M04-S04": 1437,
+     "C01-C03": 0,
+     "M05-E03": 220
+    },
+    "multi_candidate_events": 1,
+    "arbitration_modes": {
+     "fixed_score_plus_bid": 1
+    },
+    "winners_different_from_fixed_score": 0,
+    "request_outcomes": {
+     "lost_arbitration": 1,
+     "selected": 156,
+     "c04_rejected": 40
+    },
+    "sensor_diagnostics": {
+     "units": {
+      "radar": "target-dwell; each platform counts separately",
+      "verdict": "target-verdict-update; once per decision step",
+      "reset_causes": "exclusive: zone, missing track, then age"
+     },
+     "radar": {
+      "dwell_calls": 4446,
+      "active_dwell_calls": 4446,
+      "all_targets": {
+       "opportunities": 604,
+       "hits": 604,
+       "misses": 0
+      },
+      "unfinished_targets": {
+       "opportunities": 478,
+       "hits": 478,
+       "misses": 0
+      },
+      "per_wingman": {
+       "0": {
+        "dwell_calls": 1482,
+        "active_dwell_calls": 1482,
+        "all_targets": {
+         "opportunities": 202,
+         "hits": 202,
+         "misses": 0
+        },
+        "unfinished_targets": {
+         "opportunities": 117,
+         "hits": 117,
+         "misses": 0
+        }
+       },
+       "1": {
+        "dwell_calls": 1482,
+        "active_dwell_calls": 1482,
+        "all_targets": {
+         "opportunities": 232,
+         "hits": 232,
+         "misses": 0
+        },
+        "unfinished_targets": {
+         "opportunities": 216,
+         "hits": 216,
+         "misses": 0
+        }
+       },
+       "2": {
+        "dwell_calls": 1482,
+        "active_dwell_calls": 1482,
+        "all_targets": {
+         "opportunities": 170,
+         "hits": 170,
+         "misses": 0
+        },
+        "unfinished_targets": {
+         "opportunities": 145,
+         "hits": 145,
+         "misses": 0
+        }
+       }
+      }
+     },
+     "verdict": {
+      "unfinished_target_steps": 1641,
+      "owned_unfinished_target_steps": 698,
+      "unowned_tracking_target_steps": 0,
+      "owner_gate_failed_target_steps": 674,
+      "stable_progress_resets": 0,
+      "newly_judged_targets": 3,
+      "owner_gate_failure_causes": {
+       "outside_tracking_zone": 212,
+       "missing_owner_track": 462,
+       "stale_owner_track": 0
+      },
+      "reset_causes": {
+       "outside_tracking_zone": 0,
+       "missing_owner_track": 0,
+       "stale_owner_track": 0
+      },
+      "max_stable_progress_by_target": {
+       "0": 8,
+       "2": 8,
+       "1": 8,
+       "3": 0
+      }
+     }
+    },
+    "effective_task_config_sha256": "256d20dadddbf0b400462a23a5f7c846156732131a7ef1b542f2235555cf2f3d"
+   }
+  ]
+ },
+ "best": {
+  "update": 2,
+  "checkpoint": {
+   "role": "adaptation_checkpoint",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_smoke_k4_w8a10_20261021\\checkpoints\\update_0002.pt",
+   "exists": true,
+   "size_bytes": 1765534,
+   "sha256": "bf088913f62a43a805263f98d445a87476b4d0654fa780fa1165553ed0c4cf6e"
+  },
+  "validation_summary": {
+   "episodes": 2,
+   "successes": 1,
+   "success_rate": 0.5,
+   "success_rate_wilson_95": [
+    0.09453120573423074,
+    0.9054687942657693
+   ],
+   "mean_return": -2271.450688798795,
+   "total_steps": 1016,
+   "total_violations": 5177,
+   "violations_per_step": 5.0954724409448815,
+   "mean_episode_violations_per_step": 4.3418102305857404,
+   "mean_judged_targets": 3.5,
+   "radar_target_dwell_counts": {
+    "all_targets": {
+     "opportunities": 399,
+     "hits": 399,
+     "misses": 0,
+     "hit_fraction_per_opportunity": 1.0
+    },
+    "unfinished_targets": {
+     "opportunities": 292,
+     "hits": 292,
+     "misses": 0,
+     "hit_fraction_per_opportunity": 1.0
+    }
+   },
+   "stable_progress_resets": 0,
+   "stable_reset_causes": {
+    "outside_tracking_zone": 0,
+    "missing_owner_track": 0,
+    "stale_owner_track": 0
+   },
+   "owner_gate_failure_target_step_causes": {
+    "outside_tracking_zone": 306,
+    "missing_owner_track": 5,
+    "stale_owner_track": 0
+   },
+   "unowned_tracking_target_steps": 658,
+   "violations_by_family": {
+    "M01": 49,
+    "M03": 263,
+    "C04": 30,
+    "S05": 2081,
+    "I03": 18,
+    "E01": 51,
+    "M02": 5,
+    "E03": 430,
+    "S04": 1348,
+    "M05": 354,
+    "C02": 517,
+    "S02": 30,
+    "M04": 1
+   },
+   "active_agent_steps_by_conflict_pair": {
+    "S04-M02": 34,
+    "S05-M02": 164,
+    "C01-M02": 437,
+    "C03-M02": 697,
+    "C02-M01": 216,
+    "M01-M02": 1116,
+    "S02-M02": 284,
+    "S03-M02": 2019,
+    "I02-M02": 8,
+    "I03-M02": 200,
+    "M04-S04": 1482,
+    "C01-C03": 0,
+    "M05-E03": 1
+   },
+   "conflict_pairs_observed": 12,
+   "multi_candidate_events": 0,
+   "winners_different_from_fixed_score": 0
+  },
+  "selected_checkpoint": {
+   "role": "selected_best_checkpoint",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_smoke_k4_w8a10_20261021\\best.pt",
+   "exists": true,
+   "size_bytes": 1765534,
+   "sha256": "bf088913f62a43a805263f98d445a87476b4d0654fa780fa1165553ed0c4cf6e"
+  }
+ },
+ "latest": {
+  "update": 2,
+  "checkpoint": {
+   "role": "adaptation_checkpoint",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_smoke_k4_w8a10_20261021\\checkpoints\\update_0002.pt",
+   "exists": true,
+   "size_bytes": 1765534,
+   "sha256": "bf088913f62a43a805263f98d445a87476b4d0654fa780fa1165553ed0c4cf6e"
+  }
+ },
+ "training_episodes_completed": 4,
+ "initial_to_best_validation_success_delta": 0.0
+}

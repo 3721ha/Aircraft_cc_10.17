@@ -1,0 +1,31 @@
+{
+ "status": "passed",
+ "checks": {
+  "completed_two_updates_four_episodes": true,
+  "no_source_drift": true,
+  "source_zip_sha256": true,
+  "source_members_sha256": true,
+  "current_sources_match_smoke": true,
+  "all_input_output_sha256": true,
+  "task_profile": true,
+  "task_hash": true,
+  "no_reserved_test": true,
+  "initial_preserves_every_source_actor_tensor": true,
+  "zero_output_legacy_geometry_addition": true,
+  "initial_included_in_selection": true,
+  "selection_not_latest_fallback": true,
+  "selected_best_copy_matches": true,
+  "all_intended_parameter_groups_move": true,
+  "unmodified_axis_ppo_samples_active": true,
+  "natural_informative_environment_copy_events": true,
+  "update_1_xi_anchor_model_exactly_frozen": true,
+  "update_1_policy_anchor_model_exactly_frozen": true,
+  "update_1_geometry_exactly_frozen": true,
+  "update_2_xi_anchor_model_exactly_frozen": true,
+  "update_2_policy_anchor_model_exactly_frozen": true,
+  "update_2_geometry_exactly_frozen": true
+ },
+ "method": "JSON/hash/source ZIP verification and independent torch checkpoint tensor comparison; no new environment rollouts",
+ "source_files": 38,
+ "limitations": "Smoke validates implementation, not success-rate improvement or conflict-arbitration benefit."
+}

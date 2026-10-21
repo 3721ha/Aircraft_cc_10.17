@@ -332,6 +332,10 @@ class DetectMAPPOConfig:
     # are learned through the intervention imitation term below.
     shield_aware_continuous: bool = False
     mask_intervened_continuous: bool = True
+    # Legacy updates mask every continuous head when flight controls are
+    # projected. Opt-in sensor adaptation may retain u_xi credit because the
+    # shield changes only u_psi/u_v, leaving the sampled radar action intact.
+    mask_intervened_radar_axis: bool = True
     epochs: int = 2                    # gate-5 conservative (4 -> 2)
     gamma: float = 0.99
     gae_lambda: float = 0.95
@@ -1973,10 +1977,14 @@ class DetectMAPPOPolicy:
             cont_weight = (~action_exposure_t).float()
             if cfg.mask_intervened_continuous:
                 cont_weight = cont_weight * (~intervention_mask).float()
+            xi_weight = (~action_exposure_t).float()
+            if (cfg.mask_intervened_continuous
+                    and cfg.mask_intervened_radar_axis):
+                xi_weight = xi_weight * (~intervention_mask).float()
             loss_cont_uv = _ppo_head_loss(cont_uv_logp, old_logp_uv, adv_t,
                                           cont_weight)
             loss_cont_xi = _ppo_head_loss(cont_xi_logp, old_logp_xi, adv_t,
-                                          cont_weight)
+                                          xi_weight)
             xi_anchor_loss = self._xi_anchor_kl(obs_t, cont_loc)
             policy_anchor_kl = (
                 self._policy_anchor_kl(
@@ -2119,6 +2127,12 @@ class DetectMAPPOPolicy:
             "intervention_fraction": float(intervention_mask.float().mean()),
             "continuous_intervention_fraction": float(intervention_mask.float().mean()),
             "masked_continuous_fraction": float(intervention_mask.float().mean()),
+            "flight_ppo_active_fraction": (float(cont_weight.mean())
+                                           if not cfg.bid_only_ppo else 0.0),
+            "radar_axis_ppo_active_fraction": (float(xi_weight.mean())
+                                               if (not cfg.bid_only_ppo
+                                                   and cfg.xi_ppo_coef > 0.0)
+                                               else 0.0),
             "approx_kl": float(approx_kl.detach()),
             "bid_approx_kl": float(bid_approx_kl.detach()),
             "bid_post_update_kl": float(post_bid_kl.detach()),
