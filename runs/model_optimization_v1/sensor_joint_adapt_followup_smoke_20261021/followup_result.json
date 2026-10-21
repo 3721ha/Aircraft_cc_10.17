@@ -1,0 +1,1365 @@
+{
+ "status": "completed_independent_development_followup",
+ "protocol": {
+  "scope": "independent development follow-up; not a final test",
+  "seeds": [
+   219900
+  ],
+  "conditions": [
+   "initial_rl",
+   "best_rl",
+   "heur"
+  ],
+  "best_update_fixed": 8,
+  "task_config": {
+   "dt": 1.0,
+   "horizon": 900,
+   "L_X": 160.0,
+   "L_Y": 120.0,
+   "X_CUTOFF": 40.0,
+   "X_TRACK": 110.0,
+   "AGE_STD_TRACK": 10.0,
+   "AGE_STD_DETECT": 5.0,
+   "STABLE_WINDOW": 8,
+   "N_WINGMEN": 3,
+   "BLUE_V_MIN_MA": 0.4,
+   "BLUE_V_MAX_MA": 0.95,
+   "OMEGA_CRUISE_DEG": 3.0,
+   "OMEGA_MANEUVER_DEG": 6.0,
+   "ACCEL_MAX_MA_S": 0.1,
+   "K_PSI": 1.0,
+   "K_V_MS": 30.0,
+   "MANNED_V_MIN_MA": 0.5,
+   "MANNED_V_MAX_MA": 0.9,
+   "MANNED_OMEGA_DEG": 3.0,
+   "K_RED": 4,
+   "RED_CRUISE_MA": 0.75,
+   "RED_MANEUVER_MA_RANGE": [
+    0.6,
+    0.9
+   ],
+   "RED_OMEGA_DEG": 8.0,
+   "RED_DUTY_MIN": 0.7,
+   "RED_DUTY_MAX": 0.8,
+   "RED_STAGGER_KM": 8.0,
+   "RED_X0": 158.0,
+   "RED_MANEUVER_RESAMPLE": [
+    20,
+    40
+   ],
+   "RED_TURN_POISSON_MEAN": 30.0,
+   "RED_SNAKE_HALF_ANGLE_DEG": 30.0,
+   "RED_SNAKE_PERIOD": 20.0,
+   "RED_EDGE_SUPPRESS_KM": 5.0,
+   "RED_REGAIN_T": [
+    12.0,
+    20.0
+   ],
+   "RED_REGAIN_SPREAD_DEG": 30.0,
+   "RED_SEP_WARN_KM": 18.0,
+   "RED_SEP_HARD_KM": 2.0,
+   "RED_SEP_BIAS_DEG": 45.0,
+   "RED_PAIR_SUBLANE_KM": 4.0,
+   "R_MAX": 80.0,
+   "FOV_HALF_DEG": 7.5,
+   "BEAM_DWELL": 0.5,
+   "GEAR_FRAME": {
+    "7.5": 0.5,
+    "15.0": 1.0,
+    "30.0": 2.0,
+    "45.0": 3.0,
+    "60.0": 4.0
+   },
+   "GEARS_SEARCH": [
+    45.0,
+    60.0
+   ],
+   "GEARS_TRACK": [
+    7.5,
+    15.0,
+    30.0,
+    45.0
+   ],
+   "PD_TIERS": [
+    [
+     0.5,
+     0.9
+    ],
+    [
+     0.8,
+     0.6
+    ],
+    [
+     1.0,
+     0.3
+    ]
+   ],
+   "RADAR_HIT_MODEL": "deterministic_beam",
+   "SECTOR_AXIS_MAX_DEG": 60.0,
+   "AXIS_TRIM_SCALE_DEG": 15.0,
+   "TRACK_INIT_HITS": 2,
+   "TRACK_INIT_WINDOW": 6.5,
+   "TRACK_CONFIRM_TIME": 5.0,
+   "TRACK_CONFIRM_GAP_MAX": 1.6,
+   "AGE_DEGRADE": 8.0,
+   "AGE_DROP": 13.0,
+   "COV_SHRINK": 0.8,
+   "COV_Q_KM2_S": 0.25,
+   "SIGMA_REF": 4.0,
+   "MAR": 40.0,
+   "MOR": 60.0,
+   "MAR_MOR_VARIANTS": [
+    [
+     40.0,
+     60.0
+    ],
+    [
+     30.0,
+     50.0
+    ],
+    [
+     20.0,
+     40.0
+    ]
+   ],
+   "K_SIGMA": 3.0,
+   "MOR_GRADIENT_SPAN": 20.0,
+   "D_SAFE": 2.0,
+   "D_SAFE_LOOKAHEAD": 3.0,
+   "BOUNDARY_PREDICT": 5.0,
+   "LINK_RATE_HZ": 1.0,
+   "LINK_DELAY_S": 1.0,
+   "T_SCAN_REQ": 120.0,
+   "HANDOFF_MIN_INTERVAL": 30.0,
+   "HANDOFF_INTERVAL_SWEEP": [
+    10.0,
+    20.0,
+    30.0
+   ],
+   "C04_RANGE": 80.0,
+   "C04_RESPONSE": 5.0,
+   "T_DWELL": 5.0,
+   "APPROVAL_DELAY_INIT": 0.0,
+   "LINK_DROP_RATE": 0.3,
+   "LINK_DROP_WINDOW": 10.0,
+   "UPLINK_LOSS_P": 0.05,
+   "E03_AREA_PER_KM": 5.0,
+   "N_SUBZONES": 3,
+   "TRACK_SWEET_DIST": 62.0,
+   "TRACK_K_D": 0.0025,
+   "CAP_X": 15.0,
+   "CAP_Y": 60.0,
+   "CAP_LEG_Y": 10.0,
+   "CAP_LEG_X": 5.0,
+   "ARB_WEIGHTS": [
+    1.0,
+    1.0,
+    0.5,
+    0.5,
+    0.3
+   ],
+   "ARB_HYSTERESIS": 0.2,
+   "ARB_BID_WEIGHT": 0.35,
+   "W1_TRACK_TICK": 0.02,
+   "W2_DETECT_TICK": 0.005,
+   "W3_STABLE": 10.0,
+   "W4_SUCCESS": 50.0,
+   "W5_MOR_GRAD": 0.02,
+   "W6_MAR": 0.1,
+   "W7_HANDOFF": 0.5,
+   "W8_LAYER": [
+    10.0,
+    7.5,
+    10.0,
+    5.0,
+    2.5,
+    1.25
+   ],
+   "W8_SCALE": 1.0,
+   "M05_GRACE": 5.0,
+   "W9_FAILURE": 50.0,
+   "STEP_COST": 0.005,
+   "OBS_DIM": 169,
+   "TRACK_SLOTS": 8,
+   "NET_HIDDEN": 128,
+   "TOTAL_STEPS": 1500000,
+   "N_ENVS": 16,
+   "N_SEEDS": 10,
+   "BC_EPOCHS": [
+    50,
+    100
+   ],
+   "CONVERGE_WINDOW": 100,
+   "seed": 7
+  },
+  "task_config_sha256": "256d20dadddbf0b400462a23a5f7c846156732131a7ef1b542f2235555cf2f3d",
+  "training": false,
+  "checkpoint_selection": false,
+  "conflict_injection": false,
+  "reserved_test_run": false,
+  "reserved_test_seeds_not_run": [
+   208000,
+   208001,
+   208002,
+   208003,
+   208004,
+   208005,
+   208006,
+   208007,
+   208008,
+   208009,
+   208010,
+   208011,
+   208012,
+   208013,
+   208014,
+   208015,
+   208016,
+   208017,
+   208018,
+   208019,
+   208020,
+   208021,
+   208022,
+   208023,
+   208024,
+   208025,
+   208026,
+   208027,
+   208028,
+   208029
+  ],
+  "screening": {
+   "adaptation": "best success >= initial, mean return > initial, pooled violations/step <= initial",
+   "heur_comparison": "best success >= HEUR, mean return > HEUR, pooled violations/step <= HEUR",
+   "meaning": "descriptive joint screen; not proof of significance, final acceptance or arbitration benefit"
+  }
+ },
+ "task_config": {
+  "dt": 1.0,
+  "horizon": 900,
+  "L_X": 160.0,
+  "L_Y": 120.0,
+  "X_CUTOFF": 40.0,
+  "X_TRACK": 110.0,
+  "AGE_STD_TRACK": 10.0,
+  "AGE_STD_DETECT": 5.0,
+  "STABLE_WINDOW": 8,
+  "N_WINGMEN": 3,
+  "BLUE_V_MIN_MA": 0.4,
+  "BLUE_V_MAX_MA": 0.95,
+  "OMEGA_CRUISE_DEG": 3.0,
+  "OMEGA_MANEUVER_DEG": 6.0,
+  "ACCEL_MAX_MA_S": 0.1,
+  "K_PSI": 1.0,
+  "K_V_MS": 30.0,
+  "MANNED_V_MIN_MA": 0.5,
+  "MANNED_V_MAX_MA": 0.9,
+  "MANNED_OMEGA_DEG": 3.0,
+  "K_RED": 4,
+  "RED_CRUISE_MA": 0.75,
+  "RED_MANEUVER_MA_RANGE": [
+   0.6,
+   0.9
+  ],
+  "RED_OMEGA_DEG": 8.0,
+  "RED_DUTY_MIN": 0.7,
+  "RED_DUTY_MAX": 0.8,
+  "RED_STAGGER_KM": 8.0,
+  "RED_X0": 158.0,
+  "RED_MANEUVER_RESAMPLE": [
+   20,
+   40
+  ],
+  "RED_TURN_POISSON_MEAN": 30.0,
+  "RED_SNAKE_HALF_ANGLE_DEG": 30.0,
+  "RED_SNAKE_PERIOD": 20.0,
+  "RED_EDGE_SUPPRESS_KM": 5.0,
+  "RED_REGAIN_T": [
+   12.0,
+   20.0
+  ],
+  "RED_REGAIN_SPREAD_DEG": 30.0,
+  "RED_SEP_WARN_KM": 18.0,
+  "RED_SEP_HARD_KM": 2.0,
+  "RED_SEP_BIAS_DEG": 45.0,
+  "RED_PAIR_SUBLANE_KM": 4.0,
+  "R_MAX": 80.0,
+  "FOV_HALF_DEG": 7.5,
+  "BEAM_DWELL": 0.5,
+  "GEAR_FRAME": {
+   "7.5": 0.5,
+   "15.0": 1.0,
+   "30.0": 2.0,
+   "45.0": 3.0,
+   "60.0": 4.0
+  },
+  "GEARS_SEARCH": [
+   45.0,
+   60.0
+  ],
+  "GEARS_TRACK": [
+   7.5,
+   15.0,
+   30.0,
+   45.0
+  ],
+  "PD_TIERS": [
+   [
+    0.5,
+    0.9
+   ],
+   [
+    0.8,
+    0.6
+   ],
+   [
+    1.0,
+    0.3
+   ]
+  ],
+  "RADAR_HIT_MODEL": "deterministic_beam",
+  "SECTOR_AXIS_MAX_DEG": 60.0,
+  "AXIS_TRIM_SCALE_DEG": 15.0,
+  "TRACK_INIT_HITS": 2,
+  "TRACK_INIT_WINDOW": 6.5,
+  "TRACK_CONFIRM_TIME": 5.0,
+  "TRACK_CONFIRM_GAP_MAX": 1.6,
+  "AGE_DEGRADE": 8.0,
+  "AGE_DROP": 13.0,
+  "COV_SHRINK": 0.8,
+  "COV_Q_KM2_S": 0.25,
+  "SIGMA_REF": 4.0,
+  "MAR": 40.0,
+  "MOR": 60.0,
+  "MAR_MOR_VARIANTS": [
+   [
+    40.0,
+    60.0
+   ],
+   [
+    30.0,
+    50.0
+   ],
+   [
+    20.0,
+    40.0
+   ]
+  ],
+  "K_SIGMA": 3.0,
+  "MOR_GRADIENT_SPAN": 20.0,
+  "D_SAFE": 2.0,
+  "D_SAFE_LOOKAHEAD": 3.0,
+  "BOUNDARY_PREDICT": 5.0,
+  "LINK_RATE_HZ": 1.0,
+  "LINK_DELAY_S": 1.0,
+  "T_SCAN_REQ": 120.0,
+  "HANDOFF_MIN_INTERVAL": 30.0,
+  "HANDOFF_INTERVAL_SWEEP": [
+   10.0,
+   20.0,
+   30.0
+  ],
+  "C04_RANGE": 80.0,
+  "C04_RESPONSE": 5.0,
+  "T_DWELL": 5.0,
+  "APPROVAL_DELAY_INIT": 0.0,
+  "LINK_DROP_RATE": 0.3,
+  "LINK_DROP_WINDOW": 10.0,
+  "UPLINK_LOSS_P": 0.05,
+  "E03_AREA_PER_KM": 5.0,
+  "N_SUBZONES": 3,
+  "TRACK_SWEET_DIST": 62.0,
+  "TRACK_K_D": 0.0025,
+  "CAP_X": 15.0,
+  "CAP_Y": 60.0,
+  "CAP_LEG_Y": 10.0,
+  "CAP_LEG_X": 5.0,
+  "ARB_WEIGHTS": [
+   1.0,
+   1.0,
+   0.5,
+   0.5,
+   0.3
+  ],
+  "ARB_HYSTERESIS": 0.2,
+  "ARB_BID_WEIGHT": 0.35,
+  "W1_TRACK_TICK": 0.02,
+  "W2_DETECT_TICK": 0.005,
+  "W3_STABLE": 10.0,
+  "W4_SUCCESS": 50.0,
+  "W5_MOR_GRAD": 0.02,
+  "W6_MAR": 0.1,
+  "W7_HANDOFF": 0.5,
+  "W8_LAYER": [
+   10.0,
+   7.5,
+   10.0,
+   5.0,
+   2.5,
+   1.25
+  ],
+  "W8_SCALE": 1.0,
+  "M05_GRACE": 5.0,
+  "W9_FAILURE": 50.0,
+  "STEP_COST": 0.005,
+  "OBS_DIM": 169,
+  "TRACK_SLOTS": 8,
+  "NET_HIDDEN": 128,
+  "TOTAL_STEPS": 1500000,
+  "N_ENVS": 16,
+  "N_SEEDS": 10,
+  "BC_EPOCHS": [
+   50,
+   100
+  ],
+  "CONVERGE_WINDOW": 100,
+  "seed": 7
+ },
+ "task_config_sha256": "256d20dadddbf0b400462a23a5f7c846156732131a7ef1b542f2235555cf2f3d",
+ "checkpoints": {
+  "initial_rl": {
+   "role": "initial_rl",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_k4_w8a10_v1\\initial.pt",
+   "exists": true,
+   "size_bytes": 1764730,
+   "sha256": "ef86e5734d2a6466694371a0931386d7f1937355f279eed28f1560dcae27499b"
+  },
+  "best_rl": {
+   "role": "best_rl",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_k4_w8a10_v1\\best.pt",
+   "exists": true,
+   "size_bytes": 1765534,
+   "sha256": "b30c53060f0374b204ca95fd6797bbf9a7ec5b1fb00d6d628e2afe5998f0e801"
+  }
+ },
+ "summaries": {
+  "initial_rl": {
+   "episodes": 1,
+   "successes": 1,
+   "success_rate": 1.0,
+   "success_rate_wilson_95": [
+    0.20654931437723745,
+    1.0
+   ],
+   "mean_return": -1249.8177922124437,
+   "total_steps": 406,
+   "total_violations": 1239,
+   "violations_per_step": 3.0517241379310347,
+   "mean_episode_violations_per_step": 3.0517241379310347,
+   "mean_judged_targets": 4.0,
+   "radar_target_dwell_counts": {
+    "all_targets": {
+     "opportunities": 235,
+     "hits": 235,
+     "misses": 0,
+     "hit_fraction_per_opportunity": 1.0
+    },
+    "unfinished_targets": {
+     "opportunities": 164,
+     "hits": 164,
+     "misses": 0,
+     "hit_fraction_per_opportunity": 1.0
+    }
+   },
+   "stable_progress_resets": 0,
+   "stable_reset_causes": {
+    "outside_tracking_zone": 0,
+    "missing_owner_track": 0,
+    "stale_owner_track": 0
+   },
+   "owner_gate_failure_target_step_causes": {
+    "outside_tracking_zone": 250,
+    "missing_owner_track": 22,
+    "stale_owner_track": 2
+   },
+   "unowned_tracking_target_steps": 38,
+   "violations_by_family": {
+    "M03": 250,
+    "S05": 667,
+    "E01": 22,
+    "M01": 16,
+    "C04": 49,
+    "I03": 7,
+    "M02": 24,
+    "E03": 35,
+    "S04": 115,
+    "C02": 54
+   },
+   "active_agent_steps_by_conflict_pair": {
+    "S04-M02": 0,
+    "S05-M02": 157,
+    "C01-M02": 312,
+    "C03-M02": 228,
+    "C02-M01": 54,
+    "M01-M02": 533,
+    "S02-M02": 0,
+    "S03-M02": 673,
+    "I02-M02": 0,
+    "I03-M02": 194,
+    "M04-S04": 378,
+    "C01-C03": 9,
+    "M05-E03": 0
+   },
+   "conflict_pairs_observed": 9,
+   "multi_candidate_events": 23,
+   "winners_different_from_fixed_score": 1
+  },
+  "best_rl": {
+   "episodes": 1,
+   "successes": 0,
+   "success_rate": 0.0,
+   "success_rate_wilson_95": [
+    0.0,
+    0.7934506856227626
+   ],
+   "mean_return": -15515.500206029594,
+   "total_steps": 756,
+   "total_violations": 7242,
+   "violations_per_step": 9.579365079365079,
+   "mean_episode_violations_per_step": 9.579365079365079,
+   "mean_judged_targets": 2.0,
+   "radar_target_dwell_counts": {
+    "all_targets": {
+     "opportunities": 104,
+     "hits": 104,
+     "misses": 0,
+     "hit_fraction_per_opportunity": 1.0
+    },
+    "unfinished_targets": {
+     "opportunities": 69,
+     "hits": 69,
+     "misses": 0,
+     "hit_fraction_per_opportunity": 1.0
+    }
+   },
+   "stable_progress_resets": 0,
+   "stable_reset_causes": {
+    "outside_tracking_zone": 0,
+    "missing_owner_track": 0,
+    "stale_owner_track": 0
+   },
+   "owner_gate_failure_target_step_causes": {
+    "outside_tracking_zone": 213,
+    "missing_owner_track": 432,
+    "stale_owner_track": 0
+   },
+   "unowned_tracking_target_steps": 396,
+   "violations_by_family": {
+    "M01": 52,
+    "M03": 621,
+    "C04": 527,
+    "I03": 15,
+    "E01": 55,
+    "E02": 2,
+    "S05": 1570,
+    "M02": 432,
+    "E03": 1081,
+    "C02": 1175,
+    "S04": 1052,
+    "S03": 489,
+    "M05": 170,
+    "M04": 1
+   },
+   "active_agent_steps_by_conflict_pair": {
+    "S04-M02": 2,
+    "S05-M02": 32,
+    "C01-M02": 618,
+    "C03-M02": 567,
+    "C02-M01": 362,
+    "M01-M02": 647,
+    "S02-M02": 0,
+    "S03-M02": 1500,
+    "I02-M02": 0,
+    "I03-M02": 96,
+    "M04-S04": 1428,
+    "C01-C03": 12,
+    "M05-E03": 346
+   },
+   "conflict_pairs_observed": 11,
+   "multi_candidate_events": 0,
+   "winners_different_from_fixed_score": 0
+  },
+  "heur": {
+   "episodes": 1,
+   "successes": 1,
+   "success_rate": 1.0,
+   "success_rate_wilson_95": [
+    0.20654931437723745,
+    1.0
+   ],
+   "mean_return": -1511.702194929774,
+   "total_steps": 436,
+   "total_violations": 2230,
+   "violations_per_step": 5.114678899082569,
+   "mean_episode_violations_per_step": 5.114678899082569,
+   "mean_judged_targets": 4.0,
+   "radar_target_dwell_counts": {
+    "all_targets": {
+     "opportunities": 461,
+     "hits": 461,
+     "misses": 0,
+     "hit_fraction_per_opportunity": 1.0
+    },
+    "unfinished_targets": {
+     "opportunities": 393,
+     "hits": 393,
+     "misses": 0,
+     "hit_fraction_per_opportunity": 1.0
+    }
+   },
+   "stable_progress_resets": 0,
+   "stable_reset_causes": {
+    "outside_tracking_zone": 0,
+    "missing_owner_track": 0,
+    "stale_owner_track": 0
+   },
+   "owner_gate_failure_target_step_causes": {
+    "outside_tracking_zone": 160,
+    "missing_owner_track": 40,
+    "stale_owner_track": 0
+   },
+   "unowned_tracking_target_steps": 68,
+   "violations_by_family": {
+    "S05": 791,
+    "M03": 176,
+    "E01": 11,
+    "M01": 25,
+    "S04": 892,
+    "E03": 55,
+    "E02": 2,
+    "C04": 80,
+    "I03": 10,
+    "I02": 5,
+    "M02": 40,
+    "M05": 55,
+    "C02": 88
+   },
+   "active_agent_steps_by_conflict_pair": {
+    "S04-M02": 82,
+    "S05-M02": 59,
+    "C01-M02": 231,
+    "C03-M02": 239,
+    "C02-M01": 154,
+    "M01-M02": 680,
+    "S02-M02": 0,
+    "S03-M02": 833,
+    "I02-M02": 0,
+    "I03-M02": 21,
+    "M04-S04": 477,
+    "C01-C03": 0,
+    "M05-E03": 0
+   },
+   "conflict_pairs_observed": 9,
+   "multi_candidate_events": 1,
+   "winners_different_from_fixed_score": 0
+  }
+ },
+ "best_minus_initial": {
+  "direction": "right_minus_left",
+  "episodes": 1,
+  "success_rate_delta": -1.0,
+  "mean_return_delta": -14265.68241381715,
+  "violations_per_step_delta": 6.527640941434044,
+  "right_only_successes": 0,
+  "left_only_successes": 1,
+  "exact_paired_success_two_sided_p": 1.0,
+  "paired_percentile_bootstrap_95": {
+   "mean_return_delta": [
+    -14265.68241381715,
+    -14265.68241381715
+   ],
+   "success_rate_delta": [
+    -1.0,
+    -1.0
+   ],
+   "violations_per_step_delta": [
+    6.527640941434044,
+    6.527640941434044
+   ],
+   "mean_episode_violations_per_step_delta": [
+    6.527640941434044,
+    6.527640941434044
+   ]
+  },
+  "bootstrap_samples": 10000,
+  "bootstrap_seed": 20261027,
+  "mean_episode_violations_per_step_delta": 6.527640941434044,
+  "per_seed_differences": [
+   {
+    "seed": 219900,
+    "return_delta": -14265.68241381715,
+    "violations_per_step_delta": 6.527640941434044,
+    "success_delta": -1
+   }
+  ],
+  "success_flip_seeds": {
+   "right_only_successes": [],
+   "left_only_successes": [
+    219900
+   ]
+  },
+  "limits": "Intervals and exact p describe fixed checkpoints on these seeds; no multiplicity adjustment or arbitration attribution."
+ },
+ "best_minus_heur": {
+  "direction": "right_minus_left",
+  "episodes": 1,
+  "success_rate_delta": -1.0,
+  "mean_return_delta": -14003.79801109982,
+  "violations_per_step_delta": 4.46468618028251,
+  "right_only_successes": 0,
+  "left_only_successes": 1,
+  "exact_paired_success_two_sided_p": 1.0,
+  "paired_percentile_bootstrap_95": {
+   "mean_return_delta": [
+    -14003.79801109982,
+    -14003.79801109982
+   ],
+   "success_rate_delta": [
+    -1.0,
+    -1.0
+   ],
+   "violations_per_step_delta": [
+    4.46468618028251,
+    4.46468618028251
+   ],
+   "mean_episode_violations_per_step_delta": [
+    4.46468618028251,
+    4.46468618028251
+   ]
+  },
+  "bootstrap_samples": 10000,
+  "bootstrap_seed": 20261027,
+  "mean_episode_violations_per_step_delta": 4.46468618028251,
+  "per_seed_differences": [
+   {
+    "seed": 219900,
+    "return_delta": -14003.79801109982,
+    "violations_per_step_delta": 4.46468618028251,
+    "success_delta": -1
+   }
+  ],
+  "success_flip_seeds": {
+   "right_only_successes": [],
+   "left_only_successes": [
+    219900
+   ]
+  },
+  "limits": "Intervals and exact p describe fixed checkpoints on these seeds; no multiplicity adjustment or arbitration attribution."
+ },
+ "initial_minus_heur": {
+  "direction": "right_minus_left",
+  "episodes": 1,
+  "success_rate_delta": 0.0,
+  "mean_return_delta": 261.8844027173302,
+  "violations_per_step_delta": -2.062954761151534,
+  "right_only_successes": 0,
+  "left_only_successes": 0,
+  "exact_paired_success_two_sided_p": 1.0,
+  "paired_percentile_bootstrap_95": {
+   "mean_return_delta": [
+    261.8844027173302,
+    261.8844027173302
+   ],
+   "success_rate_delta": [
+    0.0,
+    0.0
+   ],
+   "violations_per_step_delta": [
+    -2.062954761151534,
+    -2.062954761151534
+   ],
+   "mean_episode_violations_per_step_delta": [
+    -2.062954761151534,
+    -2.062954761151534
+   ]
+  },
+  "bootstrap_samples": 10000,
+  "bootstrap_seed": 20261027,
+  "mean_episode_violations_per_step_delta": -2.062954761151534,
+  "per_seed_differences": [
+   {
+    "seed": 219900,
+    "return_delta": 261.8844027173302,
+    "violations_per_step_delta": -2.062954761151534,
+    "success_delta": 0
+   }
+  ],
+  "success_flip_seeds": {
+   "right_only_successes": [],
+   "left_only_successes": []
+  },
+  "limits": "Intervals and exact p describe fixed checkpoints on these seeds; no multiplicity adjustment or arbitration attribution."
+ },
+ "descriptive_screen_against_initial": {
+  "conditions": {
+   "success_not_lower": false,
+   "mean_return_higher": false,
+   "pooled_violations_not_higher": false
+  },
+  "passed": false,
+  "scope": "descriptive screen only; no automatic long-training authorization or final acceptance"
+ },
+ "descriptive_screen_against_heur": {
+  "conditions": {
+   "success_not_lower": false,
+   "mean_return_higher": false,
+   "pooled_violations_not_higher": false
+  },
+  "passed": false,
+  "scope": "descriptive screen only; no automatic long-training authorization or final acceptance"
+ },
+ "loaded_tensor_sha256": {
+  "initial_rl": "1dd33c54495c10fdbf10f7e8111ba71797ca31d7c0f3ad2683357b14b91acf9d",
+  "best_rl": "905e61effa39e4b0e7130dc14009830751c88a50df51d3090f8ab5111791d902"
+ },
+ "episodes": [
+  {
+   "sensor_profile": "deterministic_beam",
+   "controller": "rl",
+   "seed": 219900,
+   "k": 4,
+   "terminal": "success",
+   "return": -1249.8177922124437,
+   "steps": 406,
+   "violations": 1239,
+   "violations_per_step": 3.0517241379310347,
+   "judged_targets": 4,
+   "shield_interventions": 387,
+   "violations_by_family": {
+    "M03": 250,
+    "S05": 667,
+    "E01": 22,
+    "M01": 16,
+    "C04": 49,
+    "I03": 7,
+    "M02": 24,
+    "E03": 35,
+    "S04": 115,
+    "C02": 54
+   },
+   "active_agent_steps_by_conflict_pair": {
+    "S04-M02": 0,
+    "S05-M02": 157,
+    "C01-M02": 312,
+    "C03-M02": 228,
+    "C02-M01": 54,
+    "M01-M02": 533,
+    "S02-M02": 0,
+    "S03-M02": 673,
+    "I02-M02": 0,
+    "I03-M02": 194,
+    "M04-S04": 378,
+    "C01-C03": 9,
+    "M05-E03": 0
+   },
+   "multi_candidate_events": 23,
+   "arbitration_modes": {
+    "rl_direct": 23
+   },
+   "winners_different_from_fixed_score": 1,
+   "request_outcomes": {
+    "selected": 238,
+    "c04_rejected": 84,
+    "lost_arbitration": 23
+   },
+   "sensor_diagnostics": {
+    "units": {
+     "radar": "target-dwell; each platform counts separately",
+     "verdict": "target-verdict-update; once per decision step",
+     "reset_causes": "exclusive: zone, missing track, then age"
+    },
+    "radar": {
+     "dwell_calls": 2436,
+     "active_dwell_calls": 2436,
+     "all_targets": {
+      "opportunities": 235,
+      "hits": 235,
+      "misses": 0
+     },
+     "unfinished_targets": {
+      "opportunities": 164,
+      "hits": 164,
+      "misses": 0
+     },
+     "per_wingman": {
+      "0": {
+       "dwell_calls": 812,
+       "active_dwell_calls": 812,
+       "all_targets": {
+        "opportunities": 14,
+        "hits": 14,
+        "misses": 0
+       },
+       "unfinished_targets": {
+        "opportunities": 8,
+        "hits": 8,
+        "misses": 0
+       }
+      },
+      "1": {
+       "dwell_calls": 812,
+       "active_dwell_calls": 812,
+       "all_targets": {
+        "opportunities": 118,
+        "hits": 118,
+        "misses": 0
+       },
+       "unfinished_targets": {
+        "opportunities": 90,
+        "hits": 90,
+        "misses": 0
+       }
+      },
+      "2": {
+       "dwell_calls": 812,
+       "active_dwell_calls": 812,
+       "all_targets": {
+        "opportunities": 103,
+        "hits": 103,
+        "misses": 0
+       },
+       "unfinished_targets": {
+        "opportunities": 66,
+        "hits": 66,
+        "misses": 0
+       }
+      }
+     }
+    },
+    "verdict": {
+     "unfinished_target_steps": 1329,
+     "owned_unfinished_target_steps": 306,
+     "unowned_tracking_target_steps": 38,
+     "owner_gate_failed_target_steps": 274,
+     "stable_progress_resets": 0,
+     "newly_judged_targets": 4,
+     "owner_gate_failure_causes": {
+      "outside_tracking_zone": 250,
+      "missing_owner_track": 22,
+      "stale_owner_track": 2
+     },
+     "reset_causes": {
+      "outside_tracking_zone": 0,
+      "missing_owner_track": 0,
+      "stale_owner_track": 0
+     },
+     "max_stable_progress_by_target": {
+      "0": 8,
+      "2": 8,
+      "3": 8,
+      "1": 8
+     }
+    }
+   },
+   "effective_task_config_sha256": "256d20dadddbf0b400462a23a5f7c846156732131a7ef1b542f2235555cf2f3d",
+   "effective_policy_config": {
+    "hidden_size": 128,
+    "clip_ratio": 0.2,
+    "learning_rate": 1e-05,
+    "bc_learning_rate": 0.001,
+    "value_coef": 0.5,
+    "entropy_coef": 0.01,
+    "intervention_coef": 0.2,
+    "shield_aware_continuous": false,
+    "mask_intervened_continuous": true,
+    "mask_intervened_radar_axis": false,
+    "epochs": 2,
+    "gamma": 0.99,
+    "gae_lambda": 0.95,
+    "reward_scale": 0.1,
+    "initial_log_std": -1.2,
+    "target_kl": 0.01,
+    "bid_target_kl": 0.01,
+    "shaping_kappa": 0.05,
+    "shaping_age_cap": 8.0,
+    "role_shaping_kappa": 0.3,
+    "role_adv_coef": 1.5,
+    "geo_shaping_kappa": 0.15,
+    "stable_shaping_kappa": 1.0,
+    "cf_adv_coef": 1.0,
+    "cf_ownership_bonus": 0.5,
+    "cf_request_credit": 0.25,
+    "cf_global_mix": 0.25,
+    "cf_role_coef": 0.5,
+    "cf_bid_coef": 1.0,
+    "cf_bid_utility_scale": 0.1,
+    "cf_bid_horizon": 1,
+    "cf_bid_margin_coef": 0.25,
+    "cf_bid_margin_temp": 0.25,
+    "bid_only_ppo": false,
+    "task_residual_only_ppo": false,
+    "train_geometry_adapter": false,
+    "direct_rl_arbitration": true,
+    "gear_gate_coef": 0.0,
+    "conflict_exposure_prob": 0.0,
+    "xi_ppo_coef": 1.0,
+    "xi_anchor_coef": 0.0,
+    "policy_anchor_coef": 0.5,
+    "policy_anchor_monitor": true
+   },
+   "checkpoint_migration": {
+    "source": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_followup_smoke_20261021\\provenance\\initial_rl_initial.pt",
+    "geometry_adapter": {
+     "policy": "restored",
+     "xi-anchor": "restored",
+     "policy-anchor": "restored"
+    },
+    "adapter_initialization_seed": 20261022,
+    "legacy_output_preservation": "final geometry weights and bias are zero"
+   },
+   "loaded_tensor_sha256": "1dd33c54495c10fdbf10f7e8111ba71797ca31d7c0f3ad2683357b14b91acf9d",
+   "weights_unchanged": true,
+   "model": "initial_rl"
+  },
+  {
+   "sensor_profile": "deterministic_beam",
+   "controller": "rl",
+   "seed": 219900,
+   "k": 4,
+   "terminal": "failure",
+   "return": -15515.500206029594,
+   "steps": 756,
+   "violations": 7242,
+   "violations_per_step": 9.579365079365079,
+   "judged_targets": 2,
+   "shield_interventions": 1016,
+   "violations_by_family": {
+    "M01": 52,
+    "M03": 621,
+    "C04": 527,
+    "I03": 15,
+    "E01": 55,
+    "E02": 2,
+    "S05": 1570,
+    "M02": 432,
+    "E03": 1081,
+    "C02": 1175,
+    "S04": 1052,
+    "S03": 489,
+    "M05": 170,
+    "M04": 1
+   },
+   "active_agent_steps_by_conflict_pair": {
+    "S04-M02": 2,
+    "S05-M02": 32,
+    "C01-M02": 618,
+    "C03-M02": 567,
+    "C02-M01": 362,
+    "M01-M02": 647,
+    "S02-M02": 0,
+    "S03-M02": 1500,
+    "I02-M02": 0,
+    "I03-M02": 96,
+    "M04-S04": 1428,
+    "C01-C03": 12,
+    "M05-E03": 346
+   },
+   "multi_candidate_events": 0,
+   "arbitration_modes": {},
+   "winners_different_from_fixed_score": 0,
+   "request_outcomes": {
+    "selected": 73,
+    "c04_rejected": 138
+   },
+   "sensor_diagnostics": {
+    "units": {
+     "radar": "target-dwell; each platform counts separately",
+     "verdict": "target-verdict-update; once per decision step",
+     "reset_causes": "exclusive: zone, missing track, then age"
+    },
+    "radar": {
+     "dwell_calls": 4536,
+     "active_dwell_calls": 4536,
+     "all_targets": {
+      "opportunities": 104,
+      "hits": 104,
+      "misses": 0
+     },
+     "unfinished_targets": {
+      "opportunities": 69,
+      "hits": 69,
+      "misses": 0
+     },
+     "per_wingman": {
+      "0": {
+       "dwell_calls": 1512,
+       "active_dwell_calls": 1512,
+       "all_targets": {
+        "opportunities": 43,
+        "hits": 43,
+        "misses": 0
+       },
+       "unfinished_targets": {
+        "opportunities": 30,
+        "hits": 30,
+        "misses": 0
+       }
+      },
+      "1": {
+       "dwell_calls": 1512,
+       "active_dwell_calls": 1512,
+       "all_targets": {
+        "opportunities": 24,
+        "hits": 24,
+        "misses": 0
+       },
+       "unfinished_targets": {
+        "opportunities": 10,
+        "hits": 10,
+        "misses": 0
+       }
+      },
+      "2": {
+       "dwell_calls": 1512,
+       "active_dwell_calls": 1512,
+       "all_targets": {
+        "opportunities": 37,
+        "hits": 37,
+        "misses": 0
+       },
+       "unfinished_targets": {
+        "opportunities": 29,
+        "hits": 29,
+        "misses": 0
+       }
+      }
+     }
+    },
+    "verdict": {
+     "unfinished_target_steps": 2080,
+     "owned_unfinished_target_steps": 661,
+     "unowned_tracking_target_steps": 396,
+     "owner_gate_failed_target_steps": 645,
+     "stable_progress_resets": 0,
+     "newly_judged_targets": 2,
+     "owner_gate_failure_causes": {
+      "outside_tracking_zone": 213,
+      "missing_owner_track": 432,
+      "stale_owner_track": 0
+     },
+     "reset_causes": {
+      "outside_tracking_zone": 0,
+      "missing_owner_track": 0,
+      "stale_owner_track": 0
+     },
+     "max_stable_progress_by_target": {
+      "2": 8,
+      "0": 8,
+      "3": 0
+     }
+    }
+   },
+   "effective_task_config_sha256": "256d20dadddbf0b400462a23a5f7c846156732131a7ef1b542f2235555cf2f3d",
+   "effective_policy_config": {
+    "hidden_size": 128,
+    "clip_ratio": 0.2,
+    "learning_rate": 1e-05,
+    "bc_learning_rate": 0.001,
+    "value_coef": 0.5,
+    "entropy_coef": 0.01,
+    "intervention_coef": 0.2,
+    "shield_aware_continuous": false,
+    "mask_intervened_continuous": true,
+    "mask_intervened_radar_axis": false,
+    "epochs": 2,
+    "gamma": 0.99,
+    "gae_lambda": 0.95,
+    "reward_scale": 0.1,
+    "initial_log_std": -1.2,
+    "target_kl": 0.01,
+    "bid_target_kl": 0.01,
+    "shaping_kappa": 0.05,
+    "shaping_age_cap": 8.0,
+    "role_shaping_kappa": 0.3,
+    "role_adv_coef": 1.5,
+    "geo_shaping_kappa": 0.15,
+    "stable_shaping_kappa": 1.0,
+    "cf_adv_coef": 1.0,
+    "cf_ownership_bonus": 0.5,
+    "cf_request_credit": 0.25,
+    "cf_global_mix": 0.25,
+    "cf_role_coef": 0.5,
+    "cf_bid_coef": 1.0,
+    "cf_bid_utility_scale": 0.1,
+    "cf_bid_horizon": 1,
+    "cf_bid_margin_coef": 0.25,
+    "cf_bid_margin_temp": 0.25,
+    "bid_only_ppo": false,
+    "task_residual_only_ppo": false,
+    "train_geometry_adapter": false,
+    "direct_rl_arbitration": true,
+    "gear_gate_coef": 0.0,
+    "conflict_exposure_prob": 0.0,
+    "xi_ppo_coef": 1.0,
+    "xi_anchor_coef": 0.0,
+    "policy_anchor_coef": 0.5,
+    "policy_anchor_monitor": true
+   },
+   "checkpoint_migration": {
+    "source": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_followup_smoke_20261021\\provenance\\best_rl_best.pt",
+    "geometry_adapter": {
+     "policy": "restored",
+     "xi-anchor": "restored",
+     "policy-anchor": "restored"
+    },
+    "adapter_initialization_seed": 20261022,
+    "legacy_output_preservation": "final geometry weights and bias are zero"
+   },
+   "loaded_tensor_sha256": "905e61effa39e4b0e7130dc14009830751c88a50df51d3090f8ab5111791d902",
+   "weights_unchanged": true,
+   "model": "best_rl"
+  },
+  {
+   "sensor_profile": "deterministic_beam",
+   "controller": "heur",
+   "seed": 219900,
+   "k": 4,
+   "terminal": "success",
+   "return": -1511.702194929774,
+   "steps": 436,
+   "violations": 2230,
+   "violations_per_step": 5.114678899082569,
+   "judged_targets": 4,
+   "shield_interventions": 545,
+   "violations_by_family": {
+    "S05": 791,
+    "M03": 176,
+    "E01": 11,
+    "M01": 25,
+    "S04": 892,
+    "E03": 55,
+    "E02": 2,
+    "C04": 80,
+    "I03": 10,
+    "I02": 5,
+    "M02": 40,
+    "M05": 55,
+    "C02": 88
+   },
+   "active_agent_steps_by_conflict_pair": {
+    "S04-M02": 82,
+    "S05-M02": 59,
+    "C01-M02": 231,
+    "C03-M02": 239,
+    "C02-M01": 154,
+    "M01-M02": 680,
+    "S02-M02": 0,
+    "S03-M02": 833,
+    "I02-M02": 0,
+    "I03-M02": 21,
+    "M04-S04": 477,
+    "C01-C03": 0,
+    "M05-E03": 0
+   },
+   "multi_candidate_events": 1,
+   "arbitration_modes": {
+    "fixed_score_plus_bid": 1
+   },
+   "winners_different_from_fixed_score": 0,
+   "request_outcomes": {
+    "lost_arbitration": 2,
+    "selected": 139,
+    "c04_rejected": 39
+   },
+   "sensor_diagnostics": {
+    "units": {
+     "radar": "target-dwell; each platform counts separately",
+     "verdict": "target-verdict-update; once per decision step",
+     "reset_causes": "exclusive: zone, missing track, then age"
+    },
+    "radar": {
+     "dwell_calls": 2616,
+     "active_dwell_calls": 2616,
+     "all_targets": {
+      "opportunities": 461,
+      "hits": 461,
+      "misses": 0
+     },
+     "unfinished_targets": {
+      "opportunities": 393,
+      "hits": 393,
+      "misses": 0
+     },
+     "per_wingman": {
+      "0": {
+       "dwell_calls": 872,
+       "active_dwell_calls": 872,
+       "all_targets": {
+        "opportunities": 65,
+        "hits": 65,
+        "misses": 0
+       },
+       "unfinished_targets": {
+        "opportunities": 51,
+        "hits": 51,
+        "misses": 0
+       }
+      },
+      "1": {
+       "dwell_calls": 872,
+       "active_dwell_calls": 872,
+       "all_targets": {
+        "opportunities": 190,
+        "hits": 190,
+        "misses": 0
+       },
+       "unfinished_targets": {
+        "opportunities": 172,
+        "hits": 172,
+        "misses": 0
+       }
+      },
+      "2": {
+       "dwell_calls": 872,
+       "active_dwell_calls": 872,
+       "all_targets": {
+        "opportunities": 206,
+        "hits": 206,
+        "misses": 0
+       },
+       "unfinished_targets": {
+        "opportunities": 170,
+        "hits": 170,
+        "misses": 0
+       }
+      }
+     }
+    },
+    "verdict": {
+     "unfinished_target_steps": 1375,
+     "owned_unfinished_target_steps": 232,
+     "unowned_tracking_target_steps": 68,
+     "owner_gate_failed_target_steps": 200,
+     "stable_progress_resets": 0,
+     "newly_judged_targets": 4,
+     "owner_gate_failure_causes": {
+      "outside_tracking_zone": 160,
+      "missing_owner_track": 40,
+      "stale_owner_track": 0
+     },
+     "reset_causes": {
+      "outside_tracking_zone": 0,
+      "missing_owner_track": 0,
+      "stale_owner_track": 0
+     },
+     "max_stable_progress_by_target": {
+      "0": 8,
+      "2": 8,
+      "3": 8,
+      "1": 8
+     }
+    }
+   },
+   "effective_task_config_sha256": "256d20dadddbf0b400462a23a5f7c846156732131a7ef1b542f2235555cf2f3d",
+   "model": "heur"
+  }
+ ],
+ "limitations": [
+  "These independent development seeds are now consumed; they are not a new final test pool after inspection.",
+  "The fixed initial and update-8 checkpoints are compared without selecting a new model.",
+  "Coverage proxies and changed winners do not demonstrate causal arbitration benefit.",
+  "Paired seeds share the initial scenario; subsequent stochastic trajectories can diverge after policy actions differ."
+ ],
+ "provenance_sidecar": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_followup_smoke_20261021\\followup.provenance.json"
+}

@@ -1,0 +1,102 @@
+{
+ "status": "passed",
+ "checks": {
+  "completed_lifecycle": true,
+  "source_unchanged": true,
+  "all_twelve_inputs_match": true,
+  "output_hash_matches": true,
+  "current_source_zip_hash": true,
+  "current_source_manifest_hash": true,
+  "current_source_members": true,
+  "smoke_seed_only": true,
+  "exact_three_conditions": true,
+  "no_training_selection_or_final_test": true,
+  "reserved_test_excluded": true,
+  "official_followup_not_run": true,
+  "full_task_hash": true,
+  "initial_rl_raw_summary": true,
+  "initial_rl_violations_by_family": true,
+  "initial_rl_deterministic_hits": true,
+  "initial_rl_runtime_matches_exact_saved_tensors": true,
+  "initial_rl_saved_effective_config": true,
+  "initial_rl_direct_rl_arbitration": true,
+  "best_rl_raw_summary": true,
+  "best_rl_violations_by_family": true,
+  "best_rl_deterministic_hits": true,
+  "best_rl_runtime_matches_exact_saved_tensors": true,
+  "best_rl_saved_effective_config": true,
+  "best_rl_direct_rl_arbitration": true,
+  "heur_raw_summary": true,
+  "heur_violations_by_family": true,
+  "heur_deterministic_hits": true,
+  "all_statistics_recomputed": true,
+  "no_incomplete_progress": true
+ },
+ "passed_checks": 30,
+ "source_entry": {
+  "role": "entry",
+  "path": "D:\\Desktop\\Aircraft_mumt_cc\\_evaluate_sensor_adaptation.py",
+  "exists": true,
+  "size_bytes": 20360,
+  "sha256": "6377e72ad0b1c95526e707b51b08bd2ad5a6d95679bbd84c57dd933e5f4b7513"
+ },
+ "new_tests": {
+  "role": "tests",
+  "path": "D:\\Desktop\\Aircraft_mumt_cc\\Aircraft_mumt\\tests\\test_sensor_adaptation_followup.py",
+  "exists": true,
+  "size_bytes": 21110,
+  "sha256": "96b6dc84867e2826ecaa7853ad55040bc7732ae2595eb5ff5d5ebf032c16d417"
+ },
+ "smoke_result": {
+  "role": "smoke_result",
+  "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_followup_smoke_20261021\\followup_result.json",
+  "exists": true,
+  "size_bytes": 31558,
+  "sha256": "2361a5b10f19f3479cf76eb3f7485573aa066b06aea0b1b5471a18b6af90838c"
+ },
+ "smoke_provenance": {
+  "role": "smoke_provenance",
+  "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_followup_smoke_20261021\\followup.provenance.json",
+  "exists": true,
+  "size_bytes": 453100,
+  "sha256": "2bb7d7f7728727fb3d9e13e2715c260a90ef25674eb638d46820f658689ae734"
+ },
+ "test_runs": [
+  {
+   "scope": "existing profile and adaptation runner regression",
+   "passed": 61,
+   "seconds": 10.51
+  },
+  {
+   "scope": "new followup tests before final drift cases",
+   "passed": 46,
+   "seconds": 19.28
+  },
+  {
+   "scope": "two final source and input drift cases",
+   "passed": 2,
+   "seconds": 7.31
+  }
+ ],
+ "smoke_summaries": {
+  "initial_rl": {
+   "episodes": 1,
+   "successes": 1,
+   "mean_return": -1249.8177922124437,
+   "violations_per_step": 3.0517241379310347
+  },
+  "best_rl": {
+   "episodes": 1,
+   "successes": 0,
+   "mean_return": -15515.500206029594,
+   "violations_per_step": 9.579365079365079
+  },
+  "heur": {
+   "episodes": 1,
+   "successes": 1,
+   "mean_return": -1511.702194929774,
+   "violations_per_step": 5.114678899082569
+  }
+ },
+ "limitations": "One smoke seed verifies implementation only. Initial RL and HEUR succeeded; update8 failed. This is not evidence of aggregate improvement. The 30 followup development seeds and reserved final test have not run."
+}
