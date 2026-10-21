@@ -93,8 +93,21 @@ def _env_config() -> DetectSimConfig:
     return detect_config_profile(profile, **values)
 
 
-def _make_env() -> DetectEnv:
-    return DetectEnv(_env_config())
+def _task_config_for_k(k: int):
+    """Return the numeric config used for a K-specific rollout.
+
+    K is supplied to ``reset`` for each episode, so provenance and validation
+    hashes must include that override rather than the dataclass default.
+    """
+    cfg = _env_config()
+    if hasattr(cfg, "K_RED"):
+        return replace(cfg, K_RED=int(k))
+    # Lightweight test fixtures may provide only the fields they exercise.
+    return cfg
+
+
+def _make_env(k: int | None = None) -> DetectEnv:
+    return DetectEnv(_task_config_for_k(k) if k is not None else _env_config())
 
 BC_EPISODES = int(os.environ.get("MUMT_BC_EPISODES", "8"))
 BC_EPOCHS = int(os.environ.get("MUMT_BC_EPOCHS", "60"))
@@ -243,15 +256,18 @@ def _w8_scale_for_iter(iteration):
 def evaluate_paired(pol, shield, seeds, k):
     rl_rows = evaluate(pol, shield, seeds, k=k)
     heur_rows = evaluate_heuristic(shield, seeds, k=k)
+    config = _env_config()
+    if hasattr(config, "K_RED"):
+        config = replace(config, K_RED=int(k))
     return {
         "k": k,
         "seeds": list(seeds),
-        "stable_window": _env_config().STABLE_WINDOW,
+        "stable_window": config.STABLE_WINDOW,
         "task_config": {
             key: (list(value) if isinstance(value, tuple) else value)
-            for key, value in vars(_env_config()).items()
+            for key, value in vars(config).items()
         },
-        "task_config_sha256": canonical_sha256(_env_config()),
+        "task_config_sha256": canonical_sha256(config),
         "rl": _eval_summary(rl_rows),
         "heur": _eval_summary(heur_rows),
         "natural_arbitration": {
@@ -637,7 +653,9 @@ def _initialize_candidate_training_branch(pol, run_record, start, iteration):
 @track_run_lifecycle
 def main():
     t_start = time.time()
-    env = _make_env()
+    record_k = (CURR_K if PHASE == "curr" else
+                PPO_K if PHASE == "pilot" else BC_K)
+    env = _make_env(record_k)
     shield = DetectQPShield(env.cfg)
     pol = DetectMAPPOPolicy(env, shield, seed=0)
     _configure_policy(pol)
@@ -909,6 +927,7 @@ def main():
             "task_numeric_config": {
                 "scenario_profile": os.environ.get(
                     "MUMT_SCENARIO_PROFILE", "baseline"),
+                "k_red": CURR_K,
                 "full_config_sha256": canonical_sha256(vars(env.cfg)),
                 "stable_window": env.cfg.STABLE_WINDOW,
                 "age_std_track": env.cfg.AGE_STD_TRACK,
@@ -966,7 +985,7 @@ def main():
             log.setdefault(ck, [])
             best_rank = validate_best_record(
                 log, best_key, best_path, CURR_K, VALIDATION_SEEDS,
-                canonical_sha256(_env_config()))
+                canonical_sha256(_task_config_for_k(CURR_K)))
             if best_path.exists():
                 inherited_best = _archive_checkpoint(
                     run_record, best_path, "curriculum_best_checkpoint",
