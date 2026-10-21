@@ -1,0 +1,200 @@
+{
+ "status": "passed",
+ "checks_passed": 32,
+ "checks": {
+  "completed_lifecycle": true,
+  "source_unchanged": true,
+  "all_twelve_inputs_intact": true,
+  "output_hashes_intact": true,
+  "source_zip_hash": true,
+  "source_manifest_hash": true,
+  "source_members_intact": true,
+  "original_training_source_intact": true,
+  "source_log_fixed_hash": true,
+  "source_provenance_fixed_hash": true,
+  "initial_rl_fixed_hash": true,
+  "best_rl_fixed_hash": true,
+  "selected_update8_fixed_hash": true,
+  "update8_fixed_before_followup": true,
+  "thirty_declared_new_seeds": true,
+  "ninety_unique_complete_episodes": true,
+  "no_training_selection_test_seed_overlap": true,
+  "no_training_selection_or_final_test": true,
+  "reserved_test_still_excluded": true,
+  "full_task_config": true,
+  "initial_rl_saved_config": true,
+  "initial_rl_runtime_tensors": true,
+  "initial_rl_runtime_config": true,
+  "best_rl_saved_config": true,
+  "best_rl_runtime_tensors": true,
+  "best_rl_runtime_config": true,
+  "episode_tasks_match": true,
+  "deterministic_beam_hits": true,
+  "all_rl_conflicts_direct": true,
+  "all_episode_count_rates_consistent": true,
+  "all_summaries_and_paired_statistics_recomputed": true,
+  "incomplete_progress_absent": true
+ },
+ "audit_script": {
+  "role": "audit_script",
+  "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_followup_k4_w8a10_v1\\audit_result.py",
+  "exists": true,
+  "size_bytes": 11880,
+  "sha256": "268bd103aaae3670a0100a1b392cdaa7374001d2d98c7bc0ad4a528c70d936b7"
+ },
+ "result": {
+  "role": "audited_result",
+  "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_followup_k4_w8a10_v1\\followup_result.json",
+  "exists": true,
+  "size_bytes": 433250,
+  "sha256": "d133822c54817b9fbc368297e0c344bca79834383457b9f44c339ed37aa6e6ea"
+ },
+ "provenance": {
+  "role": "audited_provenance",
+  "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_followup_k4_w8a10_v1\\followup.provenance.json",
+  "exists": true,
+  "size_bytes": 454425,
+  "sha256": "5dc2aba5918bb7e65b2accd4ba1fc5e1dc4c48ffb00ef10b55fea248473e307a"
+ },
+ "diagnostic_rates": {
+  "initial_rl": {
+   "all_target_hits_per_step": 0.3052150537634409,
+   "unfinished_target_hits_per_step": 0.21150537634408603,
+   "active_dwell_fraction": 1.0,
+   "violations_by_family_per_step": {
+    "M03": 1.0672043010752688,
+    "M01": 0.05887096774193548,
+    "S05": 2.1185483870967743,
+    "E01": 0.06075268817204301,
+    "E02": 0.0015053763440860215,
+    "I03": 0.01827956989247312,
+    "S04": 1.4547849462365592,
+    "C04": 0.5968279569892473,
+    "M02": 0.48231182795698924,
+    "E03": 0.7298924731182795,
+    "C02": 0.843494623655914,
+    "M05": 0.1893010752688172,
+    "S03": 0.28440860215053765,
+    "M04": 0.0008064516129032258,
+    "S02": 0.002795698924731183,
+    "C03": 0.0022043010752688173
+   }
+  },
+  "best_rl": {
+   "all_target_hits_per_step": 0.2948849630238291,
+   "unfinished_target_hits_per_step": 0.2037797863599014,
+   "active_dwell_fraction": 1.0,
+   "violations_by_family_per_step": {
+    "M03": 1.205474527526705,
+    "M01": 0.05125308134757601,
+    "S05": 2.1557621199671324,
+    "E01": 0.061318816762530814,
+    "C04": 0.5988599013968776,
+    "I03": 0.018231306491372227,
+    "M02": 0.48079293344289237,
+    "E02": 0.0017974527526705012,
+    "S04": 1.5856614626129828,
+    "E03": 0.7927793755135579,
+    "C02": 0.8930258833196385,
+    "M04": 0.0011298274445357436,
+    "S03": 0.28107025472473296,
+    "S02": 0.00231101068200493,
+    "M05": 0.216721446179129,
+    "C03": 0.0019515201314708299
+   }
+  },
+  "heur": {
+   "all_target_hits_per_step": 1.2503913587977458,
+   "unfinished_target_hits_per_step": 1.1286787726988103,
+   "active_dwell_fraction": 1.0,
+   "violations_by_family_per_step": {
+    "S05": 2.1372886662492174,
+    "M01": 0.0864902943018159,
+    "M03": 0.5647307451471509,
+    "S04": 2.070522855353788,
+    "I02": 0.008766437069505322,
+    "E02": 0.0019567939887288666,
+    "E01": 0.009549154664996869,
+    "I03": 0.014245460237946149,
+    "C04": 0.27551659361302444,
+    "E03": 0.28819661865998747,
+    "M05": 0.057451471509079526,
+    "M02": 0.21250782717595493,
+    "C02": 0.38783656856606136,
+    "M04": 0.00015654351909830932,
+    "S02": 0.00117407639323732
+   }
+  }
+ },
+ "training_objective_witnesses": {
+  "kind": "synthetic method-level witnesses; no task episodes or learning performed",
+  "saved_training_values": {
+   "geo_shaping_kappa": 0.15,
+   "shaping_kappa": 0.05,
+   "stable_shaping_kappa": 1.0,
+   "reward_scale": 0.1
+  },
+  "distance_cases": [
+   {
+    "distance_km": 35.0,
+    "sigma_km": 4.0,
+    "d_eff_km": 23.0,
+    "mar_estimate_feasible": false,
+    "isolated_phi_geo": 0.01875
+   },
+   {
+    "distance_km": 45.0,
+    "sigma_km": 4.0,
+    "d_eff_km": 33.0,
+    "mar_estimate_feasible": false,
+    "isolated_phi_geo": 0.0
+   },
+   {
+    "distance_km": 55.0,
+    "sigma_km": 4.0,
+    "d_eff_km": 43.0,
+    "mar_estimate_feasible": true,
+    "isolated_phi_geo": 0.0
+   },
+   {
+    "distance_km": 60.0,
+    "sigma_km": 4.0,
+    "d_eff_km": 48.0,
+    "mar_estimate_feasible": true,
+    "isolated_phi_geo": 0.0
+   },
+   {
+    "distance_km": 79.0,
+    "sigma_km": 4.0,
+    "d_eff_km": 67.0,
+    "mar_estimate_feasible": true,
+    "isolated_phi_geo": 0.0
+   }
+  ],
+  "alignment_case": {
+   "gear_deg": 45.0,
+   "axis_deg": 30.0,
+   "bearing_deg": 50.0,
+   "gate": {
+    "distance_km": 29.999999999999996,
+    "bearing_offset_deg": 19.99999999999998,
+    "usable_half_width_deg": 30.0,
+    "range_margin_km": 50.0,
+    "sector_margin_deg": 10.000000000000021,
+    "failure_mode": "pass"
+   },
+   "isolated_phi_alignment": 0.0,
+   "shaping_half_width_deg": 15.0,
+   "target_zone": "tracking",
+   "positive_control_off_axis_deg": 10.0,
+   "positive_control_phi_alignment": 0.3333333333333336
+  },
+  "interpretation": "The geometric potential is zero in the nominal safe sensing band; alignment shaping and C04 use different sector widths. These are training-objective mismatches, not evidence that changing them will solve the task."
+ },
+ "decision": "Both predeclared joint descriptive screens failed. Do not promote update8 or extend this joint adaptation on these results.",
+ "limits": [
+  "This follow-up is development evidence, not the reserved final test.",
+  "Success exact paired p=0.06543 versus initial is not significant at 5%; bootstrap and exact intervals must not be selectively reported.",
+  "Coverage and ownership diagnostics are associations; they do not establish a causal failure mechanism or the impossibility of RL."
+ ]
+}
