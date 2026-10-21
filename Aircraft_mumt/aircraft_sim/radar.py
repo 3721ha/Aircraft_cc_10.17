@@ -14,8 +14,11 @@ Hit determination (§3.2):
     boresight is within FOV half-width and slant range <= R_max_eff;
   - off-boresight attenuation: R_max_eff = R_max * sqrt(cos(theta_off)),
     theta_off = bearing relative to aircraft nose;
-  - per swept target per dwell: Bernoulli(P_d) hit, P_d from the range
-    ladder evaluated at r = d / R_max_eff (0.9 / 0.6 / 0.3 / 0).
+  - default ``bernoulli`` profile: per swept target per dwell, Bernoulli(P_d)
+    hit, P_d from the range ladder at r = d / R_max_eff (0.9 / 0.6 / 0.3 / 0);
+  - opt-in ``deterministic_beam`` profile: every geometrically eligible
+    target is hit in that dwell; range attenuation and beam timing remain.
+    This is an ideal detection assumption, not an assertion about real Pd.
 
 Plots are position-perfect: V2.4 §3.3 keeps no plot-noise term; estimation
 uncertainty lives exclusively in the track-file covariance bookkeeping
@@ -117,7 +120,11 @@ class RadarState:
 
     # ------------------------------------------------------------------
     def pd(self, d_km: float, theta_off_rad: float) -> float:
-        """Bernoulli hit probability: range ladder on r = d / R_max_eff."""
+        """Legacy raw Pd ladder on r = d / R_max_eff, independent of profile.
+
+        This does not check the current beam or radar on/off state.  Actual
+        hit selection, including deterministic-beam override, is scan_dwell.
+        """
         r_max_eff = self.cfg.R_MAX * math.sqrt(max(0.0, math.cos(abs(theta_off_rad))))
         if r_max_eff <= 1e-9:
             return 0.0
@@ -140,11 +147,16 @@ class RadarState:
     # ------------------------------------------------------------------
     def scan_dwell(self, heading_rad: float, own_xy: Tuple[float, float],
                    targets: Dict[int, Tuple[float, float]], rng) -> Tuple[List[int], float]:
-        """Advance exactly one 0.5 s dwell; per-dwell Bernoulli draw (plan §3.2).
+        """Advance exactly one dwell using the configured hit model.
 
         Returns (hit ids, absolute boresight used).  The environment calls this
         at 0.5 s substeps so track ages carry dwell resolution -- the appendix-A
         window anchors (0.211 / 0.005) are defined at this granularity.
+
+        Both profiles consume one RNG draw per geometrically eligible target.
+        Thus enabling ideal hits does not itself shift the shared link RNG by
+        skipping draws.  Different observations can still change later actions,
+        eligible geometry, and consequently later RNG consumption.
         """
         if not self.on:
             return [], heading_rad
@@ -164,7 +176,8 @@ class RadarState:
                 continue
             if abs(wrap_pi(bearing - b)) > half:
                 continue
-            if rng.random() < self.pd(d, theta_off):
+            draw = rng.random()
+            if self.cfg.RADAR_HIT_MODEL == "deterministic_beam" or draw < self.pd(d, theta_off):
                 hits.append(tid)
         return hits, b
 
@@ -181,7 +194,7 @@ class RadarState:
 
     def scan_step(self, heading_rad: float, own_xy: Tuple[float, float],
                   targets: Dict[int, Tuple[float, float]], rng) -> List[int]:
-        """Advance one decision step; return ids of targets with a Bernoulli hit.
+        """Advance one decision step; return hit ids under the configured profile.
 
         targets: {target_id: (x, y)} truth positions (km) -- the radar never
         sees more than this: no id list beyond geometry.

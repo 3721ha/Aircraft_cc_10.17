@@ -17,6 +17,8 @@ A_MACH_MS = 308.0                      # speed of sound, m/s (plan §2)
 A_MACH_KMS = A_MACH_MS / 1000.0        # km/s
 G0 = 9.81                              # m/s^2, turn-rate physical check (plan §2 note)
 
+RADAR_HIT_MODELS = ("bernoulli", "deterministic_beam")
+
 
 def ma_to_kms(ma: float) -> float:
     return ma * A_MACH_KMS
@@ -96,6 +98,7 @@ class DetectSimConfig:
     GEARS_SEARCH: Tuple[float, ...] = (45.0, 60.0)      # SEARCH role mask
     GEARS_TRACK: Tuple[float, ...] = (7.5, 15.0, 30.0, 45.0)  # TRACK role mask
     PD_TIERS: Tuple[Tuple[float, float], ...] = ((0.5, 0.9), (0.8, 0.6), (1.0, 0.3))
+    RADAR_HIT_MODEL: str = "bernoulli"  # opt-in ideal hits within the actual dwell beam
     SECTOR_AXIS_MAX_DEG: float = 60.0  # xi clamp; usable half-width = 60 - |xi|
     AXIS_TRIM_SCALE_DEG: float = 15.0  # u_xi normalisation (plan §6.1 mapping)
 
@@ -185,6 +188,13 @@ class DetectSimConfig:
     seed: int = 7
 
     # ------------------------------------------------------------------
+    def __post_init__(self) -> None:
+        if self.RADAR_HIT_MODEL not in RADAR_HIT_MODELS:
+            raise ValueError(
+                f"Unsupported RADAR_HIT_MODEL {self.RADAR_HIT_MODEL!r}; "
+                f"expected one of {RADAR_HIT_MODELS}"
+            )
+
     def zone_of(self, x: float) -> str:
         """Functional zone of an x coordinate (plan §1.1)."""
         if x < self.X_CUTOFF:
@@ -198,7 +208,10 @@ class DetectSimConfig:
         return self.AGE_STD_TRACK if self.zone_of(x) == ZONE_TRACKING else self.AGE_STD_DETECT
 
     def pd_at(self, d_km: float) -> float:
-        """Detection-probability tier at slant range (plan §3.2 ladder)."""
+        """Legacy on-axis Pd ladder, independent of RADAR_HIT_MODEL.
+
+        Actual dwell hit selection and off-axis attenuation live in RadarState.
+        """
         r = d_km / self.R_MAX
         for r_edge, p in self.PD_TIERS:
             if r <= r_edge:

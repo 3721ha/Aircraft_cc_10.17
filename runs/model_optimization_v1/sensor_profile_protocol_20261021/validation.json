@@ -1,0 +1,44 @@
+{
+ "distinct_relevant_tests_passed": 136,
+ "test_runs": [
+  {
+   "command": "./.venv/Scripts/python.exe -m pytest tests/test_sensor_profile.py tests/test_sensor_diagnostics.py tests/test_radar.py tests/test_detect_config.py tests/test_detect_env.py tests/test_detect_rules.py tests/test_detect_shield.py tests/test_detect_mappo.py -q",
+   "cwd": "Aircraft_mumt",
+   "passed": 113,
+   "setup_errors": 1,
+   "setup_error_reason": "Windows system TEMP pytest directory access denied; affected test rerun below"
+  },
+  {
+   "command": "./.venv/Scripts/python.exe -m pytest tests/test_sensor_profile_runner.py tests/test_detect_mappo.py::test_load_splits_legacy_task_and_bid_conflict_residual --basetemp ../runs/pytest_sensor_protocol_final_20261021 -q",
+   "cwd": "Aircraft_mumt",
+   "passed": 23,
+   "failed": 0,
+   "seconds": 12.64
+  }
+ ],
+ "smoke_seed": 204900,
+ "smoke_episodes": 4,
+ "smoke_result": {
+  "role": "smoke_result",
+  "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_profile_smoke_k4_w8a10_20261021\\sensor_diagnostic.json",
+  "exists": true,
+  "size_bytes": 32891,
+  "sha256": "667114d230bea14b8a7137a076f9e92a8bdf9a8c88baab7f6c4d5a005570847c"
+ },
+ "smoke_provenance": {
+  "role": "smoke_provenance",
+  "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_profile_smoke_k4_w8a10_20261021\\diagnostic.provenance.json",
+  "exists": true,
+  "size_bytes": 372369,
+  "sha256": "faddb3704e2c783a4464fb8a1a250349bd762e5e1d95d4634147ef2b2082013a"
+ },
+ "smoke_source_integrity": {
+  "verified_at_utc": "2026-10-21T02:54:11.941929+00:00",
+  "unchanged": true,
+  "changed_files": []
+ },
+ "checkpoint_unchanged": true,
+ "same_loaded_rl_tensors_all_conditions": true,
+ "scope": "implementation verification; one seed is not a task performance estimate",
+ "temporary_fixture_cleanup": "retained untracked; deletion command rejected by automatic policy review"
+}
