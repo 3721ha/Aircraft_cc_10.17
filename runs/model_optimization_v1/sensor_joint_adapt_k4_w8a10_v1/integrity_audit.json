@@ -1,0 +1,405 @@
+{
+ "status": "passed",
+ "audited_at_utc": "2026-10-21T04:39:08.307243+00:00",
+ "method": "Independent JSON/hash/ZIP audit plus deserialized tensor comparison. Per-head L2 reductions tolerance relative1e-6 absolute1e-10; frozen references compared bitwise. No task rollout or training.",
+ "checks": {
+  "completed": true,
+  "12_updates_96_unique_training_seeds": true,
+  "seven_validations_same12seeds": true,
+  "no_executed_reserved_test": true,
+  "task_hash": true,
+  "task_k4_w8_a10_deterministic_full_penalties": true,
+  "execution_reports_no_source_drift": true,
+  "source_zip_hash": true,
+  "source_manifest_hash": true,
+  "all38_source_members_verified": true,
+  "current_sources_match_snapshot": true,
+  "all_input_output_checkpoint_hashes": true,
+  "heur_summary_recomputed": true,
+  "all_validation_summaries_recomputed": true,
+  "best_update8_selected_strictly": true,
+  "best_copy_exact": true,
+  "latest_is12_separate": true,
+  "initial_source_actor_preserved": true,
+  "legacy_geometry_addition_zero_output": true,
+  "task_reference_refreshed_to_initial_rl": true,
+  "actual_tensor_deltas_recomputed": true,
+  "anchors_bitwise_fixed_all12": true,
+  "geometry_bitwise_fixed_all12": true,
+  "saved_effective_config_consistent": true,
+  "all84_validation_runtime_tensor_fingerprints_recomputed": true,
+  "all_real_task_heads_and_bid_changed": true,
+  "radar_axis_ppo_active_all12": true,
+  "validation_conflicts_all_rl_direct": true
+ },
+ "source_commit": "5d7713b4d3f28b1cd986eb58974be9109e94e8ed",
+ "source_files": 38,
+ "training": {
+  "updates": 12,
+  "episodes": 96,
+  "environment_steps": 58205,
+  "successes": 50,
+  "informative_cf_events": 188,
+  "candidate_branches": 378
+ },
+ "initial": {
+  "episodes": 12,
+  "successes": 5,
+  "success_rate": 0.4166666666666667,
+  "success_rate_wilson_95": [
+   0.19326031365875665,
+   0.6804886874504503
+  ],
+  "mean_return": -9187.181573450363,
+  "total_steps": 8012,
+  "total_violations": 68495,
+  "violations_per_step": 8.549051422865702,
+  "mean_episode_violations_per_step": 8.474207589214135,
+  "mean_judged_targets": 3.0833333333333335,
+  "radar_target_dwell_counts": {
+   "all_targets": {
+    "opportunities": 2488,
+    "hits": 2488,
+    "misses": 0,
+    "hit_fraction_per_opportunity": 1.0
+   },
+   "unfinished_targets": {
+    "opportunities": 1679,
+    "hits": 1679,
+    "misses": 0,
+    "hit_fraction_per_opportunity": 1.0
+   }
+  },
+  "stable_progress_resets": 1,
+  "stable_reset_causes": {
+   "outside_tracking_zone": 0,
+   "missing_owner_track": 0,
+   "stale_owner_track": 1
+  },
+  "owner_gate_failure_target_step_causes": {
+   "outside_tracking_zone": 3027,
+   "missing_owner_track": 4637,
+   "stale_owner_track": 7
+  },
+  "unowned_tracking_target_steps": 2248,
+  "violations_by_family": {
+   "M03": 9498,
+   "M01": 401,
+   "S05": 19174,
+   "C04": 5432,
+   "I03": 162,
+   "E01": 516,
+   "E02": 8,
+   "M02": 4644,
+   "S04": 13553,
+   "C02": 6819,
+   "E03": 5699,
+   "M05": 1095,
+   "M04": 7,
+   "S03": 1469,
+   "S02": 18
+  },
+  "active_agent_steps_by_conflict_pair": {
+   "S04-M02": 56,
+   "S05-M02": 1037,
+   "C01-M02": 7746,
+   "C03-M02": 6384,
+   "C02-M01": 2748,
+   "M01-M02": 8653,
+   "S02-M02": 242,
+   "S03-M02": 16371,
+   "I02-M02": 61,
+   "I03-M02": 1778,
+   "M04-S04": 14193,
+   "C01-C03": 229,
+   "M05-E03": 1936
+  },
+  "conflict_pairs_observed": 13,
+  "multi_candidate_events": 93,
+  "winners_different_from_fixed_score": 1
+ },
+ "best_update": 8,
+ "best": {
+  "episodes": 12,
+  "successes": 6,
+  "success_rate": 0.5,
+  "success_rate_wilson_95": [
+   0.2537815976337061,
+   0.7462184023662939
+  ],
+  "mean_return": -7209.998673573558,
+  "total_steps": 7590,
+  "total_violations": 61005,
+  "violations_per_step": 8.037549407114625,
+  "mean_episode_violations_per_step": 7.741821677435432,
+  "mean_judged_targets": 3.3333333333333335,
+  "radar_target_dwell_counts": {
+   "all_targets": {
+    "opportunities": 2813,
+    "hits": 2813,
+    "misses": 0,
+    "hit_fraction_per_opportunity": 1.0
+   },
+   "unfinished_targets": {
+    "opportunities": 1983,
+    "hits": 1983,
+    "misses": 0,
+    "hit_fraction_per_opportunity": 1.0
+   }
+  },
+  "stable_progress_resets": 7,
+  "stable_reset_causes": {
+   "outside_tracking_zone": 1,
+   "missing_owner_track": 0,
+   "stale_owner_track": 6
+  },
+  "owner_gate_failure_target_step_causes": {
+   "outside_tracking_zone": 3104,
+   "missing_owner_track": 3925,
+   "stale_owner_track": 24
+  },
+  "unowned_tracking_target_steps": 1991,
+  "violations_by_family": {
+   "M03": 8761,
+   "M01": 378,
+   "S05": 17677,
+   "C04": 4581,
+   "I03": 153,
+   "M02": 3949,
+   "E01": 467,
+   "E02": 14,
+   "S04": 13512,
+   "E03": 4225,
+   "C02": 5551,
+   "M04": 6,
+   "M05": 1330,
+   "S03": 346,
+   "C03": 55
+  },
+  "active_agent_steps_by_conflict_pair": {
+   "S04-M02": 87,
+   "S05-M02": 1457,
+   "C01-M02": 8004,
+   "C03-M02": 6097,
+   "C02-M01": 2446,
+   "M01-M02": 8863,
+   "S02-M02": 430,
+   "S03-M02": 15481,
+   "I02-M02": 37,
+   "I03-M02": 2128,
+   "M04-S04": 12900,
+   "C01-C03": 43,
+   "M05-E03": 2084
+  },
+  "conflict_pairs_observed": 13,
+  "multi_candidate_events": 208,
+  "winners_different_from_fixed_score": 4
+ },
+ "latest": {
+  "episodes": 12,
+  "successes": 6,
+  "success_rate": 0.5,
+  "success_rate_wilson_95": [
+   0.2537815976337061,
+   0.7462184023662939
+  ],
+  "mean_return": -9707.464944774003,
+  "total_steps": 8084,
+  "total_violations": 68866,
+  "violations_per_step": 8.518802572983672,
+  "mean_episode_violations_per_step": 8.501147093947734,
+  "mean_judged_targets": 3.1666666666666665,
+  "radar_target_dwell_counts": {
+   "all_targets": {
+    "opportunities": 2570,
+    "hits": 2570,
+    "misses": 0,
+    "hit_fraction_per_opportunity": 1.0
+   },
+   "unfinished_targets": {
+    "opportunities": 1870,
+    "hits": 1870,
+    "misses": 0,
+    "hit_fraction_per_opportunity": 1.0
+   }
+  },
+  "stable_progress_resets": 4,
+  "stable_reset_causes": {
+   "outside_tracking_zone": 0,
+   "missing_owner_track": 0,
+   "stale_owner_track": 4
+  },
+  "owner_gate_failure_target_step_causes": {
+   "outside_tracking_zone": 3108,
+   "missing_owner_track": 4701,
+   "stale_owner_track": 13
+  },
+  "unowned_tracking_target_steps": 2653,
+  "violations_by_family": {
+   "M03": 10813,
+   "M01": 419,
+   "S05": 17971,
+   "C04": 5400,
+   "I03": 168,
+   "M02": 4714,
+   "E01": 562,
+   "S04": 13317,
+   "C02": 6294,
+   "E03": 5501,
+   "E02": 14,
+   "M05": 2054,
+   "M04": 6,
+   "S03": 1632,
+   "S02": 1
+  },
+  "active_agent_steps_by_conflict_pair": {
+   "S04-M02": 74,
+   "S05-M02": 1132,
+   "C01-M02": 8078,
+   "C03-M02": 6586,
+   "C02-M01": 2451,
+   "M01-M02": 8705,
+   "S02-M02": 310,
+   "S03-M02": 17017,
+   "I02-M02": 37,
+   "I03-M02": 1938,
+   "M04-S04": 14355,
+   "C01-C03": 185,
+   "M05-E03": 2438
+  },
+  "conflict_pairs_observed": 13,
+  "multi_candidate_events": 123,
+  "winners_different_from_fixed_score": 4
+ },
+ "heur": {
+  "episodes": 12,
+  "successes": 11,
+  "success_rate": 0.9166666666666666,
+  "success_rate_wilson_95": [
+   0.646120088858883,
+   0.9851349055950829
+  ],
+  "mean_return": -2653.8073829399946,
+  "total_steps": 5479,
+  "total_violations": 37185,
+  "violations_per_step": 6.78682241284906,
+  "mean_episode_violations_per_step": 6.3270242266910826,
+  "mean_judged_targets": 3.9166666666666665,
+  "radar_target_dwell_counts": {
+   "all_targets": {
+    "opportunities": 6288,
+    "hits": 6288,
+    "misses": 0,
+    "hit_fraction_per_opportunity": 1.0
+   },
+   "unfinished_targets": {
+    "opportunities": 5650,
+    "hits": 5650,
+    "misses": 0,
+    "hit_fraction_per_opportunity": 1.0
+   }
+  },
+  "stable_progress_resets": 3,
+  "stable_reset_causes": {
+   "outside_tracking_zone": 1,
+   "missing_owner_track": 0,
+   "stale_owner_track": 2
+  },
+  "owner_gate_failure_target_step_causes": {
+   "outside_tracking_zone": 2370,
+   "missing_owner_track": 1373,
+   "stale_owner_track": 10
+  },
+  "unowned_tracking_target_steps": 302,
+  "violations_by_family": {
+   "M01": 447,
+   "S05": 12419,
+   "M03": 3377,
+   "S04": 13053,
+   "E01": 59,
+   "E02": 16,
+   "C04": 1811,
+   "I03": 112,
+   "I02": 71,
+   "E03": 1737,
+   "M02": 1383,
+   "C02": 2452,
+   "S02": 2,
+   "M05": 245,
+   "M04": 1
+  },
+  "active_agent_steps_by_conflict_pair": {
+   "S04-M02": 1000,
+   "S05-M02": 1223,
+   "C01-M02": 4122,
+   "C03-M02": 2707,
+   "C02-M01": 2034,
+   "M01-M02": 8270,
+   "S02-M02": 58,
+   "S03-M02": 10103,
+   "I02-M02": 17,
+   "I03-M02": 320,
+   "M04-S04": 6642,
+   "C01-C03": 0,
+   "M05-E03": 522
+  },
+  "conflict_pairs_observed": 12,
+  "multi_candidate_events": 5,
+  "winners_different_from_fixed_score": 0
+ },
+ "paired_initial_to_best": {
+  "direction": "right_minus_left",
+  "episodes": 12,
+  "success_rate_delta": 0.08333333333333331,
+  "mean_return_delta": 1977.182899876805,
+  "violations_per_step_delta": -0.511502015751077,
+  "right_only_successes": 3,
+  "left_only_successes": 2
+ },
+ "seed_role": "207000-207011 repeatedly used for checkpoint selection; not an untouched test. Reserved208000-208029 not run.",
+ "limitations": "A one-net-success increase on repeated validation is not evidence of statistically reliable generalization or useful arbitration.",
+ "verified_inputs_outputs": [
+  {
+   "role": "source_best_checkpoint",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\residual_pg_k4_w8a10_v1\\curr_k4_best.pt",
+   "exists": true,
+   "size_bytes": 1614417,
+   "sha256": "38815f375df492ee320d9a0d4a9105efaf3944a6694165b295f646c9917aea18"
+  },
+  {
+   "role": "archived_source_best_checkpoint",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_k4_w8a10_v1\\provenance\\source_best.pt",
+   "exists": true,
+   "size_bytes": 1614417,
+   "sha256": "38815f375df492ee320d9a0d4a9105efaf3944a6694165b295f646c9917aea18"
+  },
+  {
+   "role": "effective_initial_checkpoint",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_k4_w8a10_v1\\initial.pt",
+   "exists": true,
+   "size_bytes": 1764730,
+   "sha256": "ef86e5734d2a6466694371a0931386d7f1937355f279eed28f1560dcae27499b"
+  },
+  {
+   "role": "adaptation_log",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_k4_w8a10_v1\\adaptation_log.json",
+   "exists": true,
+   "size_bytes": 823443,
+   "sha256": "9018f87365c90d9ee7cdc627d83480a28b6c069cad7ae29c8222bbac543c7475"
+  },
+  {
+   "role": "selected_best_checkpoint",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_k4_w8a10_v1\\best.pt",
+   "exists": true,
+   "size_bytes": 1765534,
+   "sha256": "b30c53060f0374b204ca95fd6797bbf9a7ec5b1fb00d6d628e2afe5998f0e801"
+  },
+  {
+   "role": "latest_checkpoint",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_k4_w8a10_v1\\checkpoints\\update_0012.pt",
+   "exists": true,
+   "size_bytes": 1765534,
+   "sha256": "c4f6a5cb73a939834a70f21c78cee2ec81a1bbfcba69d519c03c1bf8e7f8b295"
+  }
+ ]
+}

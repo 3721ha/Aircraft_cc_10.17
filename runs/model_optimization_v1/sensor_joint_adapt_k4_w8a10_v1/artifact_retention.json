@@ -1,0 +1,114 @@
+{
+ "purpose": "Archive initial, selected-best and latest checkpoints with complete logs, source snapshot and audit; retain other iterations locally without deleting user files.",
+ "archived_checkpoints": [
+  {
+   "role": "effective_initial",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_k4_w8a10_v1\\initial.pt",
+   "exists": true,
+   "size_bytes": 1764730,
+   "sha256": "ef86e5734d2a6466694371a0931386d7f1937355f279eed28f1560dcae27499b"
+  },
+  {
+   "role": "selected_deployment_candidate",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_k4_w8a10_v1\\best.pt",
+   "exists": true,
+   "size_bytes": 1765534,
+   "sha256": "b30c53060f0374b204ca95fd6797bbf9a7ec5b1fb00d6d628e2afe5998f0e801"
+  },
+  {
+   "role": "selected_update_8",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_k4_w8a10_v1\\checkpoints\\update_0008.pt",
+   "exists": true,
+   "size_bytes": 1765534,
+   "sha256": "b30c53060f0374b204ca95fd6797bbf9a7ec5b1fb00d6d628e2afe5998f0e801"
+  },
+  {
+   "role": "latest_update_12",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_k4_w8a10_v1\\checkpoints\\update_0012.pt",
+   "exists": true,
+   "size_bytes": 1765534,
+   "sha256": "c4f6a5cb73a939834a70f21c78cee2ec81a1bbfcba69d519c03c1bf8e7f8b295"
+  },
+  {
+   "role": "unchanged_source_checkpoint",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_k4_w8a10_v1\\provenance\\source_best.pt",
+   "exists": true,
+   "size_bytes": 1614417,
+   "sha256": "38815f375df492ee320d9a0d4a9105efaf3944a6694165b295f646c9917aea18"
+  }
+ ],
+ "other_iteration_checkpoints_local_unstaged": [
+  {
+   "role": "local_intermediate",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_k4_w8a10_v1\\checkpoints\\update_0001.pt",
+   "exists": true,
+   "size_bytes": 1765534,
+   "sha256": "f74891ecdd8c3679770cc1b4c0fc508be6bb0d1a3da0da138168ac8e56e29bdc"
+  },
+  {
+   "role": "local_intermediate",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_k4_w8a10_v1\\checkpoints\\update_0002.pt",
+   "exists": true,
+   "size_bytes": 1765534,
+   "sha256": "c965e29c8b3c655180a521458fdd158326d5487f63b3939267bf8b58a47af5a3"
+  },
+  {
+   "role": "local_intermediate",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_k4_w8a10_v1\\checkpoints\\update_0003.pt",
+   "exists": true,
+   "size_bytes": 1765534,
+   "sha256": "f168aeed384f9a1c4ef7ec65b0b24534fce2ea63218c5b00c9f568736957ad3e"
+  },
+  {
+   "role": "local_intermediate",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_k4_w8a10_v1\\checkpoints\\update_0004.pt",
+   "exists": true,
+   "size_bytes": 1765534,
+   "sha256": "de121c03e9a9f5c5630b5dedae2a7e4c193e5468e85466bd3793b37ab38ea6f4"
+  },
+  {
+   "role": "local_intermediate",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_k4_w8a10_v1\\checkpoints\\update_0005.pt",
+   "exists": true,
+   "size_bytes": 1765534,
+   "sha256": "14e285f82acffb786b609df413757746a7cc5bf5724ce9647199a69c56b9b1ab"
+  },
+  {
+   "role": "local_intermediate",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_k4_w8a10_v1\\checkpoints\\update_0006.pt",
+   "exists": true,
+   "size_bytes": 1765534,
+   "sha256": "1f4e88163733dc00d570b980256c9e26d158c6a018d3336f450014fdfa2cd1ed"
+  },
+  {
+   "role": "local_intermediate",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_k4_w8a10_v1\\checkpoints\\update_0007.pt",
+   "exists": true,
+   "size_bytes": 1765534,
+   "sha256": "48b114286577c4e869d7cc6f9d71b08338674cf5d33196dde01f12e0df59901d"
+  },
+  {
+   "role": "local_intermediate",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_k4_w8a10_v1\\checkpoints\\update_0009.pt",
+   "exists": true,
+   "size_bytes": 1765534,
+   "sha256": "5d591c0d48ecc02f7b2d8777aa71c9efd0ce59a3a06a6ff4034e48a6d3a8d841"
+  },
+  {
+   "role": "local_intermediate",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_k4_w8a10_v1\\checkpoints\\update_0010.pt",
+   "exists": true,
+   "size_bytes": 1765534,
+   "sha256": "19bbef21a1e99c532401c1dd9322ff3cb916edb05225de6a5ca615b550cd8812"
+  },
+  {
+   "role": "local_intermediate",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_joint_adapt_k4_w8a10_v1\\checkpoints\\update_0011.pt",
+   "exists": true,
+   "size_bytes": 1765534,
+   "sha256": "e67de1b204ce77576a3a9714a9ef14a8ece190998489251f5474f1140e4bdb45"
+  }
+ ],
+ "deletions_performed": false,
+ "best_is_research_candidate_not_validated_deployment": true
+}
