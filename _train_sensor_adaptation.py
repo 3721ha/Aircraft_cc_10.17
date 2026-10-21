@@ -29,7 +29,11 @@ from _diagnose_sensor_profile import (
 )
 
 RESERVED_TEST_SEEDS = tuple(range(208000, 208030))
-CONSUMED_DIAGNOSTIC_SEEDS = set(range(205000, 205030))
+CONSUMED_SEEDS = {
+    *range(205000, 205030), *range(206000, 206096), *range(207000, 207012),
+    *range(209900, 209904), 209990, 209991, *range(210000, 210030),
+    *range(219900, 219911), *range(250000, 250006),
+}
 CONSUMED_TEST_SEEDS = set(range(162000, 162030))
 
 
@@ -41,12 +45,17 @@ def parser():
     ap.add_argument("--iterations", type=int, default=12)
     ap.add_argument("--episodes-per-iter", type=int, default=8)
     ap.add_argument("--validation-every", type=int, default=2)
-    ap.add_argument("--train-seed-start", type=int, default=206000)
-    ap.add_argument("--validation-seed-start", type=int, default=207000)
+    ap.add_argument("--train-seed-start", type=int, default=260000)
+    ap.add_argument("--validation-seed-start", type=int, default=261000)
     ap.add_argument("--validation-episodes", type=int, default=12)
     ap.add_argument("--optimizer-seed", type=int, default=20261021)
     ap.add_argument("--learning-rate", type=float, default=1e-5)
     ap.add_argument("--epochs", type=int, default=2)
+    ap.add_argument("--geo-shaping-range-fraction", type=float, default=0.5,
+                    help="training-only geometric potential support as a fraction of C04_RANGE")
+    ap.add_argument("--stable-alignment-geometry",
+                    choices=("legacy", "c04_usable_sector"), default="legacy",
+                    help="training-only sector alignment potential geometry")
     ap.add_argument("--torch-threads", type=int, default=1)
     ap.add_argument("--plan-only", action="store_true",
                     help="validate inputs and print the protocol without creating outputs")
@@ -66,6 +75,9 @@ def preflight(args) -> dict:
             raise ValueError(f"{name} must be nonnegative")
     if not math.isfinite(args.learning_rate) or args.learning_rate <= 0:
         raise ValueError("learning_rate must be positive and finite")
+    if (not math.isfinite(args.geo_shaping_range_fraction)
+            or args.geo_shaping_range_fraction <= 0):
+        raise ValueError("geo_shaping_range_fraction must be positive and finite")
     if (len(args.expected_checkpoint_sha256) != 64
             or any(c not in "0123456789abcdef" for c in args.expected_checkpoint_sha256)):
         raise ValueError("expected checkpoint SHA256 must be 64 lowercase hex characters")
@@ -76,7 +88,7 @@ def preflight(args) -> dict:
                        args.train_seed_start + args.iterations * args.episodes_per_iter))
     validation = list(range(args.validation_seed_start,
                             args.validation_seed_start + args.validation_episodes))
-    forbidden = set(RESERVED_TEST_SEEDS) | CONSUMED_DIAGNOSTIC_SEEDS | CONSUMED_TEST_SEEDS
+    forbidden = set(RESERVED_TEST_SEEDS) | CONSUMED_SEEDS | CONSUMED_TEST_SEEDS
     if set(train) & set(validation):
         raise ValueError("training and validation seeds overlap")
     if (set(train) | set(validation)) & forbidden:
@@ -96,13 +108,17 @@ def preflight(args) -> dict:
                          "direct_rl_arbitration": True,
                          "conflict_exposure_prob": 0.0,
                          "cf_bid_horizon": 1,
-                         "train_geometry_adapter": False},
+                         "train_geometry_adapter": False,
+                         "geo_shaping_range_fraction": args.geo_shaping_range_fraction,
+                         "stable_alignment_geometry": args.stable_alignment_geometry},
             "selection": "validation successes, then mean raw return, then lower total violations/steps; strict improvement only",
             "no_training_teacher": True, "no_conflict_injection": True,
             "no_final_test": True}
 
 
-def adaptation_config(saved: dict, learning_rate: float, epochs: int):
+def adaptation_config(saved: dict, learning_rate: float, epochs: int,
+                      geo_shaping_range_fraction: float = 0.5,
+                      stable_alignment_geometry: str = "legacy"):
     config = evaluation_policy_config(saved)
     config = replace(
         config, learning_rate=learning_rate, epochs=epochs,
@@ -111,7 +127,9 @@ def adaptation_config(saved: dict, learning_rate: float, epochs: int):
         conflict_exposure_prob=0.0, xi_ppo_coef=1.0, xi_anchor_coef=0.0,
         policy_anchor_coef=0.5, policy_anchor_monitor=True,
         mask_intervened_continuous=True, mask_intervened_radar_axis=False,
-        cf_bid_horizon=1)
+        cf_bid_horizon=1,
+        geo_shaping_range_fraction=geo_shaping_range_fraction,
+        stable_alignment_geometry=stable_alignment_geometry)
     config.validate_training_mode()
     return config
 
@@ -235,8 +253,9 @@ def main():
         return
     output = args.output.resolve()
     source_path = args.checkpoint.resolve()
-    source = capture_source_snapshot(
-        ROOT, output, [Path(__file__), ROOT / "_diagnose_sensor_profile.py"])
+    source_files = [Path(__file__), ROOT / "_diagnose_sensor_profile.py",
+                    ROOT / "Aircraft_mumt/aircraft_sim/detect_mappo.py"]
+    source = capture_source_snapshot(ROOT, output, source_files)
     import torch
     from aircraft_sim.detect_mappo import DetectMAPPOPolicy
     from aircraft_sim.detect_sensor_diagnostics import SensorDiagnosticEnv
@@ -249,10 +268,12 @@ def main():
     if copied_record["sha256"] != protocol["source_checkpoint"]["sha256"]:
         raise RuntimeError("source checkpoint changed during copying")
     data = torch.load(copied_source, map_location="cpu", weights_only=False)
-    config = adaptation_config(data.get("config"), args.learning_rate, args.epochs)
+    config = adaptation_config(
+        data.get("config"), args.learning_rate, args.epochs,
+        args.geo_shaping_range_fraction, args.stable_alignment_geometry)
     cfg = build_configs(4, 8, 10.0)["deterministic_beam"]
     record = capture_run_provenance(
-        ROOT, output, [Path(__file__), ROOT / "_diagnose_sensor_profile.py"],
+        ROOT, output, source_files,
         "short_joint_sensor_adaptation", cfg,
         algorithm_config={"source_saved": data.get("config"), "effective": asdict(config)},
         runtime_parameters={"protocol": protocol, "arguments": vars(args)},

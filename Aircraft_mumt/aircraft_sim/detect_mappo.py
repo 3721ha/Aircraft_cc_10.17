@@ -364,6 +364,9 @@ class DetectMAPPOConfig:
     # Added to _track_potential so the continuous heads learn to stay close to
     # owned targets, reducing C04 breaches.  TRAINING ONLY (potential-based).
     geo_shaping_kappa: float = 0.15
+    # Historical half-range support by default; 1.0 aligns the shaping support
+    # with the C04 distance gate for the geometry ablation.
+    geo_shaping_range_fraction: float = 0.5
     # -- RDAC-MAPPO: stable-window shaping (TRAINING ONLY) -------------------
     # Phi_stable(s) = kappa_stable * sum_{tid} stable_progress[tid] / STABLE_WINDOW
     # Converts the all-or-nothing W3 reward into a dense per-step signal.
@@ -371,6 +374,8 @@ class DetectMAPPOConfig:
     # advances, -ve when C04 breach causes a reset.  Calibration: kappa_stable
     # chosen so a full 30-step window yields ~W3_STABLE * reward_scale = 1.0.
     stable_shaping_kappa: float = 1.0
+    # Keep the historical alignment width unless a training ablation opts in.
+    stable_alignment_geometry: str = "legacy"
     # -- RDAC-MAPPO: counterfactual pointer advantage (§A) -------------------
     # pointer head advantage is replaced by Q(a) - V_cf(pointer=0).
     # cf_adv_coef blends CF and global advantage: 1.0 = pure CF, 0.0 = original.
@@ -433,6 +438,11 @@ class DetectMAPPOConfig:
 
     def validate_training_mode(self) -> None:
         self.validate_counterfactual_horizon()
+        if (not math.isfinite(self.geo_shaping_range_fraction)
+                or self.geo_shaping_range_fraction <= 0.0):
+            raise ValueError("geo_shaping_range_fraction must be positive and finite")
+        if self.stable_alignment_geometry not in {"legacy", "c04_usable_sector"}:
+            raise ValueError("stable_alignment_geometry must be legacy or c04_usable_sector")
         if self.bid_only_ppo and self.task_residual_only_ppo:
             raise ValueError("bid_only_ppo and task_residual_only_ppo are mutually exclusive")
         if self.train_geometry_adapter and not self.task_residual_only_ppo:
@@ -1576,8 +1586,8 @@ class DetectMAPPOPolicy:
                         continue
                     ex, ey = tr.extrapolate(env.t)
                     d = math.hypot(ex - w.x, ey - w.y)
-                    # Target d = 50% of C04_RANGE so gradient is active well before breach
-                    coverage = max(0.0, 1.0 - d / (cfg.C04_RANGE * 0.5))
+                    support = cfg.C04_RANGE * cfg_m.geo_shaping_range_fraction
+                    coverage = max(0.0, 1.0 - d / support)
                     phi_geo += cfg_m.geo_shaping_kappa * coverage
 
         return phi_fresh + phi_geo
@@ -1654,9 +1664,16 @@ class DetectMAPPOPolicy:
                 boresight = w.psi + math.radians(w.radar.axis_deg)
                 off = abs(math.atan2(math.sin(bearing - boresight),
                                      math.cos(bearing - boresight)))
-                half_w = math.radians(max(1.0, w.radar.gear -
-                                          abs(w.radar.axis_deg)))
-                phi_align += max(0.0, 1.0 - off / half_w)
+                if cfg_m.stable_alignment_geometry == "c04_usable_sector":
+                    half_width_deg = max(0.0, min(
+                        w.radar.gear,
+                        cfg.SECTOR_AXIS_MAX_DEG - abs(w.radar.axis_deg)))
+                else:
+                    half_width_deg = max(
+                        1.0, w.radar.gear - abs(w.radar.axis_deg))
+                if half_width_deg > 0.0:
+                    half_w = math.radians(half_width_deg)
+                    phi_align += max(0.0, 1.0 - off / half_w)
 
         return cfg_m.stable_shaping_kappa * (phi_prog + phi_align)
 
