@@ -6,7 +6,7 @@ import unittest
 
 from aircraft_sim.detect_config import (
     A_MACH_KMS, ZONE_DETECTION, ZONE_TRACKING, ZONE_BEHIND,
-    DetectSimConfig, ma_to_kms,
+    DetectSimConfig, detect_config_profile, ma_to_kms,
 )
 
 
@@ -144,6 +144,24 @@ class TestRegistryConsistency(unittest.TestCase):
         self.assertAlmostEqual(c.W6_MAR * 30, 3.0)
         total_win = 4 * (c.W3_STABLE) + c.W4_SUCCESS - 0  # w1 small
         self.assertGreater(total_win, 4 * 3.0)  # success >> MAR dips
+
+
+class TestNamedProfiles(unittest.TestCase):
+    def test_baseline_profile_is_default(self):
+        self.assertEqual(detect_config_profile("baseline"), DetectSimConfig())
+
+    def test_simplified_profile_changes_numeric_fields_only(self):
+        base = DetectSimConfig()
+        simplified = detect_config_profile("simplified_conflict")
+        self.assertEqual(simplified.K_RED, base.K_RED)
+        self.assertEqual(simplified.N_WINGMEN, base.N_WINGMEN)
+        self.assertNotEqual(simplified.FOV_HALF_DEG, base.FOV_HALF_DEG)
+        self.assertEqual(simplified.RADAR_HIT_MODEL, "deterministic_beam")
+
+    def test_tracking_profile_keeps_probabilistic_radar(self):
+        cfg = detect_config_profile("simplified_tracking")
+        self.assertEqual(cfg.RADAR_HIT_MODEL, DetectSimConfig().RADAR_HIT_MODEL)
+        self.assertEqual(cfg.FOV_HALF_DEG, 10.0)
 
 
 if __name__ == "__main__":

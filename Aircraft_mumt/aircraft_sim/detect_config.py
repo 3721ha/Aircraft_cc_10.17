@@ -9,7 +9,7 @@ speeds internally in km/s (Mach converted via A_MACH_KMS).
 Nothing in this module mutates global state; the legacy ``SimConfig``
 stays untouched so the original 70 unit tests keep passing.
 """
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Dict, List, Tuple
 
 # --- unit conversion -------------------------------------------------------
@@ -18,6 +18,37 @@ A_MACH_KMS = A_MACH_MS / 1000.0        # km/s
 G0 = 9.81                              # m/s^2, turn-rate physical check (plan §2 note)
 
 RADAR_HIT_MODELS = ("bernoulli", "deterministic_beam")
+
+# Named numeric profiles are opt-in experiment fixtures.  They do not change
+# the rule inventory or red-agent implementation; keeping them here makes the
+# effective task configuration serializable and prevents ad-hoc shell-only
+# changes from becoming irreproducible.
+DETECT_CONFIG_PROFILES = {
+    "baseline": {},
+    "simplified_tracking": {
+        "FOV_HALF_DEG": 10.0,
+        "TRACK_CONFIRM_TIME": 3.0,
+        "TRACK_CONFIRM_GAP_MAX": 3.0,
+        "AGE_DROP": 20.0,
+    },
+    "simplified_conflict": {
+        "RADAR_HIT_MODEL": "deterministic_beam",
+        "FOV_HALF_DEG": 15.0,
+        "R_MAX": 100.0,
+        "TRACK_INIT_HITS": 1,
+        "TRACK_INIT_WINDOW": 8.0,
+        "TRACK_CONFIRM_TIME": 3.0,
+        "TRACK_CONFIRM_GAP_MAX": 3.0,
+        "AGE_DROP": 20.0,
+        "AGE_STD_DETECT": 10.0,
+        "C04_RANGE": 100.0,
+        "UPLINK_LOSS_P": 0.0,
+        "HANDOFF_MIN_INTERVAL": 10.0,
+        "T_SCAN_REQ": 180.0,
+        "M05_GRACE": 10.0,
+        "E03_AREA_PER_KM": 2.5,
+    },
+}
 
 
 def ma_to_kms(ma: float) -> float:
@@ -195,6 +226,7 @@ class DetectSimConfig:
                 f"expected one of {RADAR_HIT_MODELS}"
             )
 
+
     def zone_of(self, x: float) -> str:
         """Functional zone of an x coordinate (plan §1.1)."""
         if x < self.X_CUTOFF:
@@ -235,3 +267,19 @@ class DetectSimConfig:
         """Lateral [y0, y1) of responsibility subzone idx (plan §6.2)."""
         w = self.L_Y / self.N_SUBZONES
         return idx * w, (idx + 1) * w
+
+
+def detect_config_profile(name: str = "baseline", **overrides) -> DetectSimConfig:
+    """Return a named, immutable numeric task profile.
+
+    Profiles are deliberately separate from :class:`DetectSimConfig` defaults:
+    existing experiments retain their exact behavior, while a training run can
+    record an explicit simplification name and its resolved values.
+    """
+    if name not in DETECT_CONFIG_PROFILES:
+        raise ValueError(
+            f"Unknown detect config profile {name!r}; expected one of "
+            f"{tuple(DETECT_CONFIG_PROFILES)}")
+    values = dict(DETECT_CONFIG_PROFILES[name])
+    values.update(overrides)
+    return replace(DetectSimConfig(), **values)

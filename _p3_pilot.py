@@ -56,25 +56,48 @@ CANDIDATE_REPAIR = candidate_repair_request(
 
 def _env_config() -> DetectSimConfig:
     """Build the task config with explicit, reproducible numeric overrides."""
+    from aircraft_sim.detect_config import detect_config_profile
+
+    profile = os.environ.get("MUMT_SCENARIO_PROFILE", "baseline")
     values = {}
     for name, caster in (
+            ("MUMT_HORIZON", int),
+            ("MUMT_FOV_HALF_DEG", float),
+            ("MUMT_R_MAX", float),
+            ("MUMT_TRACK_INIT_HITS", int),
+            ("MUMT_TRACK_INIT_WINDOW", float),
+            ("MUMT_TRACK_CONFIRM_TIME", float),
+            ("MUMT_TRACK_CONFIRM_GAP_MAX", float),
+            ("MUMT_AGE_DROP", float),
+            ("MUMT_AGE_STD_DETECT", float),
+            ("MUMT_UPLINK_LOSS_P", float),
+            ("MUMT_HANDOFF_MIN_INTERVAL", float),
+            ("MUMT_T_SCAN_REQ", float),
+            ("MUMT_C04_RESPONSE", float),
+            ("MUMT_M05_GRACE", float),
+            ("MUMT_E03_AREA_PER_KM", float),
             ("MUMT_STABLE_WINDOW", int),
             ("MUMT_AGE_STD_TRACK", float),
             ("MUMT_SECTOR_AXIS_MAX_DEG", float),
             ("MUMT_C04_RANGE", float),
+            ("MUMT_RADAR_HIT_MODEL", str),
             ("MUMT_ARB_BID_WEIGHT", float),
             ("MUMT_ARB_HYSTERESIS", float)):
         text = os.environ.get(name)
         if text is not None:
             values[name.removeprefix("MUMT_")] = caster(text)
-    return replace(DetectSimConfig(), **values) if values else DetectSimConfig()
+    # `horizon` is a dataclass field, while all other entries map directly to
+    # their uppercase registry names.
+    if "HORIZON" in values:
+        values["horizon"] = values.pop("HORIZON")
+    return detect_config_profile(profile, **values)
 
 
 def _make_env() -> DetectEnv:
     return DetectEnv(_env_config())
 
-BC_EPISODES = 8          # K=4, seeds 100+
-BC_EPOCHS = 60
+BC_EPISODES = int(os.environ.get("MUMT_BC_EPISODES", "8"))
+BC_EPOCHS = int(os.environ.get("MUMT_BC_EPOCHS", "60"))
 BC_CONTINUOUS_OBJECTIVE = os.environ.get(
     "MUMT_BC_CONTINUOUS_OBJECTIVE", "likelihood")
 BC_K = int(os.environ.get("MUMT_BC_K", "4"))
@@ -104,6 +127,8 @@ CURR_PATIENCE = int(os.environ.get("MUMT_CURR_PATIENCE", "0"))
 
 if EPISODES_PER_ITER < 1:
     raise ValueError("MUMT_EPISODES_PER_ITER must be at least 1")
+if BC_EPISODES < 1 or BC_EPOCHS < 1:
+    raise ValueError("BC episodes and epochs must be positive")
 if VALIDATION_EVERY < 1:
     raise ValueError("MUMT_VALIDATION_EVERY must be at least 1")
 if not VALIDATION_SEEDS:
@@ -882,8 +907,25 @@ def main():
                 "selection": "natural paired validation at W8_SCALE=1, without training shaping or exposure",
             },
             "task_numeric_config": {
+                "scenario_profile": os.environ.get(
+                    "MUMT_SCENARIO_PROFILE", "baseline"),
+                "full_config_sha256": canonical_sha256(vars(env.cfg)),
                 "stable_window": env.cfg.STABLE_WINDOW,
                 "age_std_track": env.cfg.AGE_STD_TRACK,
+                "age_std_detect": env.cfg.AGE_STD_DETECT,
+                "radar_hit_model": env.cfg.RADAR_HIT_MODEL,
+                "fov_half_deg": env.cfg.FOV_HALF_DEG,
+                "r_max": env.cfg.R_MAX,
+                "track_init_hits": env.cfg.TRACK_INIT_HITS,
+                "track_init_window": env.cfg.TRACK_INIT_WINDOW,
+                "track_confirm_time": env.cfg.TRACK_CONFIRM_TIME,
+                "track_confirm_gap_max": env.cfg.TRACK_CONFIRM_GAP_MAX,
+                "age_drop": env.cfg.AGE_DROP,
+                "uplink_loss_p": env.cfg.UPLINK_LOSS_P,
+                "handoff_min_interval": env.cfg.HANDOFF_MIN_INTERVAL,
+                "t_scan_req": env.cfg.T_SCAN_REQ,
+                "m05_grace": env.cfg.M05_GRACE,
+                "e03_area_per_km": env.cfg.E03_AREA_PER_KM,
                 "sector_axis_max_deg": env.cfg.SECTOR_AXIS_MAX_DEG,
                 "c04_range": env.cfg.C04_RANGE,
                 "arb_bid_weight": env.cfg.ARB_BID_WEIGHT,
