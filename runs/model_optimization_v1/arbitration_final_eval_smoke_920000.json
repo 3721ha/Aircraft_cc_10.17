@@ -1,0 +1,359 @@
+{
+ "checkpoint": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\arbitration_bidonly_k2_lane50_h4_v1\\final.pt",
+ "k": 2,
+ "mode": "natural_paired_eval",
+ "stable_window": 8,
+ "age_std_track": 10.0,
+ "arb_bid_weight": 0.35,
+ "arb_hysteresis": 0.2,
+ "scenario_profile": "k2_lane_center_50",
+ "radar_hit_model": "bernoulli",
+ "direct_rl_arbitration": true,
+ "task_config": {
+  "dt": 1.0,
+  "horizon": 900,
+  "L_X": 160.0,
+  "L_Y": 120.0,
+  "X_CUTOFF": 40.0,
+  "X_TRACK": 110.0,
+  "AGE_STD_TRACK": 10.0,
+  "AGE_STD_DETECT": 5.0,
+  "STABLE_WINDOW": 8,
+  "N_WINGMEN": 3,
+  "BLUE_V_MIN_MA": 0.4,
+  "BLUE_V_MAX_MA": 0.95,
+  "OMEGA_CRUISE_DEG": 3.0,
+  "OMEGA_MANEUVER_DEG": 6.0,
+  "ACCEL_MAX_MA_S": 0.1,
+  "K_PSI": 1.0,
+  "K_V_MS": 30.0,
+  "MANNED_V_MIN_MA": 0.5,
+  "MANNED_V_MAX_MA": 0.9,
+  "MANNED_OMEGA_DEG": 3.0,
+  "K_RED": 2,
+  "RED_CRUISE_MA": 0.75,
+  "RED_MANEUVER_MA_RANGE": [
+   0.6,
+   0.9
+  ],
+  "RED_OMEGA_DEG": 8.0,
+  "RED_DUTY_MIN": 0.7,
+  "RED_DUTY_MAX": 0.8,
+  "RED_STAGGER_KM": 8.0,
+  "RED_X0": 158.0,
+  "RED_MANEUVER_RESAMPLE": [
+   20,
+   40
+  ],
+  "RED_TURN_POISSON_MEAN": 30.0,
+  "RED_SNAKE_HALF_ANGLE_DEG": 30.0,
+  "RED_SNAKE_PERIOD": 20.0,
+  "RED_EDGE_SUPPRESS_KM": 5.0,
+  "RED_LANE_K2_CENTER_KM": 50.0,
+  "RED_REGAIN_T": [
+   12.0,
+   20.0
+  ],
+  "RED_REGAIN_SPREAD_DEG": 30.0,
+  "RED_SEP_WARN_KM": 18.0,
+  "RED_SEP_HARD_KM": 2.0,
+  "RED_SEP_BIAS_DEG": 45.0,
+  "RED_PAIR_SUBLANE_KM": 4.0,
+  "R_MAX": 80.0,
+  "FOV_HALF_DEG": 7.5,
+  "BEAM_DWELL": 0.5,
+  "GEAR_FRAME": {
+   "7.5": 0.5,
+   "15.0": 1.0,
+   "30.0": 2.0,
+   "45.0": 3.0,
+   "60.0": 4.0
+  },
+  "GEARS_SEARCH": [
+   45.0,
+   60.0
+  ],
+  "GEARS_TRACK": [
+   7.5,
+   15.0,
+   30.0,
+   45.0
+  ],
+  "PD_TIERS": [
+   [
+    0.5,
+    0.9
+   ],
+   [
+    0.8,
+    0.6
+   ],
+   [
+    1.0,
+    0.3
+   ]
+  ],
+  "RADAR_HIT_MODEL": "bernoulli",
+  "SECTOR_AXIS_MAX_DEG": 60.0,
+  "AXIS_TRIM_SCALE_DEG": 15.0,
+  "TRACK_INIT_HITS": 2,
+  "TRACK_INIT_WINDOW": 6.5,
+  "TRACK_CONFIRM_TIME": 5.0,
+  "TRACK_CONFIRM_GAP_MAX": 1.6,
+  "AGE_DEGRADE": 8.0,
+  "AGE_DROP": 13.0,
+  "COV_SHRINK": 0.8,
+  "COV_Q_KM2_S": 0.25,
+  "SIGMA_REF": 4.0,
+  "MAR": 40.0,
+  "MOR": 60.0,
+  "MAR_MOR_VARIANTS": [
+   [
+    40.0,
+    60.0
+   ],
+   [
+    30.0,
+    50.0
+   ],
+   [
+    20.0,
+    40.0
+   ]
+  ],
+  "K_SIGMA": 3.0,
+  "MOR_GRADIENT_SPAN": 20.0,
+  "D_SAFE": 2.0,
+  "D_SAFE_LOOKAHEAD": 3.0,
+  "BOUNDARY_PREDICT": 5.0,
+  "LINK_RATE_HZ": 1.0,
+  "LINK_DELAY_S": 1.0,
+  "T_SCAN_REQ": 120.0,
+  "HANDOFF_MIN_INTERVAL": 30.0,
+  "HANDOFF_INTERVAL_SWEEP": [
+   10.0,
+   20.0,
+   30.0
+  ],
+  "C04_RANGE": 80.0,
+  "C04_RESPONSE": 5.0,
+  "T_DWELL": 5.0,
+  "APPROVAL_DELAY_INIT": 0.0,
+  "LINK_DROP_RATE": 0.3,
+  "LINK_DROP_WINDOW": 10.0,
+  "UPLINK_LOSS_P": 0.05,
+  "E03_AREA_PER_KM": 5.0,
+  "N_SUBZONES": 3,
+  "TRACK_SWEET_DIST": 62.0,
+  "TRACK_K_D": 0.0025,
+  "CAP_X": 15.0,
+  "CAP_Y": 60.0,
+  "CAP_LEG_Y": 10.0,
+  "CAP_LEG_X": 5.0,
+  "ARB_WEIGHTS": [
+   1.0,
+   1.0,
+   0.5,
+   0.5,
+   0.3
+  ],
+  "ARB_HYSTERESIS": 0.2,
+  "ARB_BID_WEIGHT": 0.35,
+  "W1_TRACK_TICK": 0.02,
+  "W2_DETECT_TICK": 0.005,
+  "W3_STABLE": 10.0,
+  "W4_SUCCESS": 50.0,
+  "W5_MOR_GRAD": 0.02,
+  "W6_MAR": 0.1,
+  "W7_HANDOFF": 0.5,
+  "W8_LAYER": [
+   10.0,
+   7.5,
+   10.0,
+   5.0,
+   2.5,
+   1.25
+  ],
+  "W8_SCALE": 1.0,
+  "M05_GRACE": 5.0,
+  "W9_FAILURE": 50.0,
+  "STEP_COST": 0.005,
+  "OBS_DIM": 169,
+  "TRACK_SLOTS": 8,
+  "NET_HIDDEN": 128,
+  "TOTAL_STEPS": 1500000,
+  "N_ENVS": 16,
+  "N_SEEDS": 10,
+  "BC_EPOCHS": [
+   50,
+   100
+  ],
+  "CONVERGE_WINDOW": 100,
+  "seed": 7
+ },
+ "task_config_sha256": "a3d47afc8201487fe9c5f09b5ffe6699194c07b4ca12ab2c6a372e4ea410716c",
+ "provenance": {
+  "run_id": "20261022T135118.960701Z_37100_1f28242f",
+  "sidecar": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\arbitration_final_eval_smoke_920000.json.provenance.json"
+ },
+ "paired": [
+  {
+   "heur": {
+    "controller": "HeurPolicy",
+    "seed": 920000,
+    "k": 2,
+    "terminal": "success",
+    "stable_window": 8,
+    "return": -1397.335,
+    "steps": 391,
+    "violations": 1270,
+    "conflicts": 0,
+    "bid_changed_winner": 0,
+    "rl_direct_arbitration": false,
+    "conflict_probe": {
+     "enabled": false,
+     "exposure_steps": 0,
+     "injected_request_pairs": 0,
+     "fixture_injected_steps": 0,
+     "fixture_injected_pairs": 0,
+     "fixture_observed_pairs": 0,
+     "fixture_target_multi_candidate_events": 0,
+     "exposed_agents": 0,
+     "multi_candidate_events": 0,
+     "bid_changed_winner": 0,
+     "bid_winner_change_rate": 0.0
+    },
+    "counterfactual_probe": {
+     "enabled": false,
+     "horizon": null,
+     "fixture_target_events": 0,
+     "evaluated_events": 0,
+     "uncontrollable_events": 0,
+     "coverage": 0.0,
+     "candidate_branches": 0,
+     "rl_wins_over_fixed_score": 0,
+     "fixed_score_wins_over_rl": 0,
+     "utility_ties": 0,
+     "mean_rl_minus_fixed_score_utility": 0.0,
+     "events": []
+    },
+    "mean_abs_bid_on_conflicts": 0.0,
+    "conflict_probe_events": [],
+    "request_outcomes": {
+     "selected": 61,
+     "c04_rejected": 23
+    },
+    "incumbent_overrides": 0,
+    "shield_interventions": 317,
+    "mean_correction": 0.7668,
+    "violations_by_family": {
+     "M01": 78,
+     "S05": 333,
+     "M03": 126,
+     "S04": 421,
+     "E03": 67,
+     "E01": 3,
+     "C04": 84,
+     "I03": 5,
+     "M02": 71,
+     "C02": 79,
+     "I02": 3
+    },
+    "active_steps_by_conflict_pair": {
+     "S04-M02": 34,
+     "S05-M02": 46,
+     "C01-M02": 157,
+     "C03-M02": 88,
+     "C02-M01": 63,
+     "M01-M02": 348,
+     "S02-M02": 0,
+     "S03-M02": 785,
+     "I02-M02": 14,
+     "I03-M02": 21,
+     "M04-S04": 321,
+     "C01-C03": 0,
+     "M05-E03": 2
+    },
+    "mean_rl_preference_when_active": {}
+   },
+   "rl": {
+    "controller": "RL",
+    "seed": 920000,
+    "k": 2,
+    "terminal": "success",
+    "stable_window": 8,
+    "return": -1172.326,
+    "steps": 498,
+    "violations": 1414,
+    "conflicts": 0,
+    "bid_changed_winner": 0,
+    "rl_direct_arbitration": true,
+    "conflict_probe": {
+     "enabled": false,
+     "exposure_steps": 0,
+     "injected_request_pairs": 0,
+     "fixture_injected_steps": 0,
+     "fixture_injected_pairs": 0,
+     "fixture_observed_pairs": 0,
+     "fixture_target_multi_candidate_events": 0,
+     "exposed_agents": 0,
+     "multi_candidate_events": 0,
+     "bid_changed_winner": 0,
+     "bid_winner_change_rate": 0.0
+    },
+    "counterfactual_probe": {
+     "enabled": false,
+     "horizon": null,
+     "fixture_target_events": 0,
+     "evaluated_events": 0,
+     "uncontrollable_events": 0,
+     "coverage": 0.0,
+     "candidate_branches": 0,
+     "rl_wins_over_fixed_score": 0,
+     "fixed_score_wins_over_rl": 0,
+     "utility_ties": 0,
+     "mean_rl_minus_fixed_score_utility": 0.0,
+     "events": []
+    },
+    "mean_abs_bid_on_conflicts": 0.0,
+    "conflict_probe_events": [],
+    "request_outcomes": {
+     "selected": 38,
+     "c04_rejected": 79
+    },
+    "incumbent_overrides": 0,
+    "shield_interventions": 303,
+    "mean_correction": 0.3702,
+    "violations_by_family": {
+     "M01": 49,
+     "S05": 529,
+     "E01": 27,
+     "M03": 26,
+     "I03": 6,
+     "C04": 19,
+     "M02": 23,
+     "E03": 147,
+     "S04": 439,
+     "C02": 98,
+     "M05": 51
+    },
+    "active_steps_by_conflict_pair": {
+     "S04-M02": 3,
+     "S05-M02": 53,
+     "C01-M02": 77,
+     "C03-M02": 312,
+     "C02-M01": 60,
+     "M01-M02": 330,
+     "S02-M02": 0,
+     "S03-M02": 868,
+     "I02-M02": 13,
+     "I03-M02": 39,
+     "M04-S04": 573,
+     "C01-C03": 0,
+     "M05-E03": 3
+    },
+    "mean_rl_preference_when_active": {}
+   }
+  }
+ ]
+}

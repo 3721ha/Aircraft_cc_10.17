@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter
+from copy import deepcopy
 from dataclasses import asdict, replace
 from datetime import datetime, timezone
 import json
@@ -22,6 +23,7 @@ import numpy as np
 import torch
 
 ROOT = Path(__file__).resolve().parent
+COUNTERFACTUAL_PROBE_HORIZON = 5
 sys.path.insert(0, str(ROOT / "Aircraft_mumt"))
 from _experiment_provenance import (add_output, artifact_record,
                                     capture_run_provenance,
@@ -48,7 +50,8 @@ SOURCE_SNAPSHOT = (
             or _startup_output_conflict) else
     capture_source_snapshot(
         ROOT, _startup_output_dir,
-        [ROOT / "_eval_conflict_paired.py"]))
+        [ROOT / "_eval_conflict_paired.py",
+         ROOT / "Aircraft_mumt" / "aircraft_sim" / "detect_mappo.py"]))
 
 from aircraft_sim.detect_baselines import HeurPolicy
 from aircraft_sim.detect_env import DetectEnv
@@ -57,7 +60,7 @@ from aircraft_sim.track import Track
 from aircraft_sim.detect_mappo import (DetectMAPPOConfig, DetectMAPPOPolicy,
                                        N_CONFLICT_FEATURES)
 from aircraft_sim.detect_shield import DetectQPShield
-from aircraft_sim.detect_config import DetectSimConfig
+from aircraft_sim.detect_config import DetectSimConfig, detect_config_profile
 
 
 def _winner(scores: dict, owner: int | None, hysteresis: float) -> int:
@@ -148,6 +151,7 @@ def _install_probe_fixture(env: DetectEnv, rng: random.Random) -> dict | None:
         return None
     tid, left, right, tx, ty = pairs[rng.randrange(len(pairs))]
     touched = {}
+    fixture_slots = {}
     for i in (left, right):
         tracks = env.wingmen[i].tracks
         old_slots = list(tracks.slots)
@@ -164,10 +168,12 @@ def _install_probe_fixture(env: DetectEnv, rng: random.Random) -> dict | None:
             slot=slot_idx, target_id=tid, x=tx, y=ty, state="confirmed",
             last_hit_t=env.t, first_hit_t=env.t, hits_in_window=[env.t])
         tracks._by_target[tid] = slot_idx
+        fixture_slots[i] = slot_idx
     # Arbitration can temporarily assign a previously unowned target.  Keep
     # all state that it mutates so the fixture is observationally isolated.
     state = {
         "tracks": touched,
+        "fixture_slots": fixture_slots,
         "responsibility": dict(env.responsibility),
         "owned": [set(w.owned) for w in env.wingmen],
         "c04_breach": dict(env.c04_breach),
@@ -203,6 +209,28 @@ def _restore_probe_fixture(env: DetectEnv, state: dict | None) -> None:
     env.tz_track_since = state["tz_track_since"]
 
 
+def _restore_probe_tracks_after_branch_step(
+        env: DetectEnv, state: dict, event: dict) -> None:
+    """Remove the synthetic second request while keeping the branch winner's track."""
+    tid = int(state["target_id"])
+    winner = int(event["winner"])
+    for i in state["pair"]:
+        old_slots, old_index = state["tracks"][i]
+        slots = deepcopy(old_slots)
+        by_target = dict(old_index)
+        if i == winner and tid not in by_target:
+            slot = int(state["fixture_slots"][i])
+            current = env.wingmen[i].tracks.slots[slot]
+            if current is not None and current.target_id == tid:
+                displaced = slots[slot]
+                if displaced is not None:
+                    by_target.pop(displaced.target_id, None)
+                slots[slot] = deepcopy(current)
+                by_target[tid] = slot
+        env.wingmen[i].tracks.slots = slots
+        env.wingmen[i].tracks._by_target = by_target
+
+
 def run(controller, checkpoint: str | None, k_red: int, seed: int,
         cfg: DetectSimConfig, conflict_probe: bool = False,
         direct_rl_arbitration: bool = False) -> dict:
@@ -213,6 +241,8 @@ def run(controller, checkpoint: str | None, k_red: int, seed: int,
         policy = DetectMAPPOPolicy(env, shield, seed=0)
         policy.config.direct_rl_arbitration = direct_rl_arbitration
         policy.load(checkpoint)
+        if conflict_probe and direct_rl_arbitration:
+            policy.config.cf_bid_horizon = COUNTERFACTUAL_PROBE_HORIZON
         policy._conflict_rng = random.Random(int(seed) + 0xC0F11C7)
         policy._conflict_probe_rng = random.Random(int(seed) ^ 0x5A17)
     scenario = {"seed": seed, "k_red": k_red}
@@ -245,10 +275,37 @@ def run(controller, checkpoint: str | None, k_red: int, seed: int,
     pair_active_steps = [0] * len(pair_names)
     pair_preference_sum = [0.0] * len(pair_names)
     pair_preference_count = [0] * len(pair_names)
+    probe_fixture_observed_pairs = 0
+    probe_fixture_target_events = 0
+    cf_target_events = 0
+    cf_uncontrollable_events = 0
+    cf_candidate_branches = 0
+    cf_records = []
     encoder = policy.encoder if policy is not None else DetectObservationEncoder(env.cfg)
     while env.terminal is None:
+        probe_fixture = None
+        if policy is not None and conflict_probe:
+            policy.config.conflict_exposure_prob = 1.0
+            # Install before observing so the actor receives the fixture.
+            probe_fixture = _install_probe_fixture(
+                env, policy._conflict_probe_rng)
+            if probe_fixture is not None:
+                probe_fixture_steps += 1
+                probe_fixture_pairs += 1
         observations = env.observe()
         encoded = {i: encoder.encode(observations[i]) for i in observations}
+        if probe_fixture is not None:
+            for i in probe_fixture["pair"]:
+                slot = env.wingmen[i].tracks._by_target.get(
+                    probe_fixture["target_id"])
+                if slot is None or observations[i]["self"].tracks.slots[slot] is None:
+                    raise AssertionError(
+                        "probe fixture target is absent from an exposed agent observation")
+                mask_idx = 17 + slot * 14 + 11
+                if encoded[i][mask_idx] <= 0.0:
+                    raise AssertionError(
+                        "probe fixture target is absent from the actor's encoded observation")
+            probe_fixture_observed_pairs += 1
         for vector in encoded.values():
             for j, pressure in enumerate(vector[-N_CONFLICT_FEATURES:]):
                 if pressure > 0.1:
@@ -259,22 +316,14 @@ def run(controller, checkpoint: str | None, k_red: int, seed: int,
         else:
             nominal, _ = policy.act_batch(observations, deterministic=True)
             exposure_mask = [False] * env.cfg.N_WINGMEN
-            probe_fixture = None
             if conflict_probe:
-                policy.config.conflict_exposure_prob = 1.0
-                # If naturally held local tracks do not overlap, construct a
-                # one-step, reversible fixture from an actually feasible
-                # target/wingman geometry so the probe always exercises C04
-                # multi-candidate arbitration when geometry permits it.
-                probe_fixture = _install_probe_fixture(
-                    env, policy._conflict_probe_rng)
-                if probe_fixture is not None:
-                    probe_fixture_steps += 1
-                    probe_fixture_pairs += 1
                 nominal, exposure_mask, injected = \
                     policy._expose_shared_target_conflict(
                         nominal, deterministic=False,
-                        probe_rng=policy._conflict_probe_rng)
+                        probe_rng=policy._conflict_probe_rng,
+                        preferred_pair=(
+                            (*probe_fixture["pair"], probe_fixture["target_id"])
+                            if probe_fixture is not None else None))
                 probe_injected_pairs += injected
                 if injected:
                     probe_exposure_steps += 1
@@ -301,12 +350,23 @@ def run(controller, checkpoint: str | None, k_red: int, seed: int,
                             nominal[i],
                             arbitration_bid=float(bid_vector[slot]),
                             arbitration_bids=tuple(bid_vector))
-        safe, interventions = shield.filter(env, nominal)
-        intervention_count += len(interventions)
-        correction_total += sum(float(item.magnitude) for item in interventions)
-        result = env.step(safe)
-        if policy is not None and conflict_probe:
-            _restore_probe_fixture(env, probe_fixture)
+        try:
+            safe, interventions = shield.filter(env, nominal)
+            intervention_count += len(interventions)
+            correction_total += sum(float(item.magnitude) for item in interventions)
+            cf_env_before = None
+            cf_phi_before = None
+            if (policy is not None and conflict_probe
+                    and direct_rl_arbitration and probe_fixture is not None):
+                cf_env_before = deepcopy(env)
+                cf_phi_before = (
+                    policy._potential_in_env(env, "track"),
+                    policy._potential_in_env(env, "stable"),
+                )
+            result = env.step(safe)
+        finally:
+            if policy is not None and conflict_probe:
+                _restore_probe_fixture(env, probe_fixture)
         steps += 1
         total += result.reward
         violations += len(result.info["report"].violations)
@@ -317,12 +377,57 @@ def run(controller, checkpoint: str | None, k_red: int, seed: int,
             family_counts[family] = family_counts.get(family, 0) + 1
         events = result.info.get("arbitration", [])
         conflicts += len(events)
+        if cf_env_before is not None:
+            fixture_events = [
+                event for event in events
+                if int(event.get("tid", -1)) == probe_fixture["target_id"]
+                and set(int(i) for i in event.get("candidates", []))
+                .issuperset(probe_fixture["pair"])
+            ]
+            cf_target_events += len(fixture_events)
+            if fixture_events:
+                dummy_advantages = [
+                    [0.0] * 8 for _ in range(env.cfg.N_WINGMEN)]
+                dummy_masks = [
+                    [False] * 8 for _ in range(env.cfg.N_WINGMEN)]
+                cf_stats = policy._counterfactual_bid_credit(
+                    cf_env_before, safe, fixture_events,
+                    cf_phi_before[0], cf_phi_before[1],
+                    dummy_advantages, dummy_masks,
+                    post_first_step_cleanup=(
+                        lambda branch, event: _restore_probe_tracks_after_branch_step(
+                            branch, probe_fixture, event)))
+                cf_uncontrollable_events += cf_stats["uncontrollable_events"]
+                cf_candidate_branches += cf_stats["candidate_branches"]
+                for record in cf_stats["event_records"]:
+                    matching = next(
+                        event for event in fixture_events
+                        if int(event.get("tid", -1)) == int(record["tid"])
+                        and sorted(int(i) for i in event.get("candidates", []))
+                        == sorted(int(i) for i in record["candidates"])
+                        and int(event.get("winner", -1)) == int(record["winner"])
+                    )
+                    scores = matching.get("scores", {})
+                    fixed_winner = _winner(
+                        scores, matching.get("previous_owner"),
+                        float(matching.get("hysteresis", 0.0)))
+                    utilities = {int(i): float(value)
+                                 for i, value in record["utilities"].items()}
+                    rl_winner = int(record["winner"])
+                    delta = utilities[rl_winner] - utilities[fixed_winner]
+                    record["fixed_score_winner"] = fixed_winner
+                    record["rl_minus_fixed_score_utility"] = float(delta)
+                    cf_records.append(record)
         for event in events:
             candidates = [int(i) for i in event.get("candidates", [])]
             probe_event = sum(
                 bool(exposure_mask[i]) for i in candidates) >= 2
             if probe_event:
                 probe_conflicts += 1
+                if (probe_fixture is not None
+                        and int(event.get("tid", -1)) == probe_fixture["target_id"]
+                        and set(candidates).issuperset(probe_fixture["pair"])):
+                    probe_fixture_target_events += 1
             bids = event.get("bids", {})
             scores = event.get("scores", {})
             adjusted = event.get("adjusted_scores", {})
@@ -375,11 +480,39 @@ def run(controller, checkpoint: str | None, k_red: int, seed: int,
             "injected_request_pairs": probe_injected_pairs,
             "fixture_injected_steps": probe_fixture_steps,
             "fixture_injected_pairs": probe_fixture_pairs,
+            "fixture_observed_pairs": probe_fixture_observed_pairs,
+            "fixture_target_multi_candidate_events": probe_fixture_target_events,
             "exposed_agents": probe_exposed_agents,
             "multi_candidate_events": probe_conflicts,
             "bid_changed_winner": probe_bid_changed_winner,
             "bid_winner_change_rate": round(
                 probe_bid_changed_winner / max(1, probe_conflicts), 5),
+        },
+        "counterfactual_probe": {
+            "enabled": bool(policy is not None and conflict_probe
+                             and direct_rl_arbitration),
+            "horizon": (COUNTERFACTUAL_PROBE_HORIZON
+                        if policy is not None and conflict_probe
+                        and direct_rl_arbitration else None),
+            "fixture_target_events": cf_target_events,
+            "evaluated_events": len(cf_records),
+            "uncontrollable_events": cf_uncontrollable_events,
+            "coverage": round(
+                len(cf_records) / max(1, cf_target_events), 5),
+            "candidate_branches": cf_candidate_branches,
+            "rl_wins_over_fixed_score": sum(
+                record["rl_minus_fixed_score_utility"] > 1e-8
+                for record in cf_records),
+            "fixed_score_wins_over_rl": sum(
+                record["rl_minus_fixed_score_utility"] < -1e-8
+                for record in cf_records),
+            "utility_ties": sum(
+                abs(record["rl_minus_fixed_score_utility"]) <= 1e-8
+                for record in cf_records),
+            "mean_rl_minus_fixed_score_utility": round(
+                sum(record["rl_minus_fixed_score_utility"]
+                    for record in cf_records) / max(1, len(cf_records)), 6),
+            "events": cf_records,
         },
         "mean_abs_bid_on_conflicts": round(
             bid_abs_sum / max(1, bid_candidate_count), 5),
@@ -405,6 +538,10 @@ def main() -> None:
     ap.add_argument("--c04-range", type=float)
     ap.add_argument("--arb-bid-weight", type=float)
     ap.add_argument("--arb-hysteresis", type=float)
+    ap.add_argument("--scenario-profile", choices=(
+        "baseline", "k2_lane_center_40", "k2_lane_center_50"))
+    ap.add_argument("--radar-hit-model", choices=(
+        "bernoulli", "deterministic_beam"), default="bernoulli")
     ap.add_argument(
         "--conflict-probe", action="store_true",
         help="force paired legal local-track requests for a separate diagnostic")
@@ -422,16 +559,22 @@ def main() -> None:
     output_path = args.output.resolve() if args.output else None
     provenance_dir = (output_path.parent if output_path else
                       ROOT / "runs" / "standalone_evaluations")
-    cfg = replace(
-        DetectSimConfig(),
-        **{key: value for key, value in {
-            "STABLE_WINDOW": args.stable_window,
-            "AGE_STD_TRACK": args.age_std_track,
-            "C04_RANGE": args.c04_range,
-            "ARB_BID_WEIGHT": args.arb_bid_weight,
-            "ARB_HYSTERESIS": args.arb_hysteresis,
-        }.items() if value is not None},
-    )
+    overrides = {key: value for key, value in {
+        "K_RED": args.k,
+        "STABLE_WINDOW": args.stable_window,
+        "AGE_STD_TRACK": args.age_std_track,
+        "C04_RANGE": args.c04_range,
+        "ARB_BID_WEIGHT": args.arb_bid_weight,
+        "ARB_HYSTERESIS": args.arb_hysteresis,
+        "RADAR_HIT_MODEL": args.radar_hit_model,
+    }.items() if value is not None}
+    if (args.scenario_profile is not None
+            and args.scenario_profile.startswith("k2_lane_center_")
+            and args.k != 2):
+        ap.error("K2 lane-center profiles require --k 2")
+    cfg = (detect_config_profile(args.scenario_profile, **overrides)
+           if args.scenario_profile is not None
+           else replace(DetectSimConfig(), **overrides))
     if args.verify_heur_repro and args.conflict_probe:
         ap.error("--verify-heur-repro cannot be combined with --conflict-probe")
     _preflight_output_path(output_path)
@@ -446,7 +589,9 @@ def main() -> None:
         checkpoint_data = torch.load(
             checkpoint_path, map_location="cpu", weights_only=False)
         checkpoint_config = checkpoint_data.get("config")
-    source_entry = [ROOT / "_eval_conflict_paired.py"]
+    source_entry = [ROOT / "_eval_conflict_paired.py",
+                    ROOT / "Aircraft_mumt" / "aircraft_sim" /
+                    "detect_mappo.py"]
     run_record = capture_run_provenance(
         repo_root=ROOT,
         output_dir=provenance_dir,
@@ -544,6 +689,8 @@ def main() -> None:
                "age_std_track": cfg.AGE_STD_TRACK,
                "arb_bid_weight": cfg.ARB_BID_WEIGHT,
                "arb_hysteresis": cfg.ARB_HYSTERESIS,
+               "scenario_profile": args.scenario_profile,
+               "radar_hit_model": cfg.RADAR_HIT_MODEL,
                "direct_rl_arbitration": args.direct_rl_arbitration,
                "task_config": run_record["task_config"],
                "task_config_sha256": run_record["task_config_sha256"],
