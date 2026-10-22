@@ -1,0 +1,3987 @@
+{
+ "run_id": "20261022T053953.032702Z_20436_6481fdd1",
+ "phase": "curr",
+ "task_config_sha256": "a3d47afc8201487fe9c5f09b5ffe6699194c07b4ca12ab2c6a372e4ea410716c",
+ "algorithm_config_sha256": "e961b74c503f70cd73f4ef5a88bda5819951d22b9a8197e17b2c5064bbdebabf",
+ "source_manifest_sha256": "48c2a8648b0575d3fd65dbb894cdbed49c5fb1ed0cf206b680295784cdb33a4a",
+ "records": {
+  "curr_k2": [
+   {
+    "iter": 0,
+    "run_id": "20261022T053953.032702Z_20436_6481fdd1",
+    "mean_return": -385.1,
+    "mean_environment_return": -383.7,
+    "episode_seeds": [
+     300000,
+     300001,
+     300002,
+     300003,
+     300004,
+     300005,
+     300006,
+     300007
+    ],
+    "success": 1.0,
+    "vio_per_step": 2.85,
+    "qp_share": 1.0,
+    "approx_kl": 0.0,
+    "bid_approx_kl": 0.0,
+    "bid_post_update_kl": 1e-06,
+    "policy_anchor_kl": 0.0,
+    "post_update_policy_anchor_kl": 0.0,
+    "bid_active_slot_count": 134,
+    "bid_active_slot_count_by_index": [
+     78,
+     56,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "cf_bid_informative_fraction": 0.887417,
+    "bid_gradient_norm": 2.05321503,
+    "bid_parameter_delta_l2": 0.00068374,
+    "task_residual_gradient_norm": 0.0,
+    "critic_gradient_norm": 0.0,
+    "task_residual_parameter_delta_l2": 0.0,
+    "task_residual_xi_row_unchanged": true,
+    "geometry_adapter_gradient_norm": 0.0,
+    "geometry_adapter_parameter_delta_l2": 0.0,
+    "geometry_adapter_mean_abs_output": 0.0,
+    "geometry_adapter_max_abs_output": 0.0,
+    "geometry_pressure_gate_nonzero_fraction": 0.94492066,
+    "w8_scale": 0.2,
+    "k": 2,
+    "agent_steps": 10149,
+    "environment_steps": 3383,
+    "exposed_agent_steps": 138,
+    "nonexposed_agent_fraction": 0.986403,
+    "track_actions": 1497,
+    "track_action_rate": 0.1475,
+    "nonzero_pointer": 871,
+    "nonzero_pointer_rate": 0.0858,
+    "valid_requests": 871,
+    "valid_request_rate": 0.0858,
+    "requests": 871,
+    "c04_pass_requests": 534,
+    "c04_rejected_requests": 337,
+    "request_winners": 459,
+    "new_assignments": 174,
+    "handoffs": 35,
+    "mean_owned_targets": 0.4283,
+    "stable_target_steps": 112,
+    "stable_progress_ticks": 448,
+    "interventions": 2043,
+    "intervention_rate": 0.2013,
+    "mean_correction": 0.272781,
+    "max_stable_progress": 7,
+    "intervention_loss": 0.0,
+    "intervention_fraction": 0.201301,
+    "cf_nonzero_frac": 0.004335,
+    "gear_gate_active_frac": 0.006602,
+    "gear_gate_credit_mean": -0.006602,
+    "bid_event_frac": 0.014878,
+    "bid_action_mean": -0.10199,
+    "bid_action_std": 0.40107,
+    "bid_events": 75,
+    "bid_events_per_episode": 9.375,
+    "bid_participants": 151,
+    "bid_participation_rate": 0.014878,
+    "bid_event_step_rate": 0.02217,
+    "forced_overlap_pairs": 69,
+    "pointer_exposed_agents": 138,
+    "exposed_multi_candidate_events": 64,
+    "unexposed_multi_candidate_events": 11,
+    "bid_changed_winner": 36,
+    "cf_bid_events": 67,
+    "cf_bid_informative_events": 67,
+    "cf_bid_candidate_branches": 134,
+    "cf_bid_uncontrollable_events": 0,
+    "cf_bid_mean_utility_spread": 0.130771,
+    "cf_bid_mean_actual_regret": 0.053929,
+    "cf_bid_mean_abs_advantage": 0.065386,
+    "rule_conflict_feature_mean": [
+     0.001108,
+     0.023648,
+     0.017736,
+     0.383158,
+     0.005103,
+     0.033181,
+     0.0,
+     0.189495,
+     0.002562,
+     0.019718,
+     0.260617,
+     0.000994,
+     0.003425
+    ],
+    "rule_conflict_feature_nonzero_rate": [
+     0.005813,
+     0.026801,
+     0.13154,
+     0.570598,
+     0.147108,
+     0.225441,
+     0.0,
+     0.653069,
+     0.002562,
+     0.061878,
+     0.335797,
+     0.009853,
+     0.030939
+    ],
+    "rule_conflict_any_rate": 0.944921,
+    "checkpoint": {
+     "role": "curriculum_iteration_checkpoint",
+     "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\curr_k2.pt",
+     "exists": true,
+     "size_bytes": 1765598,
+     "sha256": "22bae4f353eb239603fdc455216b0baecb504356151051ced97beb8ccc78c231",
+     "run_id": "20261022T053953.032702Z_20436_6481fdd1",
+     "archive": {
+      "role": "curriculum_iteration_checkpoint_archive",
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\provenance\\20261022T053953.032702Z_20436_6481fdd1_curr_k2_iter_000000.pt",
+      "exists": true,
+      "size_bytes": 1765598,
+      "sha256": "22bae4f353eb239603fdc455216b0baecb504356151051ced97beb8ccc78c231",
+      "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\curr_k2.pt"
+     }
+    }
+   },
+   {
+    "iter": 1,
+    "run_id": "20261022T053953.032702Z_20436_6481fdd1",
+    "mean_return": -309.4,
+    "mean_environment_return": -308.2,
+    "episode_seeds": [
+     300008,
+     300009,
+     300010,
+     300011,
+     300012,
+     300013,
+     300014,
+     300015
+    ],
+    "success": 1.0,
+    "vio_per_step": 2.592,
+    "qp_share": 1.0,
+    "approx_kl": 0.0,
+    "bid_approx_kl": 0.0,
+    "bid_post_update_kl": 1e-06,
+    "policy_anchor_kl": 0.0,
+    "post_update_policy_anchor_kl": 0.0,
+    "bid_active_slot_count": 8,
+    "bid_active_slot_count_by_index": [
+     7,
+     1,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "cf_bid_informative_fraction": 0.363636,
+    "bid_gradient_norm": 18.10511017,
+    "bid_parameter_delta_l2": 0.00125017,
+    "task_residual_gradient_norm": 0.0,
+    "critic_gradient_norm": 0.0,
+    "task_residual_parameter_delta_l2": 0.0,
+    "task_residual_xi_row_unchanged": true,
+    "geometry_adapter_gradient_norm": 0.0,
+    "geometry_adapter_parameter_delta_l2": 0.0,
+    "geometry_adapter_mean_abs_output": 0.0,
+    "geometry_adapter_max_abs_output": 0.0,
+    "geometry_pressure_gate_nonzero_fraction": 0.94041526,
+    "w8_scale": 0.2,
+    "k": 2,
+    "agent_steps": 9969,
+    "environment_steps": 3323,
+    "exposed_agent_steps": 8,
+    "nonexposed_agent_fraction": 0.999198,
+    "track_actions": 1547,
+    "track_action_rate": 0.1552,
+    "nonzero_pointer": 920,
+    "nonzero_pointer_rate": 0.0923,
+    "valid_requests": 920,
+    "valid_request_rate": 0.0923,
+    "requests": 920,
+    "c04_pass_requests": 544,
+    "c04_rejected_requests": 376,
+    "request_winners": 534,
+    "new_assignments": 147,
+    "handoffs": 6,
+    "mean_owned_targets": 0.3855,
+    "stable_target_steps": 119,
+    "stable_progress_ticks": 476,
+    "interventions": 2101,
+    "intervention_rate": 0.2108,
+    "mean_correction": 0.265529,
+    "max_stable_progress": 7,
+    "intervention_loss": 0.0,
+    "intervention_fraction": 0.210753,
+    "cf_nonzero_frac": 0.004614,
+    "gear_gate_active_frac": 0.012037,
+    "gear_gate_credit_mean": -0.012037,
+    "bid_event_frac": 0.002207,
+    "bid_action_mean": 0.08107,
+    "bid_action_std": 0.280823,
+    "bid_events": 11,
+    "bid_events_per_episode": 1.375,
+    "bid_participants": 22,
+    "bid_participation_rate": 0.002207,
+    "bid_event_step_rate": 0.00331,
+    "forced_overlap_pairs": 4,
+    "pointer_exposed_agents": 8,
+    "exposed_multi_candidate_events": 3,
+    "unexposed_multi_candidate_events": 8,
+    "bid_changed_winner": 6,
+    "cf_bid_events": 4,
+    "cf_bid_informative_events": 4,
+    "cf_bid_candidate_branches": 8,
+    "cf_bid_uncontrollable_events": 0,
+    "cf_bid_mean_utility_spread": 0.425038,
+    "cf_bid_mean_actual_regret": 0.311343,
+    "cf_bid_mean_abs_advantage": 0.212519,
+    "rule_conflict_feature_mean": [
+     0.00104,
+     0.04845,
+     0.015949,
+     0.361206,
+     0.005379,
+     0.032852,
+     0.0,
+     0.196484,
+     0.002307,
+     0.02289,
+     0.225232,
+     0.000214,
+     0.001353
+    ],
+    "rule_conflict_feature_nonzero_rate": [
+     0.00632,
+     0.049152,
+     0.125188,
+     0.547999,
+     0.143846,
+     0.239242,
+     0.0,
+     0.65483,
+     0.002307,
+     0.078042,
+     0.293711,
+     0.001605,
+     0.015247
+    ],
+    "rule_conflict_any_rate": 0.940415,
+    "checkpoint": {
+     "role": "curriculum_iteration_checkpoint",
+     "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\curr_k2.pt",
+     "exists": true,
+     "size_bytes": 1765598,
+     "sha256": "8ca362172386238ec6ada31503eef017a45ea36448d0a38e896f9e159d4d450c",
+     "run_id": "20261022T053953.032702Z_20436_6481fdd1",
+     "archive": {
+      "role": "curriculum_iteration_checkpoint_archive",
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\provenance\\20261022T053953.032702Z_20436_6481fdd1_curr_k2_iter_000001.pt",
+      "exists": true,
+      "size_bytes": 1765598,
+      "sha256": "8ca362172386238ec6ada31503eef017a45ea36448d0a38e896f9e159d4d450c",
+      "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\curr_k2.pt"
+     }
+    },
+    "validation": {
+     "k": 2,
+     "seeds": [
+      290100,
+      290101,
+      290102,
+      290103,
+      290104,
+      290105,
+      290106,
+      290107,
+      290108,
+      290109
+     ],
+     "stable_window": 8,
+     "task_config": {
+      "dt": 1.0,
+      "horizon": 900,
+      "L_X": 160.0,
+      "L_Y": 120.0,
+      "X_CUTOFF": 40.0,
+      "X_TRACK": 110.0,
+      "AGE_STD_TRACK": 10.0,
+      "AGE_STD_DETECT": 5.0,
+      "STABLE_WINDOW": 8,
+      "N_WINGMEN": 3,
+      "BLUE_V_MIN_MA": 0.4,
+      "BLUE_V_MAX_MA": 0.95,
+      "OMEGA_CRUISE_DEG": 3.0,
+      "OMEGA_MANEUVER_DEG": 6.0,
+      "ACCEL_MAX_MA_S": 0.1,
+      "K_PSI": 1.0,
+      "K_V_MS": 30.0,
+      "MANNED_V_MIN_MA": 0.5,
+      "MANNED_V_MAX_MA": 0.9,
+      "MANNED_OMEGA_DEG": 3.0,
+      "K_RED": 2,
+      "RED_CRUISE_MA": 0.75,
+      "RED_MANEUVER_MA_RANGE": [
+       0.6,
+       0.9
+      ],
+      "RED_OMEGA_DEG": 8.0,
+      "RED_DUTY_MIN": 0.7,
+      "RED_DUTY_MAX": 0.8,
+      "RED_STAGGER_KM": 8.0,
+      "RED_X0": 158.0,
+      "RED_MANEUVER_RESAMPLE": [
+       20,
+       40
+      ],
+      "RED_TURN_POISSON_MEAN": 30.0,
+      "RED_SNAKE_HALF_ANGLE_DEG": 30.0,
+      "RED_SNAKE_PERIOD": 20.0,
+      "RED_EDGE_SUPPRESS_KM": 5.0,
+      "RED_LANE_K2_CENTER_KM": 50.0,
+      "RED_REGAIN_T": [
+       12.0,
+       20.0
+      ],
+      "RED_REGAIN_SPREAD_DEG": 30.0,
+      "RED_SEP_WARN_KM": 18.0,
+      "RED_SEP_HARD_KM": 2.0,
+      "RED_SEP_BIAS_DEG": 45.0,
+      "RED_PAIR_SUBLANE_KM": 4.0,
+      "R_MAX": 80.0,
+      "FOV_HALF_DEG": 7.5,
+      "BEAM_DWELL": 0.5,
+      "GEAR_FRAME": {
+       "7.5": 0.5,
+       "15.0": 1.0,
+       "30.0": 2.0,
+       "45.0": 3.0,
+       "60.0": 4.0
+      },
+      "GEARS_SEARCH": [
+       45.0,
+       60.0
+      ],
+      "GEARS_TRACK": [
+       7.5,
+       15.0,
+       30.0,
+       45.0
+      ],
+      "PD_TIERS": [
+       [
+        0.5,
+        0.9
+       ],
+       [
+        0.8,
+        0.6
+       ],
+       [
+        1.0,
+        0.3
+       ]
+      ],
+      "RADAR_HIT_MODEL": "bernoulli",
+      "SECTOR_AXIS_MAX_DEG": 60.0,
+      "AXIS_TRIM_SCALE_DEG": 15.0,
+      "TRACK_INIT_HITS": 2,
+      "TRACK_INIT_WINDOW": 6.5,
+      "TRACK_CONFIRM_TIME": 5.0,
+      "TRACK_CONFIRM_GAP_MAX": 1.6,
+      "AGE_DEGRADE": 8.0,
+      "AGE_DROP": 13.0,
+      "COV_SHRINK": 0.8,
+      "COV_Q_KM2_S": 0.25,
+      "SIGMA_REF": 4.0,
+      "MAR": 40.0,
+      "MOR": 60.0,
+      "MAR_MOR_VARIANTS": [
+       [
+        40.0,
+        60.0
+       ],
+       [
+        30.0,
+        50.0
+       ],
+       [
+        20.0,
+        40.0
+       ]
+      ],
+      "K_SIGMA": 3.0,
+      "MOR_GRADIENT_SPAN": 20.0,
+      "D_SAFE": 2.0,
+      "D_SAFE_LOOKAHEAD": 3.0,
+      "BOUNDARY_PREDICT": 5.0,
+      "LINK_RATE_HZ": 1.0,
+      "LINK_DELAY_S": 1.0,
+      "T_SCAN_REQ": 120.0,
+      "HANDOFF_MIN_INTERVAL": 30.0,
+      "HANDOFF_INTERVAL_SWEEP": [
+       10.0,
+       20.0,
+       30.0
+      ],
+      "C04_RANGE": 80.0,
+      "C04_RESPONSE": 5.0,
+      "T_DWELL": 5.0,
+      "APPROVAL_DELAY_INIT": 0.0,
+      "LINK_DROP_RATE": 0.3,
+      "LINK_DROP_WINDOW": 10.0,
+      "UPLINK_LOSS_P": 0.05,
+      "E03_AREA_PER_KM": 5.0,
+      "N_SUBZONES": 3,
+      "TRACK_SWEET_DIST": 62.0,
+      "TRACK_K_D": 0.0025,
+      "CAP_X": 15.0,
+      "CAP_Y": 60.0,
+      "CAP_LEG_Y": 10.0,
+      "CAP_LEG_X": 5.0,
+      "ARB_WEIGHTS": [
+       1.0,
+       1.0,
+       0.5,
+       0.5,
+       0.3
+      ],
+      "ARB_HYSTERESIS": 0.2,
+      "ARB_BID_WEIGHT": 0.35,
+      "W1_TRACK_TICK": 0.02,
+      "W2_DETECT_TICK": 0.005,
+      "W3_STABLE": 10.0,
+      "W4_SUCCESS": 50.0,
+      "W5_MOR_GRAD": 0.02,
+      "W6_MAR": 0.1,
+      "W7_HANDOFF": 0.5,
+      "W8_LAYER": [
+       10.0,
+       7.5,
+       10.0,
+       5.0,
+       2.5,
+       1.25
+      ],
+      "W8_SCALE": 1.0,
+      "M05_GRACE": 5.0,
+      "W9_FAILURE": 50.0,
+      "STEP_COST": 0.005,
+      "OBS_DIM": 169,
+      "TRACK_SLOTS": 8,
+      "NET_HIDDEN": 128,
+      "TOTAL_STEPS": 1500000,
+      "N_ENVS": 16,
+      "N_SEEDS": 10,
+      "BC_EPOCHS": [
+       50,
+       100
+      ],
+      "CONVERGE_WINDOW": 100,
+      "seed": 7
+     },
+     "task_config_sha256": "a3d47afc8201487fe9c5f09b5ffe6699194c07b4ca12ab2c6a372e4ea410716c",
+     "rl": {
+      "success_rate": 1.0,
+      "mean_return": -1778.0,
+      "violations_per_step": 2.9416
+     },
+     "heur": {
+      "success_rate": 1.0,
+      "mean_return": -1443.9,
+      "violations_per_step": 3.8011
+     },
+     "natural_arbitration": {
+      "rl_multi_candidate_events": 12,
+      "rl_winner_changes_vs_fixed_score": 1,
+      "forced_probe_enabled": false
+     },
+     "by_seed": [
+      {
+       "seed": 290100,
+       "rl": {
+        "seed": 290100,
+        "terminal": "success",
+        "return": -515.0,
+        "steps": 333,
+        "violations": 410,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 290100,
+        "terminal": "success",
+        "return": -380.8,
+        "steps": 383,
+        "violations": 1031
+       }
+      },
+      {
+       "seed": 290101,
+       "rl": {
+        "seed": 290101,
+        "terminal": "success",
+        "return": -176.6,
+        "steps": 305,
+        "violations": 191,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 290101,
+        "terminal": "success",
+        "return": -942.3,
+        "steps": 353,
+        "violations": 1040
+       }
+      },
+      {
+       "seed": 290102,
+       "rl": {
+        "seed": 290102,
+        "terminal": "success",
+        "return": -4953.6,
+        "steps": 627,
+        "violations": 3312,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 290102,
+        "terminal": "success",
+        "return": -1349.6,
+        "steps": 363,
+        "violations": 1197
+       }
+      },
+      {
+       "seed": 290103,
+       "rl": {
+        "seed": 290103,
+        "terminal": "success",
+        "return": -5744.1,
+        "steps": 672,
+        "violations": 3823,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 290103,
+        "terminal": "success",
+        "return": -381.3,
+        "steps": 319,
+        "violations": 724
+       }
+      },
+      {
+       "seed": 290104,
+       "rl": {
+        "seed": 290104,
+        "terminal": "success",
+        "return": -2054.1,
+        "steps": 425,
+        "violations": 1420,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 290104,
+        "terminal": "success",
+        "return": -1273.2,
+        "steps": 392,
+        "violations": 1407
+       }
+      },
+      {
+       "seed": 290105,
+       "rl": {
+        "seed": 290105,
+        "terminal": "success",
+        "return": -919.5,
+        "steps": 357,
+        "violations": 618,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 290105,
+        "terminal": "success",
+        "return": -1081.8,
+        "steps": 360,
+        "violations": 1213
+       }
+      },
+      {
+       "seed": 290106,
+       "rl": {
+        "seed": 290106,
+        "terminal": "success",
+        "return": -749.8,
+        "steps": 314,
+        "violations": 422,
+        "multi_candidate_events": 1,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 290106,
+        "terminal": "success",
+        "return": -854.6,
+        "steps": 348,
+        "violations": 946
+       }
+      },
+      {
+       "seed": 290107,
+       "rl": {
+        "seed": 290107,
+        "terminal": "success",
+        "return": -269.8,
+        "steps": 337,
+        "violations": 276,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 290107,
+        "terminal": "success",
+        "return": -1290.6,
+        "steps": 398,
+        "violations": 1341
+       }
+      },
+      {
+       "seed": 290108,
+       "rl": {
+        "seed": 290108,
+        "terminal": "success",
+        "return": -342.7,
+        "steps": 330,
+        "violations": 318,
+        "multi_candidate_events": 2,
+        "winner_changes_vs_fixed_score": 1
+       },
+       "heur": {
+        "seed": 290108,
+        "terminal": "success",
+        "return": -3728.7,
+        "steps": 642,
+        "violations": 3941
+       }
+      },
+      {
+       "seed": 290109,
+       "rl": {
+        "seed": 290109,
+        "terminal": "success",
+        "return": -2054.9,
+        "steps": 477,
+        "violations": 1497,
+        "multi_candidate_events": 9,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 290109,
+        "terminal": "success",
+        "return": -3156.4,
+        "steps": 489,
+        "violations": 2543
+       }
+      }
+     ],
+     "run_id": "20261022T053953.032702Z_20436_6481fdd1",
+     "source_manifest_sha256": "48c2a8648b0575d3fd65dbb894cdbed49c5fb1ed0cf206b680295784cdb33a4a",
+     "checkpoint": {
+      "role": "curriculum_validation_checkpoint",
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\curr_k2.pt",
+      "exists": true,
+      "size_bytes": 1765598,
+      "sha256": "8ca362172386238ec6ada31503eef017a45ea36448d0a38e896f9e159d4d450c"
+     },
+     "stage": "ppo_update",
+     "iter": 1
+    }
+   },
+   {
+    "iter": 2,
+    "run_id": "20261022T053953.032702Z_20436_6481fdd1",
+    "mean_return": -664.7,
+    "mean_environment_return": -663.6,
+    "episode_seeds": [
+     300016,
+     300017,
+     300018,
+     300019,
+     300020,
+     300021,
+     300022,
+     300023
+    ],
+    "success": 0.75,
+    "vio_per_step": 3.899,
+    "qp_share": 1.0,
+    "approx_kl": 0.0,
+    "bid_approx_kl": 1e-06,
+    "bid_post_update_kl": 3e-06,
+    "policy_anchor_kl": 0.0,
+    "post_update_policy_anchor_kl": 0.0,
+    "bid_active_slot_count": 14,
+    "bid_active_slot_count_by_index": [
+     13,
+     1,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "cf_bid_informative_fraction": 0.777778,
+    "bid_gradient_norm": 12.83120632,
+    "bid_parameter_delta_l2": 0.0013373,
+    "task_residual_gradient_norm": 0.0,
+    "critic_gradient_norm": 0.0,
+    "task_residual_parameter_delta_l2": 0.0,
+    "task_residual_xi_row_unchanged": true,
+    "geometry_adapter_gradient_norm": 0.0,
+    "geometry_adapter_parameter_delta_l2": 0.0,
+    "geometry_adapter_mean_abs_output": 0.0,
+    "geometry_adapter_max_abs_output": 0.0,
+    "geometry_pressure_gate_nonzero_fraction": 0.94636589,
+    "w8_scale": 0.2,
+    "k": 2,
+    "agent_steps": 11970,
+    "environment_steps": 3990,
+    "exposed_agent_steps": 14,
+    "nonexposed_agent_fraction": 0.99883,
+    "track_actions": 1632,
+    "track_action_rate": 0.1363,
+    "nonzero_pointer": 877,
+    "nonzero_pointer_rate": 0.0733,
+    "valid_requests": 872,
+    "valid_request_rate": 0.0728,
+    "requests": 872,
+    "c04_pass_requests": 335,
+    "c04_rejected_requests": 537,
+    "request_winners": 327,
+    "new_assignments": 125,
+    "handoffs": 10,
+    "mean_owned_targets": 0.4584,
+    "stable_target_steps": 98,
+    "stable_progress_ticks": 392,
+    "interventions": 2688,
+    "intervention_rate": 0.2246,
+    "mean_correction": 0.339535,
+    "max_stable_progress": 7,
+    "intervention_loss": 0.0,
+    "intervention_fraction": 0.224561,
+    "cf_nonzero_frac": 0.004428,
+    "gear_gate_active_frac": 0.008688,
+    "gear_gate_credit_mean": -0.008688,
+    "bid_event_frac": 0.001504,
+    "bid_action_mean": -0.169742,
+    "bid_action_std": 0.352751,
+    "bid_events": 9,
+    "bid_events_per_episode": 1.125,
+    "bid_participants": 18,
+    "bid_participation_rate": 0.001504,
+    "bid_event_step_rate": 0.002256,
+    "forced_overlap_pairs": 7,
+    "pointer_exposed_agents": 14,
+    "exposed_multi_candidate_events": 6,
+    "unexposed_multi_candidate_events": 3,
+    "bid_changed_winner": 7,
+    "cf_bid_events": 7,
+    "cf_bid_informative_events": 7,
+    "cf_bid_candidate_branches": 14,
+    "cf_bid_uncontrollable_events": 0,
+    "cf_bid_mean_utility_spread": 0.362277,
+    "cf_bid_mean_actual_regret": 0.191619,
+    "cf_bid_mean_abs_advantage": 0.181138,
+    "rule_conflict_feature_mean": [
+     0.001461,
+     0.02076,
+     0.019016,
+     0.36122,
+     0.008008,
+     0.034117,
+     0.000613,
+     0.188348,
+     0.001921,
+     0.016715,
+     0.339571,
+     0.000291,
+     0.00519
+    ],
+    "rule_conflict_feature_nonzero_rate": [
+     0.00543,
+     0.021721,
+     0.14812,
+     0.544946,
+     0.167001,
+     0.23985,
+     0.00284,
+     0.611195,
+     0.001921,
+     0.048037,
+     0.422807,
+     0.003342,
+     0.048204
+    ],
+    "rule_conflict_any_rate": 0.946366,
+    "checkpoint": {
+     "role": "curriculum_iteration_checkpoint",
+     "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\curr_k2.pt",
+     "exists": true,
+     "size_bytes": 1765598,
+     "sha256": "0d0813e3619f1cae291bde6e9b9ff27cf827573ae89a535ef92a62d9656be628",
+     "run_id": "20261022T053953.032702Z_20436_6481fdd1",
+     "archive": {
+      "role": "curriculum_iteration_checkpoint_archive",
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\provenance\\20261022T053953.032702Z_20436_6481fdd1_curr_k2_iter_000002.pt",
+      "exists": true,
+      "size_bytes": 1765598,
+      "sha256": "0d0813e3619f1cae291bde6e9b9ff27cf827573ae89a535ef92a62d9656be628",
+      "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\curr_k2.pt"
+     }
+    }
+   },
+   {
+    "iter": 3,
+    "run_id": "20261022T053953.032702Z_20436_6481fdd1",
+    "mean_return": -486.9,
+    "mean_environment_return": -485.9,
+    "episode_seeds": [
+     300024,
+     300025,
+     300026,
+     300027,
+     300028,
+     300029,
+     300030,
+     300031
+    ],
+    "success": 1.0,
+    "vio_per_step": 3.316,
+    "qp_share": 1.0,
+    "approx_kl": 0.0,
+    "bid_approx_kl": 1e-06,
+    "bid_post_update_kl": 2e-06,
+    "policy_anchor_kl": 0.0,
+    "post_update_policy_anchor_kl": 0.0,
+    "bid_active_slot_count": 68,
+    "bid_active_slot_count_by_index": [
+     35,
+     33,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "cf_bid_informative_fraction": 0.839506,
+    "bid_gradient_norm": 1.22819912,
+    "bid_parameter_delta_l2": 0.00122269,
+    "task_residual_gradient_norm": 0.0,
+    "critic_gradient_norm": 0.0,
+    "task_residual_parameter_delta_l2": 0.0,
+    "task_residual_xi_row_unchanged": true,
+    "geometry_adapter_gradient_norm": 0.0,
+    "geometry_adapter_parameter_delta_l2": 0.0,
+    "geometry_adapter_mean_abs_output": 0.0,
+    "geometry_adapter_max_abs_output": 0.0,
+    "geometry_pressure_gate_nonzero_fraction": 0.9434076,
+    "w8_scale": 0.2,
+    "k": 2,
+    "agent_steps": 9966,
+    "environment_steps": 3322,
+    "exposed_agent_steps": 70,
+    "nonexposed_agent_fraction": 0.992976,
+    "track_actions": 1644,
+    "track_action_rate": 0.165,
+    "nonzero_pointer": 959,
+    "nonzero_pointer_rate": 0.0962,
+    "valid_requests": 959,
+    "valid_request_rate": 0.0962,
+    "requests": 959,
+    "c04_pass_requests": 529,
+    "c04_rejected_requests": 430,
+    "request_winners": 488,
+    "new_assignments": 86,
+    "handoffs": 28,
+    "mean_owned_targets": 0.6586,
+    "stable_target_steps": 143,
+    "stable_progress_ticks": 540,
+    "interventions": 2021,
+    "intervention_rate": 0.2028,
+    "mean_correction": 0.265596,
+    "max_stable_progress": 7,
+    "intervention_loss": 0.0,
+    "intervention_fraction": 0.202789,
+    "cf_nonzero_frac": 0.004616,
+    "gear_gate_active_frac": 0.010134,
+    "gear_gate_credit_mean": -0.010134,
+    "bid_event_frac": 0.00883,
+    "bid_action_mean": -0.050469,
+    "bid_action_std": 0.390526,
+    "bid_events": 44,
+    "bid_events_per_episode": 5.5,
+    "bid_participants": 88,
+    "bid_participation_rate": 0.00883,
+    "bid_event_step_rate": 0.013245,
+    "forced_overlap_pairs": 35,
+    "pointer_exposed_agents": 70,
+    "exposed_multi_candidate_events": 33,
+    "unexposed_multi_candidate_events": 11,
+    "bid_changed_winner": 28,
+    "cf_bid_events": 34,
+    "cf_bid_informative_events": 34,
+    "cf_bid_candidate_branches": 68,
+    "cf_bid_uncontrollable_events": 7,
+    "cf_bid_mean_utility_spread": 0.0646,
+    "cf_bid_mean_actual_regret": 0.042632,
+    "cf_bid_mean_abs_advantage": 0.0323,
+    "rule_conflict_feature_mean": [
+     0.001417,
+     0.036123,
+     0.027343,
+     0.374189,
+     0.00502,
+     0.033113,
+     0.0,
+     0.198711,
+     0.002007,
+     0.036127,
+     0.205532,
+     0.000734,
+     0.006227
+    ],
+    "rule_conflict_feature_nonzero_rate": [
+     0.006924,
+     0.037327,
+     0.211419,
+     0.555689,
+     0.129942,
+     0.230985,
+     0.0,
+     0.654525,
+     0.002007,
+     0.093418,
+     0.259783,
+     0.006924,
+     0.050572
+    ],
+    "rule_conflict_any_rate": 0.943408,
+    "checkpoint": {
+     "role": "curriculum_iteration_checkpoint",
+     "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\curr_k2.pt",
+     "exists": true,
+     "size_bytes": 1765598,
+     "sha256": "8156843fcf669b318ffb41460b0b4fae7d6bfc961a5db450de7277ac018e1b97",
+     "run_id": "20261022T053953.032702Z_20436_6481fdd1",
+     "archive": {
+      "role": "curriculum_iteration_checkpoint_archive",
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\provenance\\20261022T053953.032702Z_20436_6481fdd1_curr_k2_iter_000003.pt",
+      "exists": true,
+      "size_bytes": 1765598,
+      "sha256": "8156843fcf669b318ffb41460b0b4fae7d6bfc961a5db450de7277ac018e1b97",
+      "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\curr_k2.pt"
+     }
+    },
+    "validation": {
+     "k": 2,
+     "seeds": [
+      290100,
+      290101,
+      290102,
+      290103,
+      290104,
+      290105,
+      290106,
+      290107,
+      290108,
+      290109
+     ],
+     "stable_window": 8,
+     "task_config": {
+      "dt": 1.0,
+      "horizon": 900,
+      "L_X": 160.0,
+      "L_Y": 120.0,
+      "X_CUTOFF": 40.0,
+      "X_TRACK": 110.0,
+      "AGE_STD_TRACK": 10.0,
+      "AGE_STD_DETECT": 5.0,
+      "STABLE_WINDOW": 8,
+      "N_WINGMEN": 3,
+      "BLUE_V_MIN_MA": 0.4,
+      "BLUE_V_MAX_MA": 0.95,
+      "OMEGA_CRUISE_DEG": 3.0,
+      "OMEGA_MANEUVER_DEG": 6.0,
+      "ACCEL_MAX_MA_S": 0.1,
+      "K_PSI": 1.0,
+      "K_V_MS": 30.0,
+      "MANNED_V_MIN_MA": 0.5,
+      "MANNED_V_MAX_MA": 0.9,
+      "MANNED_OMEGA_DEG": 3.0,
+      "K_RED": 2,
+      "RED_CRUISE_MA": 0.75,
+      "RED_MANEUVER_MA_RANGE": [
+       0.6,
+       0.9
+      ],
+      "RED_OMEGA_DEG": 8.0,
+      "RED_DUTY_MIN": 0.7,
+      "RED_DUTY_MAX": 0.8,
+      "RED_STAGGER_KM": 8.0,
+      "RED_X0": 158.0,
+      "RED_MANEUVER_RESAMPLE": [
+       20,
+       40
+      ],
+      "RED_TURN_POISSON_MEAN": 30.0,
+      "RED_SNAKE_HALF_ANGLE_DEG": 30.0,
+      "RED_SNAKE_PERIOD": 20.0,
+      "RED_EDGE_SUPPRESS_KM": 5.0,
+      "RED_LANE_K2_CENTER_KM": 50.0,
+      "RED_REGAIN_T": [
+       12.0,
+       20.0
+      ],
+      "RED_REGAIN_SPREAD_DEG": 30.0,
+      "RED_SEP_WARN_KM": 18.0,
+      "RED_SEP_HARD_KM": 2.0,
+      "RED_SEP_BIAS_DEG": 45.0,
+      "RED_PAIR_SUBLANE_KM": 4.0,
+      "R_MAX": 80.0,
+      "FOV_HALF_DEG": 7.5,
+      "BEAM_DWELL": 0.5,
+      "GEAR_FRAME": {
+       "7.5": 0.5,
+       "15.0": 1.0,
+       "30.0": 2.0,
+       "45.0": 3.0,
+       "60.0": 4.0
+      },
+      "GEARS_SEARCH": [
+       45.0,
+       60.0
+      ],
+      "GEARS_TRACK": [
+       7.5,
+       15.0,
+       30.0,
+       45.0
+      ],
+      "PD_TIERS": [
+       [
+        0.5,
+        0.9
+       ],
+       [
+        0.8,
+        0.6
+       ],
+       [
+        1.0,
+        0.3
+       ]
+      ],
+      "RADAR_HIT_MODEL": "bernoulli",
+      "SECTOR_AXIS_MAX_DEG": 60.0,
+      "AXIS_TRIM_SCALE_DEG": 15.0,
+      "TRACK_INIT_HITS": 2,
+      "TRACK_INIT_WINDOW": 6.5,
+      "TRACK_CONFIRM_TIME": 5.0,
+      "TRACK_CONFIRM_GAP_MAX": 1.6,
+      "AGE_DEGRADE": 8.0,
+      "AGE_DROP": 13.0,
+      "COV_SHRINK": 0.8,
+      "COV_Q_KM2_S": 0.25,
+      "SIGMA_REF": 4.0,
+      "MAR": 40.0,
+      "MOR": 60.0,
+      "MAR_MOR_VARIANTS": [
+       [
+        40.0,
+        60.0
+       ],
+       [
+        30.0,
+        50.0
+       ],
+       [
+        20.0,
+        40.0
+       ]
+      ],
+      "K_SIGMA": 3.0,
+      "MOR_GRADIENT_SPAN": 20.0,
+      "D_SAFE": 2.0,
+      "D_SAFE_LOOKAHEAD": 3.0,
+      "BOUNDARY_PREDICT": 5.0,
+      "LINK_RATE_HZ": 1.0,
+      "LINK_DELAY_S": 1.0,
+      "T_SCAN_REQ": 120.0,
+      "HANDOFF_MIN_INTERVAL": 30.0,
+      "HANDOFF_INTERVAL_SWEEP": [
+       10.0,
+       20.0,
+       30.0
+      ],
+      "C04_RANGE": 80.0,
+      "C04_RESPONSE": 5.0,
+      "T_DWELL": 5.0,
+      "APPROVAL_DELAY_INIT": 0.0,
+      "LINK_DROP_RATE": 0.3,
+      "LINK_DROP_WINDOW": 10.0,
+      "UPLINK_LOSS_P": 0.05,
+      "E03_AREA_PER_KM": 5.0,
+      "N_SUBZONES": 3,
+      "TRACK_SWEET_DIST": 62.0,
+      "TRACK_K_D": 0.0025,
+      "CAP_X": 15.0,
+      "CAP_Y": 60.0,
+      "CAP_LEG_Y": 10.0,
+      "CAP_LEG_X": 5.0,
+      "ARB_WEIGHTS": [
+       1.0,
+       1.0,
+       0.5,
+       0.5,
+       0.3
+      ],
+      "ARB_HYSTERESIS": 0.2,
+      "ARB_BID_WEIGHT": 0.35,
+      "W1_TRACK_TICK": 0.02,
+      "W2_DETECT_TICK": 0.005,
+      "W3_STABLE": 10.0,
+      "W4_SUCCESS": 50.0,
+      "W5_MOR_GRAD": 0.02,
+      "W6_MAR": 0.1,
+      "W7_HANDOFF": 0.5,
+      "W8_LAYER": [
+       10.0,
+       7.5,
+       10.0,
+       5.0,
+       2.5,
+       1.25
+      ],
+      "W8_SCALE": 1.0,
+      "M05_GRACE": 5.0,
+      "W9_FAILURE": 50.0,
+      "STEP_COST": 0.005,
+      "OBS_DIM": 169,
+      "TRACK_SLOTS": 8,
+      "NET_HIDDEN": 128,
+      "TOTAL_STEPS": 1500000,
+      "N_ENVS": 16,
+      "N_SEEDS": 10,
+      "BC_EPOCHS": [
+       50,
+       100
+      ],
+      "CONVERGE_WINDOW": 100,
+      "seed": 7
+     },
+     "task_config_sha256": "a3d47afc8201487fe9c5f09b5ffe6699194c07b4ca12ab2c6a372e4ea410716c",
+     "rl": {
+      "success_rate": 1.0,
+      "mean_return": -1778.0,
+      "violations_per_step": 2.9416
+     },
+     "heur": {
+      "success_rate": 1.0,
+      "mean_return": -1443.9,
+      "violations_per_step": 3.8011
+     },
+     "natural_arbitration": {
+      "rl_multi_candidate_events": 12,
+      "rl_winner_changes_vs_fixed_score": 1,
+      "forced_probe_enabled": false
+     },
+     "by_seed": [
+      {
+       "seed": 290100,
+       "rl": {
+        "seed": 290100,
+        "terminal": "success",
+        "return": -515.0,
+        "steps": 333,
+        "violations": 410,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 290100,
+        "terminal": "success",
+        "return": -380.8,
+        "steps": 383,
+        "violations": 1031
+       }
+      },
+      {
+       "seed": 290101,
+       "rl": {
+        "seed": 290101,
+        "terminal": "success",
+        "return": -176.6,
+        "steps": 305,
+        "violations": 191,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 290101,
+        "terminal": "success",
+        "return": -942.3,
+        "steps": 353,
+        "violations": 1040
+       }
+      },
+      {
+       "seed": 290102,
+       "rl": {
+        "seed": 290102,
+        "terminal": "success",
+        "return": -4953.6,
+        "steps": 627,
+        "violations": 3312,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 290102,
+        "terminal": "success",
+        "return": -1349.6,
+        "steps": 363,
+        "violations": 1197
+       }
+      },
+      {
+       "seed": 290103,
+       "rl": {
+        "seed": 290103,
+        "terminal": "success",
+        "return": -5744.1,
+        "steps": 672,
+        "violations": 3823,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 290103,
+        "terminal": "success",
+        "return": -381.3,
+        "steps": 319,
+        "violations": 724
+       }
+      },
+      {
+       "seed": 290104,
+       "rl": {
+        "seed": 290104,
+        "terminal": "success",
+        "return": -2054.1,
+        "steps": 425,
+        "violations": 1420,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 290104,
+        "terminal": "success",
+        "return": -1273.2,
+        "steps": 392,
+        "violations": 1407
+       }
+      },
+      {
+       "seed": 290105,
+       "rl": {
+        "seed": 290105,
+        "terminal": "success",
+        "return": -919.5,
+        "steps": 357,
+        "violations": 618,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 290105,
+        "terminal": "success",
+        "return": -1081.8,
+        "steps": 360,
+        "violations": 1213
+       }
+      },
+      {
+       "seed": 290106,
+       "rl": {
+        "seed": 290106,
+        "terminal": "success",
+        "return": -749.8,
+        "steps": 314,
+        "violations": 422,
+        "multi_candidate_events": 1,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 290106,
+        "terminal": "success",
+        "return": -854.6,
+        "steps": 348,
+        "violations": 946
+       }
+      },
+      {
+       "seed": 290107,
+       "rl": {
+        "seed": 290107,
+        "terminal": "success",
+        "return": -269.8,
+        "steps": 337,
+        "violations": 276,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 290107,
+        "terminal": "success",
+        "return": -1290.6,
+        "steps": 398,
+        "violations": 1341
+       }
+      },
+      {
+       "seed": 290108,
+       "rl": {
+        "seed": 290108,
+        "terminal": "success",
+        "return": -342.7,
+        "steps": 330,
+        "violations": 318,
+        "multi_candidate_events": 2,
+        "winner_changes_vs_fixed_score": 1
+       },
+       "heur": {
+        "seed": 290108,
+        "terminal": "success",
+        "return": -3728.7,
+        "steps": 642,
+        "violations": 3941
+       }
+      },
+      {
+       "seed": 290109,
+       "rl": {
+        "seed": 290109,
+        "terminal": "success",
+        "return": -2054.9,
+        "steps": 477,
+        "violations": 1497,
+        "multi_candidate_events": 9,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 290109,
+        "terminal": "success",
+        "return": -3156.4,
+        "steps": 489,
+        "violations": 2543
+       }
+      }
+     ],
+     "run_id": "20261022T053953.032702Z_20436_6481fdd1",
+     "source_manifest_sha256": "48c2a8648b0575d3fd65dbb894cdbed49c5fb1ed0cf206b680295784cdb33a4a",
+     "checkpoint": {
+      "role": "curriculum_validation_checkpoint",
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\curr_k2.pt",
+      "exists": true,
+      "size_bytes": 1765598,
+      "sha256": "8156843fcf669b318ffb41460b0b4fae7d6bfc961a5db450de7277ac018e1b97"
+     },
+     "stage": "ppo_update",
+     "iter": 3
+    }
+   },
+   {
+    "iter": 4,
+    "run_id": "20261022T053953.032702Z_20436_6481fdd1",
+    "mean_return": -520.0,
+    "mean_environment_return": -518.8,
+    "episode_seeds": [
+     300032,
+     300033,
+     300034,
+     300035,
+     300036,
+     300037,
+     300038,
+     300039
+    ],
+    "success": 1.0,
+    "vio_per_step": 3.532,
+    "qp_share": 1.0,
+    "approx_kl": 0.0,
+    "bid_approx_kl": 0.0,
+    "bid_post_update_kl": 2e-06,
+    "policy_anchor_kl": 0.0,
+    "post_update_policy_anchor_kl": 0.0,
+    "bid_active_slot_count": 34,
+    "bid_active_slot_count_by_index": [
+     24,
+     10,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "cf_bid_informative_fraction": 0.894737,
+    "bid_gradient_norm": 1.22833014,
+    "bid_parameter_delta_l2": 0.00119953,
+    "task_residual_gradient_norm": 0.0,
+    "critic_gradient_norm": 0.0,
+    "task_residual_parameter_delta_l2": 0.0,
+    "task_residual_xi_row_unchanged": true,
+    "geometry_adapter_gradient_norm": 0.0,
+    "geometry_adapter_parameter_delta_l2": 0.0,
+    "geometry_adapter_mean_abs_output": 0.0,
+    "geometry_adapter_max_abs_output": 0.0,
+    "geometry_pressure_gate_nonzero_fraction": 0.94258159,
+    "w8_scale": 0.2,
+    "k": 2,
+    "agent_steps": 11094,
+    "environment_steps": 3698,
+    "exposed_agent_steps": 32,
+    "nonexposed_agent_fraction": 0.997116,
+    "track_actions": 1547,
+    "track_action_rate": 0.1394,
+    "nonzero_pointer": 799,
+    "nonzero_pointer_rate": 0.072,
+    "valid_requests": 799,
+    "valid_request_rate": 0.072,
+    "requests": 799,
+    "c04_pass_requests": 353,
+    "c04_rejected_requests": 446,
+    "request_winners": 334,
+    "new_assignments": 121,
+    "handoffs": 13,
+    "mean_owned_targets": 0.5041,
+    "stable_target_steps": 124,
+    "stable_progress_ticks": 479,
+    "interventions": 2502,
+    "intervention_rate": 0.2255,
+    "mean_correction": 0.320437,
+    "max_stable_progress": 7,
+    "intervention_loss": 0.0,
+    "intervention_fraction": 0.225527,
+    "cf_nonzero_frac": 0.004056,
+    "gear_gate_active_frac": 0.008653,
+    "gear_gate_credit_mean": -0.008653,
+    "bid_event_frac": 0.003425,
+    "bid_action_mean": 0.025204,
+    "bid_action_std": 0.391194,
+    "bid_events": 19,
+    "bid_events_per_episode": 2.375,
+    "bid_participants": 38,
+    "bid_participation_rate": 0.003425,
+    "bid_event_step_rate": 0.005138,
+    "forced_overlap_pairs": 16,
+    "pointer_exposed_agents": 32,
+    "exposed_multi_candidate_events": 16,
+    "unexposed_multi_candidate_events": 3,
+    "bid_changed_winner": 9,
+    "cf_bid_events": 17,
+    "cf_bid_informative_events": 17,
+    "cf_bid_candidate_branches": 34,
+    "cf_bid_uncontrollable_events": 0,
+    "cf_bid_mean_utility_spread": 0.068586,
+    "cf_bid_mean_actual_regret": 0.039721,
+    "cf_bid_mean_abs_advantage": 0.034293,
+    "rule_conflict_feature_mean": [
+     0.001651,
+     0.022039,
+     0.020912,
+     0.364678,
+     0.006533,
+     0.036867,
+     0.0,
+     0.197536,
+     0.002253,
+     0.021488,
+     0.280242,
+     0.001357,
+     0.003371
+    ],
+    "rule_conflict_feature_nonzero_rate": [
+     0.009194,
+     0.025239,
+     0.154768,
+     0.550478,
+     0.167207,
+     0.254011,
+     0.0,
+     0.650352,
+     0.002253,
+     0.05832,
+     0.362628,
+     0.011538,
+     0.027222
+    ],
+    "rule_conflict_any_rate": 0.942582,
+    "checkpoint": {
+     "role": "curriculum_iteration_checkpoint",
+     "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\curr_k2.pt",
+     "exists": true,
+     "size_bytes": 1765598,
+     "sha256": "b1a60264e3f61ee328969e1993d61138e1d626c1063a68b5c7080f851e24f96f",
+     "run_id": "20261022T053953.032702Z_20436_6481fdd1",
+     "archive": {
+      "role": "curriculum_iteration_checkpoint_archive",
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\provenance\\20261022T053953.032702Z_20436_6481fdd1_curr_k2_iter_000004.pt",
+      "exists": true,
+      "size_bytes": 1765598,
+      "sha256": "b1a60264e3f61ee328969e1993d61138e1d626c1063a68b5c7080f851e24f96f",
+      "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\curr_k2.pt"
+     }
+    }
+   },
+   {
+    "iter": 5,
+    "run_id": "20261022T053953.032702Z_20436_6481fdd1",
+    "mean_return": -211.9,
+    "mean_environment_return": -210.7,
+    "episode_seeds": [
+     300040,
+     300041,
+     300042,
+     300043,
+     300044,
+     300045,
+     300046,
+     300047
+    ],
+    "success": 1.0,
+    "vio_per_step": 1.88,
+    "qp_share": 1.0,
+    "approx_kl": 0.0,
+    "bid_approx_kl": 0.0,
+    "bid_post_update_kl": 1e-06,
+    "policy_anchor_kl": 0.0,
+    "post_update_policy_anchor_kl": 0.0,
+    "bid_active_slot_count": 50,
+    "bid_active_slot_count_by_index": [
+     25,
+     25,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "cf_bid_informative_fraction": 0.980392,
+    "bid_gradient_norm": 2.9159174,
+    "bid_parameter_delta_l2": 0.00127764,
+    "task_residual_gradient_norm": 0.0,
+    "critic_gradient_norm": 0.0,
+    "task_residual_parameter_delta_l2": 0.0,
+    "task_residual_xi_row_unchanged": true,
+    "geometry_adapter_gradient_norm": 0.0,
+    "geometry_adapter_parameter_delta_l2": 0.0,
+    "geometry_adapter_mean_abs_output": 0.0,
+    "geometry_adapter_max_abs_output": 0.0,
+    "geometry_pressure_gate_nonzero_fraction": 0.92621648,
+    "w8_scale": 0.2,
+    "k": 2,
+    "agent_steps": 8796,
+    "environment_steps": 2932,
+    "exposed_agent_steps": 56,
+    "nonexposed_agent_fraction": 0.993633,
+    "track_actions": 1158,
+    "track_action_rate": 0.1317,
+    "nonzero_pointer": 563,
+    "nonzero_pointer_rate": 0.064,
+    "valid_requests": 563,
+    "valid_request_rate": 0.064,
+    "requests": 563,
+    "c04_pass_requests": 348,
+    "c04_rejected_requests": 215,
+    "request_winners": 323,
+    "new_assignments": 122,
+    "handoffs": 14,
+    "mean_owned_targets": 0.3752,
+    "stable_target_steps": 123,
+    "stable_progress_ticks": 475,
+    "interventions": 1636,
+    "intervention_rate": 0.186,
+    "mean_correction": 0.184154,
+    "max_stable_progress": 7,
+    "intervention_loss": 0.0,
+    "intervention_fraction": 0.185994,
+    "cf_nonzero_frac": 0.003411,
+    "gear_gate_active_frac": 0.009322,
+    "gear_gate_credit_mean": -0.009322,
+    "bid_event_frac": 0.005912,
+    "bid_action_mean": -0.134625,
+    "bid_action_std": 0.366141,
+    "bid_events": 26,
+    "bid_events_per_episode": 3.25,
+    "bid_participants": 52,
+    "bid_participation_rate": 0.005912,
+    "bid_event_step_rate": 0.008868,
+    "forced_overlap_pairs": 28,
+    "pointer_exposed_agents": 56,
+    "exposed_multi_candidate_events": 24,
+    "unexposed_multi_candidate_events": 2,
+    "bid_changed_winner": 11,
+    "cf_bid_events": 25,
+    "cf_bid_informative_events": 25,
+    "cf_bid_candidate_branches": 50,
+    "cf_bid_uncontrollable_events": 1,
+    "cf_bid_mean_utility_spread": 0.097983,
+    "cf_bid_mean_actual_regret": 0.041106,
+    "cf_bid_mean_abs_advantage": 0.048992,
+    "rule_conflict_feature_mean": [
+     0.001509,
+     0.04269,
+     0.015518,
+     0.382359,
+     0.002951,
+     0.032955,
+     0.0,
+     0.205757,
+     0.001478,
+     0.026319,
+     0.143455,
+     0.000561,
+     0.000125
+    ],
+    "rule_conflict_feature_nonzero_rate": [
+     0.008413,
+     0.044679,
+     0.117553,
+     0.573101,
+     0.121987,
+     0.216462,
+     0.0,
+     0.699977,
+     0.001478,
+     0.069804,
+     0.200205,
+     0.006594,
+     0.001592
+    ],
+    "rule_conflict_any_rate": 0.926216,
+    "checkpoint": {
+     "role": "curriculum_iteration_checkpoint",
+     "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\curr_k2.pt",
+     "exists": true,
+     "size_bytes": 1765598,
+     "sha256": "d5c7a4406ff95cd680cf27483ebfbc855727c6199644765d69d918266e3bdebe",
+     "run_id": "20261022T053953.032702Z_20436_6481fdd1",
+     "archive": {
+      "role": "curriculum_iteration_checkpoint_archive",
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\provenance\\20261022T053953.032702Z_20436_6481fdd1_curr_k2_iter_000005.pt",
+      "exists": true,
+      "size_bytes": 1765598,
+      "sha256": "d5c7a4406ff95cd680cf27483ebfbc855727c6199644765d69d918266e3bdebe",
+      "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\curr_k2.pt"
+     }
+    },
+    "validation": {
+     "k": 2,
+     "seeds": [
+      290100,
+      290101,
+      290102,
+      290103,
+      290104,
+      290105,
+      290106,
+      290107,
+      290108,
+      290109
+     ],
+     "stable_window": 8,
+     "task_config": {
+      "dt": 1.0,
+      "horizon": 900,
+      "L_X": 160.0,
+      "L_Y": 120.0,
+      "X_CUTOFF": 40.0,
+      "X_TRACK": 110.0,
+      "AGE_STD_TRACK": 10.0,
+      "AGE_STD_DETECT": 5.0,
+      "STABLE_WINDOW": 8,
+      "N_WINGMEN": 3,
+      "BLUE_V_MIN_MA": 0.4,
+      "BLUE_V_MAX_MA": 0.95,
+      "OMEGA_CRUISE_DEG": 3.0,
+      "OMEGA_MANEUVER_DEG": 6.0,
+      "ACCEL_MAX_MA_S": 0.1,
+      "K_PSI": 1.0,
+      "K_V_MS": 30.0,
+      "MANNED_V_MIN_MA": 0.5,
+      "MANNED_V_MAX_MA": 0.9,
+      "MANNED_OMEGA_DEG": 3.0,
+      "K_RED": 2,
+      "RED_CRUISE_MA": 0.75,
+      "RED_MANEUVER_MA_RANGE": [
+       0.6,
+       0.9
+      ],
+      "RED_OMEGA_DEG": 8.0,
+      "RED_DUTY_MIN": 0.7,
+      "RED_DUTY_MAX": 0.8,
+      "RED_STAGGER_KM": 8.0,
+      "RED_X0": 158.0,
+      "RED_MANEUVER_RESAMPLE": [
+       20,
+       40
+      ],
+      "RED_TURN_POISSON_MEAN": 30.0,
+      "RED_SNAKE_HALF_ANGLE_DEG": 30.0,
+      "RED_SNAKE_PERIOD": 20.0,
+      "RED_EDGE_SUPPRESS_KM": 5.0,
+      "RED_LANE_K2_CENTER_KM": 50.0,
+      "RED_REGAIN_T": [
+       12.0,
+       20.0
+      ],
+      "RED_REGAIN_SPREAD_DEG": 30.0,
+      "RED_SEP_WARN_KM": 18.0,
+      "RED_SEP_HARD_KM": 2.0,
+      "RED_SEP_BIAS_DEG": 45.0,
+      "RED_PAIR_SUBLANE_KM": 4.0,
+      "R_MAX": 80.0,
+      "FOV_HALF_DEG": 7.5,
+      "BEAM_DWELL": 0.5,
+      "GEAR_FRAME": {
+       "7.5": 0.5,
+       "15.0": 1.0,
+       "30.0": 2.0,
+       "45.0": 3.0,
+       "60.0": 4.0
+      },
+      "GEARS_SEARCH": [
+       45.0,
+       60.0
+      ],
+      "GEARS_TRACK": [
+       7.5,
+       15.0,
+       30.0,
+       45.0
+      ],
+      "PD_TIERS": [
+       [
+        0.5,
+        0.9
+       ],
+       [
+        0.8,
+        0.6
+       ],
+       [
+        1.0,
+        0.3
+       ]
+      ],
+      "RADAR_HIT_MODEL": "bernoulli",
+      "SECTOR_AXIS_MAX_DEG": 60.0,
+      "AXIS_TRIM_SCALE_DEG": 15.0,
+      "TRACK_INIT_HITS": 2,
+      "TRACK_INIT_WINDOW": 6.5,
+      "TRACK_CONFIRM_TIME": 5.0,
+      "TRACK_CONFIRM_GAP_MAX": 1.6,
+      "AGE_DEGRADE": 8.0,
+      "AGE_DROP": 13.0,
+      "COV_SHRINK": 0.8,
+      "COV_Q_KM2_S": 0.25,
+      "SIGMA_REF": 4.0,
+      "MAR": 40.0,
+      "MOR": 60.0,
+      "MAR_MOR_VARIANTS": [
+       [
+        40.0,
+        60.0
+       ],
+       [
+        30.0,
+        50.0
+       ],
+       [
+        20.0,
+        40.0
+       ]
+      ],
+      "K_SIGMA": 3.0,
+      "MOR_GRADIENT_SPAN": 20.0,
+      "D_SAFE": 2.0,
+      "D_SAFE_LOOKAHEAD": 3.0,
+      "BOUNDARY_PREDICT": 5.0,
+      "LINK_RATE_HZ": 1.0,
+      "LINK_DELAY_S": 1.0,
+      "T_SCAN_REQ": 120.0,
+      "HANDOFF_MIN_INTERVAL": 30.0,
+      "HANDOFF_INTERVAL_SWEEP": [
+       10.0,
+       20.0,
+       30.0
+      ],
+      "C04_RANGE": 80.0,
+      "C04_RESPONSE": 5.0,
+      "T_DWELL": 5.0,
+      "APPROVAL_DELAY_INIT": 0.0,
+      "LINK_DROP_RATE": 0.3,
+      "LINK_DROP_WINDOW": 10.0,
+      "UPLINK_LOSS_P": 0.05,
+      "E03_AREA_PER_KM": 5.0,
+      "N_SUBZONES": 3,
+      "TRACK_SWEET_DIST": 62.0,
+      "TRACK_K_D": 0.0025,
+      "CAP_X": 15.0,
+      "CAP_Y": 60.0,
+      "CAP_LEG_Y": 10.0,
+      "CAP_LEG_X": 5.0,
+      "ARB_WEIGHTS": [
+       1.0,
+       1.0,
+       0.5,
+       0.5,
+       0.3
+      ],
+      "ARB_HYSTERESIS": 0.2,
+      "ARB_BID_WEIGHT": 0.35,
+      "W1_TRACK_TICK": 0.02,
+      "W2_DETECT_TICK": 0.005,
+      "W3_STABLE": 10.0,
+      "W4_SUCCESS": 50.0,
+      "W5_MOR_GRAD": 0.02,
+      "W6_MAR": 0.1,
+      "W7_HANDOFF": 0.5,
+      "W8_LAYER": [
+       10.0,
+       7.5,
+       10.0,
+       5.0,
+       2.5,
+       1.25
+      ],
+      "W8_SCALE": 1.0,
+      "M05_GRACE": 5.0,
+      "W9_FAILURE": 50.0,
+      "STEP_COST": 0.005,
+      "OBS_DIM": 169,
+      "TRACK_SLOTS": 8,
+      "NET_HIDDEN": 128,
+      "TOTAL_STEPS": 1500000,
+      "N_ENVS": 16,
+      "N_SEEDS": 10,
+      "BC_EPOCHS": [
+       50,
+       100
+      ],
+      "CONVERGE_WINDOW": 100,
+      "seed": 7
+     },
+     "task_config_sha256": "a3d47afc8201487fe9c5f09b5ffe6699194c07b4ca12ab2c6a372e4ea410716c",
+     "rl": {
+      "success_rate": 1.0,
+      "mean_return": -1778.0,
+      "violations_per_step": 2.9416
+     },
+     "heur": {
+      "success_rate": 1.0,
+      "mean_return": -1443.9,
+      "violations_per_step": 3.8011
+     },
+     "natural_arbitration": {
+      "rl_multi_candidate_events": 12,
+      "rl_winner_changes_vs_fixed_score": 1,
+      "forced_probe_enabled": false
+     },
+     "by_seed": [
+      {
+       "seed": 290100,
+       "rl": {
+        "seed": 290100,
+        "terminal": "success",
+        "return": -515.0,
+        "steps": 333,
+        "violations": 410,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 290100,
+        "terminal": "success",
+        "return": -380.8,
+        "steps": 383,
+        "violations": 1031
+       }
+      },
+      {
+       "seed": 290101,
+       "rl": {
+        "seed": 290101,
+        "terminal": "success",
+        "return": -176.6,
+        "steps": 305,
+        "violations": 191,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 290101,
+        "terminal": "success",
+        "return": -942.3,
+        "steps": 353,
+        "violations": 1040
+       }
+      },
+      {
+       "seed": 290102,
+       "rl": {
+        "seed": 290102,
+        "terminal": "success",
+        "return": -4953.6,
+        "steps": 627,
+        "violations": 3312,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 290102,
+        "terminal": "success",
+        "return": -1349.6,
+        "steps": 363,
+        "violations": 1197
+       }
+      },
+      {
+       "seed": 290103,
+       "rl": {
+        "seed": 290103,
+        "terminal": "success",
+        "return": -5744.1,
+        "steps": 672,
+        "violations": 3823,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 290103,
+        "terminal": "success",
+        "return": -381.3,
+        "steps": 319,
+        "violations": 724
+       }
+      },
+      {
+       "seed": 290104,
+       "rl": {
+        "seed": 290104,
+        "terminal": "success",
+        "return": -2054.1,
+        "steps": 425,
+        "violations": 1420,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 290104,
+        "terminal": "success",
+        "return": -1273.2,
+        "steps": 392,
+        "violations": 1407
+       }
+      },
+      {
+       "seed": 290105,
+       "rl": {
+        "seed": 290105,
+        "terminal": "success",
+        "return": -919.5,
+        "steps": 357,
+        "violations": 618,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 290105,
+        "terminal": "success",
+        "return": -1081.8,
+        "steps": 360,
+        "violations": 1213
+       }
+      },
+      {
+       "seed": 290106,
+       "rl": {
+        "seed": 290106,
+        "terminal": "success",
+        "return": -749.8,
+        "steps": 314,
+        "violations": 422,
+        "multi_candidate_events": 1,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 290106,
+        "terminal": "success",
+        "return": -854.6,
+        "steps": 348,
+        "violations": 946
+       }
+      },
+      {
+       "seed": 290107,
+       "rl": {
+        "seed": 290107,
+        "terminal": "success",
+        "return": -269.8,
+        "steps": 337,
+        "violations": 276,
+        "multi_candidate_events": 0,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 290107,
+        "terminal": "success",
+        "return": -1290.6,
+        "steps": 398,
+        "violations": 1341
+       }
+      },
+      {
+       "seed": 290108,
+       "rl": {
+        "seed": 290108,
+        "terminal": "success",
+        "return": -342.7,
+        "steps": 330,
+        "violations": 318,
+        "multi_candidate_events": 2,
+        "winner_changes_vs_fixed_score": 1
+       },
+       "heur": {
+        "seed": 290108,
+        "terminal": "success",
+        "return": -3728.7,
+        "steps": 642,
+        "violations": 3941
+       }
+      },
+      {
+       "seed": 290109,
+       "rl": {
+        "seed": 290109,
+        "terminal": "success",
+        "return": -2054.9,
+        "steps": 477,
+        "violations": 1497,
+        "multi_candidate_events": 9,
+        "winner_changes_vs_fixed_score": 0
+       },
+       "heur": {
+        "seed": 290109,
+        "terminal": "success",
+        "return": -3156.4,
+        "steps": 489,
+        "violations": 2543
+       }
+      }
+     ],
+     "run_id": "20261022T053953.032702Z_20436_6481fdd1",
+     "source_manifest_sha256": "48c2a8648b0575d3fd65dbb894cdbed49c5fb1ed0cf206b680295784cdb33a4a",
+     "checkpoint": {
+      "role": "curriculum_validation_checkpoint",
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\curr_k2.pt",
+      "exists": true,
+      "size_bytes": 1765598,
+      "sha256": "d5c7a4406ff95cd680cf27483ebfbc855727c6199644765d69d918266e3bdebe"
+     },
+     "stage": "ppo_update",
+     "iter": 5
+    }
+   }
+  ],
+  "curr_k2_best": {
+   "iter": -1,
+   "stage": "initial_checkpoint",
+   "checkpoint": "curr_k2_best.pt",
+   "checkpoint_sha256": "cfbd4d23f1761497959784394bce0a99aab382210344bcbfacf24a786e16c3fa",
+   "rank": [
+    1.0,
+    -1778.0,
+    -2.9416
+   ],
+   "validation": {
+    "k": 2,
+    "seeds": [
+     290100,
+     290101,
+     290102,
+     290103,
+     290104,
+     290105,
+     290106,
+     290107,
+     290108,
+     290109
+    ],
+    "stable_window": 8,
+    "task_config": {
+     "dt": 1.0,
+     "horizon": 900,
+     "L_X": 160.0,
+     "L_Y": 120.0,
+     "X_CUTOFF": 40.0,
+     "X_TRACK": 110.0,
+     "AGE_STD_TRACK": 10.0,
+     "AGE_STD_DETECT": 5.0,
+     "STABLE_WINDOW": 8,
+     "N_WINGMEN": 3,
+     "BLUE_V_MIN_MA": 0.4,
+     "BLUE_V_MAX_MA": 0.95,
+     "OMEGA_CRUISE_DEG": 3.0,
+     "OMEGA_MANEUVER_DEG": 6.0,
+     "ACCEL_MAX_MA_S": 0.1,
+     "K_PSI": 1.0,
+     "K_V_MS": 30.0,
+     "MANNED_V_MIN_MA": 0.5,
+     "MANNED_V_MAX_MA": 0.9,
+     "MANNED_OMEGA_DEG": 3.0,
+     "K_RED": 2,
+     "RED_CRUISE_MA": 0.75,
+     "RED_MANEUVER_MA_RANGE": [
+      0.6,
+      0.9
+     ],
+     "RED_OMEGA_DEG": 8.0,
+     "RED_DUTY_MIN": 0.7,
+     "RED_DUTY_MAX": 0.8,
+     "RED_STAGGER_KM": 8.0,
+     "RED_X0": 158.0,
+     "RED_MANEUVER_RESAMPLE": [
+      20,
+      40
+     ],
+     "RED_TURN_POISSON_MEAN": 30.0,
+     "RED_SNAKE_HALF_ANGLE_DEG": 30.0,
+     "RED_SNAKE_PERIOD": 20.0,
+     "RED_EDGE_SUPPRESS_KM": 5.0,
+     "RED_LANE_K2_CENTER_KM": 50.0,
+     "RED_REGAIN_T": [
+      12.0,
+      20.0
+     ],
+     "RED_REGAIN_SPREAD_DEG": 30.0,
+     "RED_SEP_WARN_KM": 18.0,
+     "RED_SEP_HARD_KM": 2.0,
+     "RED_SEP_BIAS_DEG": 45.0,
+     "RED_PAIR_SUBLANE_KM": 4.0,
+     "R_MAX": 80.0,
+     "FOV_HALF_DEG": 7.5,
+     "BEAM_DWELL": 0.5,
+     "GEAR_FRAME": {
+      "7.5": 0.5,
+      "15.0": 1.0,
+      "30.0": 2.0,
+      "45.0": 3.0,
+      "60.0": 4.0
+     },
+     "GEARS_SEARCH": [
+      45.0,
+      60.0
+     ],
+     "GEARS_TRACK": [
+      7.5,
+      15.0,
+      30.0,
+      45.0
+     ],
+     "PD_TIERS": [
+      [
+       0.5,
+       0.9
+      ],
+      [
+       0.8,
+       0.6
+      ],
+      [
+       1.0,
+       0.3
+      ]
+     ],
+     "RADAR_HIT_MODEL": "bernoulli",
+     "SECTOR_AXIS_MAX_DEG": 60.0,
+     "AXIS_TRIM_SCALE_DEG": 15.0,
+     "TRACK_INIT_HITS": 2,
+     "TRACK_INIT_WINDOW": 6.5,
+     "TRACK_CONFIRM_TIME": 5.0,
+     "TRACK_CONFIRM_GAP_MAX": 1.6,
+     "AGE_DEGRADE": 8.0,
+     "AGE_DROP": 13.0,
+     "COV_SHRINK": 0.8,
+     "COV_Q_KM2_S": 0.25,
+     "SIGMA_REF": 4.0,
+     "MAR": 40.0,
+     "MOR": 60.0,
+     "MAR_MOR_VARIANTS": [
+      [
+       40.0,
+       60.0
+      ],
+      [
+       30.0,
+       50.0
+      ],
+      [
+       20.0,
+       40.0
+      ]
+     ],
+     "K_SIGMA": 3.0,
+     "MOR_GRADIENT_SPAN": 20.0,
+     "D_SAFE": 2.0,
+     "D_SAFE_LOOKAHEAD": 3.0,
+     "BOUNDARY_PREDICT": 5.0,
+     "LINK_RATE_HZ": 1.0,
+     "LINK_DELAY_S": 1.0,
+     "T_SCAN_REQ": 120.0,
+     "HANDOFF_MIN_INTERVAL": 30.0,
+     "HANDOFF_INTERVAL_SWEEP": [
+      10.0,
+      20.0,
+      30.0
+     ],
+     "C04_RANGE": 80.0,
+     "C04_RESPONSE": 5.0,
+     "T_DWELL": 5.0,
+     "APPROVAL_DELAY_INIT": 0.0,
+     "LINK_DROP_RATE": 0.3,
+     "LINK_DROP_WINDOW": 10.0,
+     "UPLINK_LOSS_P": 0.05,
+     "E03_AREA_PER_KM": 5.0,
+     "N_SUBZONES": 3,
+     "TRACK_SWEET_DIST": 62.0,
+     "TRACK_K_D": 0.0025,
+     "CAP_X": 15.0,
+     "CAP_Y": 60.0,
+     "CAP_LEG_Y": 10.0,
+     "CAP_LEG_X": 5.0,
+     "ARB_WEIGHTS": [
+      1.0,
+      1.0,
+      0.5,
+      0.5,
+      0.3
+     ],
+     "ARB_HYSTERESIS": 0.2,
+     "ARB_BID_WEIGHT": 0.35,
+     "W1_TRACK_TICK": 0.02,
+     "W2_DETECT_TICK": 0.005,
+     "W3_STABLE": 10.0,
+     "W4_SUCCESS": 50.0,
+     "W5_MOR_GRAD": 0.02,
+     "W6_MAR": 0.1,
+     "W7_HANDOFF": 0.5,
+     "W8_LAYER": [
+      10.0,
+      7.5,
+      10.0,
+      5.0,
+      2.5,
+      1.25
+     ],
+     "W8_SCALE": 1.0,
+     "M05_GRACE": 5.0,
+     "W9_FAILURE": 50.0,
+     "STEP_COST": 0.005,
+     "OBS_DIM": 169,
+     "TRACK_SLOTS": 8,
+     "NET_HIDDEN": 128,
+     "TOTAL_STEPS": 1500000,
+     "N_ENVS": 16,
+     "N_SEEDS": 10,
+     "BC_EPOCHS": [
+      50,
+      100
+     ],
+     "CONVERGE_WINDOW": 100,
+     "seed": 7
+    },
+    "task_config_sha256": "a3d47afc8201487fe9c5f09b5ffe6699194c07b4ca12ab2c6a372e4ea410716c",
+    "rl": {
+     "success_rate": 1.0,
+     "mean_return": -1778.0,
+     "violations_per_step": 2.9416
+    },
+    "heur": {
+     "success_rate": 1.0,
+     "mean_return": -1443.9,
+     "violations_per_step": 3.8011
+    },
+    "natural_arbitration": {
+     "rl_multi_candidate_events": 12,
+     "rl_winner_changes_vs_fixed_score": 1,
+     "forced_probe_enabled": false
+    },
+    "by_seed": [
+     {
+      "seed": 290100,
+      "rl": {
+       "seed": 290100,
+       "terminal": "success",
+       "return": -515.0,
+       "steps": 333,
+       "violations": 410,
+       "multi_candidate_events": 0,
+       "winner_changes_vs_fixed_score": 0
+      },
+      "heur": {
+       "seed": 290100,
+       "terminal": "success",
+       "return": -380.8,
+       "steps": 383,
+       "violations": 1031
+      }
+     },
+     {
+      "seed": 290101,
+      "rl": {
+       "seed": 290101,
+       "terminal": "success",
+       "return": -176.6,
+       "steps": 305,
+       "violations": 191,
+       "multi_candidate_events": 0,
+       "winner_changes_vs_fixed_score": 0
+      },
+      "heur": {
+       "seed": 290101,
+       "terminal": "success",
+       "return": -942.3,
+       "steps": 353,
+       "violations": 1040
+      }
+     },
+     {
+      "seed": 290102,
+      "rl": {
+       "seed": 290102,
+       "terminal": "success",
+       "return": -4953.6,
+       "steps": 627,
+       "violations": 3312,
+       "multi_candidate_events": 0,
+       "winner_changes_vs_fixed_score": 0
+      },
+      "heur": {
+       "seed": 290102,
+       "terminal": "success",
+       "return": -1349.6,
+       "steps": 363,
+       "violations": 1197
+      }
+     },
+     {
+      "seed": 290103,
+      "rl": {
+       "seed": 290103,
+       "terminal": "success",
+       "return": -5744.1,
+       "steps": 672,
+       "violations": 3823,
+       "multi_candidate_events": 0,
+       "winner_changes_vs_fixed_score": 0
+      },
+      "heur": {
+       "seed": 290103,
+       "terminal": "success",
+       "return": -381.3,
+       "steps": 319,
+       "violations": 724
+      }
+     },
+     {
+      "seed": 290104,
+      "rl": {
+       "seed": 290104,
+       "terminal": "success",
+       "return": -2054.1,
+       "steps": 425,
+       "violations": 1420,
+       "multi_candidate_events": 0,
+       "winner_changes_vs_fixed_score": 0
+      },
+      "heur": {
+       "seed": 290104,
+       "terminal": "success",
+       "return": -1273.2,
+       "steps": 392,
+       "violations": 1407
+      }
+     },
+     {
+      "seed": 290105,
+      "rl": {
+       "seed": 290105,
+       "terminal": "success",
+       "return": -919.5,
+       "steps": 357,
+       "violations": 618,
+       "multi_candidate_events": 0,
+       "winner_changes_vs_fixed_score": 0
+      },
+      "heur": {
+       "seed": 290105,
+       "terminal": "success",
+       "return": -1081.8,
+       "steps": 360,
+       "violations": 1213
+      }
+     },
+     {
+      "seed": 290106,
+      "rl": {
+       "seed": 290106,
+       "terminal": "success",
+       "return": -749.8,
+       "steps": 314,
+       "violations": 422,
+       "multi_candidate_events": 1,
+       "winner_changes_vs_fixed_score": 0
+      },
+      "heur": {
+       "seed": 290106,
+       "terminal": "success",
+       "return": -854.6,
+       "steps": 348,
+       "violations": 946
+      }
+     },
+     {
+      "seed": 290107,
+      "rl": {
+       "seed": 290107,
+       "terminal": "success",
+       "return": -269.8,
+       "steps": 337,
+       "violations": 276,
+       "multi_candidate_events": 0,
+       "winner_changes_vs_fixed_score": 0
+      },
+      "heur": {
+       "seed": 290107,
+       "terminal": "success",
+       "return": -1290.6,
+       "steps": 398,
+       "violations": 1341
+      }
+     },
+     {
+      "seed": 290108,
+      "rl": {
+       "seed": 290108,
+       "terminal": "success",
+       "return": -342.7,
+       "steps": 330,
+       "violations": 318,
+       "multi_candidate_events": 2,
+       "winner_changes_vs_fixed_score": 1
+      },
+      "heur": {
+       "seed": 290108,
+       "terminal": "success",
+       "return": -3728.7,
+       "steps": 642,
+       "violations": 3941
+      }
+     },
+     {
+      "seed": 290109,
+      "rl": {
+       "seed": 290109,
+       "terminal": "success",
+       "return": -2054.9,
+       "steps": 477,
+       "violations": 1497,
+       "multi_candidate_events": 9,
+       "winner_changes_vs_fixed_score": 0
+      },
+      "heur": {
+       "seed": 290109,
+       "terminal": "success",
+       "return": -3156.4,
+       "steps": 489,
+       "violations": 2543
+      }
+     }
+    ],
+    "checkpoint": {
+     "role": "curriculum_effective_initial_checkpoint",
+     "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\provenance\\20261022T053953.032702Z_20436_6481fdd1_effective_initial.pt",
+     "exists": true,
+     "size_bytes": 1771475,
+     "sha256": "bf55178bcae679266470e69f3a13c8d17a073a086cabe32a3a224d6e2a081262"
+    },
+    "run_id": "20261022T053953.032702Z_20436_6481fdd1",
+    "stage": "initial_checkpoint",
+    "iter": -1,
+    "source_manifest_sha256": "48c2a8648b0575d3fd65dbb894cdbed49c5fb1ed0cf206b680295784cdb33a4a",
+    "best_checkpoint": {
+     "role": "curriculum_best_checkpoint",
+     "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\curr_k2_best.pt",
+     "exists": true,
+     "size_bytes": 1766123,
+     "sha256": "cfbd4d23f1761497959784394bce0a99aab382210344bcbfacf24a786e16c3fa",
+     "archive": {
+      "role": "curriculum_best_checkpoint_archive",
+      "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\provenance\\20261022T053953.032702Z_20436_6481fdd1_curr_k2_best_initial_checkpoint_-00001.pt",
+      "exists": true,
+      "size_bytes": 1766123,
+      "sha256": "cfbd4d23f1761497959784394bce0a99aab382210344bcbfacf24a786e16c3fa",
+      "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\curr_k2_best.pt"
+     }
+    },
+    "acceptance": {
+     "success_at_least_heur": true,
+     "mean_return_at_least_heur": false,
+     "violations_below_heur": true,
+     "passed": false
+    }
+   }
+  },
+  "curr_k2_validation": {
+   "k": 2,
+   "seeds": [
+    290100,
+    290101,
+    290102,
+    290103,
+    290104,
+    290105,
+    290106,
+    290107,
+    290108,
+    290109
+   ],
+   "stable_window": 8,
+   "task_config": {
+    "dt": 1.0,
+    "horizon": 900,
+    "L_X": 160.0,
+    "L_Y": 120.0,
+    "X_CUTOFF": 40.0,
+    "X_TRACK": 110.0,
+    "AGE_STD_TRACK": 10.0,
+    "AGE_STD_DETECT": 5.0,
+    "STABLE_WINDOW": 8,
+    "N_WINGMEN": 3,
+    "BLUE_V_MIN_MA": 0.4,
+    "BLUE_V_MAX_MA": 0.95,
+    "OMEGA_CRUISE_DEG": 3.0,
+    "OMEGA_MANEUVER_DEG": 6.0,
+    "ACCEL_MAX_MA_S": 0.1,
+    "K_PSI": 1.0,
+    "K_V_MS": 30.0,
+    "MANNED_V_MIN_MA": 0.5,
+    "MANNED_V_MAX_MA": 0.9,
+    "MANNED_OMEGA_DEG": 3.0,
+    "K_RED": 2,
+    "RED_CRUISE_MA": 0.75,
+    "RED_MANEUVER_MA_RANGE": [
+     0.6,
+     0.9
+    ],
+    "RED_OMEGA_DEG": 8.0,
+    "RED_DUTY_MIN": 0.7,
+    "RED_DUTY_MAX": 0.8,
+    "RED_STAGGER_KM": 8.0,
+    "RED_X0": 158.0,
+    "RED_MANEUVER_RESAMPLE": [
+     20,
+     40
+    ],
+    "RED_TURN_POISSON_MEAN": 30.0,
+    "RED_SNAKE_HALF_ANGLE_DEG": 30.0,
+    "RED_SNAKE_PERIOD": 20.0,
+    "RED_EDGE_SUPPRESS_KM": 5.0,
+    "RED_LANE_K2_CENTER_KM": 50.0,
+    "RED_REGAIN_T": [
+     12.0,
+     20.0
+    ],
+    "RED_REGAIN_SPREAD_DEG": 30.0,
+    "RED_SEP_WARN_KM": 18.0,
+    "RED_SEP_HARD_KM": 2.0,
+    "RED_SEP_BIAS_DEG": 45.0,
+    "RED_PAIR_SUBLANE_KM": 4.0,
+    "R_MAX": 80.0,
+    "FOV_HALF_DEG": 7.5,
+    "BEAM_DWELL": 0.5,
+    "GEAR_FRAME": {
+     "7.5": 0.5,
+     "15.0": 1.0,
+     "30.0": 2.0,
+     "45.0": 3.0,
+     "60.0": 4.0
+    },
+    "GEARS_SEARCH": [
+     45.0,
+     60.0
+    ],
+    "GEARS_TRACK": [
+     7.5,
+     15.0,
+     30.0,
+     45.0
+    ],
+    "PD_TIERS": [
+     [
+      0.5,
+      0.9
+     ],
+     [
+      0.8,
+      0.6
+     ],
+     [
+      1.0,
+      0.3
+     ]
+    ],
+    "RADAR_HIT_MODEL": "bernoulli",
+    "SECTOR_AXIS_MAX_DEG": 60.0,
+    "AXIS_TRIM_SCALE_DEG": 15.0,
+    "TRACK_INIT_HITS": 2,
+    "TRACK_INIT_WINDOW": 6.5,
+    "TRACK_CONFIRM_TIME": 5.0,
+    "TRACK_CONFIRM_GAP_MAX": 1.6,
+    "AGE_DEGRADE": 8.0,
+    "AGE_DROP": 13.0,
+    "COV_SHRINK": 0.8,
+    "COV_Q_KM2_S": 0.25,
+    "SIGMA_REF": 4.0,
+    "MAR": 40.0,
+    "MOR": 60.0,
+    "MAR_MOR_VARIANTS": [
+     [
+      40.0,
+      60.0
+     ],
+     [
+      30.0,
+      50.0
+     ],
+     [
+      20.0,
+      40.0
+     ]
+    ],
+    "K_SIGMA": 3.0,
+    "MOR_GRADIENT_SPAN": 20.0,
+    "D_SAFE": 2.0,
+    "D_SAFE_LOOKAHEAD": 3.0,
+    "BOUNDARY_PREDICT": 5.0,
+    "LINK_RATE_HZ": 1.0,
+    "LINK_DELAY_S": 1.0,
+    "T_SCAN_REQ": 120.0,
+    "HANDOFF_MIN_INTERVAL": 30.0,
+    "HANDOFF_INTERVAL_SWEEP": [
+     10.0,
+     20.0,
+     30.0
+    ],
+    "C04_RANGE": 80.0,
+    "C04_RESPONSE": 5.0,
+    "T_DWELL": 5.0,
+    "APPROVAL_DELAY_INIT": 0.0,
+    "LINK_DROP_RATE": 0.3,
+    "LINK_DROP_WINDOW": 10.0,
+    "UPLINK_LOSS_P": 0.05,
+    "E03_AREA_PER_KM": 5.0,
+    "N_SUBZONES": 3,
+    "TRACK_SWEET_DIST": 62.0,
+    "TRACK_K_D": 0.0025,
+    "CAP_X": 15.0,
+    "CAP_Y": 60.0,
+    "CAP_LEG_Y": 10.0,
+    "CAP_LEG_X": 5.0,
+    "ARB_WEIGHTS": [
+     1.0,
+     1.0,
+     0.5,
+     0.5,
+     0.3
+    ],
+    "ARB_HYSTERESIS": 0.2,
+    "ARB_BID_WEIGHT": 0.35,
+    "W1_TRACK_TICK": 0.02,
+    "W2_DETECT_TICK": 0.005,
+    "W3_STABLE": 10.0,
+    "W4_SUCCESS": 50.0,
+    "W5_MOR_GRAD": 0.02,
+    "W6_MAR": 0.1,
+    "W7_HANDOFF": 0.5,
+    "W8_LAYER": [
+     10.0,
+     7.5,
+     10.0,
+     5.0,
+     2.5,
+     1.25
+    ],
+    "W8_SCALE": 1.0,
+    "M05_GRACE": 5.0,
+    "W9_FAILURE": 50.0,
+    "STEP_COST": 0.005,
+    "OBS_DIM": 169,
+    "TRACK_SLOTS": 8,
+    "NET_HIDDEN": 128,
+    "TOTAL_STEPS": 1500000,
+    "N_ENVS": 16,
+    "N_SEEDS": 10,
+    "BC_EPOCHS": [
+     50,
+     100
+    ],
+    "CONVERGE_WINDOW": 100,
+    "seed": 7
+   },
+   "task_config_sha256": "a3d47afc8201487fe9c5f09b5ffe6699194c07b4ca12ab2c6a372e4ea410716c",
+   "rl": {
+    "success_rate": 1.0,
+    "mean_return": -1778.0,
+    "violations_per_step": 2.9416
+   },
+   "heur": {
+    "success_rate": 1.0,
+    "mean_return": -1443.9,
+    "violations_per_step": 3.8011
+   },
+   "natural_arbitration": {
+    "rl_multi_candidate_events": 12,
+    "rl_winner_changes_vs_fixed_score": 1,
+    "forced_probe_enabled": false
+   },
+   "by_seed": [
+    {
+     "seed": 290100,
+     "rl": {
+      "seed": 290100,
+      "terminal": "success",
+      "return": -515.0,
+      "steps": 333,
+      "violations": 410,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 290100,
+      "terminal": "success",
+      "return": -380.8,
+      "steps": 383,
+      "violations": 1031
+     }
+    },
+    {
+     "seed": 290101,
+     "rl": {
+      "seed": 290101,
+      "terminal": "success",
+      "return": -176.6,
+      "steps": 305,
+      "violations": 191,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 290101,
+      "terminal": "success",
+      "return": -942.3,
+      "steps": 353,
+      "violations": 1040
+     }
+    },
+    {
+     "seed": 290102,
+     "rl": {
+      "seed": 290102,
+      "terminal": "success",
+      "return": -4953.6,
+      "steps": 627,
+      "violations": 3312,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 290102,
+      "terminal": "success",
+      "return": -1349.6,
+      "steps": 363,
+      "violations": 1197
+     }
+    },
+    {
+     "seed": 290103,
+     "rl": {
+      "seed": 290103,
+      "terminal": "success",
+      "return": -5744.1,
+      "steps": 672,
+      "violations": 3823,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 290103,
+      "terminal": "success",
+      "return": -381.3,
+      "steps": 319,
+      "violations": 724
+     }
+    },
+    {
+     "seed": 290104,
+     "rl": {
+      "seed": 290104,
+      "terminal": "success",
+      "return": -2054.1,
+      "steps": 425,
+      "violations": 1420,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 290104,
+      "terminal": "success",
+      "return": -1273.2,
+      "steps": 392,
+      "violations": 1407
+     }
+    },
+    {
+     "seed": 290105,
+     "rl": {
+      "seed": 290105,
+      "terminal": "success",
+      "return": -919.5,
+      "steps": 357,
+      "violations": 618,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 290105,
+      "terminal": "success",
+      "return": -1081.8,
+      "steps": 360,
+      "violations": 1213
+     }
+    },
+    {
+     "seed": 290106,
+     "rl": {
+      "seed": 290106,
+      "terminal": "success",
+      "return": -749.8,
+      "steps": 314,
+      "violations": 422,
+      "multi_candidate_events": 1,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 290106,
+      "terminal": "success",
+      "return": -854.6,
+      "steps": 348,
+      "violations": 946
+     }
+    },
+    {
+     "seed": 290107,
+     "rl": {
+      "seed": 290107,
+      "terminal": "success",
+      "return": -269.8,
+      "steps": 337,
+      "violations": 276,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 290107,
+      "terminal": "success",
+      "return": -1290.6,
+      "steps": 398,
+      "violations": 1341
+     }
+    },
+    {
+     "seed": 290108,
+     "rl": {
+      "seed": 290108,
+      "terminal": "success",
+      "return": -342.7,
+      "steps": 330,
+      "violations": 318,
+      "multi_candidate_events": 2,
+      "winner_changes_vs_fixed_score": 1
+     },
+     "heur": {
+      "seed": 290108,
+      "terminal": "success",
+      "return": -3728.7,
+      "steps": 642,
+      "violations": 3941
+     }
+    },
+    {
+     "seed": 290109,
+     "rl": {
+      "seed": 290109,
+      "terminal": "success",
+      "return": -2054.9,
+      "steps": 477,
+      "violations": 1497,
+      "multi_candidate_events": 9,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 290109,
+      "terminal": "success",
+      "return": -3156.4,
+      "steps": 489,
+      "violations": 2543
+     }
+    }
+   ],
+   "checkpoint": {
+    "role": "curriculum_effective_initial_checkpoint",
+    "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\provenance\\20261022T053953.032702Z_20436_6481fdd1_effective_initial.pt",
+    "exists": true,
+    "size_bytes": 1771475,
+    "sha256": "bf55178bcae679266470e69f3a13c8d17a073a086cabe32a3a224d6e2a081262"
+   },
+   "run_id": "20261022T053953.032702Z_20436_6481fdd1",
+   "stage": "initial_checkpoint",
+   "iter": -1,
+   "source_manifest_sha256": "48c2a8648b0575d3fd65dbb894cdbed49c5fb1ed0cf206b680295784cdb33a4a",
+   "best_checkpoint": {
+    "role": "curriculum_best_checkpoint",
+    "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\curr_k2_best.pt",
+    "exists": true,
+    "size_bytes": 1766123,
+    "sha256": "cfbd4d23f1761497959784394bce0a99aab382210344bcbfacf24a786e16c3fa",
+    "archive": {
+     "role": "curriculum_best_checkpoint_archive",
+     "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\provenance\\20261022T053953.032702Z_20436_6481fdd1_curr_k2_best_initial_checkpoint_-00001.pt",
+     "exists": true,
+     "size_bytes": 1766123,
+     "sha256": "cfbd4d23f1761497959784394bce0a99aab382210344bcbfacf24a786e16c3fa",
+     "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\curr_k2_best.pt"
+    }
+   },
+   "acceptance": {
+    "success_at_least_heur": true,
+    "mean_return_at_least_heur": false,
+    "violations_below_heur": true,
+    "passed": false
+   }
+  },
+  "curr_k2_baseline": {
+   "k": 2,
+   "seeds": [
+    290100,
+    290101,
+    290102,
+    290103,
+    290104,
+    290105,
+    290106,
+    290107,
+    290108,
+    290109
+   ],
+   "stable_window": 8,
+   "task_config": {
+    "dt": 1.0,
+    "horizon": 900,
+    "L_X": 160.0,
+    "L_Y": 120.0,
+    "X_CUTOFF": 40.0,
+    "X_TRACK": 110.0,
+    "AGE_STD_TRACK": 10.0,
+    "AGE_STD_DETECT": 5.0,
+    "STABLE_WINDOW": 8,
+    "N_WINGMEN": 3,
+    "BLUE_V_MIN_MA": 0.4,
+    "BLUE_V_MAX_MA": 0.95,
+    "OMEGA_CRUISE_DEG": 3.0,
+    "OMEGA_MANEUVER_DEG": 6.0,
+    "ACCEL_MAX_MA_S": 0.1,
+    "K_PSI": 1.0,
+    "K_V_MS": 30.0,
+    "MANNED_V_MIN_MA": 0.5,
+    "MANNED_V_MAX_MA": 0.9,
+    "MANNED_OMEGA_DEG": 3.0,
+    "K_RED": 2,
+    "RED_CRUISE_MA": 0.75,
+    "RED_MANEUVER_MA_RANGE": [
+     0.6,
+     0.9
+    ],
+    "RED_OMEGA_DEG": 8.0,
+    "RED_DUTY_MIN": 0.7,
+    "RED_DUTY_MAX": 0.8,
+    "RED_STAGGER_KM": 8.0,
+    "RED_X0": 158.0,
+    "RED_MANEUVER_RESAMPLE": [
+     20,
+     40
+    ],
+    "RED_TURN_POISSON_MEAN": 30.0,
+    "RED_SNAKE_HALF_ANGLE_DEG": 30.0,
+    "RED_SNAKE_PERIOD": 20.0,
+    "RED_EDGE_SUPPRESS_KM": 5.0,
+    "RED_LANE_K2_CENTER_KM": 50.0,
+    "RED_REGAIN_T": [
+     12.0,
+     20.0
+    ],
+    "RED_REGAIN_SPREAD_DEG": 30.0,
+    "RED_SEP_WARN_KM": 18.0,
+    "RED_SEP_HARD_KM": 2.0,
+    "RED_SEP_BIAS_DEG": 45.0,
+    "RED_PAIR_SUBLANE_KM": 4.0,
+    "R_MAX": 80.0,
+    "FOV_HALF_DEG": 7.5,
+    "BEAM_DWELL": 0.5,
+    "GEAR_FRAME": {
+     "7.5": 0.5,
+     "15.0": 1.0,
+     "30.0": 2.0,
+     "45.0": 3.0,
+     "60.0": 4.0
+    },
+    "GEARS_SEARCH": [
+     45.0,
+     60.0
+    ],
+    "GEARS_TRACK": [
+     7.5,
+     15.0,
+     30.0,
+     45.0
+    ],
+    "PD_TIERS": [
+     [
+      0.5,
+      0.9
+     ],
+     [
+      0.8,
+      0.6
+     ],
+     [
+      1.0,
+      0.3
+     ]
+    ],
+    "RADAR_HIT_MODEL": "bernoulli",
+    "SECTOR_AXIS_MAX_DEG": 60.0,
+    "AXIS_TRIM_SCALE_DEG": 15.0,
+    "TRACK_INIT_HITS": 2,
+    "TRACK_INIT_WINDOW": 6.5,
+    "TRACK_CONFIRM_TIME": 5.0,
+    "TRACK_CONFIRM_GAP_MAX": 1.6,
+    "AGE_DEGRADE": 8.0,
+    "AGE_DROP": 13.0,
+    "COV_SHRINK": 0.8,
+    "COV_Q_KM2_S": 0.25,
+    "SIGMA_REF": 4.0,
+    "MAR": 40.0,
+    "MOR": 60.0,
+    "MAR_MOR_VARIANTS": [
+     [
+      40.0,
+      60.0
+     ],
+     [
+      30.0,
+      50.0
+     ],
+     [
+      20.0,
+      40.0
+     ]
+    ],
+    "K_SIGMA": 3.0,
+    "MOR_GRADIENT_SPAN": 20.0,
+    "D_SAFE": 2.0,
+    "D_SAFE_LOOKAHEAD": 3.0,
+    "BOUNDARY_PREDICT": 5.0,
+    "LINK_RATE_HZ": 1.0,
+    "LINK_DELAY_S": 1.0,
+    "T_SCAN_REQ": 120.0,
+    "HANDOFF_MIN_INTERVAL": 30.0,
+    "HANDOFF_INTERVAL_SWEEP": [
+     10.0,
+     20.0,
+     30.0
+    ],
+    "C04_RANGE": 80.0,
+    "C04_RESPONSE": 5.0,
+    "T_DWELL": 5.0,
+    "APPROVAL_DELAY_INIT": 0.0,
+    "LINK_DROP_RATE": 0.3,
+    "LINK_DROP_WINDOW": 10.0,
+    "UPLINK_LOSS_P": 0.05,
+    "E03_AREA_PER_KM": 5.0,
+    "N_SUBZONES": 3,
+    "TRACK_SWEET_DIST": 62.0,
+    "TRACK_K_D": 0.0025,
+    "CAP_X": 15.0,
+    "CAP_Y": 60.0,
+    "CAP_LEG_Y": 10.0,
+    "CAP_LEG_X": 5.0,
+    "ARB_WEIGHTS": [
+     1.0,
+     1.0,
+     0.5,
+     0.5,
+     0.3
+    ],
+    "ARB_HYSTERESIS": 0.2,
+    "ARB_BID_WEIGHT": 0.35,
+    "W1_TRACK_TICK": 0.02,
+    "W2_DETECT_TICK": 0.005,
+    "W3_STABLE": 10.0,
+    "W4_SUCCESS": 50.0,
+    "W5_MOR_GRAD": 0.02,
+    "W6_MAR": 0.1,
+    "W7_HANDOFF": 0.5,
+    "W8_LAYER": [
+     10.0,
+     7.5,
+     10.0,
+     5.0,
+     2.5,
+     1.25
+    ],
+    "W8_SCALE": 1.0,
+    "M05_GRACE": 5.0,
+    "W9_FAILURE": 50.0,
+    "STEP_COST": 0.005,
+    "OBS_DIM": 169,
+    "TRACK_SLOTS": 8,
+    "NET_HIDDEN": 128,
+    "TOTAL_STEPS": 1500000,
+    "N_ENVS": 16,
+    "N_SEEDS": 10,
+    "BC_EPOCHS": [
+     50,
+     100
+    ],
+    "CONVERGE_WINDOW": 100,
+    "seed": 7
+   },
+   "task_config_sha256": "a3d47afc8201487fe9c5f09b5ffe6699194c07b4ca12ab2c6a372e4ea410716c",
+   "rl": {
+    "success_rate": 1.0,
+    "mean_return": -1778.0,
+    "violations_per_step": 2.9416
+   },
+   "heur": {
+    "success_rate": 1.0,
+    "mean_return": -1443.9,
+    "violations_per_step": 3.8011
+   },
+   "natural_arbitration": {
+    "rl_multi_candidate_events": 12,
+    "rl_winner_changes_vs_fixed_score": 1,
+    "forced_probe_enabled": false
+   },
+   "by_seed": [
+    {
+     "seed": 290100,
+     "rl": {
+      "seed": 290100,
+      "terminal": "success",
+      "return": -515.0,
+      "steps": 333,
+      "violations": 410,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 290100,
+      "terminal": "success",
+      "return": -380.8,
+      "steps": 383,
+      "violations": 1031
+     }
+    },
+    {
+     "seed": 290101,
+     "rl": {
+      "seed": 290101,
+      "terminal": "success",
+      "return": -176.6,
+      "steps": 305,
+      "violations": 191,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 290101,
+      "terminal": "success",
+      "return": -942.3,
+      "steps": 353,
+      "violations": 1040
+     }
+    },
+    {
+     "seed": 290102,
+     "rl": {
+      "seed": 290102,
+      "terminal": "success",
+      "return": -4953.6,
+      "steps": 627,
+      "violations": 3312,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 290102,
+      "terminal": "success",
+      "return": -1349.6,
+      "steps": 363,
+      "violations": 1197
+     }
+    },
+    {
+     "seed": 290103,
+     "rl": {
+      "seed": 290103,
+      "terminal": "success",
+      "return": -5744.1,
+      "steps": 672,
+      "violations": 3823,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 290103,
+      "terminal": "success",
+      "return": -381.3,
+      "steps": 319,
+      "violations": 724
+     }
+    },
+    {
+     "seed": 290104,
+     "rl": {
+      "seed": 290104,
+      "terminal": "success",
+      "return": -2054.1,
+      "steps": 425,
+      "violations": 1420,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 290104,
+      "terminal": "success",
+      "return": -1273.2,
+      "steps": 392,
+      "violations": 1407
+     }
+    },
+    {
+     "seed": 290105,
+     "rl": {
+      "seed": 290105,
+      "terminal": "success",
+      "return": -919.5,
+      "steps": 357,
+      "violations": 618,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 290105,
+      "terminal": "success",
+      "return": -1081.8,
+      "steps": 360,
+      "violations": 1213
+     }
+    },
+    {
+     "seed": 290106,
+     "rl": {
+      "seed": 290106,
+      "terminal": "success",
+      "return": -749.8,
+      "steps": 314,
+      "violations": 422,
+      "multi_candidate_events": 1,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 290106,
+      "terminal": "success",
+      "return": -854.6,
+      "steps": 348,
+      "violations": 946
+     }
+    },
+    {
+     "seed": 290107,
+     "rl": {
+      "seed": 290107,
+      "terminal": "success",
+      "return": -269.8,
+      "steps": 337,
+      "violations": 276,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 290107,
+      "terminal": "success",
+      "return": -1290.6,
+      "steps": 398,
+      "violations": 1341
+     }
+    },
+    {
+     "seed": 290108,
+     "rl": {
+      "seed": 290108,
+      "terminal": "success",
+      "return": -342.7,
+      "steps": 330,
+      "violations": 318,
+      "multi_candidate_events": 2,
+      "winner_changes_vs_fixed_score": 1
+     },
+     "heur": {
+      "seed": 290108,
+      "terminal": "success",
+      "return": -3728.7,
+      "steps": 642,
+      "violations": 3941
+     }
+    },
+    {
+     "seed": 290109,
+     "rl": {
+      "seed": 290109,
+      "terminal": "success",
+      "return": -2054.9,
+      "steps": 477,
+      "violations": 1497,
+      "multi_candidate_events": 9,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 290109,
+      "terminal": "success",
+      "return": -3156.4,
+      "steps": 489,
+      "violations": 2543
+     }
+    }
+   ],
+   "checkpoint": {
+    "role": "curriculum_effective_initial_checkpoint",
+    "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\provenance\\20261022T053953.032702Z_20436_6481fdd1_effective_initial.pt",
+    "exists": true,
+    "size_bytes": 1771475,
+    "sha256": "bf55178bcae679266470e69f3a13c8d17a073a086cabe32a3a224d6e2a081262"
+   },
+   "run_id": "20261022T053953.032702Z_20436_6481fdd1",
+   "stage": "initial_checkpoint",
+   "iter": -1,
+   "source_manifest_sha256": "48c2a8648b0575d3fd65dbb894cdbed49c5fb1ed0cf206b680295784cdb33a4a",
+   "best_checkpoint": {
+    "role": "curriculum_best_checkpoint",
+    "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\curr_k2_best.pt",
+    "exists": true,
+    "size_bytes": 1766123,
+    "sha256": "cfbd4d23f1761497959784394bce0a99aab382210344bcbfacf24a786e16c3fa",
+    "archive": {
+     "role": "curriculum_best_checkpoint_archive",
+     "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\provenance\\20261022T053953.032702Z_20436_6481fdd1_curr_k2_best_initial_checkpoint_-00001.pt",
+     "exists": true,
+     "size_bytes": 1766123,
+     "sha256": "cfbd4d23f1761497959784394bce0a99aab382210344bcbfacf24a786e16c3fa",
+     "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\curr_k2_best.pt"
+    }
+   },
+   "acceptance": {
+    "success_at_least_heur": true,
+    "mean_return_at_least_heur": false,
+    "violations_below_heur": true,
+    "passed": false
+   }
+  },
+  "curr_k2_last_validation": {
+   "k": 2,
+   "seeds": [
+    290100,
+    290101,
+    290102,
+    290103,
+    290104,
+    290105,
+    290106,
+    290107,
+    290108,
+    290109
+   ],
+   "stable_window": 8,
+   "task_config": {
+    "dt": 1.0,
+    "horizon": 900,
+    "L_X": 160.0,
+    "L_Y": 120.0,
+    "X_CUTOFF": 40.0,
+    "X_TRACK": 110.0,
+    "AGE_STD_TRACK": 10.0,
+    "AGE_STD_DETECT": 5.0,
+    "STABLE_WINDOW": 8,
+    "N_WINGMEN": 3,
+    "BLUE_V_MIN_MA": 0.4,
+    "BLUE_V_MAX_MA": 0.95,
+    "OMEGA_CRUISE_DEG": 3.0,
+    "OMEGA_MANEUVER_DEG": 6.0,
+    "ACCEL_MAX_MA_S": 0.1,
+    "K_PSI": 1.0,
+    "K_V_MS": 30.0,
+    "MANNED_V_MIN_MA": 0.5,
+    "MANNED_V_MAX_MA": 0.9,
+    "MANNED_OMEGA_DEG": 3.0,
+    "K_RED": 2,
+    "RED_CRUISE_MA": 0.75,
+    "RED_MANEUVER_MA_RANGE": [
+     0.6,
+     0.9
+    ],
+    "RED_OMEGA_DEG": 8.0,
+    "RED_DUTY_MIN": 0.7,
+    "RED_DUTY_MAX": 0.8,
+    "RED_STAGGER_KM": 8.0,
+    "RED_X0": 158.0,
+    "RED_MANEUVER_RESAMPLE": [
+     20,
+     40
+    ],
+    "RED_TURN_POISSON_MEAN": 30.0,
+    "RED_SNAKE_HALF_ANGLE_DEG": 30.0,
+    "RED_SNAKE_PERIOD": 20.0,
+    "RED_EDGE_SUPPRESS_KM": 5.0,
+    "RED_LANE_K2_CENTER_KM": 50.0,
+    "RED_REGAIN_T": [
+     12.0,
+     20.0
+    ],
+    "RED_REGAIN_SPREAD_DEG": 30.0,
+    "RED_SEP_WARN_KM": 18.0,
+    "RED_SEP_HARD_KM": 2.0,
+    "RED_SEP_BIAS_DEG": 45.0,
+    "RED_PAIR_SUBLANE_KM": 4.0,
+    "R_MAX": 80.0,
+    "FOV_HALF_DEG": 7.5,
+    "BEAM_DWELL": 0.5,
+    "GEAR_FRAME": {
+     "7.5": 0.5,
+     "15.0": 1.0,
+     "30.0": 2.0,
+     "45.0": 3.0,
+     "60.0": 4.0
+    },
+    "GEARS_SEARCH": [
+     45.0,
+     60.0
+    ],
+    "GEARS_TRACK": [
+     7.5,
+     15.0,
+     30.0,
+     45.0
+    ],
+    "PD_TIERS": [
+     [
+      0.5,
+      0.9
+     ],
+     [
+      0.8,
+      0.6
+     ],
+     [
+      1.0,
+      0.3
+     ]
+    ],
+    "RADAR_HIT_MODEL": "bernoulli",
+    "SECTOR_AXIS_MAX_DEG": 60.0,
+    "AXIS_TRIM_SCALE_DEG": 15.0,
+    "TRACK_INIT_HITS": 2,
+    "TRACK_INIT_WINDOW": 6.5,
+    "TRACK_CONFIRM_TIME": 5.0,
+    "TRACK_CONFIRM_GAP_MAX": 1.6,
+    "AGE_DEGRADE": 8.0,
+    "AGE_DROP": 13.0,
+    "COV_SHRINK": 0.8,
+    "COV_Q_KM2_S": 0.25,
+    "SIGMA_REF": 4.0,
+    "MAR": 40.0,
+    "MOR": 60.0,
+    "MAR_MOR_VARIANTS": [
+     [
+      40.0,
+      60.0
+     ],
+     [
+      30.0,
+      50.0
+     ],
+     [
+      20.0,
+      40.0
+     ]
+    ],
+    "K_SIGMA": 3.0,
+    "MOR_GRADIENT_SPAN": 20.0,
+    "D_SAFE": 2.0,
+    "D_SAFE_LOOKAHEAD": 3.0,
+    "BOUNDARY_PREDICT": 5.0,
+    "LINK_RATE_HZ": 1.0,
+    "LINK_DELAY_S": 1.0,
+    "T_SCAN_REQ": 120.0,
+    "HANDOFF_MIN_INTERVAL": 30.0,
+    "HANDOFF_INTERVAL_SWEEP": [
+     10.0,
+     20.0,
+     30.0
+    ],
+    "C04_RANGE": 80.0,
+    "C04_RESPONSE": 5.0,
+    "T_DWELL": 5.0,
+    "APPROVAL_DELAY_INIT": 0.0,
+    "LINK_DROP_RATE": 0.3,
+    "LINK_DROP_WINDOW": 10.0,
+    "UPLINK_LOSS_P": 0.05,
+    "E03_AREA_PER_KM": 5.0,
+    "N_SUBZONES": 3,
+    "TRACK_SWEET_DIST": 62.0,
+    "TRACK_K_D": 0.0025,
+    "CAP_X": 15.0,
+    "CAP_Y": 60.0,
+    "CAP_LEG_Y": 10.0,
+    "CAP_LEG_X": 5.0,
+    "ARB_WEIGHTS": [
+     1.0,
+     1.0,
+     0.5,
+     0.5,
+     0.3
+    ],
+    "ARB_HYSTERESIS": 0.2,
+    "ARB_BID_WEIGHT": 0.35,
+    "W1_TRACK_TICK": 0.02,
+    "W2_DETECT_TICK": 0.005,
+    "W3_STABLE": 10.0,
+    "W4_SUCCESS": 50.0,
+    "W5_MOR_GRAD": 0.02,
+    "W6_MAR": 0.1,
+    "W7_HANDOFF": 0.5,
+    "W8_LAYER": [
+     10.0,
+     7.5,
+     10.0,
+     5.0,
+     2.5,
+     1.25
+    ],
+    "W8_SCALE": 1.0,
+    "M05_GRACE": 5.0,
+    "W9_FAILURE": 50.0,
+    "STEP_COST": 0.005,
+    "OBS_DIM": 169,
+    "TRACK_SLOTS": 8,
+    "NET_HIDDEN": 128,
+    "TOTAL_STEPS": 1500000,
+    "N_ENVS": 16,
+    "N_SEEDS": 10,
+    "BC_EPOCHS": [
+     50,
+     100
+    ],
+    "CONVERGE_WINDOW": 100,
+    "seed": 7
+   },
+   "task_config_sha256": "a3d47afc8201487fe9c5f09b5ffe6699194c07b4ca12ab2c6a372e4ea410716c",
+   "rl": {
+    "success_rate": 1.0,
+    "mean_return": -1778.0,
+    "violations_per_step": 2.9416
+   },
+   "heur": {
+    "success_rate": 1.0,
+    "mean_return": -1443.9,
+    "violations_per_step": 3.8011
+   },
+   "natural_arbitration": {
+    "rl_multi_candidate_events": 12,
+    "rl_winner_changes_vs_fixed_score": 1,
+    "forced_probe_enabled": false
+   },
+   "by_seed": [
+    {
+     "seed": 290100,
+     "rl": {
+      "seed": 290100,
+      "terminal": "success",
+      "return": -515.0,
+      "steps": 333,
+      "violations": 410,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 290100,
+      "terminal": "success",
+      "return": -380.8,
+      "steps": 383,
+      "violations": 1031
+     }
+    },
+    {
+     "seed": 290101,
+     "rl": {
+      "seed": 290101,
+      "terminal": "success",
+      "return": -176.6,
+      "steps": 305,
+      "violations": 191,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 290101,
+      "terminal": "success",
+      "return": -942.3,
+      "steps": 353,
+      "violations": 1040
+     }
+    },
+    {
+     "seed": 290102,
+     "rl": {
+      "seed": 290102,
+      "terminal": "success",
+      "return": -4953.6,
+      "steps": 627,
+      "violations": 3312,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 290102,
+      "terminal": "success",
+      "return": -1349.6,
+      "steps": 363,
+      "violations": 1197
+     }
+    },
+    {
+     "seed": 290103,
+     "rl": {
+      "seed": 290103,
+      "terminal": "success",
+      "return": -5744.1,
+      "steps": 672,
+      "violations": 3823,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 290103,
+      "terminal": "success",
+      "return": -381.3,
+      "steps": 319,
+      "violations": 724
+     }
+    },
+    {
+     "seed": 290104,
+     "rl": {
+      "seed": 290104,
+      "terminal": "success",
+      "return": -2054.1,
+      "steps": 425,
+      "violations": 1420,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 290104,
+      "terminal": "success",
+      "return": -1273.2,
+      "steps": 392,
+      "violations": 1407
+     }
+    },
+    {
+     "seed": 290105,
+     "rl": {
+      "seed": 290105,
+      "terminal": "success",
+      "return": -919.5,
+      "steps": 357,
+      "violations": 618,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 290105,
+      "terminal": "success",
+      "return": -1081.8,
+      "steps": 360,
+      "violations": 1213
+     }
+    },
+    {
+     "seed": 290106,
+     "rl": {
+      "seed": 290106,
+      "terminal": "success",
+      "return": -749.8,
+      "steps": 314,
+      "violations": 422,
+      "multi_candidate_events": 1,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 290106,
+      "terminal": "success",
+      "return": -854.6,
+      "steps": 348,
+      "violations": 946
+     }
+    },
+    {
+     "seed": 290107,
+     "rl": {
+      "seed": 290107,
+      "terminal": "success",
+      "return": -269.8,
+      "steps": 337,
+      "violations": 276,
+      "multi_candidate_events": 0,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 290107,
+      "terminal": "success",
+      "return": -1290.6,
+      "steps": 398,
+      "violations": 1341
+     }
+    },
+    {
+     "seed": 290108,
+     "rl": {
+      "seed": 290108,
+      "terminal": "success",
+      "return": -342.7,
+      "steps": 330,
+      "violations": 318,
+      "multi_candidate_events": 2,
+      "winner_changes_vs_fixed_score": 1
+     },
+     "heur": {
+      "seed": 290108,
+      "terminal": "success",
+      "return": -3728.7,
+      "steps": 642,
+      "violations": 3941
+     }
+    },
+    {
+     "seed": 290109,
+     "rl": {
+      "seed": 290109,
+      "terminal": "success",
+      "return": -2054.9,
+      "steps": 477,
+      "violations": 1497,
+      "multi_candidate_events": 9,
+      "winner_changes_vs_fixed_score": 0
+     },
+     "heur": {
+      "seed": 290109,
+      "terminal": "success",
+      "return": -3156.4,
+      "steps": 489,
+      "violations": 2543
+     }
+    }
+   ],
+   "run_id": "20261022T053953.032702Z_20436_6481fdd1",
+   "source_manifest_sha256": "48c2a8648b0575d3fd65dbb894cdbed49c5fb1ed0cf206b680295784cdb33a4a",
+   "checkpoint": {
+    "role": "curriculum_validation_checkpoint",
+    "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\curr_k2.pt",
+    "exists": true,
+    "size_bytes": 1765598,
+    "sha256": "d5c7a4406ff95cd680cf27483ebfbc855727c6199644765d69d918266e3bdebe"
+   },
+   "stage": "ppo_update",
+   "iter": 5
+  }
+ },
+ "training_state_semantics": {
+  "mode": "weights_only_warm_start",
+  "optimizer_state_restored": false,
+  "rng_state_restored": false,
+  "note": "Checkpoint loading restores model weights only; optimizer and RNG are initialized for this invocation."
+ },
+ "inputs": [
+  {
+   "role": "curriculum_initial_checkpoint",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\direct_rl_k2_w8a10_long100\\curr_k2_best.pt",
+   "exists": true,
+   "size_bytes": 1076189,
+   "sha256": "0fa84085117fa027cd3be8835b82c435925f485a901cbba4726bc3645100cb9d",
+   "checkpoint_saved_config": {
+    "hidden_size": 128,
+    "clip_ratio": 0.2,
+    "learning_rate": 3e-05,
+    "bc_learning_rate": 0.001,
+    "value_coef": 0.5,
+    "entropy_coef": 0.01,
+    "intervention_coef": 0.2,
+    "shield_aware_continuous": false,
+    "mask_intervened_continuous": true,
+    "epochs": 2,
+    "gamma": 0.99,
+    "gae_lambda": 0.95,
+    "reward_scale": 0.1,
+    "initial_log_std": -1.2,
+    "target_kl": 0.01,
+    "bid_target_kl": 0.01,
+    "shaping_kappa": 0.05,
+    "shaping_age_cap": 8.0,
+    "role_shaping_kappa": 0.3,
+    "role_adv_coef": 1.5,
+    "geo_shaping_kappa": 0.15,
+    "stable_shaping_kappa": 1.0,
+    "cf_adv_coef": 1.0,
+    "cf_ownership_bonus": 0.5,
+    "cf_request_credit": 0.25,
+    "cf_global_mix": 0.25,
+    "cf_role_coef": 0.5,
+    "cf_bid_coef": 1.0,
+    "cf_bid_margin_coef": 0.25,
+    "cf_bid_margin_temp": 0.25,
+    "bid_only_ppo": false,
+    "direct_rl_arbitration": true,
+    "gear_gate_coef": 0.0,
+    "conflict_exposure_prob": 1.0,
+    "xi_ppo_coef": 0.0,
+    "xi_anchor_coef": 1.0
+   },
+   "checkpoint_config_sha256": "8467b4b917f1b34135b004120ab0db6947f867b2745521157854986709adc8a8",
+   "archived_snapshot": {
+    "role": "curriculum_initial_checkpoint_snapshot",
+    "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\provenance\\20261022T053953.032702Z_20436_6481fdd1_input_curriculum_initial_checkpoint_curr_k2_best.pt",
+    "exists": true,
+    "size_bytes": 1076189,
+    "sha256": "0fa84085117fa027cd3be8835b82c435925f485a901cbba4726bc3645100cb9d"
+   }
+  }
+ ],
+ "checkpoint_archives": [
+  {
+   "role": "curriculum_best_checkpoint_archive",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\provenance\\20261022T053953.032702Z_20436_6481fdd1_curr_k2_best_initial_checkpoint_-00001.pt",
+   "exists": true,
+   "size_bytes": 1766123,
+   "sha256": "cfbd4d23f1761497959784394bce0a99aab382210344bcbfacf24a786e16c3fa",
+   "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\curr_k2_best.pt"
+  },
+  {
+   "role": "curriculum_iteration_checkpoint_archive",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\provenance\\20261022T053953.032702Z_20436_6481fdd1_curr_k2_iter_000000.pt",
+   "exists": true,
+   "size_bytes": 1765598,
+   "sha256": "22bae4f353eb239603fdc455216b0baecb504356151051ced97beb8ccc78c231",
+   "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\curr_k2.pt"
+  },
+  {
+   "role": "curriculum_iteration_checkpoint_archive",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\provenance\\20261022T053953.032702Z_20436_6481fdd1_curr_k2_iter_000001.pt",
+   "exists": true,
+   "size_bytes": 1765598,
+   "sha256": "8ca362172386238ec6ada31503eef017a45ea36448d0a38e896f9e159d4d450c",
+   "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\curr_k2.pt"
+  },
+  {
+   "role": "curriculum_iteration_checkpoint_archive",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\provenance\\20261022T053953.032702Z_20436_6481fdd1_curr_k2_iter_000002.pt",
+   "exists": true,
+   "size_bytes": 1765598,
+   "sha256": "0d0813e3619f1cae291bde6e9b9ff27cf827573ae89a535ef92a62d9656be628",
+   "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\curr_k2.pt"
+  },
+  {
+   "role": "curriculum_iteration_checkpoint_archive",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\provenance\\20261022T053953.032702Z_20436_6481fdd1_curr_k2_iter_000003.pt",
+   "exists": true,
+   "size_bytes": 1765598,
+   "sha256": "8156843fcf669b318ffb41460b0b4fae7d6bfc961a5db450de7277ac018e1b97",
+   "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\curr_k2.pt"
+  },
+  {
+   "role": "curriculum_iteration_checkpoint_archive",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\provenance\\20261022T053953.032702Z_20436_6481fdd1_curr_k2_iter_000004.pt",
+   "exists": true,
+   "size_bytes": 1765598,
+   "sha256": "b1a60264e3f61ee328969e1993d61138e1d626c1063a68b5c7080f851e24f96f",
+   "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\curr_k2.pt"
+  },
+  {
+   "role": "curriculum_iteration_checkpoint_archive",
+   "path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\provenance\\20261022T053953.032702Z_20436_6481fdd1_curr_k2_iter_000005.pt",
+   "exists": true,
+   "size_bytes": 1765598,
+   "sha256": "d5c7a4406ff95cd680cf27483ebfbc855727c6199644765d69d918266e3bdebe",
+   "source_path": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\curr_k2.pt"
+  }
+ ]
+}
