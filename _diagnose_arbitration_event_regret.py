@@ -125,6 +125,35 @@ def _summarize_horizons(rows: list[dict], horizons: list[int]) -> dict:
     return summaries
 
 
+def _counterfactual_unavailable_counts(
+    event_rows: list[dict], horizons: list[int]) -> tuple[dict, dict, dict, set]:
+    unavailable_by_horizon = {
+        horizon: sum(not event["counterfactual_by_horizon"][str(horizon)]
+                     ["counterfactual_available"] for event in event_rows)
+        for horizon in horizons
+    }
+    snapshot_missing_by_horizon = {
+        horizon: sum(
+            event["counterfactual_by_horizon"][str(horizon)].get("unavailable_reason")
+            == "preconflict_snapshot_unavailable" for event in event_rows)
+        for horizon in horizons
+    }
+    branch_uncontrollable_by_horizon = {
+        horizon: sum(
+            event["counterfactual_by_horizon"][str(horizon)].get("unavailable_reason")
+            == "branch_uncontrollable" for event in event_rows)
+        for horizon in horizons
+    }
+    unique_events = {
+        (int(event["step"]), int(event["tid"]), tuple(event["candidates"]))
+        for event in event_rows
+        if any(not event["counterfactual_by_horizon"][str(horizon)]
+               ["counterfactual_available"] for horizon in horizons)
+    }
+    return (unavailable_by_horizon, snapshot_missing_by_horizon,
+            branch_uncontrollable_by_horizon, unique_events)
+
+
 def _run_episode(cfg, checkpoint: Path, saved_config: dict, seed: int,
                  horizons: list[int]) -> dict:
     from aircraft_sim.detect_mappo import DetectMAPPOPolicy
@@ -141,10 +170,14 @@ def _run_episode(cfg, checkpoint: Path, saved_config: dict, seed: int,
         getattr(policy, name).eval()
     fingerprint_before = model_fingerprint(policy)
     env.reset({"seed": seed, "k_red": cfg.K_RED})
-    steps = total_return = conflicts = changed = uncontrollable = 0
+    steps = total_return = conflicts = changed = 0
     violations = interventions = 0
     violations_by_family = defaultdict(int)
     event_rows = []
+    unavailable_by_horizon = {horizon: 0 for horizon in horizons}
+    snapshot_missing_by_horizon = {horizon: 0 for horizon in horizons}
+    branch_uncontrollable_by_horizon = {horizon: 0 for horizon in horizons}
+    unavailable_keys = set()
 
     while env.terminal is None:
         observations = env.observe()
@@ -157,11 +190,11 @@ def _run_episode(cfg, checkpoint: Path, saved_config: dict, seed: int,
 
         phi_before = policy._track_potential()
         phi_stable_before = policy._stable_potential()
-        replay_env = (deepcopy(env) if policy._may_have_arbitration_conflict(safe_actions)
-                      else None)
+        replay_env = deepcopy(env)
         result = env.step(safe_actions)
         arbitration = result.info.get("arbitration", [])
         cf_by_horizon = {}
+        uncontrollable_step_by_horizon = {}
         for horizon in horizons:
             policy.config.cf_bid_horizon = horizon
             advantages = [[0.0] * 8 for _ in range(cfg.N_WINGMEN)]
@@ -174,7 +207,9 @@ def _run_episode(cfg, checkpoint: Path, saved_config: dict, seed: int,
                                                 for agent in item["candidates"]))): item
                 for item in cf["event_records"]
             }
-            uncontrollable += int(cf["uncontrollable_events"])
+            uncontrollable_step_by_horizon[horizon] = int(
+                cf["uncontrollable_events"])
+        event_row_start = len(event_rows)
         for event in arbitration:
             conflicts += 1
             fixed_winner = baseline_winner(event)
@@ -186,7 +221,10 @@ def _run_episode(cfg, checkpoint: Path, saved_config: dict, seed: int,
                 counterfactual = cf_by_horizon[horizon].get(key)
                 if counterfactual is None:
                     comparisons[str(horizon)] = {
-                        "counterfactual_available": False}
+                        "counterfactual_available": False,
+                        "unavailable_reason": (
+                            "preconflict_snapshot_unavailable" if replay_env is None
+                            else "branch_uncontrollable")}
                 else:
                     comparisons[str(horizon)] = {
                         "counterfactual_available": True,
@@ -202,6 +240,19 @@ def _run_episode(cfg, checkpoint: Path, saved_config: dict, seed: int,
             if "1" in comparisons:
                 event_row.update(comparisons["1"])
             event_rows.append(event_row)
+
+        step_event_rows = event_rows[event_row_start:]
+        (step_unavailable, step_snapshot_missing, step_branch_uncontrollable,
+         step_unavailable_keys) = _counterfactual_unavailable_counts(
+             step_event_rows, horizons)
+        if step_branch_uncontrollable != uncontrollable_step_by_horizon:
+            raise RuntimeError("counterfactual branch-failure counts do not reconcile")
+        for horizon in horizons:
+            unavailable_by_horizon[horizon] += step_unavailable[horizon]
+            snapshot_missing_by_horizon[horizon] += step_snapshot_missing[horizon]
+            branch_uncontrollable_by_horizon[horizon] += (
+                step_branch_uncontrollable[horizon])
+        unavailable_keys.update(step_unavailable_keys)
 
         steps += 1
         total_return += float(result.reward)
@@ -222,7 +273,13 @@ def _run_episode(cfg, checkpoint: Path, saved_config: dict, seed: int,
         "violations_by_family": dict(violations_by_family),
         "multi_candidate_events": conflicts,
         "winners_different_from_fixed_score": changed,
-        "uncontrollable_events": uncontrollable,
+        "counterfactual_unavailable_unique_events": len(unavailable_keys),
+        "counterfactual_unavailable_by_horizon": {
+            str(horizon): count for horizon, count in unavailable_by_horizon.items()},
+        "preconflict_snapshot_unavailable_by_horizon": {
+            str(horizon): count for horizon, count in snapshot_missing_by_horizon.items()},
+        "branch_uncontrollable_by_horizon": {
+            str(horizon): count for horizon, count in branch_uncontrollable_by_horizon.items()},
         "event_regrets": event_rows,
         "loaded_tensor_sha256": fingerprint_after,
         "weights_unchanged": True,
@@ -249,30 +306,96 @@ def _verify_reference(reference: dict, seeds: list[int],
     return direct
 
 
-def _task_config():
-    cfg = build_configs(4, 8, 10.0)["deterministic_beam"]
+def _task_config(radar_hit_model: str = "deterministic_beam", k: int = 4,
+                 stable_window: int = 8, age_std_track: float = 10.0,
+                 scenario_profile: str | None = None):
+    if scenario_profile is None:
+        cfg = build_configs(k, stable_window, age_std_track)[radar_hit_model]
+    else:
+        from aircraft_sim.detect_config import detect_config_profile
+
+        cfg = detect_config_profile(
+            scenario_profile, K_RED=k, STABLE_WINDOW=stable_window,
+            AGE_STD_TRACK=age_std_track, RADAR_HIT_MODEL=radar_hit_model)
     task = asdict(cfg)
     task["W8_SCALE"] = 1.0
     return type(cfg)(**task)
 
 
+def _verify_profile_sweep_reference(reference: dict, seeds: list[int],
+                                    checkpoint_sha256: str, profile: str,
+                                    expected_task_config: dict) -> dict[int, dict]:
+    if reference.get("status") != "completed_frozen_profile_screen":
+        raise ValueError("Reference is not a completed frozen profile screen")
+    reference_seeds = reference.get("seeds")
+    if (not isinstance(reference_seeds, list) or
+            not set(seeds).issubset(reference_seeds)):
+        raise ValueError("Event audit seeds must be covered by the reference screen")
+    checkpoint = reference.get("checkpoint", {})
+    if checkpoint.get("sha256") != checkpoint_sha256:
+        raise ValueError("Reference profile screen used a different checkpoint")
+    profile_config = reference.get("task_profiles", {}).get(profile)
+    if profile_config != expected_task_config:
+        raise ValueError("Reference profile task configuration does not match")
+    if (reference.get("training") is not False or
+            reference.get("teacher_untouched") is not True or
+            reference.get("rules_unchanged") is not True):
+        raise ValueError("Reference must be a frozen-policy evaluation without teacher use")
+
+    requested = set(seeds)
+    rows = [row for row in reference.get("rows", [])
+            if row.get("task_profile") == profile and row.get("controller") == "rl"
+            and row.get("seed") in requested]
+    direct = {int(row["seed"]): row for row in rows}
+    if len(direct) != len(rows) or set(direct) != set(seeds):
+        raise ValueError("Reference direct-RL rows do not exactly cover the seed block")
+    fingerprints = {row.get("loaded_tensor_sha256") for row in rows}
+    if len(fingerprints) != 1 or None in fingerprints:
+        raise ValueError("Reference direct-RL rows have inconsistent policy fingerprints")
+    if any(not row.get("weights_unchanged") or
+           not row.get("effective_policy_config", {}).get("direct_rl_arbitration")
+           for row in rows):
+        raise ValueError("Reference rows are not frozen direct-RL arbitration evaluations")
+    return direct
+
+
 def _assert_reference_match(row: dict, reference: dict) -> None:
-    for key in ("terminal", "steps", "multi_candidate_events",
-                "winners_different_from_fixed_score"):
-        if row[key] != reference[key]:
-            raise RuntimeError(f"replay differs from reference for {key} at seed {row['seed']}")
+    for key in ("terminal", "steps", "violations", "judged_targets",
+                "shield_interventions", "violations_by_family",
+                "multi_candidate_events", "winners_different_from_fixed_score"):
+        if key in reference and row.get(key) != reference[key]:
+            raise RuntimeError(
+                f"replay metrics differ from reference for {key} at seed {row['seed']}")
     if not np.isclose(row["return"], reference["return"], rtol=0.0, atol=1e-7):
-        raise RuntimeError(f"replay return differs from reference at seed {row['seed']}")
+        raise RuntimeError(f"replay metrics differ for return at seed {row['seed']}")
+    if ("violations_per_step" in reference and
+            not np.isclose(row["violations_per_step"], reference["violations_per_step"],
+                           rtol=0.0, atol=1e-12)):
+        raise RuntimeError(
+            f"replay metrics differ for violations_per_step at seed {row['seed']}")
+    if (reference.get("loaded_tensor_sha256") is not None and
+            row.get("loaded_tensor_sha256") != reference["loaded_tensor_sha256"]):
+        raise RuntimeError(f"replay loaded different policy tensors at seed {row['seed']}")
 
 
 def parser():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--checkpoint", type=Path, default=DEFAULT_CHECKPOINT)
     ap.add_argument("--expected-checkpoint-sha256", default=DEFAULT_CHECKPOINT_SHA256)
-    ap.add_argument("--reference-ablation", type=Path, required=True)
+    reference = ap.add_mutually_exclusive_group(required=True)
+    reference.add_argument("--reference-ablation", type=Path)
+    reference.add_argument("--reference-profile-sweep", type=Path,
+                           help="Use an existing frozen profile screen as the direct-RL replay reference.")
     ap.add_argument("--output", type=Path, required=True)
     ap.add_argument("--seed-start", type=int, required=True)
     ap.add_argument("--episodes", type=int, default=30)
+    ap.add_argument("--k", type=int, default=4)
+    ap.add_argument("--stable-window", type=int, default=8)
+    ap.add_argument("--age-std-track", type=float, default=10.0)
+    ap.add_argument("--scenario-profile", choices=(
+        "baseline", "k2_lane_center_40", "k2_lane_center_50"))
+    ap.add_argument("--radar-hit-model", choices=("bernoulli", "deterministic_beam"),
+                    default="deterministic_beam")
     ap.add_argument("--counterfactual-horizons", type=int, nargs="+",
                     default=[1, 4, 8])
     ap.add_argument("--torch-threads", type=int, default=1)
@@ -285,7 +408,9 @@ def main():
     ap = parser()
     args = ap.parse_args()
     source_path, output = args.checkpoint.resolve(), args.output.resolve()
-    reference_path = args.reference_ablation.resolve()
+    profile_reference = args.reference_profile_sweep is not None
+    reference_path = (args.reference_profile_sweep if profile_reference
+                      else args.reference_ablation).resolve()
     try:
         horizons = _normalize_horizons(args.counterfactual_horizons)
     except ValueError as exc:
@@ -295,7 +420,7 @@ def main():
     if args.seed_start < 0 or args.episodes < 1 or args.torch_threads < 1:
         ap.error("seed-start must be nonnegative; episodes and torch-threads positive")
     checkpoint_record = artifact_record(source_path, "frozen_checkpoint")
-    reference_record = artifact_record(reference_path, "reference_ablation")
+    reference_record = artifact_record(reference_path, "reference_policy_evaluation")
     if (not checkpoint_record["exists"] or
             checkpoint_record["sha256"] != args.expected_checkpoint_sha256):
         ap.error("checkpoint missing or differs from its declared SHA256")
@@ -303,38 +428,52 @@ def main():
         ap.error("reference ablation report does not exist")
     reference = json.loads(reference_path.read_text(encoding="utf-8"))
     seeds = list(range(args.seed_start, args.seed_start + args.episodes))
-    reference_direct = _verify_reference(reference, seeds)
-    cfg = _task_config()
+    cfg = _task_config(args.radar_hit_model, args.k, args.stable_window,
+                       args.age_std_track, args.scenario_profile)
     # The reference report has gone through JSON serialization, so tuples and
     # non-string mapping keys are represented as lists/strings.  Compare the
     # canonical JSON forms rather than the in-memory dataclass representation.
     expected_task_config = json.loads(json.dumps(asdict(cfg), sort_keys=True))
-    if reference.get("task_config") != expected_task_config:
-        ap.error("reference ablation task configuration differs from K4/W8/A10 deterministic beam")
-    reference_prov_path = Path(reference.get("provenance_sidecar", ""))
-    if not reference_prov_path.is_absolute():
-        reference_prov_path = reference_path.parent / reference_prov_path
-    if not reference_prov_path.is_file():
-        ap.error("reference ablation provenance sidecar is missing")
-    reference_prov = json.loads(reference_prov_path.read_text(encoding="utf-8"))
-    reference_checkpoint = next((item for item in reference_prov.get("inputs", [])
-                                 if item.get("role") == "frozen_checkpoint"), None)
-    reference_output = next((item for item in reference_prov.get("outputs", [])
-                             if item.get("role") == "arbitration_ablation"), None)
-    if (reference_prov.get("status") != "completed" or
-            not reference_prov.get("source_integrity", {}).get("unchanged") or
-            reference_checkpoint is None or
-            reference_checkpoint.get("sha256") != checkpoint_record["sha256"] or
-            reference_output is None or
-            reference_output.get("sha256") != reference_record["sha256"]):
-        ap.error("reference provenance does not pin the same checkpoint and intact source")
+    reference_prov_path = None
+    if profile_reference:
+        if not args.scenario_profile:
+            ap.error("--scenario-profile is required with --reference-profile-sweep")
+        try:
+            reference_direct = _verify_profile_sweep_reference(
+                reference, seeds, checkpoint_record["sha256"],
+                args.scenario_profile, expected_task_config)
+        except (KeyError, TypeError, ValueError) as exc:
+            ap.error(str(exc))
+    else:
+        reference_direct = _verify_reference(reference, seeds)
+        if reference.get("task_config") != expected_task_config:
+            ap.error("reference ablation task configuration differs from the requested task")
+        reference_prov_path = Path(reference.get("provenance_sidecar", ""))
+        if not reference_prov_path.is_absolute():
+            reference_prov_path = reference_path.parent / reference_prov_path
+        if not reference_prov_path.is_file():
+            ap.error("reference ablation provenance sidecar is missing")
+        reference_prov = json.loads(reference_prov_path.read_text(encoding="utf-8"))
+        reference_checkpoint = next((item for item in reference_prov.get("inputs", [])
+                                     if item.get("role") == "frozen_checkpoint"), None)
+        reference_output = next((item for item in reference_prov.get("outputs", [])
+                                 if item.get("role") == "arbitration_ablation"), None)
+        if (reference_prov.get("status") != "completed" or
+                not reference_prov.get("source_integrity", {}).get("unchanged") or
+                reference_checkpoint is None or
+                reference_checkpoint.get("sha256") != checkpoint_record["sha256"] or
+                reference_output is None or
+                reference_output.get("sha256") != reference_record["sha256"]):
+            ap.error("reference provenance does not pin the same checkpoint and intact source")
     if args.plan_only:
         print(json.dumps({"checkpoint": checkpoint_record,
-                          "reference_ablation": reference_record,
+        "reference_evaluation": reference_record,
                           "seeds": seeds, "episodes": len(seeds),
-                          "task": {"k": 4, "stable_window": 8,
-                                   "age_std_track": 10,
-                                   "radar_hit_model": "deterministic_beam",
+                          "task": {"k": args.k,
+                                   "stable_window": args.stable_window,
+                                   "age_std_track": args.age_std_track,
+                                   "scenario_profile": args.scenario_profile,
+                                   "radar_hit_model": args.radar_hit_model,
                                    "w8_scale": 1.0},
                           "counterfactual_horizons": horizons,
                           "training": False, "teacher": False,
@@ -344,6 +483,7 @@ def main():
     source = capture_source_snapshot(ROOT, output, [Path(__file__),
         ROOT / "_diagnose_arbitration_ablation.py",
         ROOT / "_diagnose_sensor_profile.py",
+        ROOT / "run_simplified_profile_sweep.py",
         ROOT / "Aircraft_mumt/aircraft_sim/detect_env.py",
         ROOT / "Aircraft_mumt/aircraft_sim/detect_mappo.py",
         ROOT / "Aircraft_mumt/aircraft_sim/detect_sensor_diagnostics.py",
@@ -365,6 +505,7 @@ def main():
     prov = capture_run_provenance(ROOT, output, [Path(__file__),
         ROOT / "_diagnose_arbitration_ablation.py",
         ROOT / "_diagnose_sensor_profile.py",
+        ROOT / "run_simplified_profile_sweep.py",
         ROOT / "Aircraft_mumt/aircraft_sim/detect_env.py",
         ROOT / "Aircraft_mumt/aircraft_sim/detect_mappo.py",
         ROOT / "Aircraft_mumt/aircraft_sim/detect_sensor_diagnostics.py",
@@ -373,6 +514,8 @@ def main():
         algorithm_config={"saved": saved_config, "effective": asdict(policy_cfg)},
         runtime_parameters={"arguments": vars(args), "seeds": seeds,
                             "training": False, "teacher": False,
+                            "reference_type": ("profile_sweep" if profile_reference
+                                               else "arbitration_ablation"),
                             "counterfactual_horizons": horizons,
                             "only_treatment": "same-snapshot RL winner vs reconstructed fixed-score winner"},
         inputs=[checkpoint_record, frozen_record, reference_record],
@@ -412,13 +555,34 @@ def main():
         "counterfactual_horizons": horizons,
         "checkpoint_sha256": checkpoint_record["sha256"],
         "reference_report_sha256": reference_record["sha256"],
-        "reference_replay_matched": True,
+        "reference_episode_metrics_matched": True,
+        "reference_match_scope": [
+            "terminal", "return", "steps", "violations", "violations_per_step",
+            "judged_targets", "shield_interventions", "violations_by_family",
+            "multi_candidate_events", "winners_different_from_fixed_score",
+            "policy_tensor_fingerprint"],
         "loaded_tensor_sha256": next(iter(fingerprints)),
         "weights_unchanged": True, "training": False,
         "teacher_used": False, "rule_or_scenario_changes": False,
         "summary": {
             "multi_candidate_events": sum(row["multi_candidate_events"] for row in rows),
-            "uncontrollable_events": sum(row["uncontrollable_events"] for row in rows),
+            "counterfactual_unavailable_unique_events": sum(
+                row["counterfactual_unavailable_unique_events"] for row in rows),
+            "counterfactual_unavailable_by_horizon": {
+                str(horizon): sum(
+                    row["counterfactual_unavailable_by_horizon"][str(horizon)]
+                    for row in rows)
+                for horizon in horizons},
+            "preconflict_snapshot_unavailable_by_horizon": {
+                str(horizon): sum(
+                    row["preconflict_snapshot_unavailable_by_horizon"][str(horizon)]
+                    for row in rows)
+                for horizon in horizons},
+            "branch_uncontrollable_by_horizon": {
+                str(horizon): sum(
+                    row["branch_uncontrollable_by_horizon"][str(horizon)]
+                    for row in rows)
+                for horizon in horizons},
             "winner_disagreement_events": len(disagreements),
             "winner_disagreement_episodes": len({
                 int(event["seed"]) for event in disagreements}),
@@ -428,8 +592,11 @@ def main():
             "Counterfactual utility is a finite-horizon conditional objective, not full-episode success.",
             "The forced-winner branches share the same pre-conflict state and task actions; continuation is frozen deterministic RL.",
             "Episode seeds, not individual conflicts, are the bootstrap clusters.",
-            "Utilities and regret are compared only within the same horizon."],
+            "Utilities and regret are compared only within the same horizon.",
+            "Reference matching checks episode outcome metrics, not event-trace identity."],
         "episodes_detail": rows,
+        "reference_provenance_sidecar": (
+            str(reference_prov_path) if reference_prov_path else None),
         "provenance_sidecar": str(prov_path),
     }
     if changed_source_files(source):
