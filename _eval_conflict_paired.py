@@ -71,6 +71,27 @@ def _winner(scores: dict, owner: int | None, hysteresis: float) -> int:
     return best
 
 
+def _parse_seed_spec(spec: str) -> list[int]:
+    seeds = []
+    for component in spec.split(","):
+        component = component.strip()
+        if not component:
+            raise ValueError("seed specification contains an empty item")
+        if ":" in component:
+            parts = component.split(":")
+            if len(parts) != 2:
+                raise ValueError(f"invalid seed range {component!r}")
+            start, stop = (int(value) for value in parts)
+            if stop < start:
+                raise ValueError(f"descending seed range {component!r}")
+            seeds.extend(range(start, stop + 1))
+        else:
+            seeds.append(int(component))
+    if not seeds or len(set(seeds)) != len(seeds) or min(seeds) < 0:
+        raise ValueError("seeds must be distinct nonnegative integers")
+    return seeds
+
+
 def _snapshot_checkpoint(checkpoint_path: Path, provenance_dir: Path,
                          run_id: str) -> tuple[Path, dict]:
     """Copy the exact evaluated weights into the evaluation's run archive."""
@@ -531,6 +552,7 @@ def run(controller, checkpoint: str | None, k_red: int, seed: int,
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--checkpoint")
+    ap.add_argument("--expected-checkpoint-sha256")
     ap.add_argument("--k", type=int, default=2)
     ap.add_argument("--seeds", default="300,301,302")
     ap.add_argument("--stable-window", type=int)
@@ -553,7 +575,10 @@ def main() -> None:
         help="run HEUR twice per seed and require exact metric agreement")
     ap.add_argument("--output", type=Path)
     args = ap.parse_args()
-    seeds = [int(s) for s in args.seeds.split(",") if s.strip()]
+    try:
+        seeds = _parse_seed_spec(args.seeds)
+    except ValueError as exc:
+        ap.error(str(exc))
     if not args.checkpoint and not args.verify_heur_repro:
         ap.error("--checkpoint is required unless --verify-heur-repro is set")
     output_path = args.output.resolve() if args.output else None
@@ -586,6 +611,10 @@ def main() -> None:
     if checkpoint_path:
         if not checkpoint_path.is_file():
             ap.error(f"checkpoint does not exist: {checkpoint_path}")
+        if (args.expected_checkpoint_sha256 is not None and
+                artifact_record(checkpoint_path, "checkpoint_hash")["sha256"]
+                != args.expected_checkpoint_sha256):
+            ap.error("checkpoint SHA256 differs from --expected-checkpoint-sha256")
         checkpoint_data = torch.load(
             checkpoint_path, map_location="cpu", weights_only=False)
         checkpoint_config = checkpoint_data.get("config")
