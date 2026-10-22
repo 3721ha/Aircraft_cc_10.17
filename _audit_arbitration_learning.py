@@ -13,6 +13,7 @@ from copy import deepcopy
 from dataclasses import asdict, replace
 import json
 from pathlib import Path
+import platform
 import random
 import sys
 
@@ -36,7 +37,8 @@ def _json_ready(value):
     return value
 
 
-def _event_values(event: dict) -> tuple[list[int], dict[int, int], np.ndarray]:
+def _event_values(event: dict, n_agents: int = 3
+                  ) -> tuple[list[int], dict[int, int], np.ndarray]:
     candidates = sorted(int(agent) for agent in event["candidates"])
     slots = {int(agent): int(slot)
              for agent, slot in event["bid_slots"].items()}
@@ -44,6 +46,8 @@ def _event_values(event: dict) -> tuple[list[int], dict[int, int], np.ndarray]:
                  for agent, utility in event["utilities"].items()}
     if len(candidates) < 2 or len(set(candidates)) != len(candidates):
         raise ValueError("A frozen case needs distinct real conflict candidates")
+    if any(not 0 <= agent < n_agents for agent in candidates):
+        raise ValueError("Conflict candidate is outside the agent range")
     if any(agent not in slots or agent not in utilities for agent in candidates):
         raise ValueError("Candidate, slot and environment utility table mismatch")
     if any(not 0 <= slots[agent] < 8 for agent in candidates):
@@ -69,59 +73,135 @@ def _case_template(row: dict, n_agents: int) -> dict:
     })
 
 
+def _event_exposure_source(row: dict, event: dict) -> str:
+    """Mark a conflict exposed when one of its candidates had a forced request."""
+    mask = row.get("action_exposure_mask", [False] * 3)
+    candidates = [int(agent) for agent in event["candidates"]]
+    if any(not 0 <= agent < len(mask) for agent in candidates):
+        raise ValueError("Conflict candidate is outside the exposure mask")
+    return ("exposed" if any(bool(mask[agent]) for agent in candidates)
+            else "natural")
+
+
+def _case_exposure_source(case: dict) -> str:
+    template = case.get("template", {})
+    mask = case.get("collection_exposure_mask")
+    observations = template.get("obs", {})
+    if (not isinstance(mask, list) or len(mask) != len(observations)
+            or any(type(value) is not bool for value in mask)):
+        raise ValueError("Frozen case has an invalid collection exposure mask")
+    source = _event_exposure_source(
+        {"action_exposure_mask": mask}, case["event"])
+    if case.get("exposure_source") != source:
+        raise ValueError("Frozen case exposure source disagrees with its mask")
+    return source
+
+
 def collect_cases(policy, seeds: list[int], k: int, max_cases: int,
                   max_per_episode: int | None = None,
-                  min_event_gap: int = 0) -> tuple[list, list]:
+                  min_event_gap: int = 0,
+                  collection_seed: int | None = None) -> tuple[list, list]:
     """Collect untouched real rollouts; freeze only validated simulator events."""
     cases, episode_records = [], []
+    collection_rng = (random.Random(collection_seed)
+                      if collection_seed is not None else None)
     for seed in seeds:
-        rollout = policy.collect(k_red=k, seed=seed, deterministic=False,
-                                 w8_scale=1.0)
+        conflict_precheck = getattr(policy, "_may_have_arbitration_conflict", None)
+        if callable(conflict_precheck):
+            # This precheck can miss conflicts after freshness or C04 changes in a step.
+            policy._may_have_arbitration_conflict = lambda _actions: True
+        try:
+            if collection_rng is None:
+                rollout = policy.collect(k_red=k, seed=seed, deterministic=False,
+                                         w8_scale=1.0)
+                actor_rng_seed = None
+            else:
+                actor_rng_seed = collection_rng.getrandbits(63)
+                with torch.random.fork_rng(devices=[]):
+                    torch.manual_seed(actor_rng_seed)
+                    rollout = policy.collect(k_red=k, seed=seed,
+                                             deterministic=False, w8_scale=1.0)
+        finally:
+            if callable(conflict_precheck):
+                policy._may_have_arbitration_conflict = conflict_precheck
         found, retained = 0, 0
         last_retained_step = None
         for step_index, row in enumerate(rollout):
             if "bid_cf_event_records" not in row:
                 raise RuntimeError("Collector lacks frozen environment utility records")
             for event in row["bid_cf_event_records"]:
-                _event_values(event)
+                _event_values(event, policy.env.cfg.N_WINGMEN)
                 found += 1
                 if (len(cases) < max_cases
                         and (max_per_episode is None or retained < max_per_episode)
                         and (last_retained_step is None
                              or step_index - last_retained_step >= min_event_gap)):
+                    exposure_source = _event_exposure_source(row, event)
                     cases.append({
                         "episode_seed": seed, "step_index": step_index,
+                        "exposure_source": exposure_source,
+                        "collection_exposure_mask": [
+                            bool(value) for value in row.get(
+                                "action_exposure_mask", [False] *
+                                policy.env.cfg.N_WINGMEN)],
                         "event": _json_ready(event),
                         "template": _case_template(row, policy.env.cfg.N_WINGMEN),
                     })
                     retained += 1
                     last_retained_step = step_index
-        episode_records.append({"seed": seed, "steps": len(rollout),
+        episode_records.append({"seed": seed, "actor_rng_seed": actor_rng_seed,
+                                "steps": len(rollout),
                                 "controllable_events": found,
                                 "retained_events": retained})
         print(json.dumps({"collection_seed": seed, "steps": len(rollout),
+                          "actor_rng_seed": actor_rng_seed,
                           "events": found, "retained": len(cases)}), flush=True)
     return cases, episode_records
 
 
 def case_coverage(cases: list[dict]) -> dict:
     counts, informative_counts = {}, {}
+    by_source, informative_by_source = {}, {}
+    informative_episodes_by_source = {}
     for case in cases:
         seed = str(case["episode_seed"])
+        source = case.get("exposure_source", "natural")
         counts[seed] = counts.get(seed, 0) + 1
+        by_source[source] = by_source.get(source, 0) + 1
         if np.ptp(_event_values(case["event"])[2]) > 1e-8:
             informative_counts[seed] = informative_counts.get(seed, 0) + 1
+            informative_by_source[source] = informative_by_source.get(source, 0) + 1
+            informative_episodes_by_source.setdefault(source, set()).add(seed)
     return {"events": len(cases),
             "informative_events": sum(informative_counts.values()),
             "event_episodes": len(counts),
             "informative_episodes": len(informative_counts),
+            "events_by_source": by_source,
+            "informative_events_by_source": informative_by_source,
+            "informative_episodes_by_source": {
+                source: len(seeds)
+                for source, seeds in informative_episodes_by_source.items()},
             "events_by_episode": counts,
             "informative_events_by_episode": informative_counts}
 
 
-def sample_training_cases(cases, count, sampler, episode_balanced=False):
+def sample_training_cases(cases, count, sampler, episode_balanced=False,
+                          source_balanced=False):
     if not cases:
         raise ValueError("Cannot sample an empty training event population")
+    if source_balanced:
+        groups = {}
+        for case in cases:
+            source = case.get("exposure_source", "natural")
+            groups.setdefault(source, {}).setdefault(
+                case["episode_seed"], []).append(case)
+        sources = sorted(groups)
+        selected = []
+        for _ in range(count):
+            source = sampler.choice(sources)
+            episode = sampler.choice(sorted(groups[source]))
+            selected.append(sampler.choice(groups[source][episode]))
+        return selected
     if not episode_balanced:
         return [sampler.choice(cases) for _ in range(count)]
     groups = {}
@@ -129,6 +209,89 @@ def sample_training_cases(cases, count, sampler, episode_balanced=False):
         groups.setdefault(case["episode_seed"], []).append(case)
     episodes = sorted(groups)
     return [sampler.choice(groups[sampler.choice(episodes)]) for _ in range(count)]
+
+
+def _environment_config(args):
+    from aircraft_sim.detect_config import detect_config_profile
+
+    if args.scenario_profile.startswith("k2_lane_center_") and args.k != 2:
+        raise ValueError("K2 lane-center profiles require --k 2")
+    return detect_config_profile(
+        args.scenario_profile, K_RED=args.k, STABLE_WINDOW=8,
+        AGE_STD_TRACK=10.0, RADAR_HIT_MODEL=args.radar_hit_model,
+        SECTOR_AXIS_MAX_DEG=60.0, C04_RANGE=80.0,
+        ARB_BID_WEIGHT=0.35, ARB_HYSTERESIS=0.2)
+
+
+def _split_collection_seeds(seed: int) -> dict[str, int]:
+    if not 0 <= seed < 2**63 - 1:
+        raise ValueError("collection seed must be in [0, 2**63 - 2]")
+    return {"train": seed, "heldout": seed + 1}
+
+
+def _runtime_fingerprint() -> dict:
+    return {"python": sys.version, "platform": platform.platform(),
+            "torch": str(torch.__version__), "numpy": np.__version__,
+            "torch_num_threads": torch.get_num_threads()}
+
+
+def _parse_seed_spec(spec: str) -> list[int]:
+    seeds = []
+    for component in spec.split(","):
+        component = component.strip()
+        if not component:
+            raise ValueError("Seed specification contains an empty item")
+        if ":" in component:
+            parts = component.split(":")
+            if len(parts) != 2:
+                raise ValueError(f"Invalid seed range {component!r}")
+            start, stop = (int(value) for value in parts)
+            if stop < start:
+                raise ValueError(f"Descending seed range {component!r}")
+            seeds.extend(range(start, stop + 1))
+        else:
+            seeds.append(int(component))
+    return seeds
+
+
+def _validate_event_bank(bank: dict, *, checkpoint_hash: str, args,
+                         env_cfg, utility_definition: dict,
+                         train_seeds: list[int], heldout_seeds: list[int],
+                         collection_rng_seeds: dict,
+                         selection_policy: dict, runtime: dict,
+                         source_manifest_sha256: str) -> None:
+    if bank.get("schema_version") != 3:
+        raise ValueError("Frozen event bank uses an unsupported schema")
+    expected = {
+        "source_checkpoint_sha256": checkpoint_hash,
+        "k": args.k,
+        "environment_config": _json_ready(asdict(env_cfg)),
+        "utility_definition": utility_definition,
+        "scenario_profile": args.scenario_profile,
+        "radar_hit_model": args.radar_hit_model,
+        "train_exposure_probability": args.conflict_exposure,
+        "heldout_exposure_probability": 0.0,
+        "collection_rng_seeds": collection_rng_seeds,
+        "runtime": runtime,
+        "collection_source_manifest_sha256": source_manifest_sha256,
+        "teacher_used": False,
+        "rule_inventory_modified": False,
+        "red_model_modified": False,
+        "train_seeds": train_seeds,
+        "heldout_seeds": heldout_seeds,
+        "selection_policy": selection_policy,
+    }
+    for key, value in expected.items():
+        if bank.get(key) != value:
+            raise ValueError(f"Frozen event bank {key} mismatch")
+    for split, allowed_seeds in (("train", set(train_seeds)),
+                                 ("heldout", set(heldout_seeds))):
+        for case in bank.get(split, []):
+            if case.get("episode_seed") not in allowed_seeds:
+                raise ValueError(f"Frozen {split} case has an unknown episode seed")
+            source = _case_exposure_source(case)
+            if split == "heldout" and source != "natural":
+                raise ValueError("Held-out event bank must contain natural conflicts only")
 
 
 def _obs_tensor(case: dict) -> torch.Tensor:
@@ -250,29 +413,40 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--checkpoint", type=Path, required=True)
     parser.add_argument("--expected-sha256")
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--k", type=int, default=4)
-    parser.add_argument("--train-seeds", default="100000,100001,100002,100003")
-    parser.add_argument("--heldout-seeds", default="100004,100005,100006,100007")
-    parser.add_argument("--max-events-per-split", type=int, default=40)
+    parser.add_argument("--k", type=int, default=2)
+    parser.add_argument("--scenario-profile", choices=(
+        "baseline", "k2_lane_center_40", "k2_lane_center_50"),
+        default="k2_lane_center_50")
+    parser.add_argument("--radar-hit-model", choices=(
+        "bernoulli", "deterministic_beam"), default="bernoulli")
+    parser.add_argument("--train-seeds", default="910000:910199")
+    parser.add_argument("--heldout-seeds", default="920000:920099")
+    parser.add_argument("--max-events-per-split", type=int, default=2000)
     parser.add_argument("--event-bank", type=Path,
                         help="Reuse frozen real cases from this audit's event_bank.json")
-    parser.add_argument("--updates", type=int, default=24)
+    parser.add_argument("--updates", type=int, default=48)
     parser.add_argument("--events-per-update", type=int, default=32)
-    parser.add_argument("--learning-rate", type=float, default=1e-4)
+    parser.add_argument("--learning-rate", type=float, default=1e-5)
     parser.add_argument("--epochs", type=int, default=2)
     parser.add_argument("--utility-scale", type=float, default=0.1)
-    parser.add_argument("--cf-bid-horizon", type=int, default=1,
+    parser.add_argument("--cf-bid-horizon", type=int, default=4,
                         help="Candidate rollout decisions; continuation is frozen deterministic RL.")
-    parser.add_argument("--conflict-exposure", type=float, default=1.0,
+    parser.add_argument("--conflict-exposure", type=float, default=0.5,
                         help="Existing training-only request exposure; no fixture or truth tracks.")
-    parser.add_argument("--max-events-per-episode", type=int)
-    parser.add_argument("--min-event-gap", type=int, default=0)
-    parser.add_argument("--episode-balanced", action="store_true")
-    parser.add_argument("--min-train-event-episodes", type=int, default=1)
-    parser.add_argument("--min-heldout-event-episodes", type=int, default=1)
+    parser.add_argument("--max-events-per-episode", type=int, default=8)
+    parser.add_argument("--min-event-gap", type=int, default=4)
+    parser.add_argument("--episode-balanced",
+                        action=argparse.BooleanOptionalAction, default=True)
+    parser.add_argument("--source-balanced",
+                        action=argparse.BooleanOptionalAction, default=True,
+                        help="Sample natural and exposed cases equally when both exist.")
+    parser.add_argument("--min-train-event-episodes", type=int, default=20)
+    parser.add_argument("--min-train-source-event-episodes", type=int, default=10)
+    parser.add_argument("--min-heldout-event-episodes", type=int, default=10)
     parser.add_argument("--preflight-only", action="store_true")
     parser.add_argument("--mc-samples", type=int, default=4096)
     parser.add_argument("--training-seed", type=int, default=20261021)
+    parser.add_argument("--collection-seed", type=int, default=20261023)
     parser.add_argument("--repair-seed", type=int, default=20261021)
     return parser
 
@@ -283,6 +457,8 @@ def main(argv=None) -> int:
     from _experiment_provenance import (canonical_sha256, capture_source_snapshot,
                                         changed_source_files, write_json_atomic)
 
+    if not args.source_balanced or not args.episode_balanced:
+        raise ValueError("This training protocol requires source- and episode-balanced sampling")
     checkpoint = (ROOT / args.checkpoint).resolve()
     checkpoint_hash = file_sha256(checkpoint)
     if args.expected_sha256 and checkpoint_hash != args.expected_sha256:
@@ -300,12 +476,14 @@ def main(argv=None) -> int:
         raise ValueError("Conflict exposure must be in [0, 1]")
     if (args.min_event_gap < 0
             or (args.max_events_per_episode is not None and args.max_events_per_episode < 1)
-            or args.min_train_event_episodes < 1 or args.min_heldout_event_episodes < 1):
+            or args.min_train_event_episodes < 1 or args.min_heldout_event_episodes < 1
+            or args.min_train_source_event_episodes < 1):
         raise ValueError("Event spacing must be nonnegative and coverage budgets positive")
     if args.mc_samples < 2:
         raise ValueError("Expected regret requires at least two Monte Carlo samples")
-    train_seeds = [int(value) for value in args.train_seeds.split(",")]
-    heldout_seeds = [int(value) for value in args.heldout_seeds.split(",")]
+    collection_rng_seeds = _split_collection_seeds(args.collection_seed)
+    train_seeds = _parse_seed_spec(args.train_seeds)
+    heldout_seeds = _parse_seed_spec(args.heldout_seeds)
     if (not train_seeds or not heldout_seeds or min(train_seeds + heldout_seeds) < 0
             or len(set(train_seeds)) != len(train_seeds)
             or len(set(heldout_seeds)) != len(heldout_seeds)
@@ -320,25 +498,32 @@ def main(argv=None) -> int:
     selection_policy = {"max_events_per_episode": args.max_events_per_episode,
                         "min_event_gap": args.min_event_gap}
     if args.preflight_only:
+        env_cfg = _environment_config(args)
         print(json.dumps({"status": "preflight_passed", "source_checkpoint": str(checkpoint),
                           "source_checkpoint_sha256": checkpoint_hash,
+                          "scenario_profile": args.scenario_profile,
+                          "radar_hit_model": args.radar_hit_model,
+                          "environment_config": _json_ready(asdict(env_cfg)),
+                          "collection_rng_seeds": collection_rng_seeds,
+                          "runtime": _runtime_fingerprint(),
                           "selection_policy": selection_policy,
                           "arguments": {key: str(value) if isinstance(value, Path) else value
                                         for key, value in vars(args).items()}}, indent=2))
         return 0
     output.mkdir(parents=True, exist_ok=True)
     snapshot = capture_source_snapshot(ROOT, output, [
-        Path(__file__), ROOT / "_arbitration_training.py"])
-    from aircraft_sim.detect_config import DetectSimConfig
+        Path(__file__), ROOT / "_arbitration_training.py",
+        ROOT / "_curriculum_guard.py",
+        ROOT / "runs" / "model_optimization_v1" /
+        "arbitration_head_training_protocol_v1.md"])
     from aircraft_sim.detect_env import DetectEnv
     from aircraft_sim.detect_mappo import DetectMAPPOConfig, DetectMAPPOPolicy
     from aircraft_sim.detect_shield import DetectQPShield
     from _arbitration_training import repair_dead_candidate_head_for_training
 
     torch.set_num_threads(1)
-    env_cfg = replace(DetectSimConfig(), STABLE_WINDOW=8, AGE_STD_TRACK=10.0,
-                      SECTOR_AXIS_MAX_DEG=60.0, C04_RANGE=80.0,
-                      ARB_BID_WEIGHT=0.35, ARB_HYSTERESIS=0.2)
+    runtime = _runtime_fingerprint()
+    env_cfg = _environment_config(args)
     policy_cfg = DetectMAPPOConfig(
         bid_only_ppo=True, direct_rl_arbitration=True,
         conflict_exposure_prob=args.conflict_exposure, learning_rate=args.learning_rate,
@@ -356,37 +541,46 @@ def main(argv=None) -> int:
     utility_definition = {name: getattr(policy_cfg, name) for name in (
         "gamma", "reward_scale", "shaping_kappa", "shaping_age_cap",
         "geo_shaping_kappa", "stable_shaping_kappa")}
-    if args.cf_bid_horizon != 1:
-        utility_definition.update({
-            "cf_bid_horizon": args.cf_bid_horizon,
-            "continuation": "frozen_deterministic_rl_actor_and_independent_branch_shield",
-        })
+    utility_definition.update({
+        "cf_bid_horizon": args.cf_bid_horizon,
+        "continuation": (
+            "frozen_deterministic_rl_actor_and_independent_branch_shield"
+            if args.cf_bid_horizon > 1 else "none_after_candidate_step"),
+    })
     if args.event_bank:
         bank_path = (ROOT / args.event_bank).resolve()
         bank = json.loads(bank_path.read_text(encoding="utf-8"))
-        if bank["source_checkpoint_sha256"] != checkpoint_hash:
-            raise ValueError("Frozen event bank has a different source checkpoint")
-        if bank["environment_config"] != _json_ready(asdict(env_cfg)):
-            raise ValueError("Frozen event bank environment configuration mismatch")
-        if bank["utility_definition"] != utility_definition:
-            raise ValueError("Frozen event bank utility definition mismatch")
-        if bank["train_seeds"] != train_seeds or bank["heldout_seeds"] != heldout_seeds:
-            raise ValueError("Frozen event bank collection seed mismatch")
-        if bank.get("selection_policy", {"max_events_per_episode": None,
-                                         "min_event_gap": 0}) != selection_policy:
-            raise ValueError("Frozen event bank temporal selection policy mismatch")
         bank_input = {"path": str(bank_path), "sha256": file_sha256(bank_path)}
     else:
+        train_policy_cfg = policy_cfg
+        policy.config = train_policy_cfg
         train, train_episodes = collect_cases(policy, train_seeds, args.k,
                                               args.max_events_per_split,
-                                              args.max_events_per_episode, args.min_event_gap)
-        heldout, heldout_episodes = collect_cases(policy, heldout_seeds, args.k,
-                                                  args.max_events_per_split,
-                                                  args.max_events_per_episode, args.min_event_gap)
-        bank = {"schema_version": 1,
+                                              args.max_events_per_episode,
+                                              args.min_event_gap,
+                                              collection_rng_seeds["train"])
+        policy.config = replace(train_policy_cfg, conflict_exposure_prob=0.0)
+        try:
+            heldout, heldout_episodes = collect_cases(
+                policy, heldout_seeds, args.k, args.max_events_per_split,
+                args.max_events_per_episode, args.min_event_gap,
+                collection_rng_seeds["heldout"])
+        finally:
+            policy.config = train_policy_cfg
+        bank = {"schema_version": 3,
                 "source_checkpoint_sha256": checkpoint_hash,
                 "k": args.k, "environment_config": _json_ready(asdict(env_cfg)),
+                "scenario_profile": args.scenario_profile,
+                "radar_hit_model": args.radar_hit_model,
+                "train_exposure_probability": args.conflict_exposure,
+                "heldout_exposure_probability": 0.0,
+                "collection_rng_seeds": collection_rng_seeds,
+                "runtime": runtime,
+                "collection_source_manifest_sha256": snapshot["manifest_sha256"],
                 "collection_source_snapshot": snapshot,
+                "teacher_used": False,
+                "rule_inventory_modified": False,
+                "red_model_modified": False,
                 "utility_definition": utility_definition,
                 "selection_policy": selection_policy,
                 "train_seeds": train_seeds, "heldout_seeds": heldout_seeds,
@@ -394,8 +588,13 @@ def main(argv=None) -> int:
                 "collection_episodes": {"train": train_episodes,
                                          "heldout": heldout_episodes}}
         bank_input = None
-    if bank["k"] != args.k:
-        raise ValueError("Frozen event bank K mismatch")
+    _validate_event_bank(
+        bank, checkpoint_hash=checkpoint_hash, args=args, env_cfg=env_cfg,
+        utility_definition=utility_definition, train_seeds=train_seeds,
+        heldout_seeds=heldout_seeds,
+        collection_rng_seeds=collection_rng_seeds,
+        selection_policy=selection_policy, runtime=runtime,
+        source_manifest_sha256=snapshot["manifest_sha256"])
     train, heldout = bank["train"], bank["heldout"]
     bank_path = output / "event_bank.json"
     write_json_atomic(bank_path, bank)
@@ -403,11 +602,28 @@ def main(argv=None) -> int:
                          if np.ptp(_event_values(case["event"])[2]) > 1e-8]
     coverage = {split: case_coverage(cases)
                 for split, cases in (("train", train), ("heldout", heldout))}
-    if (coverage["train"]["informative_episodes"] < args.min_train_event_episodes
-            or coverage["heldout"]["informative_episodes"] < args.min_heldout_event_episodes):
+    insufficient_sources = {}
+    if args.source_balanced and 0 < args.conflict_exposure < 1:
+        for source in ("natural", "exposed"):
+            count = coverage["train"]["informative_episodes_by_source"].get(source, 0)
+            if count < args.min_train_source_event_episodes:
+                insufficient_sources[source] = count
+    insufficient_coverage = (
+        coverage["train"]["informative_episodes"] < args.min_train_event_episodes
+        or coverage["heldout"]["informative_episodes"] < args.min_heldout_event_episodes
+        or bool(insufficient_sources))
+    if insufficient_coverage:
         report = {
             "status": "insufficient_independent_event_coverage", "updates": [],
             "coverage": coverage, "source_checkpoint_sha256": checkpoint_hash,
+            "insufficient_train_source_episodes": insufficient_sources,
+            "scenario_profile": args.scenario_profile,
+            "radar_hit_model": args.radar_hit_model,
+            "collection_rng_seeds": collection_rng_seeds,
+            "collection_source_manifest_sha256": snapshot["manifest_sha256"],
+            "runtime": runtime,
+            "teacher_used": False, "rule_inventory_modified": False,
+            "red_model_modified": False,
             "source_snapshot": snapshot,
             "source_changed_during_run": changed_source_files(snapshot),
             "event_bank_sha256": file_sha256(bank_path), "event_bank_input": bank_input,
@@ -428,7 +644,8 @@ def main(argv=None) -> int:
         # Cases remain fixed; each PPO call receives fresh actions from the
         # current actor, never stale demonstrations or utility-ranked bids.
         selected = sample_training_cases(informative_train, args.events_per_update,
-                                         sampler, args.episode_balanced)
+                                         sampler, args.episode_balanced,
+                                         args.source_balanced)
         rollout = [resample_case_row(policy, case) for case in selected]
         stats = policy.update(rollout)
         updates.append({"iteration": iteration, **stats})
@@ -448,6 +665,17 @@ def main(argv=None) -> int:
         "event_bank_sha256": file_sha256(bank_path),
         "event_bank_input": bank_input, "repair": repair,
         "environment_config": asdict(env_cfg), "policy_config": asdict(policy_cfg),
+        "scenario_profile": args.scenario_profile,
+        "radar_hit_model": args.radar_hit_model,
+        "collection_rng_seeds": collection_rng_seeds,
+        "collection_source_manifest_sha256": snapshot["manifest_sha256"],
+        "runtime": runtime,
+        "teacher_used": False, "rule_inventory_modified": False,
+        "red_model_modified": False,
+        "training_event_sources": coverage["train"]["events_by_source"],
+        "training_informative_episodes_by_source": (
+            coverage["train"]["informative_episodes_by_source"]),
+        "heldout_event_sources": coverage["heldout"]["events_by_source"],
         "arguments": {key: str(value) if isinstance(value, Path) else value
                       for key, value in vars(args).items()},
         "before": before, "after": after, "updates": updates,

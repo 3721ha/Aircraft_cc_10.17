@@ -1,0 +1,303 @@
+{
+ "status": "insufficient_independent_event_coverage",
+ "updates": [],
+ "coverage": {
+  "train": {
+   "events": 1,
+   "informative_events": 1,
+   "event_episodes": 1,
+   "informative_episodes": 1,
+   "events_by_source": {
+    "exposed": 1
+   },
+   "informative_events_by_source": {
+    "exposed": 1
+   },
+   "informative_episodes_by_source": {
+    "exposed": 1
+   },
+   "events_by_episode": {
+    "500033": 1
+   },
+   "informative_events_by_episode": {
+    "500033": 1
+   }
+  },
+  "heldout": {
+   "events": 0,
+   "informative_events": 0,
+   "event_episodes": 0,
+   "informative_episodes": 0,
+   "events_by_source": {},
+   "informative_events_by_source": {},
+   "informative_episodes_by_source": {},
+   "events_by_episode": {},
+   "informative_events_by_episode": {}
+  }
+ },
+ "source_checkpoint_sha256": "cfbd4d23f1761497959784394bce0a99aab382210344bcbfacf24a786e16c3fa",
+ "insufficient_train_source_episodes": {
+  "natural": 0,
+  "exposed": 1
+ },
+ "scenario_profile": "k2_lane_center_50",
+ "radar_hit_model": "bernoulli",
+ "collection_rng_seeds": {
+  "train": 716201,
+  "heldout": 716202
+ },
+ "collection_source_manifest_sha256": "e20cdaf253b2f1c7ba36e8739c505e6e73fcd29b1f7ebe852a68256a826a524f",
+ "runtime": {
+  "python": "3.12.9 (tags/v3.12.9:fdb8142, Feb  4 2025, 15:27:58) [MSC v.1942 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "torch": "2.12.1+cpu",
+  "numpy": "2.4.4",
+  "torch_num_threads": 1
+ },
+ "teacher_used": false,
+ "rule_inventory_modified": false,
+ "red_model_modified": false,
+ "source_snapshot": {
+  "files": [
+   {
+    "path": "_arbitration_training.py",
+    "sha256": "44032ef42770caa831af7431a7034ec50281e86f5f34ac3e1bcf375da87545d7",
+    "size_bytes": 5525
+   },
+   {
+    "path": "_audit_arbitration_learning.py",
+    "sha256": "c6324aac3084ad0389f4d5eef9e45b20571baea87fba432b94ef8f072c20480d",
+    "size_bytes": 35914
+   },
+   {
+    "path": "_curriculum_guard.py",
+    "sha256": "11c849efa30ce9463e828aa8426c1f2ff2cd7afaef9ec1316ce5ecbec00d4593",
+    "size_bytes": 4534
+   },
+   {
+    "path": "_experiment_provenance.py",
+    "sha256": "b3c5af46679cd5656da95c2836f95efd7d0c9dd7d497f09b74d0bece942ae870",
+    "size_bytes": 12782
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/__init__.py",
+    "sha256": "1c30dea3f76fb8c840ff26a2318b3a7354e4475237d38ec1f5feef9e148d82e2",
+    "size_bytes": 2035
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/baselines.py",
+    "sha256": "9af6e9136b654926c93eb2ff791d748d7b7cb77171eb53c08818e61d508f478b",
+    "size_bytes": 7724
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/belief.py",
+    "sha256": "d3616e05ceddd1d6b489727ae581d3783896549d075828fcf55d2f2c3fccde88",
+    "size_bytes": 23817
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/config.py",
+    "sha256": "6fc19d45e7989c0f69598cae129448419879be0c1c9f6abd8c3f309188e8d5c6",
+    "size_bytes": 1663
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/detect_baselines.py",
+    "sha256": "bf916952de3e7413e2d09add2fa50cf7cc797c7161be0e6bacea9f59f889e9b7",
+    "size_bytes": 12387
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/detect_config.py",
+    "sha256": "a1b2fdcef0a8fc6a54e83610fa6da67db353bbd3393e2691ebe38cec0a72e332",
+    "size_bytes": 14313
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/detect_encoder.py",
+    "sha256": "8a1cbb6558521cf5d56aec884d00cb5c4b88c98e577b8804b07e2482a630b4b8",
+    "size_bytes": 12244
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/detect_env.py",
+    "sha256": "5a5bf6b8fed4b423c49c3a08afca765b2b089026aae9b9e363c56d66293db1bd",
+    "size_bytes": 40540
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/detect_mappo.py",
+    "sha256": "2062fe9119d43b0c926316a34bfcc14bafe17397c3eff398bac43f8b1a73eb62",
+    "size_bytes": 130094
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/detect_models.py",
+    "sha256": "67e16d8116f16bf67e43818a5426b8447e72ab14fd8330d3f67e604c2e901e1b",
+    "size_bytes": 1953
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/detect_rules.py",
+    "sha256": "b28d3eff3bd35758650c2b971e316e85bb1a3532aaabc4ba962e1faa13d040fc",
+    "size_bytes": 17088
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/detect_sensor_diagnostics.py",
+    "sha256": "94f6ef170119237424cfe554bf1dd545d3c06015c0de3423ef883e93eca07f6c",
+    "size_bytes": 8565
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/detect_shield.py",
+    "sha256": "a89b1be63d86643060280cc745d7eb7f08961fd70e37f9c1809a992a4d77196b",
+    "size_bytes": 23864
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/detect_task_adapter.py",
+    "sha256": "7c2aa6d55449d1c85c40cf74b0a5a6edde78e48d7c10458689172b98e75ba78b",
+    "size_bytes": 4392
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/env.py",
+    "sha256": "37d7577017f42790fe5c90b15369128141de175b6d37e1a0ae4c051ee377a4eb",
+    "size_bytes": 13825
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/evaluation.py",
+    "sha256": "ea0265dcce06af5de53e49d8f0d5fb6089372d59621abec8f66aa8ed3f70de4e",
+    "size_bytes": 16968
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/high_fidelity.py",
+    "sha256": "f236e48282ca5e31d9b703d195c647d885a367a736dee2c047e1147913328374",
+    "size_bytes": 6412
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/jsbsim_env.py",
+    "sha256": "e419d4b6f1ff958087ea83bbefb8d99f0d10797bb6d2703508d1ca07834ad576",
+    "size_bytes": 13196
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/mappo.py",
+    "sha256": "f076ef2dd8742cf277a40e11881f710cfa725244b56689db67b99c9386c07b8f",
+    "size_bytes": 29108
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/metrics.py",
+    "sha256": "7189025f91ee205a4fa8353f29565a02221ff50806b3c252fc8bb4b3fc4e4d39",
+    "size_bytes": 1276
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/models.py",
+    "sha256": "19588887f064934e50f6b5e5dc75054070b18d6f8849dadd7e5daf0b1be45be5",
+    "size_bytes": 2465
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/policies.py",
+    "sha256": "b676b830d1470b8b27d2bdc575f10700de4c979314e443ef968ceec994c1f8a0",
+    "size_bytes": 2628
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/qp_shield.py",
+    "sha256": "4a1b41548477b851772158efc3f3a4354e67f4292ce4288b47381a9b6599555e",
+    "size_bytes": 39137
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/radar.py",
+    "sha256": "a251bddfb5a4fc86379ca213e8e8d910ecef8739bb5a37aa2ede6d2beb206aed",
+    "size_bytes": 9559
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/red_agent.py",
+    "sha256": "14d7a81377c805c77c2fd5bca9eda8cdcace9cf9b76b08bd3e636a2c8e2bf5cc",
+    "size_bytes": 14930
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/risk_calibration.py",
+    "sha256": "8d2a3a09f4ad82a93eac2d803317a20d9b06e1d6649ad0ceaf9a68fab658d7fd",
+    "size_bytes": 1520
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/rl_api.py",
+    "sha256": "2a5db9f46e847ef2d099483a8188bee437eae728d6880c6fcd0bb89af93e245c",
+    "size_bytes": 8698
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/rule_graph.py",
+    "sha256": "ccba638cc81e7873c899afe58d00094e57a1402ad05109fa45120995768e010e",
+    "size_bytes": 10789
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/rules.py",
+    "sha256": "13cd3567db92eac41885ecd10574dcf8f0149e5ff05544bb6ff40de09e56f036",
+    "size_bytes": 11524
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/scenarios.py",
+    "sha256": "9e1dee4a3b9406420577e9fab41eed1f07a47c5c608087af0e9bb8810c2b60cb",
+    "size_bytes": 7658
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/shield.py",
+    "sha256": "70fd21bd78a95be534b93131c7662941996de23f5c53aad86d104b43fe1e9483",
+    "size_bytes": 4800
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/stl.py",
+    "sha256": "0e1d0087e896d554650a87d8613482563e0f1e9a0065c528979c52abbf77c450",
+    "size_bytes": 1448
+   },
+   {
+    "path": "Aircraft_mumt/aircraft_sim/track.py",
+    "sha256": "6d392274e4fde68b3c92a2a6e98b2c9fee23d7ce4e84d253d1a5d371325befa2",
+    "size_bytes": 7468
+   },
+   {
+    "path": "Aircraft_mumt/requirements-inferred.txt",
+    "sha256": "40aebc14ef905e58743d9cfee7d6014b7c5cf2affcc884d235a17d9d3b11568f",
+    "size_bytes": 467
+   },
+   {
+    "path": "Aircraft_mumt/requirements-reproduce.txt",
+    "sha256": "635f9a669910815458f0138229732576be90ac44bde15220bc74f5ad23ae46f6",
+    "size_bytes": 230
+   },
+   {
+    "path": "runs/model_optimization_v1/arbitration_head_training_protocol_v1.md",
+    "sha256": "e5326056f000d6c26caa9ca9214883220cd779c76446da1a58ae6f607d4b5639",
+    "size_bytes": 3028
+   }
+  ],
+  "manifest_sha256": "e20cdaf253b2f1c7ba36e8739c505e6e73fcd29b1f7ebe852a68256a826a524f",
+  "snapshot_path": "runs/model_optimization_v1/arbitration_head_collection_smoke_20261022_v2/provenance/20261022T085708.566498Z_34468_7c952a72_source.zip",
+  "snapshot_sha256": "95e3ad93c6f4b99bb300ebd4078f1db61dcc21f817ad4da3ba6c778b8e4f818b",
+  "captured_at_utc": "2026-10-22T08:57:08.608030+00:00"
+ },
+ "source_changed_during_run": [],
+ "event_bank_sha256": "3e55bc1ae561a26e3aa8a0796c0b0a54a2df8d543568f6c0f92963c86b054e30",
+ "event_bank_input": null,
+ "arguments": {
+  "checkpoint": "runs\\model_optimization_v1\\k2_lane50_bidonly_repair10it_v1\\curr_k2_best.pt",
+  "expected_sha256": "cfbd4d23f1761497959784394bce0a99aab382210344bcbfacf24a786e16c3fa",
+  "output": "runs\\model_optimization_v1\\arbitration_head_collection_smoke_20261022_v2",
+  "k": 2,
+  "scenario_profile": "k2_lane_center_50",
+  "radar_hit_model": "bernoulli",
+  "train_seeds": "500033",
+  "heldout_seeds": "500015",
+  "max_events_per_split": 12,
+  "event_bank": null,
+  "updates": 1,
+  "events_per_update": 4,
+  "learning_rate": 1e-05,
+  "epochs": 2,
+  "utility_scale": 0.1,
+  "cf_bid_horizon": 4,
+  "conflict_exposure": 0.5,
+  "max_events_per_episode": 3,
+  "min_event_gap": 8,
+  "episode_balanced": true,
+  "source_balanced": true,
+  "min_train_event_episodes": 1,
+  "min_train_source_event_episodes": 10,
+  "min_heldout_event_episodes": 1,
+  "preflight_only": false,
+  "mc_samples": 4096,
+  "training_seed": 716202,
+  "collection_seed": 716201,
+  "repair_seed": 20261021
+ },
+ "report_content_sha256": "804ea81aeac342c5b110a16eb56b7e84bf16c6d63b1b0f2671bcc29daedd4c95"
+}
