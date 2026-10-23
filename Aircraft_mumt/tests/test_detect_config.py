@@ -176,6 +176,14 @@ class TestNamedProfiles(unittest.TestCase):
         self.assertEqual(cfg.TRACK_INIT_HITS, 1)
         self.assertEqual(cfg.TRACK_CONFIRM_TIME, 3.0)
 
+    def test_m03_grace_profile_changes_only_soft_stall_grace(self):
+        cfg = detect_config_profile(
+            "k2_lane_center_50_threat_cone_m03_grace", K_RED=2)
+        self.assertEqual(cfg.M03_STALL_GRACE_FACTOR, 2.0)
+        self.assertEqual(cfg.MAR, 15.0)
+        self.assertEqual(cfg.MOR, 40.0)
+        self.assertEqual(cfg.THREAT_ATA_HALF_DEG, 60.0)
+
     def test_k2_lane_center_profile_changes_only_k2_lane_geometry(self):
         base = detect_config_profile("baseline", K_RED=2)
         candidate = detect_config_profile("k2_lane_center_40", K_RED=2)

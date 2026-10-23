@@ -945,6 +945,7 @@ def main():
                 "track_init_window": env.cfg.TRACK_INIT_WINDOW,
                 "track_confirm_time": env.cfg.TRACK_CONFIRM_TIME,
                 "track_confirm_gap_max": env.cfg.TRACK_CONFIRM_GAP_MAX,
+                "m03_stall_grace_factor": env.cfg.M03_STALL_GRACE_FACTOR,
                 "age_drop": env.cfg.AGE_DROP,
                 "uplink_loss_p": env.cfg.UPLINK_LOSS_P,
                 "handoff_min_interval": env.cfg.HANDOFF_MIN_INTERVAL,

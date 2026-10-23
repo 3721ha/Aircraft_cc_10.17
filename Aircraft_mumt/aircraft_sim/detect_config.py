@@ -106,6 +106,19 @@ DETECT_CONFIG_PROFILES = {
         "C04_RANGE": 80.0,
         "M05_GRACE": 10.0,
     },
+    # Soft mission-rule relaxation for the training ablation.  M03 remains
+    # the same predicate (owned target must make stable progress); only the
+    # number of consecutive stalled seconds before its penalty is counted is
+    # doubled.  Hard safety predicates and the conflict inventory are intact.
+    "k2_lane_center_50_threat_cone_m03_grace": {
+        "RED_LANE_K2_CENTER_KM": 50.0,
+        "MAR": 15.0,
+        "MOR": 40.0,
+        "MOR_GRADIENT_SPAN": 25.0,
+        "TRACK_SWEET_DIST": 52.0,
+        "THREAT_ATA_HALF_DEG": 60.0,
+        "M03_STALL_GRACE_FACTOR": 2.0,
+    },
 }
 
 
@@ -212,6 +225,7 @@ class DetectSimConfig:
     MAR_MOR_VARIANTS: Tuple[Tuple[float, float], ...] = ((40.0, 60.0), (30.0, 50.0), (20.0, 40.0))
     K_SIGMA: float = 3.0               # shield inflation: d_eff = d_est - K_SIGMA*sigma (V2.1)
     MOR_GRADIENT_SPAN: float = 20.0    # km, (MOR - d)/span shaping
+    M03_STALL_GRACE_FACTOR: float = 1.0  # soft M03 penalty grace multiplier
 
     # ---- separation / boundary (plan §8.1) ----
     D_SAFE: float = 2.0                # km, predicted 3 s min separation
@@ -294,6 +308,8 @@ class DetectSimConfig:
         if (self.THREAT_ATA_HALF_DEG is not None
                 and not 0.0 <= self.THREAT_ATA_HALF_DEG <= 180.0):
             raise ValueError("THREAT_ATA_HALF_DEG must be in [0, 180] or None")
+        if self.M03_STALL_GRACE_FACTOR < 1.0:
+            raise ValueError("M03_STALL_GRACE_FACTOR must be at least 1")
 
 
     def zone_of(self, x: float) -> str:

@@ -282,11 +282,12 @@ class DetectRuleMonitor:
                 add(key, cfg.AGE_STD_TRACK - min(age, cfg.T_SCAN_REQ))
 
         # ---- M03 stable-window progress must advance ----------------------
+        m03_limit = cfg.STABLE_WINDOW * cfg.M03_STALL_GRACE_FACTOR
         for (i, tid), stalled in truth["m03_stall"].items():
             key = f"M03:{i}-{tid}"
-            mar[key] = cfg.STABLE_WINDOW - stalled
-            if stalled > cfg.STABLE_WINDOW:
-                add(key, cfg.STABLE_WINDOW - stalled)
+            mar[key] = m03_limit - stalled
+            if stalled > m03_limit:
+                add(key, m03_limit - stalled)
 
         # ---- M05 tracking-zone tracked target must be OWNED (gate-6) ------
         # Closes the free-rider loophole found at gate-6: M02/M03 bind only

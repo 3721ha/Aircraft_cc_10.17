@@ -51,6 +51,8 @@ def make_configs(k: int, stable_window: int, age_std_track: float):
             "k2_lane_center_50", **common),
         "k2_lane_center_50_threat_cone_sensor_simple": detect_config_profile(
             "k2_lane_center_50_threat_cone_sensor_simple", **common),
+        "k2_lane_center_50_threat_cone_m03_grace": detect_config_profile(
+            "k2_lane_center_50_threat_cone_m03_grace", **common),
     }
 
 
@@ -67,7 +69,8 @@ def main() -> None:
     ap.add_argument("--profiles", nargs="+", choices=(
         "baseline", "wide_observation_baseline", "simplified_tracking",
         "simplified_conflict", "simplified_wide", "k2_lane_center_40",
-        "k2_lane_center_50", "k2_lane_center_50_threat_cone_sensor_simple"),
+        "k2_lane_center_50", "k2_lane_center_50_threat_cone_sensor_simple",
+        "k2_lane_center_50_threat_cone_m03_grace"),
         default=None, help="profiles to evaluate (default: all)")
     args = ap.parse_args()
     checkpoint = args.checkpoint.resolve()
