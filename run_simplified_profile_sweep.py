@@ -32,6 +32,12 @@ def make_configs(k: int, stable_window: int, age_std_track: float):
               "AGE_STD_TRACK": age_std_track}
     return {
         "baseline": detect_config_profile("baseline", **common),
+        # Isolate the geometry change from simplified_conflict's many
+        # simultaneous radar/tracking/rule overrides.  This widens the shared
+        # observation and C04 feasible region while leaving those rules intact.
+        "wide_observation_baseline": detect_config_profile(
+            "baseline", **common, FOV_HALF_DEG=30.0,
+            R_MAX=120.0, C04_RANGE=120.0),
         "simplified_tracking": detect_config_profile(
             "simplified_tracking", **common),
         "simplified_conflict": detect_config_profile(
@@ -39,6 +45,12 @@ def make_configs(k: int, stable_window: int, age_std_track: float):
         "simplified_wide": detect_config_profile(
             "simplified_conflict", **common, FOV_HALF_DEG=30.0,
             R_MAX=120.0, C04_RANGE=120.0),
+        "k2_lane_center_40": detect_config_profile(
+            "k2_lane_center_40", **common),
+        "k2_lane_center_50": detect_config_profile(
+            "k2_lane_center_50", **common),
+        "k2_lane_center_50_threat_cone_sensor_simple": detect_config_profile(
+            "k2_lane_center_50_threat_cone_sensor_simple", **common),
     }
 
 
@@ -52,6 +64,11 @@ def main() -> None:
     ap.add_argument("--age-std-track", type=float, default=10.0)
     ap.add_argument("--seed-start", type=int, default=270000)
     ap.add_argument("--episodes", type=int, default=5)
+    ap.add_argument("--profiles", nargs="+", choices=(
+        "baseline", "wide_observation_baseline", "simplified_tracking",
+        "simplified_conflict", "simplified_wide", "k2_lane_center_40",
+        "k2_lane_center_50", "k2_lane_center_50_threat_cone_sensor_simple"),
+        default=None, help="profiles to evaluate (default: all)")
     args = ap.parse_args()
     checkpoint = args.checkpoint.resolve()
     output = args.output.resolve()
@@ -71,6 +88,8 @@ def main() -> None:
     if not isinstance(saved_config, dict):
         raise SystemExit("checkpoint has no saved policy config")
     configs = make_configs(args.k, args.stable_window, args.age_std_track)
+    if args.profiles:
+        configs = {name: configs[name] for name in args.profiles}
     seeds = list(range(args.seed_start, args.seed_start + args.episodes))
     rows = []
     for profile, cfg in configs.items():

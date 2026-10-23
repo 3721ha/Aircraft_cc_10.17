@@ -78,6 +78,34 @@ DETECT_CONFIG_PROFILES = {
         "RED_MANEUVER_SET": ("patrol", "snake", "regain"),
         "RED_MANEUVER_RESAMPLE": (30, 45),
     },
+    # Training-friendly sensor ablation requested by the threat-model review:
+    # preserve the two radar roles and the three blue aircraft, while making
+    # the first track confirmation deterministic and easier to learn.  The
+    # threat geometry remains the direction-gated 15/40/60 profile above;
+    # this profile changes only soft sensing/communication parameters.
+    "k2_lane_center_50_threat_cone_sensor_simple": {
+        "RED_LANE_K2_CENTER_KM": 50.0,
+        "MAR": 15.0,
+        "MOR": 40.0,
+        "MOR_GRADIENT_SPAN": 25.0,
+        "TRACK_SWEET_DIST": 52.0,
+        "THREAT_ATA_HALF_DEG": 60.0,
+        "RADAR_HIT_MODEL": "deterministic_beam",
+        # Keep the physical narrow beam; simplification comes from one-hit
+        # deterministic confirmation rather than an unrealistically wide FOV.
+        "FOV_HALF_DEG": 7.5,
+        "TRACK_INIT_HITS": 1,
+        "TRACK_INIT_WINDOW": 6.5,
+        "TRACK_CONFIRM_TIME": 3.0,
+        "TRACK_CONFIRM_GAP_MAX": 3.0,
+        "AGE_DEGRADE": 10.0,
+        "AGE_DROP": 20.0,
+        "AGE_STD_TRACK": 10.0,
+        "UPLINK_LOSS_P": 0.0,
+        "HANDOFF_MIN_INTERVAL": 10.0,
+        "C04_RANGE": 80.0,
+        "M05_GRACE": 10.0,
+    },
 }
 
 

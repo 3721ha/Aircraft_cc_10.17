@@ -30,7 +30,7 @@ from copy import deepcopy
 from dataclasses import dataclass, replace
 import math
 import random
-from typing import Dict, List, Sequence, Tuple
+from typing import Callable, Dict, List, Sequence, Tuple
 
 import numpy as np
 import torch
@@ -41,6 +41,7 @@ from .detect_config import DetectSimConfig, ZONE_TRACKING
 from .detect_encoder import DetectObservationEncoder, DetectActionCodec, GEAR_ORDER
 from .detect_models import DetectAction, DetectRole
 from .detect_task_adapter import ObservationalTaskAdapter
+from .track import Track
 
 ACT_DIM = 7        # [u_psi, u_v, u_xi, role, gear, pointer, arbitration_bid]
 SQUASH_EPS = 1e-5
@@ -424,6 +425,10 @@ class DetectMAPPOConfig:
     # actor still supplies both roles/gears/bids; only the pointer is replaced
     # and that pointer sample is excluded from PPO/entropy gradients.
     conflict_exposure_prob: float = 0.0
+    # Training-only conflict probe. A current real target is copied into two
+    # empty local track slots for one step and removed immediately afterward.
+    # It cannot change the deployed trajectory, red motion, or evaluation.
+    conflict_probe_training: bool = False
     # Protect the radar-axis trim from noisy global return gradients.  The
     # reference policy is the loaded BC/checkpoint policy; zero direct PPO
     # weight keeps u_xi anchored until an explicit experiment enables it.
@@ -741,6 +746,103 @@ class DetectMAPPOPolicy:
             logp = _squashed_log_prob(dist, act_t).sum(-1)
         return {i: float(logp[j]) for j, i in enumerate(ids)}
 
+    def _install_training_conflict_probe(self) -> dict | None:
+        """Install one reversible shared-track conflict for PPO collection.
+
+        The target position is copied from the current environment into two
+        empty local track slots.  This is a training fixture only: it does
+        not alter red/blue kinematics and is removed after ``env.step``.
+        Restricting the fixture to empty slots avoids overwriting a genuine
+        local track or masking a legitimate sensing update.
+        """
+        env, cfg = self.env, self.env.cfg
+        red_pos = {a.uid: (a.x, a.y) for a in env.reds.agents
+                   if not env.judged.get(a.uid, False)}
+        pairs = []
+        for tid, (tx, ty) in sorted(red_pos.items()):
+            for left in range(cfg.N_WINGMEN):
+                for right in range(left + 1, cfg.N_WINGMEN):
+                    if not env._gate_ok(left, tx, ty) or not env._gate_ok(
+                            right, tx, ty):
+                        continue
+                    left_tracks = env.wingmen[left].tracks
+                    right_tracks = env.wingmen[right].tracks
+                    if (tid in left_tracks._by_target
+                            or tid in right_tracks._by_target):
+                        continue
+                    left_slot = next(
+                        (j for j, tr in enumerate(left_tracks.slots)
+                         if tr is None), None)
+                    right_slot = next(
+                        (j for j, tr in enumerate(right_tracks.slots)
+                         if tr is None), None)
+                    if left_slot is not None and right_slot is not None:
+                        pairs.append((tid, left, right, left_slot,
+                                      right_slot, tx, ty))
+        if not pairs:
+            return None
+        tid, left, right, left_slot, right_slot, tx, ty = pairs[
+            self._conflict_probe_rng.randrange(len(pairs))]
+        touched = {}
+        for i, slot in ((left, left_slot), (right, right_slot)):
+            tracks = env.wingmen[i].tracks
+            touched[i] = (list(tracks.slots), dict(tracks._by_target))
+            tracks.slots[slot] = Track(
+                slot=slot, target_id=tid, x=tx, y=ty, state="confirmed",
+                sigma=1.0, last_hit_t=env.t, first_hit_t=env.t,
+                hits_in_window=[env.t])
+            tracks._by_target[tid] = slot
+        return {
+            "target_id": tid,
+            "pair": (left, right),
+            "tracks": touched,
+            "responsibility": env.responsibility.get(tid),
+            "handoff_history": list(env.handoff_history.get(tid, [])),
+            "last_handoff": env.last_handoff_t.get(tid),
+            "tz_track_since": env.tz_track_since.get(tid),
+            "stable_progress": env.stable_progress.get(tid),
+            "milestone_reached": env.milestone_reached.get(tid),
+            "judged": env.judged.get(tid, False),
+        }
+
+    def _restore_training_conflict_probe(self, state: dict | None) -> None:
+        """Remove a probe while preserving unrelated environment progress."""
+        if state is None:
+            return
+        env = self.env
+        tid = int(state["target_id"])
+        for i, (slots, by_target) in state["tracks"].items():
+            env.wingmen[i].tracks.slots = slots
+            env.wingmen[i].tracks._by_target = by_target
+        original_owner = state["responsibility"]
+        if original_owner is None:
+            env.responsibility.pop(tid, None)
+            for wingman in env.wingmen:
+                wingman.owned.discard(tid)
+        else:
+            env.responsibility[tid] = original_owner
+            for i, wingman in enumerate(env.wingmen):
+                if i == original_owner:
+                    wingman.owned.add(tid)
+                else:
+                    wingman.owned.discard(tid)
+        if state["handoff_history"]:
+            env.handoff_history[tid] = state["handoff_history"]
+        else:
+            env.handoff_history.pop(tid, None)
+        if state["last_handoff"] is None:
+            env.last_handoff_t.pop(tid, None)
+        else:
+            env.last_handoff_t[tid] = state["last_handoff"]
+        for name in ("tz_track_since", "stable_progress", "milestone_reached"):
+            value = state[name]
+            mapping = getattr(env, name)
+            if value is None:
+                mapping.pop(tid, None)
+            else:
+                mapping[tid] = value
+        env.judged[tid] = state["judged"]
+
     # ------------------------------------------------------------------
     def collect(self, k_red: int | None = None, seed: int = 0,
                 deterministic: bool = False,
@@ -757,6 +859,13 @@ class DetectMAPPOPolicy:
         obs = self.env.reset(scenario)
         data: List[dict] = []
         while True:
+            probe_state = None
+            if self.config.conflict_probe_training and not deterministic:
+                probe_state = self._install_training_conflict_probe()
+                if probe_state is not None:
+                    # The actor must see the temporary track in its local
+                    # observation before choosing the exposed pointer.
+                    obs = self.env.observe()
             encoded = {i: self.encoder.encode(obs[i]) for i in obs}
             sampled, old_logp = self.act_batch(obs, deterministic)
             behavior, exposure_mask, exposure_pairs = \
@@ -775,7 +884,12 @@ class DetectMAPPOPolicy:
             arbitration_replay_env = (
                 deepcopy(self.env) if self._may_have_arbitration_conflict(safe)
                 else None)
-            res = self.env.step(safe)
+            try:
+                res = self.env.step(safe)
+            finally:
+                # Restore only the temporary target state.  Blue/red motion
+                # and all unrelated task progress remain in the environment.
+                self._restore_training_conflict_probe(probe_state)
             request_outcomes = res.info.get("request_outcomes", [])
             # Credit requests from the environment's actual gate and arbitration result.
             cf_deltas = self._cf_pointer_advantage(
@@ -942,7 +1056,8 @@ class DetectMAPPOPolicy:
                 "n_bid_changed_winner": bid_changed_winner,
                 "f_role": f_role,         # RDAC: role shaping increment (team-level)
             })
-            obs = res.observations
+            obs = (self.env.observe() if probe_state is not None
+                   else res.observations)
             if res.done:
                 break
         return data
@@ -950,6 +1065,7 @@ class DetectMAPPOPolicy:
     def _expose_shared_target_conflict(
         self, sampled: Dict[int, DetectAction], deterministic: bool = False,
         probe_rng: random.Random | None = None,
+        preferred_pair: Tuple[int, int, int] | None = None,
     ) -> Tuple[Dict[int, DetectAction], List[bool], int]:
         """Training-only request overlap using independently held local tracks.
 
@@ -1015,6 +1131,8 @@ class DetectMAPPOPolicy:
                     if owner is not None and owner not in (left, right):
                         continue
                     pairs.append((left, right, tid))
+        if preferred_pair is not None:
+            pairs = [pair for pair in pairs if pair == preferred_pair]
         if not pairs:
             return actions, exposed, 0
 
@@ -1058,6 +1176,7 @@ class DetectMAPPOPolicy:
     def _rollout_counterfactual_bid_branch(
         self, env_before, branch_actions: Dict[int, DetectAction],
         target_id: int, phi_before: float, phi_stable_before: float,
+        post_first_step_cleanup: Callable[[object, dict], None] | None = None,
     ) -> tuple:
         """Evaluate one forced first-step winner using a local RL continuation.
 
@@ -1100,6 +1219,8 @@ class DetectMAPPOPolicy:
                                      if item.get("tid") == target_id), None)
                     if matching is None:
                         return None, None, {}
+                    if post_first_step_cleanup is not None:
+                        post_first_step_cleanup(branch, matching)
                 if terminal:
                     break
             track_after = (0.0 if terminal else
@@ -1141,6 +1262,7 @@ class DetectMAPPOPolicy:
         arbitration: Sequence[dict],
         phi_before: float, phi_stable_before: float,
         advantages: List[List[float]], masks: List[List[bool]],
+        post_first_step_cleanup: Callable[[object, dict], None] | None = None,
     ) -> dict:
         """Use the sampled winner's utility for every bid in its joint event.
 
@@ -1214,7 +1336,8 @@ class DetectMAPPOPolicy:
                 utility, matching, diagnostics = \
                     self._rollout_counterfactual_bid_branch(
                         env_before, branch_actions, event.get("tid"),
-                        phi_before, phi_stable_before)
+                        phi_before, phi_stable_before,
+                        post_first_step_cleanup=post_first_step_cleanup)
                 stats["candidate_branches"] += 1
                 if (utility is None or matching is None
                         or int(matching.get("winner", -1)) != forced_winner

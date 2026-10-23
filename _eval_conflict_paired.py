@@ -563,7 +563,8 @@ def main() -> None:
     ap.add_argument("--scenario-profile", choices=(
         "baseline", "k2_lane_center_40", "k2_lane_center_50",
         "k2_lane_center_50_threat_cone_15_40_60",
-        "k2_lane_center_50_threat_cone_simple_red"))
+        "k2_lane_center_50_threat_cone_simple_red",
+        "k2_lane_center_50_threat_cone_sensor_simple"))
     ap.add_argument("--radar-hit-model", choices=(
         "bernoulli", "deterministic_beam"), default="bernoulli")
     ap.add_argument(

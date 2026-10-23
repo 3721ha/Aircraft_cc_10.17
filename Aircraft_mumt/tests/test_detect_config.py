@@ -3,6 +3,7 @@
 appendix-A timeline verification numbers."""
 import math
 import unittest
+from dataclasses import asdict
 
 from aircraft_sim.detect_config import (
     A_MACH_KMS, ZONE_DETECTION, ZONE_TRACKING, ZONE_BEHIND,
@@ -162,6 +163,43 @@ class TestNamedProfiles(unittest.TestCase):
         cfg = detect_config_profile("simplified_tracking")
         self.assertEqual(cfg.RADAR_HIT_MODEL, DetectSimConfig().RADAR_HIT_MODEL)
         self.assertEqual(cfg.FOV_HALF_DEG, 10.0)
+
+    def test_sensor_simple_threat_profile_preserves_team_and_changes_soft_sensor_config(self):
+        cfg = detect_config_profile(
+            "k2_lane_center_50_threat_cone_sensor_simple", K_RED=2)
+        self.assertEqual(cfg.N_WINGMEN, 3)
+        self.assertEqual(cfg.MAR, 15.0)
+        self.assertEqual(cfg.MOR, 40.0)
+        self.assertEqual(cfg.THREAT_ATA_HALF_DEG, 60.0)
+        self.assertEqual(cfg.RADAR_HIT_MODEL, "deterministic_beam")
+        self.assertEqual(cfg.FOV_HALF_DEG, 7.5)
+        self.assertEqual(cfg.TRACK_INIT_HITS, 1)
+        self.assertEqual(cfg.TRACK_CONFIRM_TIME, 3.0)
+
+    def test_k2_lane_center_profile_changes_only_k2_lane_geometry(self):
+        base = detect_config_profile("baseline", K_RED=2)
+        candidate = detect_config_profile("k2_lane_center_40", K_RED=2)
+        base_values, candidate_values = asdict(base), asdict(candidate)
+        self.assertEqual([key for key in base_values
+                          if base_values[key] != candidate_values[key]],
+                         ["RED_LANE_K2_CENTER_KM"])
+        self.assertEqual(base.red_lane_ys(), [30.0])
+        self.assertEqual(candidate.red_lane_ys(), [40.0])
+        self.assertEqual(candidate.RED_PAIR_SUBLANE_KM, base.RED_PAIR_SUBLANE_KM)
+        self.assertEqual(candidate.R_MAX, base.R_MAX)
+        self.assertEqual(candidate.T_SCAN_REQ, base.T_SCAN_REQ)
+        self.assertEqual(detect_config_profile("k2_lane_center_40", K_RED=4).red_lane_ys(),
+                         base.red_lane_ys(4))
+        self.assertEqual(detect_config_profile("k2_lane_center_40", K_RED=1).red_lane_ys(),
+                         detect_config_profile("baseline", K_RED=1).red_lane_ys())
+
+    def test_k2_lane_center_50_profile_is_single_factor(self):
+        base = detect_config_profile("baseline", K_RED=2)
+        candidate = detect_config_profile("k2_lane_center_50", K_RED=2)
+        self.assertEqual(candidate.red_lane_ys(), [50.0])
+        self.assertEqual([key for key, value in asdict(base).items()
+                          if value != asdict(candidate)[key]],
+                         ["RED_LANE_K2_CENTER_KM"])
 
 
 if __name__ == "__main__":

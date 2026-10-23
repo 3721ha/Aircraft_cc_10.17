@@ -544,6 +544,11 @@ def _configure_policy(pol):
         if not math.isfinite(probability) or not 0 <= probability <= 1:
             raise ValueError("MUMT_CONFLICT_EXPOSURE_PROB must be in [0,1]")
         pol.config.conflict_exposure_prob = probability
+    probe_text = os.environ.get("MUMT_CONFLICT_PROBE_TRAINING")
+    if probe_text is not None:
+        if probe_text not in {"0", "1"}:
+            raise ValueError("MUMT_CONFLICT_PROBE_TRAINING must be 0 or 1")
+        pol.config.conflict_probe_training = probe_text == "1"
     if os.environ.get("MUMT_BID_ONLY_PPO"):
         pol.config.bid_only_ppo = os.environ["MUMT_BID_ONLY_PPO"] != "0"
     residual_text = os.environ.get("MUMT_TASK_RESIDUAL_ONLY_PPO")
@@ -584,6 +589,7 @@ def _configure_policy(pol):
           f"shield_aware={pol.config.shield_aware_continuous} "
           f"cf_request_credit={pol.config.cf_request_credit:g} "
           f"conflict_exposure={pol.config.conflict_exposure_prob:g} "
+          f"conflict_probe={pol.config.conflict_probe_training} "
           f"bid_only={pol.config.bid_only_ppo} "
           f"task_residual_only={pol.config.task_residual_only_ppo} "
           f"geometry_adapter={pol.config.train_geometry_adapter} "
@@ -963,6 +969,8 @@ def main():
                 "policy_anchor_monitor": pol.config.policy_anchor_monitor,
                 "conflict_exposure_prob": (
                     pol.config.conflict_exposure_prob),
+                "conflict_probe_training": (
+                    pol.config.conflict_probe_training),
             },
         })
         best_path = OUT / f"curr_k{CURR_K}_best.pt"
