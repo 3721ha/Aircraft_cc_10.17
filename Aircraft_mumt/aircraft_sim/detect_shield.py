@@ -39,6 +39,7 @@ from scipy.optimize import Bounds, minimize
 
 from .detect_config import DetectSimConfig, ma_to_kms
 from .detect_models import DetectAction
+from .detect_threat import estimate_in_threat_cone
 
 
 @dataclass
@@ -323,6 +324,10 @@ class DetectQPShield:
                 if tr is None:
                     continue
                 est = tr.extrapolate(env.t)
+                if not estimate_in_threat_cone(
+                        cfg.THREAT_ATA_HALF_DEG, tr.vx, tr.vy,
+                        est[0], est[1], states[i][0], states[i][1]):
+                    continue
                 d_eff0 = math.hypot(est[0] - states[i][0], est[1] - states[i][1]) \
                     - cfg.K_SIGMA * tr.sigma
                 if d_eff0 < cfg.MAR:

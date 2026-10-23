@@ -35,7 +35,7 @@ Truth-dict contract (all lists index wingmen 0..2, manned node = index 3)::
                  subzone,                            # responsibility subzone index 0..2
                  owned: [tid, ...],                  # current responsibility set
                 } x3, plus manned dict at index 3 (kinematics only) ],
-      "red":  [ {uid, x, y, judged} ... ],
+      "red":  [ {uid, x, y, heading, judged} ... ],
       "responsibility": {tid: owner_index},
       "handoff_history": {tid: [t, ...]},            # non-exempt changes only (C03)
       "c04_breach": {(i, tid): since_t},             # capability-gate breach timers
@@ -49,6 +49,7 @@ from typing import Dict, List, Tuple
 
 from .detect_config import DetectSimConfig, ZONE_DETECTION, ZONE_TRACKING
 from .detect_models import DetectRole
+from .detect_threat import ata_degrees, truth_in_threat_cone
 
 
 # --- static tables ---------------------------------------------------------
@@ -192,12 +193,26 @@ class DetectRuleMonitor:
             for r in red:
                 d = math.hypot(b["x"] - r["x"], b["y"] - r["y"])
                 k4, k5 = f"S04:{i}-{r['uid']}", f"S05:{i}-{r['uid']}"
-                mar[k4] = d - cfg.MAR
-                mar[k5] = d - cfg.MOR
-                if d < cfg.MAR:
-                    add(k4, d - cfg.MAR)
-                elif d < cfg.MOR:
-                    add(k5, d - cfg.MOR)
+                in_cone = truth_in_threat_cone(
+                    cfg.THREAT_ATA_HALF_DEG, r.get("heading"),
+                    r["x"], r["y"], b["x"], b["y"])
+                if cfg.THREAT_ATA_HALF_DEG is None:
+                    mar[k4] = d - cfg.MAR
+                    mar[k5] = d - cfg.MOR
+                else:
+                    ata = ata_degrees(r.get("heading"), r["x"], r["y"],
+                                      b["x"], b["y"])
+                    ata = 0.0 if ata is None else ata
+                    # Keep the distance residual as the rule margin when the
+                    # cone is active.  Outside the cone the positive angle
+                    # residual explains why the distance condition is gated.
+                    angle_margin = ata - cfg.THREAT_ATA_HALF_DEG
+                    mar[k4] = d - cfg.MAR if in_cone else angle_margin
+                    mar[k5] = d - cfg.MOR if in_cone else angle_margin
+                if d < cfg.MAR and in_cone:
+                    add(k4, mar[k4])
+                elif cfg.MAR <= d < cfg.MOR and in_cone:
+                    add(k5, mar[k5])
 
         # ---- C01 unique ownership ----------------------------------------
         owners: Dict[int, List[int]] = {}

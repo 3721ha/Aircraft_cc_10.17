@@ -561,7 +561,9 @@ def main() -> None:
     ap.add_argument("--arb-bid-weight", type=float)
     ap.add_argument("--arb-hysteresis", type=float)
     ap.add_argument("--scenario-profile", choices=(
-        "baseline", "k2_lane_center_40", "k2_lane_center_50"))
+        "baseline", "k2_lane_center_40", "k2_lane_center_50",
+        "k2_lane_center_50_threat_cone_15_40_60",
+        "k2_lane_center_50_threat_cone_simple_red"))
     ap.add_argument("--radar-hit-model", choices=(
         "bernoulli", "deterministic_beam"), default="bernoulli")
     ap.add_argument(
@@ -594,7 +596,9 @@ def main() -> None:
         "RADAR_HIT_MODEL": args.radar_hit_model,
     }.items() if value is not None}
     if (args.scenario_profile is not None
-            and args.scenario_profile.startswith("k2_lane_center_")
+            and (args.scenario_profile.startswith("k2_lane_center_")
+                 or args.scenario_profile.startswith(
+                     "k2_lane_center_50_threat_cone"))
             and args.k != 2):
         ap.error("K2 lane-center profiles require --k 2")
     cfg = (detect_config_profile(args.scenario_profile, **overrides)

@@ -48,6 +48,36 @@ DETECT_CONFIG_PROFILES = {
         "M05_GRACE": 10.0,
         "E03_AREA_PER_KM": 2.5,
     },
+    # Isolate the K=2 ingress geometry as a single-factor scenario screen.
+    "k2_lane_center_40": {
+        "RED_LANE_K2_CENTER_KM": 40.0,
+    },
+    "k2_lane_center_50": {
+        "RED_LANE_K2_CENTER_KM": 50.0,
+    },
+    # Teacher-proposed direction-gated approach cost.  Radar hardware and its
+    # current Pd ladder are intentionally unchanged in this first ablation.
+    "k2_lane_center_50_threat_cone_15_40_60": {
+        "RED_LANE_K2_CENTER_KM": 50.0,
+        "MAR": 15.0,
+        "MOR": 40.0,
+        "MOR_GRADIENT_SPAN": 25.0,
+        "TRACK_SWEET_DIST": 52.0,
+        "THREAT_ATA_HALF_DEG": 60.0,
+    },
+    # Separate scene-complexity ablation: remove random turn/waypoint modes,
+    # retaining patrol, snake and regain so the learned blue team sees
+    # interpretable, varied red motion without changing red speed or geometry.
+    "k2_lane_center_50_threat_cone_simple_red": {
+        "RED_LANE_K2_CENTER_KM": 50.0,
+        "MAR": 15.0,
+        "MOR": 40.0,
+        "MOR_GRADIENT_SPAN": 25.0,
+        "TRACK_SWEET_DIST": 52.0,
+        "THREAT_ATA_HALF_DEG": 60.0,
+        "RED_MANEUVER_SET": ("patrol", "snake", "regain"),
+        "RED_MANEUVER_RESAMPLE": (30, 45),
+    },
 }
 
 
@@ -106,10 +136,13 @@ class DetectSimConfig:
     RED_STAGGER_KM: float = 8.0        # intra-pair stagger (literature quant.)
     RED_X0: float = 158.0              # km, entry x
     RED_MANEUVER_RESAMPLE: Tuple[int, int] = (20, 40)   # s
+    RED_MANEUVER_SET: Tuple[str, ...] = (
+        "patrol", "snake", "turn", "waypoint", "regain")
     RED_TURN_POISSON_MEAN: float = 30.0                  # s
     RED_SNAKE_HALF_ANGLE_DEG: float = 30.0
     RED_SNAKE_PERIOD: float = 20.0     # s
     RED_EDGE_SUPPRESS_KM: float = 5.0  # boundary suppression band (V1.21)
+    RED_LANE_K2_CENTER_KM: float = 30.0  # opt-in K=2 scenario geometry screen
     # regain (pump) manoeuvre: transit west -> turn back east -> resume (V2.6)
     RED_REGAIN_T: Tuple[float, float] = (12.0, 20.0)   # s east-bound leg
     RED_REGAIN_SPREAD_DEG: float = 30.0                # east +- spread
@@ -147,6 +180,7 @@ class DetectSimConfig:
     # ---- MOR/MAR (plan §1.3) ----
     MAR: float = 40.0                  # km
     MOR: float = 60.0                  # km
+    THREAT_ATA_HALF_DEG: float | None = None  # None preserves distance-only baseline
     MAR_MOR_VARIANTS: Tuple[Tuple[float, float], ...] = ((40.0, 60.0), (30.0, 50.0), (20.0, 40.0))
     K_SIGMA: float = 3.0               # shield inflation: d_eff = d_est - K_SIGMA*sigma (V2.1)
     MOR_GRADIENT_SPAN: float = 20.0    # km, (MOR - d)/span shaping
@@ -225,6 +259,13 @@ class DetectSimConfig:
                 f"Unsupported RADAR_HIT_MODEL {self.RADAR_HIT_MODEL!r}; "
                 f"expected one of {RADAR_HIT_MODELS}"
             )
+        allowed_maneuvers = {"patrol", "snake", "turn", "waypoint", "regain"}
+        if (not self.RED_MANEUVER_SET
+                or not set(self.RED_MANEUVER_SET) <= allowed_maneuvers):
+            raise ValueError("RED_MANEUVER_SET contains no modes or an unknown mode")
+        if (self.THREAT_ATA_HALF_DEG is not None
+                and not 0.0 <= self.THREAT_ATA_HALF_DEG <= 180.0):
+            raise ValueError("THREAT_ATA_HALF_DEG must be in [0, 180] or None")
 
 
     def zone_of(self, x: float) -> str:
@@ -254,6 +295,8 @@ class DetectSimConfig:
         """Ingress pair lanes (plan §4.3): K=4 -> {30,90}; K=6 adds 60; K=8 adds
         {15,105}; K=12 (V2.7 E2 sweep cap) -> six lanes at 20 km spacing."""
         k = k or self.K_RED
+        if k == 2:
+            return [self.RED_LANE_K2_CENTER_KM]
         if k >= 12:
             return [10.0, 30.0, 50.0, 70.0, 90.0, 110.0]
         lanes = [30.0, 90.0]

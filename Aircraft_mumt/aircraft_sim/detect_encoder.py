@@ -31,6 +31,7 @@ import numpy as np
 
 from .detect_config import A_MACH_KMS, DetectSimConfig
 from .detect_models import DETECT_BID_SLOTS, DetectAction, DetectRole
+from .detect_threat import estimate_in_threat_cone
 
 GEAR_ORDER = (7.5, 15.0, 30.0, 45.0, 60.0)
 # Policy slots duplicate 45 degrees so each role has a contiguous legal range.
@@ -89,10 +90,14 @@ class DetectObservationEncoder:
             ex, ey    = tr.extrapolate(t_now)
             d_est     = math.hypot(ex - w.x, ey - w.y)
             d_eff     = d_est - cfg.K_SIGMA * tr.sigma
-            min_deff  = min(min_deff, d_eff)
+            in_cone = estimate_in_threat_cone(
+                cfg.THREAT_ATA_HALF_DEG, tr.vx, tr.vy,
+                ex, ey, w.x, w.y)
+            if in_cone:
+                min_deff = min(min_deff, d_eff)
             age_n     = min(1.0, tr.age(t_now) / cfg.AGE_DROP)
             max_owned_age = max(max_owned_age, age_n)
-            if cfg.MAR <= d_est < cfg.MOR:
+            if in_cone and cfg.MAR <= d_est < cfg.MOR:
                 n_mor_band += 1
 
         # cover-area rate from e03 sliding window (own sensor log)

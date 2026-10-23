@@ -26,6 +26,15 @@ TASK_CONFIG = {
     "arb_bid_weight": 0.35,
     "arb_hysteresis": 0.2,
 }
+SCENARIO_PROFILES = (
+    "baseline",
+    "simplified_tracking",
+    "simplified_conflict",
+    "k2_lane_center_40",
+    "k2_lane_center_50",
+    "k2_lane_center_50_threat_cone_15_40_60",
+    "k2_lane_center_50_threat_cone_simple_red",
+)
 
 
 def _positive_int(value: str) -> int:
@@ -92,6 +101,9 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--k", type=_positive_int, required=True)
     parser.add_argument("--source-run", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--scenario-profile", choices=SCENARIO_PROFILES,
+                        default="baseline",
+                        help="Named numeric scenario profile for the new run.")
     parser.add_argument("--iterations", type=_positive_int, default=20)
     parser.add_argument(
         "--mode", choices=("joint", "bid-only", "conflict-residual"), default="bid-only",
@@ -243,6 +255,7 @@ def prepare_launch(args: argparse.Namespace, environment: Mapping[str, str] | No
     child_env = {key: value for key, value in inherited.items() if not key.upper().startswith("MUMT_")}
     overrides = {
         "MUMT_PILOT_OUT": str(output),
+        "MUMT_SCENARIO_PROFILE": args.scenario_profile,
         "MUMT_CURR_INIT": source["checkpoint"],
         "MUMT_CURR_START_MODE": "best",
         "MUMT_CURR_EXPECTED_SHA256": source["checkpoint_sha256"],
@@ -287,6 +300,7 @@ def prepare_launch(args: argparse.Namespace, environment: Mapping[str, str] | No
             "policy_anchor_coef": args.policy_anchor_coef,
         },
         "mode": args.mode,
+        "scenario_profile": args.scenario_profile,
         "command": [sys.executable, str(ROOT / "_p3_pilot.py"), "curr", str(args.k), "0", str(args.iterations)],
         "cwd": str(ROOT),
         "training_environment": overrides,

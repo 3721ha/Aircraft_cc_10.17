@@ -415,7 +415,9 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--k", type=int, default=2)
     parser.add_argument("--scenario-profile", choices=(
-        "baseline", "k2_lane_center_40", "k2_lane_center_50"),
+        "baseline", "k2_lane_center_40", "k2_lane_center_50",
+        "k2_lane_center_50_threat_cone_15_40_60",
+        "k2_lane_center_50_threat_cone_simple_red"),
         default="k2_lane_center_50")
     parser.add_argument("--radar-hit-model", choices=(
         "bernoulli", "deterministic_beam"), default="bernoulli")

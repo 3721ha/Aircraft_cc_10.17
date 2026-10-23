@@ -393,7 +393,9 @@ def parser():
     ap.add_argument("--stable-window", type=int, default=8)
     ap.add_argument("--age-std-track", type=float, default=10.0)
     ap.add_argument("--scenario-profile", choices=(
-        "baseline", "k2_lane_center_40", "k2_lane_center_50"))
+        "baseline", "k2_lane_center_40", "k2_lane_center_50",
+        "k2_lane_center_50_threat_cone_15_40_60",
+        "k2_lane_center_50_threat_cone_simple_red"))
     ap.add_argument("--radar-hit-model", choices=("bernoulli", "deterministic_beam"),
                     default="deterministic_beam")
     ap.add_argument("--counterfactual-horizons", type=int, nargs="+",

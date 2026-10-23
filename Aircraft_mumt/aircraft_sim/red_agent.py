@@ -107,7 +107,7 @@ class RedFleet:
     # ------------------------------------------------------------------
     def _resample(self, a: RedAgent, t: float) -> None:
         r = self.rng
-        a.maneuver = r.choice(["patrol", "snake", "turn", "waypoint", "regain"])
+        a.maneuver = r.choice(self.cfg.RED_MANEUVER_SET)
         a.maneuver_until = t + r.uniform(*self.cfg.RED_MANEUVER_RESAMPLE)
         if a.maneuver == "snake":
             a.snake_phase = r.uniform(0, 2 * math.pi)
@@ -124,7 +124,9 @@ class RedFleet:
             v_cruise = self.cfg.RED_CRUISE_MA * 0.308
             err = a.duty_target * v_cruise * t - a.west_done
             if err > -self.SERVO_TOL_KM:
-                a.maneuver = r.choice(["patrol", "snake", "turn", "waypoint"])
+                choices = [mode for mode in self.cfg.RED_MANEUVER_SET
+                           if mode != "regain"]
+                a.maneuver = r.choice(choices or ["patrol"])
                 if a.maneuver == "snake":
                     a.snake_phase = r.uniform(0, 2 * math.pi)
                 elif a.maneuver == "turn":

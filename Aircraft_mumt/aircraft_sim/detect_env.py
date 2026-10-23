@@ -43,6 +43,7 @@ from .detect_config import (A_MACH_KMS, DetectSimConfig, ZONE_DETECTION,
                             ZONE_TRACKING, ma_to_kms)
 from .detect_models import DETECT_BID_SLOTS, DetectAction, DetectRole
 from .detect_rules import DetectRuleMonitor
+from .detect_threat import truth_in_threat_cone
 from .models import StepResult
 from .radar import RadarState, wrap_pi
 from .red_agent import RedFleet
@@ -189,7 +190,9 @@ class DetectEnv:
         self.m03_stall: Dict[Tuple[int, int], float] = {}
         self.metrics = {"apparent_mor": 0, "hidden_mor": 0,
                         "apparent_mar": 0, "hidden_mar": 0,
-                        "handoffs": 0, "judged": 0}
+                        "handoffs": 0, "judged": 0,
+                        "threat_cone_pairs": 0,
+                        "threat_cone_excluded_pairs": 0}
         self.last_request_outcomes: List[dict] = []
         self.terminal: Optional[str] = None
         return self.observe()
@@ -665,7 +668,10 @@ class DetectEnv:
             ))
         m = self.manned
         blue.append(dict(x=m.x, y=m.y, psi=m.psi, v=m.v))
-        red = [dict(uid=a.uid, x=a.x, y=a.y, judged=self.judged[a.uid])
+        # True heading is referee-only for the approach-angle predicate.  It
+        # is deliberately absent from observations; agents use track vx/vy.
+        red = [dict(uid=a.uid, x=a.x, y=a.y, heading=a.heading,
+                    judged=self.judged[a.uid])
                for a in self.reds.agents]
         return dict(t=self.t, step=self.step_count, blue=blue, red=red,
                     responsibility=dict(self.responsibility),
@@ -707,10 +713,14 @@ class DetectEnv:
         for a in self.reds.agents:
             for bx, by in blue_xy:
                 d = math.hypot(a.x - bx, a.y - by)
+                if not truth_in_threat_cone(
+                        cfg.THREAT_ATA_HALF_DEG, a.heading, a.x, a.y, bx, by):
+                    continue
                 if d < cfg.MAR:
                     r -= cfg.W6_MAR
                 elif d < cfg.MOR:
-                    r -= cfg.W5_MOR_GRAD * (cfg.MOR - d) / cfg.MOR_GRADIENT_SPAN
+                    r -= cfg.W5_MOR_GRAD * (cfg.MOR - d) \
+                        / cfg.MOR_GRADIENT_SPAN
         r -= cfg.W7_HANDOFF * len(handoffs)
         r -= self.monitor.penalty(report)
         r -= cfg.STEP_COST
@@ -727,7 +737,23 @@ class DetectEnv:
         blue_xy = [(w.x, w.y) for w in self.wingmen]
         any_tracks = [set(w.tracks._by_target) for w in self.wingmen]
         for a in self.reds.agents:
-            d = min(math.hypot(a.x - bx, a.y - by) for bx, by in blue_xy)
+            for bx, by in blue_xy:
+                d_pair = math.hypot(a.x - bx, a.y - by)
+                if d_pair < cfg.MOR:
+                    if truth_in_threat_cone(
+                            cfg.THREAT_ATA_HALF_DEG, a.heading,
+                            a.x, a.y, bx, by):
+                        self.metrics["threat_cone_pairs"] += 1
+                    else:
+                        self.metrics["threat_cone_excluded_pairs"] += 1
+            eligible_distances = [
+                math.hypot(a.x - bx, a.y - by)
+                for bx, by in blue_xy
+                if truth_in_threat_cone(
+                    cfg.THREAT_ATA_HALF_DEG, a.heading, a.x, a.y, bx, by)]
+            if not eligible_distances:
+                continue
+            d = min(eligible_distances)
             seen = any(a.uid in s for s in any_tracks)
             if d < cfg.MAR:
                 self.metrics["apparent_mar" if seen else "hidden_mar"] += 1
