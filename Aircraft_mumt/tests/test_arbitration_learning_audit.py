@@ -103,7 +103,7 @@ def test_resampling_credits_actual_event_winner_and_preserves_task_actions(monke
     assert original == case
 
 
-def test_middle_utility_winner_keeps_zero_advantage_in_ppo_event_population(monkeypatch):
+def test_middle_utility_winner_keeps_relative_advantages_in_ppo_event_population(monkeypatch):
     policy, case = _policy_and_case()
 
     def sample(_distribution, sample_shape=torch.Size()):
@@ -119,7 +119,7 @@ def test_middle_utility_winner_keeps_zero_advantage_in_ppo_event_population(monk
     stats = policy.update([row, deepcopy(row)])
     assert stats["bid_active_slot_count"] == 6
     assert np.isfinite(stats["loss"])
-    assert stats["bid_gradient_norm"] == 0.0
+    assert stats["bid_gradient_norm"] > 0.0
 
 
 def test_fixed_evaluation_uses_correct_slots_and_deployment_tie_break():
