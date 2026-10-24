@@ -93,8 +93,9 @@ def test_resampling_credits_actual_event_winner_and_preserves_task_actions(monke
     row = resample_case_row(policy, case)
     assert row["bid_cf_event_records"][0]["winner"] == 0
     assert row["bid_cf_event_records"][0]["event_advantage"] == -1.0
+    expected_advantages = {0: -1.0, 1: 0.0, 2: 1.0}
     for agent, slot in ((0, 4), (1, 2), (2, 6)):
-        assert row["bid_cf_adv_slots"][agent][slot] == -1.0
+        assert row["bid_cf_adv_slots"][agent][slot] == expected_advantages[agent]
         assert sum(row["bid_cf_mask_slots"][agent]) == 1
         assert row["bid_event_ids_slots"][agent][slot] == 0
         assert row["nominal"][agent][:6] == original["template"]["nominal"][str(agent)][:6]

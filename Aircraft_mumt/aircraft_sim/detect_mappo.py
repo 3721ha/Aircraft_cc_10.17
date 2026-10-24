@@ -1264,12 +1264,14 @@ class DetectMAPPOPolicy:
         advantages: List[List[float]], masks: List[List[bool]],
         post_first_step_cleanup: Callable[[object, dict], None] | None = None,
     ) -> dict:
-        """Use the sampled winner's utility for every bid in its joint event.
+        """Assign candidate-specific relative utility to each bid slot.
 
-        Forced-winner utilities give an action-independent baseline for this
-        event. The outcome advantage must depend on the winner of the actual
-        sampled bids; a fixed candidate-specific utility is not an advantage
-        of that candidate's sampled continuous bid.
+        Each forced-winner branch is an action-independent potential outcome
+        for one candidate.  Centering those utilities by their event mean
+        gives the bid for a better branch positive credit and the bids for
+        worse branches negative credit.  A single sampled-winner advantage
+        copied to every candidate cannot teach relative bid ordering because
+        all candidates receive the same gradient sign.
         """
         self.config.validate_counterfactual_horizon()
         stats = {
@@ -1359,6 +1361,11 @@ class DetectMAPPOPolicy:
             utility_values = list(utilities.values())
             utility_spread = max(utility_values) - min(utility_values)
             advantage = _event_winner_advantage(utilities, actual_winner)
+            candidate_advantages = {
+                candidate: float(utilities[candidate]
+                                 - np.mean(utility_values))
+                for candidate in candidates
+            }
             actual_regret = max(utility_values) - utilities[actual_winner]
             stats["events"] += 1
             stats["utility_spreads"].append(float(utility_spread))
@@ -1369,6 +1376,7 @@ class DetectMAPPOPolicy:
                 "bid_slots": slots,
                 "winner": actual_winner,
                 "utilities": utilities,
+                "candidate_advantages": candidate_advantages,
                 "utility_spread": float(utility_spread),
                 "actual_regret": float(actual_regret),
                 "event_advantage": advantage,
@@ -1378,10 +1386,10 @@ class DetectMAPPOPolicy:
             if utility_spread <= 1e-8:
                 continue
             for agent_idx, slot_idx in slots.items():
-                advantages[agent_idx][slot_idx] += advantage
-                # Keep a middle-utility winner's zero advantage in the event
-                # population. Dropping that event would condition the loss
-                # denominator on the sampled bids.
+                advantages[agent_idx][slot_idx] += candidate_advantages[agent_idx]
+                # Keep a middle-utility candidate's zero advantage in the
+                # event population. Dropping that event would condition the
+                # loss denominator on the sampled bids.
                 masks[agent_idx][slot_idx] = True
             stats["informative_events"] += 1
         return stats

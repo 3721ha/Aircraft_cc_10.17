@@ -355,7 +355,7 @@ def evaluate_cases(model, cases: list[dict], samples: int, noise_seed: int) -> d
 
 
 def resample_case_row(policy, case: dict) -> dict:
-    """Sample actual bid actions and use their actual winner's event return."""
+    """Sample bid actions and assign each candidate its relative utility."""
     from aircraft_sim.detect_mappo import _squashed_log_prob
 
     row = deepcopy(case["template"])
@@ -375,7 +375,12 @@ def resample_case_row(policy, case: dict) -> dict:
     winner = max(candidates, key=lambda agent: (float(bids[agent, slots[agent]]),
                                                -agent))
     winner_index = candidates.index(winner)
-    advantage = float(utilities[winner_index] - utilities.mean())
+    utility_mean = float(utilities.mean())
+    candidate_advantages = {
+        agent: float(utilities[index] - utility_mean)
+        for index, agent in enumerate(candidates)
+    }
+    advantage = candidate_advantages[winner]
     informative = float(np.ptp(utilities)) > 1e-8
     masks = [[False] * 8 for _ in range(n_agents)]
     event_ids = [[-1] * 8 for _ in range(n_agents)]
@@ -393,7 +398,7 @@ def resample_case_row(policy, case: dict) -> dict:
             slot = slots[agent]
             masks[agent][slot] = informative
             event_ids[agent][slot] = 0
-            advantages[agent][slot] = advantage
+            advantages[agent][slot] = candidate_advantages[agent]
             row["bid_mask"][agent] = True
     row["bid_cf_adv_slots"] = advantages
     row["bid_cf_mask_slots"] = masks
@@ -403,6 +408,7 @@ def resample_case_row(policy, case: dict) -> dict:
     row["bid_cf_event_records"] = [{
         **deepcopy(case["event"]), "winner": winner,
         "event_advantage": advantage,
+        "candidate_advantages": candidate_advantages,
         "actual_regret": float(utilities.max() - utilities[winner_index]),
     }]
     return row

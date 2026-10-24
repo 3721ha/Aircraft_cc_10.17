@@ -91,4 +91,7 @@ def test_middle_utility_winner_keeps_zero_advantage_event_mask():
         0., 0., advantage, mask)
     assert stats['informative_events'] == 1
     assert all(row[0] for row in mask)
-    assert all(abs(row[0]) < 1e-8 for row in advantage)
+    assert advantage[0][0] > 0.0
+    assert np.isclose(advantage[1][0], 0.0)
+    assert advantage[2][0] < 0.0
+    assert np.isclose(advantage[0][0], -advantage[2][0])

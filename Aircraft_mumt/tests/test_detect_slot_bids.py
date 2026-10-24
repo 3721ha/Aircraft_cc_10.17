@@ -88,7 +88,7 @@ def test_counterfactual_bid_credit_uses_only_event_bid_slots():
     assert not any(masks[0][slot] for slot in range(8) if slot != 2)
     assert masks[1][5]
     assert not any(masks[1][slot] for slot in range(8) if slot != 5)
-    assert advantages[1][5] == advantages[0][2]
+    assert advantages[1][5] == -advantages[0][2]
     assert advantages[0][2] > 0.0
     assert len(replay.calls) == 2
     assert replay.calls[0][0][2] == 1.0
