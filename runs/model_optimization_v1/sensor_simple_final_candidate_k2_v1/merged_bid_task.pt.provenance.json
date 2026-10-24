@@ -1,0 +1,21 @@
+{
+  "checkpoint": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_simple_final_candidate_k2_v1\\merged_bid_task.pt",
+  "sha256": "5df6390152a519c3017c5aebfb699331fe0307a7d9259eae15d81521fd3109cc",
+  "merge_provenance": {
+    "task_source": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_simple_task_refine_k2_v1\\curr_k2_best.pt",
+    "task_source_sha256": "e60f549e86758a0c50c554805fc6ab78cb1e72caca4bb5793ff20ad3174c24db",
+    "bid_source": "D:\\Desktop\\Aircraft_mumt_cc\\runs\\model_optimization_v1\\sensor_simple_bid_probe_k2_v1\\curr_k2.pt",
+    "bid_source_sha256": "b3b3d8b82b1e6dbc1cf713af3cb759e4e7b0554189c54e580ce5c757922f8008",
+    "merged_keys": [
+      "bid_log_std",
+      "bid_head.weight",
+      "bid_head.bias",
+      "bid_candidate_head.0.weight",
+      "bid_candidate_head.0.bias",
+      "bid_candidate_head.2.weight",
+      "bid_candidate_head.2.bias",
+      "bid_conflict_residual.weight"
+    ],
+    "method": "copy bid_* parameters from bid-only probe latest into task best; no teacher weights"
+  }
+}
