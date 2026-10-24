@@ -567,7 +567,7 @@ def main() -> None:
         "k2_lane_center_50_threat_cone_sensor_simple",
         "k2_lane_center_50_threat_cone_m03_grace"))
     ap.add_argument("--radar-hit-model", choices=(
-        "bernoulli", "deterministic_beam"), default="bernoulli")
+        "bernoulli", "deterministic_beam"), default=None)
     ap.add_argument(
         "--conflict-probe", action="store_true",
         help="force paired legal local-track requests for a separate diagnostic")
